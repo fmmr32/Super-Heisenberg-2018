@@ -1,27 +1,36 @@
-﻿var tiles;
+﻿
+var tiles;
 
-MAP = function (container) {
+MAP = function (container, floor) {
     //make function that loads a resource from somewhere containing info of below
 
     var temp = new Map();
 
-    var options = {};
-    options.context = container.getContext("2d");
-    options.image = {};
 
-    //from tiles.png if it is a tile (floor), from character.png if character, object.png if trap etc...
-    options.image.src = "../JavaScriptTest/images/ground/tiles.png";
+    
+
+    console.log(file);
+
+    for (data of file){
+        var options = {};
+        options.context = container.getContext("2d");
+        options.image = {};
+
+        //from tiles.png if it is a tile (floor), from character.png if character, object.png if trap etc...
+        options.image.src = data.source;
 
 
-    //these values differ from sprite to sprite
-    options.width = 32;
-    options.heigth = 10;
-   
+        //these values differ from sprite to sprite
+        options.width = data.width;
+        options.heigth = data.heigth;
+        options.image.startX = data.startX;
+        options.image.startY = data.startY;
 
-    options.image.startX = 0;
-    options.image.startY = 12;
+        //mapping it
+        temp.set(data.name, options);
+    }
 
-    temp.set("dirt", options);
+    
     tiles = loadTiles(temp);
 
 };
@@ -72,3 +81,5 @@ Sprite.prototype = {
         img.src = image.src;
     }
 };
+
+
