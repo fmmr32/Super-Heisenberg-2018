@@ -1,38 +1,41 @@
 ﻿var tiles;
 
 MAP = function (container) {
-    tiles = loadTiles(container);
-    drawLine(tiles[0], container);
-};
+    //make function that loads a resource from somewhere containing info of below
 
-function drawLine(object, canvas) {
-    for (var x = 0; x < canvas.width; x += object.width) {
-        object.draw(x, 100);
-    }
+    var temp = new Map();
 
-}
-
-
-function loadTiles(container) {
-    var temp = [];
-
-
-
-    options = {};
+    var options = {};
     options.context = container.getContext("2d");
+    options.image = {};
+
+    //from tiles.png if it is a tile (floor), from character.png if character, object.png if trap etc...
+    options.image.src = "../JavaScriptTest/images/ground/tiles.png";
+
+
+    //these values differ from sprite to sprite
     options.width = 32;
     options.heigth = 10;
-    options.image = {};
-    options.image.src = "../JavaScriptTest/images/ground/dirt.png";
+   
+
     options.image.startX = 0;
     options.image.startY = 12;
 
+    temp.set("dirt", options);
+    tiles = loadTiles(temp);
 
-    var dirt = new Sprite(options);
-    temp.push(dirt);
+};
 
+//simeple sprite loader
+function loadTiles(tiles) {
+    var temp = new Map();
+    for (spriteName of tiles.keys()) {
+        temp.set(spriteName, new Sprite(tiles.get(spriteName)));
+    }
     return temp;
 }
+
+
 
 
 function Sprite(options) {
