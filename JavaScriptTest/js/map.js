@@ -1,17 +1,15 @@
 ﻿
 var tiles;
 
-MAP = function (container, floor) {
+MAP = function (container) {
     //make function that loads a resource from somewhere containing info of below
 
     var temp = new Map();
+    var floor = '[ {"name": "dirt", "source": "../JavaScriptTest/resources/tiles.png", "width": 32,"heigth": 10,"startX": 0,"startY": 12}, {"name":"stone","source": "../JavaScriptTest/resources/tiles.png", "width": 32,"heigth": 10,"startX": 0,"startY": 12}]';
+    floor = JSON.parse(floor);
+   
 
-
-    
-
-    console.log(file);
-
-    for (data of file){
+    for (data of floor) {
         var options = {};
         options.context = container.getContext("2d");
         options.image = {};
@@ -32,6 +30,7 @@ MAP = function (container, floor) {
 
     
     tiles = loadTiles(temp);
+    console.log(tiles);
 
 };
 
