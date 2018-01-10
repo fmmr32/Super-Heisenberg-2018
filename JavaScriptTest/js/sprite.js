@@ -48,7 +48,6 @@ function getSprite(name) {
 
 function loadSprites(json, container) {
     var any = JSON.parse(json);
-
     for (var tile of any) {
         var options = {};
         options.context = container.getContext("2d");

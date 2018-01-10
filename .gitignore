@@ -259,3 +259,13 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/JavaScriptTest/images/Wide310x150Logo.scale-200.png
+/JavaScriptTest/images/StoreLogo.png
+/JavaScriptTest/images/Square44x44Logo.targetsize-24_altform-unplated.png
+/JavaScriptTest/images/Square44x44Logo.scale-200.png
+/JavaScriptTest/images/Square150x150Logo.scale-200.png
+/JavaScriptTest/images/SplashScreen.scale-200.png
+/JavaScriptTest/images/LockScreenLogo.scale-200.png
+/JavaScriptTest/run.bat
+/JavaScriptTest/package.appxmanifest
+/JavaScriptTest/node.exe

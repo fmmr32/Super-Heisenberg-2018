@@ -1,18 +1,20 @@
 ﻿{
-
-  "dirt": {
-
+  {
+    "id": 1,
+    "name": "dirt",
     "source": "../JavaScriptTest/resources/tiles.png",
     "width": 32,
     "heigth": 10,
     "startX": 0,
     "startY": 12
   },
-  "stone": {
+  {
+    "id": 2,
+    "name": "stone",
     "source": "../JavaScriptTest/resources/tiles.png",
     "width": 32,
     "heigth": 10,
     "startX": 0,
-    "startY": 12
+    "startY": 43
   }
 }
