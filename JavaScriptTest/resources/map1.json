@@ -1,0 +1,14 @@
+[
+  {
+    "blockId": 1,
+    "blockX": 100,
+    "blockY": 100,
+    "meta": null
+  },
+  {
+    "blockId": 2,
+    "blockX": 150,
+    "blockY": 100,
+    "meta": null
+  }
+]

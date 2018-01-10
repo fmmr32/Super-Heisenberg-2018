@@ -42,8 +42,8 @@ function newSprite(options) {
     sprites.set(options.id, sprite);
 }
 
-function getSprite(name) {
-    return sprites.get(name);
+function getSprite(id) {
+    return sprites.get(id);
 }
 
 function loadSprites(json, container) {

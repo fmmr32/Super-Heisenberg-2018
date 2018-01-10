@@ -4,15 +4,38 @@
 <script type="text/javascript" src="js/gun.js"></script>
 <script type="text/javascript" src="js/map.js"></script>
 <script type="text/javascript" src="js/sprite.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script>
     var canvas = document.getElementById("test");
-    $.getJSON('./resources/tiles.json', function (data) {
-        loadSprites(data, container);
-        var map = MAP(canvas);
-    });
-    
+    var neededFiles = ["tiles.json"];
 
+
+    function loadJSONFile(callback, file) {
+
+        var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+        xobj.open('GET', file, false); // Replace 'my_data' with the path to your file
+        xobj.onreadystatechange = function () {
+            if (xobj.readyState == 4 && xobj.status == "200") {
+                // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+                callback(xobj.responseText);
+            }
+        };
+        xobj.send(null);
+    }
+
+    for (var x of neededFiles) {
+
+        loadJSONFile(function (response) {
+            loadSprites(response, canvas);
+        }, "./resources/" + x);
+    }
+
+    //loads in the test "map"
+    loadJSONFile(function (response) {
+        var map = new MAP(canvas, response);
+    }, "./resources/map1.json")
+
+ 
     
 
     //setInterval(speed, 1000 / 1);
@@ -27,7 +50,7 @@
     //   console.log("Char vspeed: " + char.getVSpeed() + " Hspeed: " + char.getHSpeed());
     //}
 
-    //document.onkeypress = function (e) {
+    //document.onkeypress = function (e) {vvvaw
     //    e = e || window.event;
     //    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     //    if (charCode) {
