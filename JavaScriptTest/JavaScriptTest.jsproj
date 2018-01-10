@@ -58,6 +58,7 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="js\sprite.js" />
     <Content Include="resources\tiles.json" />
     <Content Include="resources\tiles.png" />
     <Content Include="index.html" />

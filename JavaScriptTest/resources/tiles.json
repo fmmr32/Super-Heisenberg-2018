@@ -1,6 +1,14 @@
 ﻿{
+
   "dirt": {
 
+    "source": "../JavaScriptTest/resources/tiles.png",
+    "width": 32,
+    "heigth": 10,
+    "startX": 0,
+    "startY": 12
+  },
+  "stone": {
     "source": "../JavaScriptTest/resources/tiles.png",
     "width": 32,
     "heigth": 10,
