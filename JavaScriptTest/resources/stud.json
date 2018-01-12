@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 669,
+    "startX": 39,
+    "startY": 11,
+    "width": 45,
+    "heigth": 96,
+    "centerPX": 23,
+    "offSetPX": 8,
+    "name": "stud",
+    "weapon": "pistol",
+    "hp": 100,
+    "speed": 3,
+    "jump": 4,
+    "source": "../resources/stud.png"
+  }
+]
