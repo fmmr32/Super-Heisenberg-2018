@@ -2,33 +2,33 @@
   "gravity": 4,
   "content": [
     {
-      "blockId": 3,
+      "blockId": 1,
       "blockX": 100,
-      "blockY": 100,
+      "blockY": 200,
       "meta": null
     },
     {
       "blockId": 1,
       "blockX": 132,
-      "blockY": 100,
+      "blockY": 200,
       "meta": null
     },
     {
       "blockId": 1,
       "blockX": 164,
-      "blockY": 100,
+      "blockY": 200,
       "meta": null
     },
     {
       "blockId": 1,
       "blockX": 196,
-      "blockY": 100,
+      "blockY": 200,
       "meta": null
     },
     {
       "blockId": 1,
       "blockX": 228,
-      "blockY": 100,
+      "blockY": 200,
       "meta": null
     }
   ]
