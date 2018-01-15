@@ -30,6 +30,25 @@
       "blockX": 228,
       "blockY": 200,
       "meta": null
+    },
+    {
+      "blockId": 1,
+      "blockX": 260,
+      "blockY": 200,
+      "meta": null
+    }
+    ,
+    {
+      "blockId": 1,
+      "blockX": 228,
+      "blockY": 191,
+      "meta": null
+    },
+    {
+      "blockId": 1,
+      "blockX": 228,
+      "blockY": 182,
+      "meta": null
     }
   ]
 }

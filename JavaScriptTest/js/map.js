@@ -6,6 +6,8 @@ MAP = function (container, file) {
 
     //make function that loads a resource from somewhere containing info of below
     loadBlocks(container, file);
+    console.log(tiles);
+
     var options = {};
     loadJSONFile(function (response) {
         var any = JSON.parse(response);
@@ -74,14 +76,18 @@ function loadMap(name) {
 function doGravity() {
     for (var char of characters) {
         var x = char.getX() + char.getCenter();
-        if (getBlock(x + char.getLastOffSet(), y).Id !== 0) {
-            x -= char.getLastOffSet();
-        } else {
-            x += char.getLastOffSet();
-        }
-        console.log(x);
-
         var y = char.getY();
+
+        
+
+        if (getBlock(x + char.getLastOffSet(), y).Id !== 0) {
+            x += char.getLastOffSet();
+        } else {
+            x -= char.getLastOffSet();
+        }
+        
+        
+
 
        if (getBlock(x, y).Id === 0) { //character is currently in the air
            for (var dY = 0; dY <= char.getVSpeed(); dY++) { //see if character can make the full journey
@@ -110,9 +116,6 @@ function doGravity() {
     }
 
 }
-
-
-
 
 function getBlock(X, Y) {
     if (tiles[X] === undefined) {

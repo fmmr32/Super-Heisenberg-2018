@@ -15,3 +15,15 @@
     return self;
 
 };
+
+
+BULLET = function () {
+    var self = {};
+
+    self.gun;
+    self.angle;
+    self.speed;
+
+
+    return self;
+};

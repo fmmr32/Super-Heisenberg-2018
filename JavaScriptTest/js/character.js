@@ -108,16 +108,26 @@
         }
         if (this.rightDown) {
             this.setHSpeed(this.getSpeed());
+            this.doCollision();
             this.lastOffSet = -this.getOffSet();
         } else if (this.leftDown) {
             this.setHSpeed(-this.getSpeed());
+            this.doCollision();
             this.lastOffSet = this.getOffSet();
         } else {
             this.setHSpeed(0);
         }
 
         if (this.jumpDown) {
-            if (getBlock(this.getX(), this.getY()+1).Id !== 0) {
+            var x = this.getX() + this.getCenter();
+
+            if (getBlock(x + this.getLastOffSet(), this.getY()).Id !== 0) {
+                x += this.getLastOffSet();
+            } else {
+                x -= this.getLastOffSet();
+            }
+
+            if (getBlock(x, this.getY() + 1).Id !== 0) {
                 this.setVSpeed(-(this.jump * this.gravity));
             }
         }
@@ -129,5 +139,31 @@
             this.spawn(this.getX(), this.getY() - this.getHeigth());
         }
     };
+
+    self.doCollision = function () {
+        var x = this.getX() + this.getCenter();
+        if (this.getLastOffSet() > 0) {
+            x -= this.getCenter();
+        } else {
+            x += this.getCenter();
+        }
+        var y = this.getY() - 10;
+
+        for (dX = 0; dX < this.getHSpeed(); dX++) {
+            if (getBlock(x + dX, y).Id != 0) {
+                this.setHSpeed(dX);
+                return;
+            }
+        }
+
+        for (dX = 0; dX > this.getHSpeed(); dX--) {
+            if (getBlock(x + dX, y).Id != 0) {
+                this.setHSpeed(dX);
+                return;
+            }
+        }
+
+    }
+
     return self;
 };
