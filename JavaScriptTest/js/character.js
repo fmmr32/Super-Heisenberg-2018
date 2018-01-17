@@ -2,10 +2,12 @@
     
 
     var self = {};
+
     self.gravity = options.gravity;
     self.vs = 0;
     self.hs = 0;
     self.hp = options.hp;
+    self.jmpcd = 0;
 
     self.center = options.center;
     self.offSet = options.offset;
@@ -24,6 +26,8 @@
     self.jumpDown = false;
 
     self.lastOffSet = 0;
+
+    self.weapon = options.weapon;
 
     self.getLastOffSet = function () {
         return self.lastOffSet;
@@ -105,6 +109,10 @@
                 break;
             case "stopH":
                 this.setHSpeed(0);
+                break;
+            case "fire":
+                this.weapon.fireWeapon(this);
+                break;
         }
         if (this.rightDown) {
             this.setHSpeed(this.getSpeed());
@@ -127,7 +135,12 @@
                 x -= this.getLastOffSet();
             }
 
-            if (getBlock(x, this.getY() + 1).Id !== 0) {
+            if (getBlock(x, this.getY() + 1).Id !== 0 && self.jmpcd == 0) {
+               
+                if (onTick) {
+                    self.jmpcd = 10;
+                }
+
                 this.setVSpeed(-(this.jump * this.gravity));
             }
         }
@@ -135,7 +148,7 @@
         if (onTick) {
             this.setX(this.getX() + this.getHSpeed());
             this.setY(this.getY() - this.getHeigth() + this.getVSpeed());
-
+            this.weapon.lowerCD();
             this.spawn(this.getX(), this.getY() - this.getHeigth());
         }
     };
@@ -149,6 +162,7 @@
         }
         var y = this.getY() - 10;
 
+        //checking for when going right
         for (dX = 0; dX < this.getHSpeed(); dX++) {
             if (getBlock(x + dX, y).Id != 0) {
                 this.setHSpeed(dX);
@@ -156,6 +170,7 @@
             }
         }
 
+        //checking for when going left
         for (dX = 0; dX > this.getHSpeed(); dX--) {
             if (getBlock(x + dX, y).Id != 0) {
                 this.setHSpeed(dX);
@@ -163,7 +178,14 @@
             }
         }
 
-    }
+    };
+
+    self.lowerCD = function () {
+        if (self.jmpcd > 0) {
+            self.jmpcd -= 1;
+        }
+    };
+
 
     return self;
 };

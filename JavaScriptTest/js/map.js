@@ -1,5 +1,6 @@
 ﻿var tiles = [[], []];
 var characters = [];
+var entities = [];
 
 MAP = function (container, file) {
     var gravity;
@@ -30,11 +31,11 @@ MAP = function (container, file) {
         options2.hp = any.hp;
         options2.jump = any.jump;
         options2.speed = any.speed;
-        options2.weapon = new PISTOL();
         options2.heigth = options2.sprite.heigth;
         options2.gravity = this.gravity;
         options2.center = any.centerPX;
         options2.offset = any.offSetPX;
+        options2.weapon = loadWeapon(any.weapon);
         characters.push(new CHARACTER(options2));
         characters[0].spawn(150, 10);
 
@@ -65,6 +66,20 @@ MAP = function (container, file) {
     }
 };
 
+function doEntityTick() {
+    doGravity();
+   
+
+    for (var entity of entities) {
+        if (entity.hasOwnProperty("bulletTravel")) {
+            if (entity.bulletTravel()) {
+                entities.splice(entities.indexOf(entity), 1);
+            }
+        }
+
+    }
+}
+
 function loadMap(name) {
     var m;
     loadJSONFile(function (response) {
@@ -78,39 +93,40 @@ function doGravity() {
         var x = char.getX() + char.getCenter();
         var y = char.getY();
 
-        
+
 
         if (getBlock(x + char.getLastOffSet(), y).Id !== 0) {
             x += char.getLastOffSet();
         } else {
             x -= char.getLastOffSet();
         }
-        
-        
 
 
-       if (getBlock(x, y).Id === 0) { //character is currently in the air
-           for (var dY = 0; dY <= char.getVSpeed(); dY++) { //see if character can make the full journey
-               if (getBlock(x, y + dY).Id !== 0) {
-                   char.setVSpeed(dY);//character can only make the journey dY far
-                   return;
-               }
-           }
-           if (getBlock(x, y + char.getVSpeed()).Id === 0) {//char can rise or fall to air
+
+
+        if (getBlock(x, y).Id === 0) { //character is currently in the air
+            for (var dY = 0; dY <= char.getVSpeed(); dY++) { //see if character can make the full journey
+                if (getBlock(x, y + dY).Id !== 0) {
+                    char.setVSpeed(dY);//character can only make the journey dY far
+                    return;
+                }
+            }
+            if (getBlock(x, y + char.getVSpeed()).Id === 0) {//char can rise or fall to air
                 for (var dY = 0; dY <= gravity; dY++) { //see if character can make the full journey
                     if (getBlock(x + char.getHSpeed(), y + char.getVSpeed() + dY).Id !== 0) {
                         char.setVSpeed(char.getVSpeed() + dY - 1);//character can only make the journey dY far
                         return;
                     }
-               }
+                }
                 char.setVSpeed(char.getVSpeed() + gravity);
-           } else { //reduce the speed so they can
-               if (getBlock(x, y + char.getVSpeed()).Id === 0) {
-               } else {
-                   char.setVSpeed(1);
-               }
+            } else { //reduce the speed so they can
+                if (getBlock(x, y + char.getVSpeed()).Id === 0) {
+                } else {
+                    char.setVSpeed(1);
+                }
             }
-       } else { //character is on the ground
+        } else { //character is on the ground
+            char.lowerCD();
             char.setVSpeed(0);
         }
     }

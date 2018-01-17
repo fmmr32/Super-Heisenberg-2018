@@ -63,6 +63,7 @@
     </AppxManifest>
     <Content Include="js\editor.js" />
     <Content Include="js\sprite.js" />
+    <Content Include="resources\entities.png" />
     <Content Include="resources\character.png" />
     <Content Include="resources\map1.json" />
     <Content Include="resources\stud.png" />
@@ -84,6 +85,7 @@
     <Content Include="js\map.js" />
     <Content Include="resources\character.json" />
     <Content Include="resources\stud.json" />
+    <Content Include="resources\entities.json" />
     <None Include="JavaScriptTest_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
