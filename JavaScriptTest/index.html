@@ -60,13 +60,18 @@
 
     //loads in the test "map" expand ths into a dynamic loading system
     var map = loadMap("map1");
+
+    loadJSONFile(function (response) {
+        map.loadCharacter(response);
+    }
+        , "./resources/stud.json");
+
     var interval = setInterval(game, 1000 / 60);
     var running = false;
     function game() {
         running = true;
         canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
-        doEntityTick();
-        characters[0].doMove("none", true, true);
+        map.doEntityTick();
     }
 
 
@@ -75,7 +80,7 @@
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && running) {
-            characters[0].doMove(conf[charCode], true);
+            map.getPlayer().doMove(conf[charCode], true);
         }
     };
 
@@ -83,12 +88,12 @@
         e = e || window.event
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && running) {
-            characters[0].doMove(conf[charCode], false);
+            map.getPlayer().doMove(conf[charCode], false);
         }
     };
 
 
-
+    //only needed for some debugging ..
     document.onmousedown = function (e) {
         e = e || window.event;
         var poss = getMousePos(canvas.bg, e);

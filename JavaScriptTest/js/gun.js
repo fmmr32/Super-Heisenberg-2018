@@ -1,90 +1,120 @@
 ﻿function loadWeapon(name) {
     switch (name) {
         case "pistol":
-            return new PISTOL();
+            return new Pistol(10, 5, 15, 0);
+        case "shotgun":
+            return new Shotgun(10, 5, 30, 0);
     }
 }
 
-PISTOL = function () {
-    var self = {};
-
-    self.damage = 10;
-    self.speed = 5;
-
-    self.cooldown = 10;
-
-    self.getDamage = function () {
-        return self.damage;
-    };
-
-    self.getSpeed = function () {
-        return self.speed;
-    };
-
-    self.bullets = [];
-    self.bullets.push(new BULLET(270, 5, 60, 0,0,999));
+class Weapon {
+    constructor(damage, speed, cooldown) {
+        this.damage = damage;
+        this.speed = speed;
+        this.cooldown = cooldown;
+        this.tick = 0;
+        this.bullets = [];
+    }
 
 
-    self.fireWeapon = function (character) {
-        if (self.cooldown == 0) {
-            for (var bullet of self.bullets) {
-                var temp = new BULLET(bullet.angle, bullet.speed, bullet.alive, 0,0, bullet.sprite);
-                temp.x = character.getX() + character.getCenter() + (character.getOffSet() * 2);
-                temp.y = character.getY() - (character.getHeigth() / 2);
-                self.cooldown = 10;
-                entities.push(temp);
+
+    fireWeapon(character, map) {
+        if (this.tick === 0) {
+            for (var bullet of this.bullets) {
+                var options = {};
+                options.speed = bullet.speed;
+                options.x = bullet.x;
+                options.y = bullet.y;
+                options.sprite = bullet.sprite;
+                var temp = new Bullet(bullet.angle, bullet.alive, options);
+                temp.x = character.getX() + character.getCenter() + character.getOffSet() * 2;
+                temp.y = character.getY() - character.getHeigth() / 2;
+                this.tick = this.cooldown;
+                map.entities.push(temp);
             }
         }
     }
 
-    self.lowerCD = function () {
-        if (self.cooldown > 0) {
-            self.cooldown--;
+    lowerCD() {
+        if (this.tick > 0) {
+            this.tick--;
         }
     }
 
-    return self;
-};
+    get Damage() {
+        return this.damage;
+    }
+
+    get Speed() {
+        return this.speed;
+    }
+}
+
+
+class Pistol extends Weapon {
+    constructor(damage, speed, cooldown, sprite) {
+        super(damage, speed, cooldown);
+        var options = {};
+        options.x = 0;
+        options.y = 0;
+        options.speed = 5;
+        options.sprite = getSprite(999);
+
+        this.bullets.push(new Bullet(0, 60, options));
+    }
+}
+
+class Shotgun extends Weapon {
+    constructor(damage, speed, cooldown, sprite) {
+        super(damage, speed, cooldown);
+        var options = {};
+        options.x = 0;
+        options.y = 0;
+        options.speed = 5;
+        options.sprite = getSprite(999);
+
+        this.bullets.push(new Bullet(-15, 60, options));
+        this.bullets.push(new Bullet(0,  60, options));
+        this.bullets.push(new Bullet(15, 60, options));
+    }
+
+
+}
 
 
 
 
-BULLET = function (angle, speed, alive, x, y, sprite) {
-    var self = {};
-    self.alive = alive;
-
-    self.angle = angle;
-    self.speed = speed;
-    self.alive = alive;
-
-    self.x = x;
-    self.y = y;
-
-    
-    self.sprite = sprite;
+class Bullet extends Entity{
+    constructor(angle, alive, options) {
+        super(options);
+        this.angle = angle;
+        this.alive = alive;
+    }
 
 
-    self.bulletTravel = function () {
-        if (self.alive > 0) {
-            self.alive--;
+    bulletTravel() {
+        if (this.alive > 0) {
+            this.alive--;
             //delete drawing and redraw at new x
+            var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
 
-            var dy = Math.sin(self.angle) * self.speed;
-            var dx = self.speed - Math.ceil(dy);
-            
+            if (dy < 0) {
+                dy = Math.floor(dy);
+            } else {
+                dy = Math.ceil(dy);
+            }
+            dy = -dy;
 
-            self.x += dx;
-            self.y += dy;
+            var dx = this.speed - Math.abs(dy);
+            this.x += dx;
+            this.y += dy;
 
-            getSprite(self.sprite).draw(self.x, self.y);
+            this.spawn(this.x, this.y);
             return false;
         } else {
             //despawn
             return true;
 
         }
-    };
-
-
-    return self;
-};
+    }
+}

@@ -1,4 +1,5 @@
 ﻿var sprites = new Map();
+var characters = new Map();
 
 SPRITE = function (options) {
     this.container = options.context;

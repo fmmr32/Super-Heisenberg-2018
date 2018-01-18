@@ -8,7 +8,7 @@
     "centerPX": 23,
     "offSetPX": 8,
     "name": "stud",
-    "weapon": "pistol",
+    "weapon": "shotgun",
     "hp": 100,
     "speed": 3,
     "jump": 4,

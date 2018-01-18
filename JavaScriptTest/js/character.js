@@ -1,98 +1,160 @@
-﻿CHARACTER = function (options) {
+﻿class Entity {
+    constructor(options) {
+
+        this.posX = options.x;
+        this.posY = options.y;
+        this.speed = options.speed;
+        this.sprite = options.sprite;
+
+    }
+
+ 
+
+    setX(x) {
+        this.posX = x;
+    }
+
+    getX() {
+        return this.posX;
+    }
+
+    setY(y) {
+        this.posY = y;
+    }
+    getY() {
+        return this.posY + this.getHeigth();
+    }
+
+    spawn(X, Y) {
+        this.posX = X;
+        this.posY = Y;
+        this.sprite.draw(X, Y);
+        
+    }
+
+    getSpeed() {
+        return this.speed;
+    }
+
     
 
-    var self = {};
+}
 
-    self.gravity = options.gravity;
-    self.vs = 0;
-    self.hs = 0;
-    self.hp = options.hp;
-    self.jmpcd = 0;
+class EntityCreature extends Entity {
+    constructor(options) {
+        super(options);
+        this.hp = options.hp;
+        this.weapon = options.weapon;
 
-    self.center = options.center;
-    self.offSet = options.offset;
+        this.gravity = options.gravity;
 
-    self.posX;
-    self.posY;
 
-    self.sprite = options.sprite;
+        this.jump = options.jump;
+        this.heigth = options.heigth;
+        this.center = options.center;
+        this.offSet = options.offSet;
 
-    self.weapon = options.weapon;
-    self.heigth = options.heigth;
-    self.jump = options.jump;
-    self.speed = options.speed;
-    self.leftDown = false;
-    self.rightDown = false;
-    self.jumpDown = false;
 
-    self.lastOffSet = 0;
 
-    self.weapon = options.weapon;
+        this.vs = 0;
+        this.hs = 0;
+        this.jmpcd = 0;
 
-    self.getLastOffSet = function () {
-        return self.lastOffSet;
+
+        this.leftDown = false;
+        this.rightDown = false;
+        this.jumpDown = false;
+
+        this.lastOffSet = 0;
+        this.map = options.map;
+
     }
 
-    self.getCenter = function () {
-        return self.center;
-    };
 
-    self.getOffSet = function () {
-        return self.offSet;
+
+    getLastOffSet() {
+        return this.lastOffSet;
     }
 
-    self.setVSpeed = function (s) {
-        self.vs = s;
-    };
+    getCenter() {
+        return this.center;
+    }
 
-    self.setX = function (x) {
-        self.posX = x;
-    };
+    getOffSet() {
+        return this.offSet;
+    }
 
-    self.getX = function () {
-        return self.posX;
-    };
+    setVSpeed(s) {
+        this.vs = s;
+    }
 
-    self.setY = function (y) {
-        self.posY = y;
-    };
-    self.getY = function () {
-        return self.posY + self.getHeigth();
-    };
+    getVSpeed() {
+        return this.vs;
+    }
 
-    self.getVSpeed = function () {
-        return self.vs;
-    };
+    setHSpeed(s) {
+        this.hs = s;
 
-    self.setHSpeed = function (s) {
-        self.hs = s;
+    }
 
-    };
-
-    self.getHSpeed = function () {
-        return self.hs;
-    };
-
-    self.spawn = function (X, Y) {
-        self.posX = X;
-        self.posY = Y;
-
-        self.sprite.draw(X, Y);
-    };
-
-    self.getHeigth = function () {
-        return self.heigth;
-    };
-
-    self.getJump = function () {
-        return self.jump;
-    };
-    self.getSpeed = function () {
-        return self.speed;
-    };
+    getHSpeed() {
+        return this.hs;
+    }
 
 
-    self.doMove = function (type, isDown, onTick) {
+
+    getHeigth() {
+        return this.heigth;
+    }
+
+    getJump() {
+        return this.jump;
+    }
+
+
+    doCollision() {
+        var x = this.getX() + this.getCenter();
+        if (this.getLastOffSet() > 0) {
+            x -= this.getCenter();
+        } else {
+            x += this.getCenter();
+        }
+        var y = this.getY() - 10;
+
+        //checking for when going right
+        for (var dX = 0; dX < this.getHSpeed(); dX++) {
+            if (this.map.getBlock(x + dX, y).Id !== 0) {
+                this.setHSpeed(dX);
+                return;
+            }
+        }
+
+        //checking for when going left
+        for (var dX = 0; dX > this.getHSpeed(); dX--) {
+            if (this.map.getBlock(x + dX, y).Id !== 0) {
+                this.setHSpeed(dX);
+                return;
+            }
+        }
+
+    }
+
+    lowerCD() {
+        if (this.jmpcd > 0) {
+            this.jmpcd -= 1;
+        }
+    }
+}
+
+
+class Player extends EntityCreature {
+    constructor(options) {
+        super(options);
+    }
+
+
+
+    doMove(type, isDown, onTick) {
         switch (type) {
             case "right":
                 this.rightDown = isDown;
@@ -111,7 +173,7 @@
                 this.setHSpeed(0);
                 break;
             case "fire":
-                this.weapon.fireWeapon(this);
+                this.weapon.fireWeapon(this, self.map);
                 break;
         }
         if (this.rightDown) {
@@ -127,65 +189,31 @@
         }
 
         if (this.jumpDown) {
+
             var x = this.getX() + this.getCenter();
 
-            if (getBlock(x + this.getLastOffSet(), this.getY()).Id !== 0) {
+            if (this.map.getBlock(x + this.getLastOffSet(), this.getY()).Id !== 0) {
                 x += this.getLastOffSet();
             } else {
                 x -= this.getLastOffSet();
             }
 
-            if (getBlock(x, this.getY() + 1).Id !== 0 && self.jmpcd == 0) {
-               
+            if (this.map.getBlock(x, this.getY() + 1).Id !== 0 && this.jmpcd === 0) {
                 if (onTick) {
                     self.jmpcd = 10;
                 }
-
                 this.setVSpeed(-(this.jump * this.gravity));
             }
         }
 
+
         if (onTick) {
+
             this.setX(this.getX() + this.getHSpeed());
             this.setY(this.getY() - this.getHeigth() + this.getVSpeed());
             this.weapon.lowerCD();
             this.spawn(this.getX(), this.getY() - this.getHeigth());
         }
-    };
+    }
 
-    self.doCollision = function () {
-        var x = this.getX() + this.getCenter();
-        if (this.getLastOffSet() > 0) {
-            x -= this.getCenter();
-        } else {
-            x += this.getCenter();
-        }
-        var y = this.getY() - 10;
-
-        //checking for when going right
-        for (dX = 0; dX < this.getHSpeed(); dX++) {
-            if (getBlock(x + dX, y).Id != 0) {
-                this.setHSpeed(dX);
-                return;
-            }
-        }
-
-        //checking for when going left
-        for (dX = 0; dX > this.getHSpeed(); dX--) {
-            if (getBlock(x + dX, y).Id != 0) {
-                this.setHSpeed(dX);
-                return;
-            }
-        }
-
-    };
-
-    self.lowerCD = function () {
-        if (self.jmpcd > 0) {
-            self.jmpcd -= 1;
-        }
-    };
-
-
-    return self;
-};
+}
