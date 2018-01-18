@@ -8,6 +8,17 @@ SPRITE = function (options) {
     this.image = options.image;
     this.name = options.name;
     this.id = options.id;
+    this.center = options.center;
+    this.offSet = options.offSet;
+
+      
+    this.getCenter = function () {
+        return this.center;
+    };
+
+    this.getOffSet = function () {
+        return this.offSet;
+    };
 };
 
 
@@ -84,6 +95,8 @@ function loadSprites(json, container) {
         options.heigth = tile.heigth;
         options.image.startX = tile.startX;
         options.image.startY = tile.startY;
+        options.center = tile.centerPX;
+        options.offSet = tile.offSetPX;
         newSprite(options);
     }
 }

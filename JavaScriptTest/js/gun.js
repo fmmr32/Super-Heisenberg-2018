@@ -26,9 +26,11 @@ class Weapon {
                 options.x = bullet.x;
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
+                options.map = map;
+
                 var temp = new Bullet(bullet.angle, bullet.alive, options);
-                temp.x = character.getX() + character.getCenter() + character.getOffSet() * 2;
-                temp.y = character.getY() - character.getHeigth() / 2;
+                temp.setX(character.getX() + character.getSprite().getCenter() + character.getSprite().getOffSet() * 2);
+                temp.setY(character.getY() - character.getHeigth() / 2);
                 this.tick = this.cooldown;
                 map.entities.push(temp);
             }
@@ -73,9 +75,23 @@ class Shotgun extends Weapon {
         options.speed = 5;
         options.sprite = getSprite(999);
 
-        this.bullets.push(new Bullet(-15, 60, options));
-        this.bullets.push(new Bullet(0,  60, options));
-        this.bullets.push(new Bullet(15, 60, options));
+        // this.bullets.push(new Bullet(15, 60, options));
+        //this.bullets.push(new Bullet(0, 60, options));
+        this.bullets.push(new Bullet(195, 60, options));
+
+        //for (var angle = 0; angle <= 90; angle+=10) {
+
+        //    this.bullets.push(new Bullet(angle, 60, options));
+        //    this.bullets.push(new Bullet(-angle-180, 60, options));
+        //}
+        //for (var angle = 180; angle <= 270; angle += 10) {
+
+        //    this.bullets.push(new Bullet(angle, 60, options));
+        //    this.bullets.push(new Bullet(-angle-180, 60, options));
+        //}
+
+
+
     }
 
 
@@ -84,7 +100,7 @@ class Shotgun extends Weapon {
 
 
 
-class Bullet extends Entity{
+class Bullet extends EntityMovable {
     constructor(angle, alive, options) {
         super(options);
         this.angle = angle;
@@ -92,24 +108,69 @@ class Bullet extends Entity{
     }
 
 
-    bulletTravel() {
+    bulletTravel(onTick) {
         if (this.alive > 0) {
             this.alive--;
             //delete drawing and redraw at new x
-            var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
 
-            if (dy < 0) {
+            var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
+            // console.log(dy);
+            dy = -dy;
+
+            var dx;
+            if (this.angle >= 0) {
+                dx = this.speed - Math.abs(dy);
+            } else {
+                dx = -this.speed + Math.abs(dy);
+            }
+            if (dx >= 0) {
+                dx = Math.floor(dx);
+            } else {
+                dx = Math.ceil(dx);
+            }
+            if (dy >= 0) {
                 dy = Math.floor(dy);
             } else {
                 dy = Math.ceil(dy);
             }
-            dy = -dy;
 
-            var dx = this.speed - Math.abs(dy);
-            this.x += dx;
-            this.y += dy;
+            this.setHSpeed(dx);
 
-            this.spawn(this.x, this.y);
+            this.setVSpeed(dy);
+            if (this.angle > 0) {
+                this.lastOffSet = this.getSprite().offSet;
+            } else {
+                this.lastOffSet = -this.getSprite().offSet;
+            }
+
+            var collisionCode = this.doCollision();
+
+            if (collisionCode !== 0) {
+
+                var block = this.map.getBlock(this.getX() + this.getHSpeed() + this.getLastOffSet(), this.getY() - this.getSprite().heigth + this.getVSpeed())
+                if (block.meta !== null) {
+                    if (block.meta.ricochet) {
+                        switch (collisionCode) {
+                            case 1:
+                                this.setVSpeed(-this.getVSpeed());
+                                this.angle -= 180;
+                                break;
+                            case 2:
+                                this.angle = -this.angle - 180;
+                                break;
+                            case 3:
+                                this.setVSpeed(-this.getVSpeed());
+                                this.angle += 180;
+                                break;
+                        }
+                    }
+                }
+            }
+
+
+            this.doMove(onTick);
+
+
             return false;
         } else {
             //despawn

@@ -10,6 +10,7 @@ class MAP {
         this.entities = [];
         this.gravity = 0;
         this.loadBlocks(container, file);
+        console.log(this.tiles);
     }
 
 
@@ -30,6 +31,8 @@ class MAP {
         options.image.src = any.source;
         options.image.startX = any.startX;
         options.image.startY = any.startY;
+        options.center = any.centerPX;
+        options.offSet = any.offSetPX;
         options.context = this.container;
 
         var options2 = {};
@@ -39,10 +42,10 @@ class MAP {
         options2.speed = any.speed;
         options2.heigth = options2.sprite.heigth;
         options2.gravity = this.gravity;
-        options2.center = any.centerPX;
-        options2.offSet = any.offSetPX;
-        options2.weapon = loadWeapon(any.weapon);
+
+       
         options2.map = this;
+        options2.weapon = loadWeapon(any.weapon);
         this.characters.push(new Player(options2));
         this.characters[0].spawn(150, 10);
 
@@ -58,6 +61,10 @@ class MAP {
             block.meta = tile.meta;
             block.X = tile.blockX;
             block.Y = tile.blockY;
+            block.meta = {};
+            for (var m of tile.meta) {
+                block.meta = m;
+            }
             for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
                 this.tiles[x] = [];
                 for (var y = tile.blockY; y < tile.blockY + getSprite(block.Id).heigth; y++) {
@@ -76,7 +83,7 @@ class MAP {
 
     doGravity() {
         for (var char of this.characters) {
-            var x = char.getX() + char.getCenter();
+            var x = char.getX() + char.getSprite().getCenter();
             var y = char.getY();
 
 
@@ -126,7 +133,7 @@ class MAP {
 
         for (var entity of this.entities) {
             if (entity instanceof Bullet) {
-                if (entity.bulletTravel()) {
+                if (entity.bulletTravel(true)) {
                     this.entities.splice(this.entities.indexOf(entity), 1);
                 }
             }

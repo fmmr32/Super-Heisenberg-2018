@@ -6,6 +6,8 @@
     "startX": 7,
     "startY": 9,
     "width": 12,
-    "heigth": 14
+    "heigth": 14,
+    "centerPX": 6,
+    "offSetPX": 6
   }
 ]
