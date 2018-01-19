@@ -66,7 +66,9 @@ class MAP {
                 block.meta = m;
             }
             for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
-                this.tiles[x] = [];
+                if (this.tiles[x] === undefined) {
+                    this.tiles[x] = [];
+                }
                 for (var y = tile.blockY; y < tile.blockY + getSprite(block.Id).heigth; y++) {
                     this.tiles[x][y] = block;
                 }

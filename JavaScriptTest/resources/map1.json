@@ -15,44 +15,67 @@
       "blockId": 1,
       "blockX": 132,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
+      "meta": [ { "ricochet": true } ]
     },
     {
       "blockId": 1,
       "blockX": 164,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
+      "meta": [ { "ricochet": true } ]
     },
     {
       "blockId": 1,
       "blockX": 196,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
+      "meta": [ { "ricochet": true } ]
     },
     {
       "blockId": 1,
       "blockX": 228,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
+      "meta": [ { "ricochet": true } ]
     },
     {
       "blockId": 1,
       "blockX": 260,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
-    }
-    ,
+      "meta": [ { "ricochet": true } ]
+    },
     {
       "blockId": 1,
       "blockX": 292,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
+      "meta": [ { "ricochet": true } ]
     },
     {
       "blockId": 1,
       "blockX": 324,
       "blockY": 300,
-     "meta":[{"ricochet":true}]
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 324,
+      "blockY": 291,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 324,
+      "blockY": 282,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 324,
+      "blockY": 273,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 324,
+      "blockY": 264,
+      "meta": [ { "ricochet": true } ]
     }
   ]
 }

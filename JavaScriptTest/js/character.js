@@ -76,71 +76,102 @@ class EntityMovable extends Entity {
     getLastOffSet() {
         return this.lastOffSet;
     }
-    doCollision() {
+    doCollision(setspeed) {
         var x = this.getX() + this.getSprite().getCenter();
-        if (this.getLastOffSet() > 0) {
+        if (this.getHSpeed() >= 0) {
             x += this.getSprite().getCenter();
         } else {
             x -= this.getSprite().getCenter();
         }
-        var y = this.getY() - this.getSprite().heigth;
+        var y = this.getY() - 1;
+
         //checking for when going right
-        for (var dX = 0; dX < this.getHSpeed(); dX++) {
+        for (var dX = 0; dX <= this.getHSpeed(); dX++) {
             //checking for hitting the ground
-            for (var dY = 0; dY < this.getVSpeed(); dY++) {
-                if (this.map.getBlock(x + dX, y + dY).Id !== 0) {
-                    //hits flood
-                    if (dY == 0) {
-                        return 1;
+            if (this.map.getBlock(x + dX, y).Id !== 0) {
+                if (setspeed) {
+                    this.setHSpeed(dX);
+                }
+
+                var temp = {};
+                temp.modDX = dX;
+                var block = this.map.getBlock(x, y);
+                //hits flood
+                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                    temp.code = 1;
+                    return temp;
                     //hits wall
-                    } else {
-                        return 2;
-                    }
+                } else {
+                    temp.code = 2;
+                    return temp;
                 }
             }
             //checking for hitting the ceiling
-            for (var dY = 0; dY > this.getVSpeed(); dY--) {
-                if (this.map.getBlock(x + dX, y + dY).Id !== 0) {
-                    //hits ceiling
-                    if (dY == 0) {
-                        return 3;
+            if (this.map.getBlock(x + dX, y).Id !== 0) {
+                if (setspeed) {
+                    this.setHSpeed(dX);
+                }
+
+                var temp = {};
+                temp.modDX = dX;
+                var block = this.map.getBlock(x, y);
+                //hits flood
+                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                    temp.code = 3;
+                    return temp;
                     //hits wall
-                    } else {
-                        return 2;
-                    }
+                } else {
+                    temp.code = 2;
+                    return temp;
                 }
             }
         }
 
         //checking for when going left
-        for (var dX = 0; dX > this.getHSpeed(); dX--) {
+        for (var dX = 0; dX >= this.getHSpeed(); dX--) {
             //check for hitting the floor
-            for (var dY = 0; dY < this.getVSpeed(); dY++) {
-                if (this.map.getBlock(x + dX, y + dY).Id !== 0) {
-                    //hits floor
-                    if (dY == 0) {
-                        return 1;
+            if (this.map.getBlock(x + dX, y).Id !== 0) {
+                if (setspeed) {
+                    this.setHSpeed(dX);
+                }
+
+                var temp = {};
+                temp.modDX = dX;
+
+                var block = this.map.getBlock(x, y);
+                //hits flood
+                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                    temp.code = 1;
+                    return temp;
                     //hits wall
-                    } else {
-                        return 2;
-                    }
+                } else {
+                    temp.code = 2;
+                    return temp;
                 }
             }
             //check for hitting the ceiling
-            for (var dY = 0; dY > this.getVSpeed(); dY--) {
-                if (this.map.getBlock(x + dX, y + dY).Id !== 0) {
-                    //hits ceiling
-                    if (dY == 0) {
-                        return 3;
+            if (this.map.getBlock(x + dX, y).Id !== 0) {
+                if (setspeed) {
+                    this.setHSpeed(dX);
+                }
+
+                var temp = {};
+                temp.modDX = dX;
+
+                var block = this.map.getBlock(x, y);
+                //hits flood
+                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                    temp.code = 3;
+                    return temp;
                     //hits wall
-                    } else {
-                        return 2;
-                    }
+                } else {
+                    temp.code = 2;
+                    return temp;
                 }
             }
         }
         return 0;
-       
+
     }
 
     doMove(onTick) {
@@ -148,7 +179,7 @@ class EntityMovable extends Entity {
             this.setX(this.getX() + this.getHSpeed());
             this.setY(this.getY() - this.getSprite().heigth + this.getVSpeed());
             this.spawn(this.getX(), this.getY() - this.getSprite().heigth);
-           // canvas.fg.getContext("2d").fillText(this.angle, this.getX(), this.getY());
+            // canvas.fg.getContext("2d").fillText(this.angle, this.getX(), this.getY());
         }
     }
 
@@ -178,7 +209,7 @@ class EntityCreature extends EntityMovable {
     }
 
 
-   
+
 
     lowerCD() {
         if (this.jmpcd > 0) {
@@ -198,7 +229,7 @@ class Player extends EntityCreature {
     }
 
 
-    
+
     doMove(type, isDown, onTick) {
         switch (type) {
             case "right":
@@ -223,11 +254,11 @@ class Player extends EntityCreature {
         }
         if (this.rightDown) {
             this.setHSpeed(this.getSpeed());
-            this.doCollision();
+            this.doCollision(true);
             this.lastOffSet = -this.getSprite().getOffSet();
         } else if (this.leftDown) {
             this.setHSpeed(-this.getSpeed());
-            this.doCollision();
+            this.doCollision(true);
             this.lastOffSet = this.getSprite().getOffSet();
         } else {
             this.setHSpeed(0);
@@ -243,7 +274,8 @@ class Player extends EntityCreature {
                 x -= this.getLastOffSet();
             }
 
-            if (this.map.getBlock(x, this.getY() + 1).Id !== 0 && this.jmpcd === 0) {
+
+            if (this.map.getBlock(x, this.getY()).Id !== 0 && this.jmpcd === 0) {
                 if (onTick) {
                     self.jmpcd = 10;
                 }

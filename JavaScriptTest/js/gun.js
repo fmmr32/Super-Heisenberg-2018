@@ -62,7 +62,7 @@ class Pistol extends Weapon {
         options.speed = 5;
         options.sprite = getSprite(999);
 
-        this.bullets.push(new Bullet(0, 60, options));
+        this.bullets.push(new Bullet(0, 120, options));
     }
 }
 
@@ -75,20 +75,10 @@ class Shotgun extends Weapon {
         options.speed = 5;
         options.sprite = getSprite(999);
 
-        // this.bullets.push(new Bullet(15, 60, options));
-        //this.bullets.push(new Bullet(0, 60, options));
-        this.bullets.push(new Bullet(195, 60, options));
+        this.bullets.push(new Bullet(15, 60, options));
+        this.bullets.push(new Bullet(0, 60, options));
+        this.bullets.push(new Bullet(195, 70, options));
 
-        //for (var angle = 0; angle <= 90; angle+=10) {
-
-        //    this.bullets.push(new Bullet(angle, 60, options));
-        //    this.bullets.push(new Bullet(-angle-180, 60, options));
-        //}
-        //for (var angle = 180; angle <= 270; angle += 10) {
-
-        //    this.bullets.push(new Bullet(angle, 60, options));
-        //    this.bullets.push(new Bullet(-angle-180, 60, options));
-        //}
 
 
 
@@ -137,29 +127,43 @@ class Bullet extends EntityMovable {
             this.setHSpeed(dx);
 
             this.setVSpeed(dy);
-            if (this.angle > 0) {
+
+          var x = this.getX();
+
+            if (this.angle >= 0) {
                 this.lastOffSet = this.getSprite().offSet;
+                x += this.getSprite().getCenter();
             } else {
                 this.lastOffSet = -this.getSprite().offSet;
+                x -= this.getSprite().getCenter();
             }
 
-            var collisionCode = this.doCollision();
+            var collision = this.doCollision(false);
 
-            if (collisionCode !== 0) {
+            x += collision.modDX;
+            if (collision.code !== 0) {
+                if (collision.code === 3) {
+                    this.getY() - this.getHeigth();
+                }
 
-                var block = this.map.getBlock(this.getX() + this.getHSpeed() + this.getLastOffSet(), this.getY() - this.getSprite().heigth + this.getVSpeed())
+                var block = this.map.getBlock(x, this.getY());
                 if (block.meta !== null) {
                     if (block.meta.ricochet) {
-                        switch (collisionCode) {
+                        if (this.angle == 0) {
+                            return true;
+                        }
+                        console.log(collision.code);
+                        switch (collision.code) {
                             case 1:
+
                                 this.setVSpeed(-this.getVSpeed());
                                 this.angle -= 180;
+
                                 break;
                             case 2:
                                 this.angle = -this.angle - 180;
                                 break;
                             case 3:
-                                this.setVSpeed(-this.getVSpeed());
                                 this.angle += 180;
                                 break;
                         }
