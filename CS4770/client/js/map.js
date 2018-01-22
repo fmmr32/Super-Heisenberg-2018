@@ -166,12 +166,12 @@ class MAP {
 
 }
 
-function loadMap(name) {
-    var m;
+function loadMap(name, callback) {
     loadJSONFile(function (response) {
-        m = new MAP(canvas, response);
-    }, "./resources/" + name + ".json");
-    return m;
+        map = new MAP(canvas, response);
+        getMap(map);
+        callback(map);
+    }, "/client/resources/" + name + ".json");
 }
 
 
