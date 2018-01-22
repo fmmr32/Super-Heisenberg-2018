@@ -199,7 +199,6 @@ class EntityCreature extends EntityMovable {
 
 
 
-        this.jmpcd = 0;
     }
 
 
@@ -209,13 +208,6 @@ class EntityCreature extends EntityMovable {
     }
 
 
-
-
-    lowerCD() {
-        if (this.jmpcd > 0) {
-            this.jmpcd -= 1;
-        }
-    }
 }
 
 
@@ -226,6 +218,9 @@ class Player extends EntityCreature {
         this.leftDown = false;
         this.rightDown = false;
         this.jumpDown = false;
+        this.jumping = false;
+        this.jumpCounter = 0;
+        this.startY = 0;
     }
 
 
@@ -275,11 +270,19 @@ class Player extends EntityCreature {
             }
 
 
-            if (this.map.getBlock(x, this.getY()).Id !== 0 && this.jmpcd === 0) {
+            if (this.map.getBlock(x, this.getY()).Id !== 0) {
+                this.jumpCounter =  -this.jump;
+                console.log(this.jumpCounter);
+                this.startY = this.getY() - this.getHeigth();
+                this.jumping = true;
+
+
+
                 if (onTick) {
-                    self.jmpcd = 10;
+                    var y = -(Math.pow(this.jumpCounter, 2));
+                    this.setVSpeed(y);
+                    this.jumpCounter++;
                 }
-                this.setVSpeed(-(this.jump * this.gravity));
             }
         }
 
@@ -287,6 +290,15 @@ class Player extends EntityCreature {
         if (onTick) {
 
             this.setX(this.getX() + this.getHSpeed());
+            if (this.jumping) {
+                var y = -(Math.pow(this.jumpCounter, 2));
+                this.setVSpeed(y);
+                this.jumpCounter++;
+                if (this.jumpCounter == 0) {
+                    this.jumping = false;
+                }
+            }
+            console.log(this.getVSpeed());
             this.setY(this.getY() - this.getHeigth() + this.getVSpeed());
             this.weapon.lowerCD();
             this.spawn(this.getX(), this.getY() - this.getHeigth());

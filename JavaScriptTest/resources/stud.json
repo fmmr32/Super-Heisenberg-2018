@@ -10,8 +10,8 @@
     "name": "stud",
     "weapon": "shotgun",
     "hp": 100,
-    "speed": 3,
-    "jump": 8,
+    "speed": 4,
+    "jump": 7,
     "source": "../resources/stud.png"
   }
 ]

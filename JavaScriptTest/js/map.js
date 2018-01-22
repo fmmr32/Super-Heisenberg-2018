@@ -118,7 +118,6 @@ class MAP {
                     }
                 }
             } else { //character is on the ground
-                char.lowerCD();
                 char.setVSpeed(0);
             }
         }

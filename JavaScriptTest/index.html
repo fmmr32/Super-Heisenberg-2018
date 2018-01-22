@@ -42,7 +42,7 @@
 
         var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-        xobj.open('GET', file, false); 
+        xobj.open('GET', file, false);
         xobj.onreadystatechange = function () {
             if (xobj.readyState == 4 && xobj.status == "200") {
                 callback(xobj.responseText);
@@ -67,11 +67,13 @@
         , "./resources/stud.json");
 
     var interval = setInterval(game, 1000 / 60);
+    var tick = 0;
     var running = false;
     function game() {
         running = true;
         canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
         map.doEntityTick();
+      
     }
 
 
