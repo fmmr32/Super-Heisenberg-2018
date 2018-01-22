@@ -31,8 +31,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="client\js\character.js" />
+    <Compile Include="client\js\config.js" />
+    <Compile Include="client\js\editor.js" />
+    <Compile Include="client\js\gun.js" />
+    <Compile Include="client\js\map.js" />
+    <Compile Include="client\js\sprite.js" />
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
+    <Content Include="client\index.html" />
+    <Content Include="client\js\conf.txt" />
+    <Content Include="client\resources\character.json" />
+    <Content Include="client\resources\character.png" />
+    <Content Include="client\resources\entities.json" />
+    <Content Include="client\resources\entities.png" />
+    <Content Include="client\resources\map1.json" />
+    <Content Include="client\resources\stud.json" />
+    <Content Include="client\resources\stud.png" />
+    <Content Include="client\resources\temp\stone.png" />
+    <Content Include="client\resources\temp\tiles.png" />
+    <Content Include="client\resources\tiles.json" />
+    <Content Include="client\resources\tiles.png" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
@@ -41,12 +60,16 @@
     <Content Include="views\error.pug" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="client\js\" />
+    <Folder Include="client\resources\" />
+    <Folder Include="client\resources\temp\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
     <Folder Include="views\" />
+    <Folder Include="client\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

@@ -1,0 +1,128 @@
+﻿<div id="container"></div>
+<script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript" src="js/character.js"></script>
+<script type="text/javascript" src="js/gun.js"></script>
+<script type="text/javascript" src="js/map.js"></script>
+<script type="text/javascript" src="js/sprite.js"></script>
+<script>
+    var canvas = {};
+    var container = document.getElementById("container");
+
+
+    canvas.bg = create('canvas', 'bg', 0, 0, 500, 500);
+    canvas.fg = create('canvas', 'fg', 0, 0, 500, 500);
+    function create(type, id, left, top, width, height) {
+        var elem = document.createElement(type);
+        elem.id = id;
+        elem.style.position = 'absolute';
+        if (left != 0) { elem.style.left = left; }
+        if (top != 0) { elem.style.top = top; }
+        if (height != 0) {
+            if (type === 'canvas') {
+                elem.height = height;
+            } else {
+                elem.style.height = height;
+            }
+        }
+        if (width != 0) {
+            if (type === 'canvas') {
+                elem.width = width;
+            } else {
+                elem.style.width = width;
+            }
+        }
+        container.appendChild(elem);
+        return elem;
+    }
+
+    var neededFiles = ["tiles.json", "entities.json"];
+
+
+    var socket = io();
+    function loadJSONFile(callback, file) {
+        console.log("before socket.emit " + file);
+        socket.emit('loadJSON', {
+            fileName: file
+        });
+
+        var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+        xobj.open('GET', file, false); 
+        xobj.onreadystatechange = function () {
+            if (xobj.readyState == 4 && xobj.status == "200") {
+                callback(xobj.responseText);
+            }
+        };
+        xobj.send(null);
+    }
+
+    for (var x of neededFiles) {
+
+        loadJSONFile(function (response) {
+            loadSprites(response, canvas);
+        }, "/client/resources/" + x);
+    }
+
+    var map;
+
+    function getMap(newMap) {
+        map = newMap;
+    };
+
+    //loads in the test "map" expand ths into a dynamic loading system
+    loadMap("map1", function (m) {
+        loadJSONFile(function (response) {
+            m.loadCharacter(response);
+        }
+            , "/client/resources/stud.json");
+    });
+
+    
+    var interval = setInterval(game, 1000 / 60);
+    var running = false;
+    function game(m) {
+        running = true;
+        canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
+        map.doEntityTick();
+    }
+
+
+    var conf = CONFIG();
+    document.onkeydown = function (e) {
+        e = e || window.event;
+        var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+        if (charCode && running) {
+            map.getPlayer().doMove(conf[charCode], true);
+        }
+    };
+
+    document.onkeyup = function (e) {
+        e = e || window.event
+        var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+        if (charCode && running) {
+            map.getPlayer().doMove(conf[charCode], false);
+        }
+    };
+
+
+    //only needed for some debugging ..
+    document.onmousedown = function (e) {
+        e = e || window.event;
+        var poss = getMousePos(canvas.bg, e);
+        console.log(poss.x + " " + poss.y);
+    }
+
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+
+
+</script>
+<body>
+
+</body>
