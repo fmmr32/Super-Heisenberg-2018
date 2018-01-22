@@ -10,7 +10,6 @@ class MAP {
         this.entities = [];
         this.gravity = 0;
         this.loadBlocks(container, file);
-        console.log(this.tiles);
     }
 
 

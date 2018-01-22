@@ -97,7 +97,7 @@ class EntityMovable extends Entity {
                 temp.modDX = dX;
                 var block = this.map.getBlock(x, y);
                 //hits flood
-                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                 if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
                     temp.code = 1;
                     return temp;
                     //hits wall
@@ -116,7 +116,7 @@ class EntityMovable extends Entity {
                 temp.modDX = dX;
                 var block = this.map.getBlock(x, y);
                 //hits flood
-                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                 if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
                     temp.code = 3;
                     return temp;
                     //hits wall
@@ -140,7 +140,7 @@ class EntityMovable extends Entity {
 
                 var block = this.map.getBlock(x, y);
                 //hits flood
-                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
                     temp.code = 1;
                     return temp;
                     //hits wall
@@ -160,7 +160,7 @@ class EntityMovable extends Entity {
 
                 var block = this.map.getBlock(x, y);
                 //hits flood
-                ; if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
+                 if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
                     temp.code = 3;
                     return temp;
                     //hits wall
@@ -233,7 +233,7 @@ class Player extends EntityCreature {
             case "left":
                 this.leftDown = isDown;
                 break;
-            case "up":
+            case "jump":
                 if (isDown && this.jumpDown) {
                     return;
                 }
@@ -279,7 +279,7 @@ class Player extends EntityCreature {
 
 
                 if (onTick) {
-                    var y = -(Math.pow(this.jumpCounter, 2));
+                    var y = -Math.pow(this.jumpCounter, 2);
                     this.setVSpeed(y);
                     this.jumpCounter++;
                 }
@@ -291,7 +291,7 @@ class Player extends EntityCreature {
 
             this.setX(this.getX() + this.getHSpeed());
             if (this.jumping) {
-                var y = -(Math.pow(this.jumpCounter, 2));
+                var y = -Math.pow(this.jumpCounter, 2);
                 this.setVSpeed(y);
                 this.jumpCounter++;
                 if (this.jumpCounter == 0) {

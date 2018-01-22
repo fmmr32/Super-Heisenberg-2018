@@ -1,10 +1,11 @@
-﻿CONFIG = function () {
+﻿CONFIG = function (json) {
+    json = JSON.parse(json);
     var button = [];
-
-    button[65] = "left";
-    button[68] = "right";
-    button[32] = "up";
-    button[70] = "fire";
+    button[json.left] = "left";
+    button[json.right] = "right";
+    button[json.up] = "up";
+    button[json.jump] = "jump";
+    button[json.fire] = "fire";
 
     return button;
 

@@ -36,33 +36,44 @@
         return elem;
     }
 
-    var neededFiles = ["tiles.json", "entities.json"];
+    var neededFiles = ["tiles.json", "entities.json", "config.json"];
 
 
     var socket = io();
+    var loaded = false;
     function loadJSONFile(callback, file) {
-        console.log("before socket.emit " + file);
         socket.emit('loadJSON', {
             fileName: file
         });
 
-        var xobj = new XMLHttpRequest();
-        xobj.overrideMimeType("application/json");
-        xobj.open('GET', file, false); 
-        xobj.onreadystatechange = function () {
-            if (xobj.readyState == 4 && xobj.status == "200") {
-                callback(xobj.responseText);
+        socket.on(file, function (data) {
+            if (file.includes("map")) {
+
+                loaded = true;
             }
-        };
-        xobj.send(null);
+            callback(data.toString());
+        });
+
     }
+    var conf;
 
     for (var x of neededFiles) {
-
-        loadJSONFile(function (response) {
-            loadSprites(response, canvas);
-        }, "/client/resources/" + x);
+        var resource = "/client/resources/";
+        if (x == "config.json") {
+            resource = "/client/js/";
+            conf =
+                loadJSONFile(function (response) {
+                conf = CONFIG(response);
+                }, resource + x);
+        } else {
+            loadJSONFile(function (response) {
+                loadSprites(response, canvas);
+            }, resource + x);
+        }
     }
+    
+
+
 
     var map;
 
@@ -78,17 +89,18 @@
             , "/client/resources/stud.json");
     });
 
-    
+
     var interval = setInterval(game, 1000 / 60);
     var running = false;
-    function game(m) {
-        running = true;
-        canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
-        map.doEntityTick();
+    function game() {
+        if (loaded) {
+            running = true;
+            canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
+            map.doEntityTick();
+        }
     }
 
 
-    var conf = CONFIG();
     document.onkeydown = function (e) {
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
