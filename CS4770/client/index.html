@@ -12,6 +12,8 @@
 
     canvas.bg = create('canvas', 'bg', 0, 0, 500, 500);
     canvas.fg = create('canvas', 'fg', 0, 0, 500, 500);
+
+
     function create(type, id, left, top, width, height) {
         var elem = document.createElement(type);
         elem.id = id;
@@ -92,6 +94,7 @@
 
     var interval = setInterval(game, 1000 / 60);
     var running = false;
+    var tick = 0;
     function game() {
         if (loaded) {
             running = true;

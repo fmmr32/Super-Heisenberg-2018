@@ -11,7 +11,7 @@
     "weapon": "shotgun",
     "hp": 100,
     "speed": 4,
-    "jump": 7,
+    "jump": 5,
     "source": "../resources/stud.png"
   }
 ]

@@ -1,6 +1,6 @@
 ﻿class Entity {
     constructor(options) {
-
+        this.map = options.map;
         this.posX = options.x;
         this.posY = options.y;
         this.sprite = options.sprite;
@@ -49,7 +49,8 @@ class EntityMovable extends Entity {
         this.vs = 0;
         this.hs = 0;
         this.lastOffSet = 0;
-        this.map = options.map;
+        this.elapsedTime = 1;
+        this.onFloor = false;
     }
 
     getSpeed() {
@@ -76,102 +77,66 @@ class EntityMovable extends Entity {
     getLastOffSet() {
         return this.lastOffSet;
     }
-    doCollision(setspeed) {
-        var x = this.getX() + this.getSprite().getCenter();
-        if (this.getHSpeed() >= 0) {
-            x += this.getSprite().getCenter();
-        } else {
-            x -= this.getSprite().getCenter();
+    doCollision() {
+        var creaX = this.getX() + this.getSprite().getCenter();
+        if (this.getHSpeed() > 0) {
+            creaX += this.getSprite().getCenter();
+        } else if (this.getHSpeed() < 0){
+            creaX -= this.getSprite().getCenter();
         }
-        var y = this.getY() - 1;
+        var footY = this.getY()-1;
+        var headY = this.getY() - this.getHeigth();
 
-        //checking for when going right
-        for (var dX = 0; dX <= this.getHSpeed(); dX++) {
-            //checking for hitting the ground
-            if (this.map.getBlock(x + dX, y).Id !== 0) {
-                if (setspeed) {
-                    this.setHSpeed(dX);
-                }
+        var fromX = Math.min(creaX, creaX + this.getHSpeed());
+        var fromFY = Math.min(footY, footY + this.getVSpeed());
+        var fromHY = Math.min(headY, headY + this.getVSpeed());
 
-                var temp = {};
-                temp.modDX = dX;
-                var block = this.map.getBlock(x, y);
-                //hits flood
-                 if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
-                    temp.code = 1;
-                    return temp;
-                    //hits wall
-                } else {
-                    temp.code = 2;
-                    return temp;
-                }
-            }
-            //checking for hitting the ceiling
-            if (this.map.getBlock(x + dX, y).Id !== 0) {
-                if (setspeed) {
-                    this.setHSpeed(dX);
-                }
+        var toX = Math.max(creaX, creaX + this.getHSpeed());
+        var toFY = Math.max(footY, footY + this.getVSpeed());
+        var toHY = Math.max(headY, headY + this.getVSpeed());
 
-                var temp = {};
-                temp.modDX = dX;
-                var block = this.map.getBlock(x, y);
-                //hits flood
-                 if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
-                    temp.code = 3;
-                    return temp;
-                    //hits wall
-                } else {
-                    temp.code = 2;
-                    return temp;
+
+        for (var x = fromX; x <= toX; x++) {
+            for (var y = fromFY; y <= toFY; y++) {
+                if (x < 0 || x >= this.map.width || this.map.getBlock(x, y).Id != 0) {
+                    if (this.getHSpeed() > 0) {
+                        x -= this.getSprite().getCenter()*2;
+                    } else if (this.getHSpeed() == 0) {
+                        x -= this.getSprite().getCenter();
+                    } 
+                    this.setX(x);
+                    this.setY(y - this.getHeigth());
+                    this.setHSpeed(0);
+                    this.setVSpeed(0);
+                    return;
                 }
             }
         }
 
-        //checking for when going left
-        for (var dX = 0; dX >= this.getHSpeed(); dX--) {
-            //check for hitting the floor
-            if (this.map.getBlock(x + dX, y).Id !== 0) {
-                if (setspeed) {
-                    this.setHSpeed(dX);
-                }
+    }
 
-                var temp = {};
-                temp.modDX = dX;
-
-                var block = this.map.getBlock(x, y);
-                //hits flood
-                if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
-                    temp.code = 1;
-                    return temp;
-                    //hits wall
+    doGravity() {
+        if (tick % 40 == 0) {
+            var x = this.getX() + this.getSprite().getCenter();
+            if (this.map.getBlock(x, this.getY()).Id == 0) {
+                if (this.map.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
+                    x += this.getLastOffSet();
                 } else {
-                    temp.code = 2;
-                    return temp;
+                    x -= this.getLastOffSet();
                 }
             }
-            //check for hitting the ceiling
-            if (this.map.getBlock(x + dX, y).Id !== 0) {
-                if (setspeed) {
-                    this.setHSpeed(dX);
-                }
 
-                var temp = {};
-                temp.modDX = dX;
 
-                var block = this.map.getBlock(x, y);
-                //hits flood
-                 if (this.map.getBlock(x + dX, this.getSprite(block.Id).heigth + y).Id === 0) {
-                    temp.code = 3;
-                    return temp;
-                    //hits wall
-                } else {
-                    temp.code = 2;
-                    return temp;
-                }
+            if (this.map.getBlock(x, this.getY()).Id == 0) {
+                this.onFloor = false;
+                this.setVSpeed(this.getVSpeed() + this.map.gravity);
+                this.elapsedTime++;
+            } else {
+                this.elapsedTime = 1;
+                this.onFloor = true;
             }
+            this.doCollision();
         }
-        return 0;
-
     }
 
     doMove(onTick) {
@@ -182,8 +147,6 @@ class EntityMovable extends Entity {
             // canvas.fg.getContext("2d").fillText(this.angle, this.getX(), this.getY());
         }
     }
-
-
 }
 
 class EntityCreature extends EntityMovable {
@@ -201,6 +164,9 @@ class EntityCreature extends EntityMovable {
 
     }
 
+    respawn() {
+        this.spawn(this.map.startX, this.map.startY);
+    }
 
 
     getJump() {
@@ -249,56 +215,39 @@ class Player extends EntityCreature {
         }
         if (this.rightDown) {
             this.setHSpeed(this.getSpeed());
-            this.doCollision(true);
+            this.doCollision();
             this.lastOffSet = -this.getSprite().getOffSet();
         } else if (this.leftDown) {
             this.setHSpeed(-this.getSpeed());
-            this.doCollision(true);
+            this.doCollision();
             this.lastOffSet = this.getSprite().getOffSet();
         } else {
             this.setHSpeed(0);
         }
 
-        if (this.jumpDown) {
-
-            var x = this.getX() + this.getSprite().getCenter();
-
-            if (this.map.getBlock(x + this.getLastOffSet(), this.getY()).Id !== 0) {
-                x += this.getLastOffSet();
-            } else {
-                x -= this.getLastOffSet();
-            }
+        if (this.jumpDown && this.onFloor) {
 
 
-            if (this.map.getBlock(x, this.getY()).Id !== 0) {
-                this.jumpCounter =  -this.jump;
-                console.log(this.jumpCounter);
-                this.startY = this.getY() - this.getHeigth();
-                this.jumping = true;
-
-
-
-                if (onTick) {
-                    var y = -Math.pow(this.jumpCounter, 2);
-                    this.setVSpeed(y);
-                    this.jumpCounter++;
-                }
+            if (onTick) {
+                var y = -this.getJump() * this.map.gravity;
+                this.setVSpeed(y);
+                this.onFloor = false;
             }
         }
+        this.doGravity();
 
 
         if (onTick) {
 
             this.setX(this.getX() + this.getHSpeed());
             if (this.jumping) {
-                var y = -Math.pow(this.jumpCounter, 2);
+                var y = -this.getJump() * this.map.gravity;
                 this.setVSpeed(y);
                 this.jumpCounter++;
                 if (this.jumpCounter == 0) {
                     this.jumping = false;
                 }
             }
-            console.log(this.getVSpeed());
             this.setY(this.getY() - this.getHeigth() + this.getVSpeed());
             this.weapon.lowerCD();
             this.spawn(this.getX(), this.getY() - this.getHeigth());

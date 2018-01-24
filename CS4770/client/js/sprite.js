@@ -79,7 +79,7 @@ function getSprite(id) {
     return sprites.get(id);
 }
 
-function loadSprites(json, container) {
+function loadSprites(json, container, tile) {
     var any = JSON.parse(json);
     for (var tile of any) {
         var options = {};
@@ -97,6 +97,10 @@ function loadSprites(json, container) {
         options.image.startY = tile.startY;
         options.center = tile.centerPX;
         options.offSet = tile.offSetPX;
+        if (tile.offSetY !== undefined) {
+            options.offSet = tile.offSetY;
+        }
+
         newSprite(options);
     }
 }

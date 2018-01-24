@@ -1,5 +1,9 @@
 {
   "gravity": 4,
+  "width": 500,
+  "heigth": 500,
+  "spawnX": 150,
+  "spawnY": 10,
   "content": [
     {
       "blockId": 1,

@@ -10,13 +10,14 @@ class MAP {
         this.entities = [];
         this.gravity = 0;
         this.loadBlocks(container, file);
+
+
     }
 
 
 
 
     loadCharacter(response) {
-
         var any = JSON.parse(response);
         any = any[0];
 
@@ -42,7 +43,7 @@ class MAP {
         options2.heigth = options2.sprite.heigth;
         options2.gravity = this.gravity;
 
-       
+
         options2.map = this;
         options2.weapon = loadWeapon(any.weapon);
         this.characters.push(new Player(options2));
@@ -54,6 +55,10 @@ class MAP {
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
         this.gravity = any.gravity;
+        this.width = any.width;
+        this.heigth = any.heigth;
+        this.spawnX = any.spawnX;
+        this.spawnY = any.spawnY;
         for (var tile of any.content) {
             var block = {};
             block.Id = tile.blockId;
@@ -68,7 +73,7 @@ class MAP {
                 if (this.tiles[x] === undefined) {
                     this.tiles[x] = [];
                 }
-                for (var y = tile.blockY; y < tile.blockY + getSprite(block.Id).heigth; y++) {
+                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).heigth + getSprite(block.Id).offSet; y++) {
                     this.tiles[x][y] = block;
                 }
             }
@@ -82,50 +87,8 @@ class MAP {
 
 
 
-    doGravity() {
-        for (var char of this.characters) {
-            var x = char.getX() + char.getSprite().getCenter();
-            var y = char.getY();
-
-
-            if (this.getBlock(x + char.getLastOffSet(), y).Id !== 0) {
-                x += char.getLastOffSet();
-            } else {
-                x -= char.getLastOffSet();
-            }
-
-
-
-            if (this.getBlock(x, y).Id === 0) { //character is currently in the air
-                for (var dY = 0; dY <= char.getVSpeed(); dY++) { //see if character can make the full journey
-                    if (this.getBlock(x, y + dY).Id !== 0) {
-                        char.setVSpeed(dY);//character can only make the journey dY far
-                        return;
-                    }
-                }
-                if (this.getBlock(x, y + char.getVSpeed()).Id === 0) {//char can rise or fall to air
-                    for (var dY = 0; dY <= this.gravity; dY++) { //see if character can make the full journey
-                        if (this.getBlock(x + char.getHSpeed(), y + char.getVSpeed() + dY).Id !== 0) {
-                            char.setVSpeed(char.getVSpeed() + dY - 1);//character can only make the journey dY far
-                            return;
-                        }
-                    }
-                    char.setVSpeed(char.getVSpeed() + this.gravity);
-                } else {
-                    if (this.getBlock(x, y + char.getVSpeed()).Id !== 0) {
-                        char.setVSpeed(0);
-                    }
-                }
-            } else { //character is on the ground
-                char.setVSpeed(0);
-            }
-        }
-
-    }
-
-
     doEntityTick() {
-        this.doGravity();
+        // this.doGravity();
         for (var char of this.characters) {
             char.doMove("none", true, true);
         }
@@ -161,6 +124,13 @@ class MAP {
             this.tiles[X][Y] = block;
         }
         return this.tiles[X][Y];
+    }
+
+    isOOB(x, y) {
+        if (x > this.width || x < 0 || y > this.heigth || y < 0) {
+            return true;
+        }
+        return false;
     }
 
 }
