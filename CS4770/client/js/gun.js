@@ -1,10 +1,16 @@
-﻿function loadWeapon(name) {
-    switch (name) {
-        case "pistol":
-            return new Pistol(10, 5, 15, 0);
-        case "shotgun":
-            return new Shotgun(10, 5, 30, 0);
+﻿function loadWeapon(list) {
+    var temp = [];
+    for (var name of list) {
+        switch (name) {
+            case "pistol":
+                temp.push(new Pistol(10, 5, 15, 0));
+                break;
+            case "shotgun":
+                temp.push(new Shotgun(10, 5, 30, 0));
+                break;
+        }
     }
+    return temp;
 }
 
 class Weapon {
@@ -29,7 +35,7 @@ class Weapon {
                 options.map = map;
 
                 var temp = new Bullet(bullet.angle, bullet.alive, options);
-                temp.setX(character.getX() + character.getSprite().getCenter() + character.getSprite().getOffSet() * 2);
+                temp.setX(character.getX() + character.getSprite().getCenter()*2);
                 temp.setY(character.getY() - character.getHeigth() / 2);
                 this.tick = this.cooldown;
                 map.entities.push(temp);
@@ -128,7 +134,7 @@ class Bullet extends EntityMovable {
 
             this.setVSpeed(dy);
 
-          var x = this.getX();
+            var x = this.getX();
 
             if (this.angle >= 0) {
                 this.lastOffSet = this.getSprite().offSet;
@@ -142,17 +148,12 @@ class Bullet extends EntityMovable {
 
             x += collision.modDX;
             if (collision.code !== 0) {
-                if (collision.code === 3) {
-                    this.getY() - this.getHeigth();
-                }
-
                 var block = this.map.getBlock(x, this.getY());
                 if (block.meta !== null) {
                     if (block.meta.ricochet) {
                         if (this.angle == 0) {
                             return true;
                         }
-                        console.log(collision.code);
                         switch (collision.code) {
                             case 1:
 
@@ -167,6 +168,12 @@ class Bullet extends EntityMovable {
                                 this.angle += 180;
                                 break;
                         }
+                    } else {
+                        this.setVSpeed(0);
+                        if (collision.code == 2) {
+                            this.setHSpeed(0);
+                        }
+
                     }
                 }
             }
@@ -182,4 +189,5 @@ class Bullet extends EntityMovable {
 
         }
     }
+
 }

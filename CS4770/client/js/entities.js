@@ -81,37 +81,52 @@ class EntityMovable extends Entity {
         var creaX = this.getX() + this.getSprite().getCenter();
         if (this.getHSpeed() > 0) {
             creaX += this.getSprite().getCenter();
-        } else if (this.getHSpeed() < 0){
+        } else if (this.getHSpeed() < 0) {
             creaX -= this.getSprite().getCenter();
         }
-        var footY = this.getY()-1;
-        var headY = this.getY() - this.getHeigth();
+        var creaY = this.getY() - 1;
 
         var fromX = Math.min(creaX, creaX + this.getHSpeed());
-        var fromFY = Math.min(footY, footY + this.getVSpeed());
-        var fromHY = Math.min(headY, headY + this.getVSpeed());
+        var fromFY = Math.min(creaY, creaY + this.getVSpeed());
 
         var toX = Math.max(creaX, creaX + this.getHSpeed());
-        var toFY = Math.max(footY, footY + this.getVSpeed());
-        var toHY = Math.max(headY, headY + this.getVSpeed());
+        var toFY = Math.max(creaY, creaY + this.getVSpeed());
 
-
+        //checking to see if the from x to the new x collides
         for (var x = fromX; x <= toX; x++) {
+            //checking to see if the from y to the new y collides
             for (var y = fromFY; y <= toFY; y++) {
+                //somewhere it collides
                 if (x < 0 || x >= this.map.width || this.map.getBlock(x, y).Id != 0) {
+                    //setting back to the correct spawn x
                     if (this.getHSpeed() > 0) {
-                        x -= this.getSprite().getCenter()*2;
+                        x -= this.getSprite().getCenter() * 2;
                     } else if (this.getHSpeed() == 0) {
                         x -= this.getSprite().getCenter();
-                    } 
+                    }
+                    //setting the values
                     this.setX(x);
                     this.setY(y - this.getHeigth());
                     this.setHSpeed(0);
                     this.setVSpeed(0);
-                    return;
+
+                    //below is needed for bullets, ignored for creatures
+                    var temp = {};
+                    temp.modDX = Math.abs(fromX - x);
+                    if (y == fromFY) {
+                        temp.code = 2;
+                    } else {
+                        if (this.getVSpeed() > 0) {
+                            temp.code = 3;
+                        } else {
+                            temp.code = 1;
+                        }
+                    }
+                    return temp;
                 }
             }
         }
+        return { code: 0, modDX: 0 };
 
     }
 
@@ -153,19 +168,25 @@ class EntityCreature extends EntityMovable {
     constructor(options) {
         super(options);
         this.hp = options.hp;
-        this.weapon = options.weapon;
+        this.weapons = options.weapon;
+        this.currentWeapon = this.weapons[0];
+
 
         this.gravity = options.gravity;
 
 
         this.jump = options.jump;
 
-
+        this.respawn = false;
 
     }
 
-    respawn() {
-        this.spawn(this.map.startX, this.map.startY);
+    doRespawn() {
+        if (this.respawn) {
+            this.spawn(this.map.spawnX, this.map.spawnY);
+            this.setVSpeed(0);
+            this.setHSpeed(0);
+        }
     }
 
 
@@ -180,7 +201,7 @@ class EntityCreature extends EntityMovable {
 class Player extends EntityCreature {
     constructor(options) {
         super(options);
-
+        this.respawn = true;
         this.leftDown = false;
         this.rightDown = false;
         this.jumpDown = false;
@@ -192,6 +213,9 @@ class Player extends EntityCreature {
 
 
     doMove(type, isDown, onTick) {
+        if (this.map.isOOB(this.getX(), this.getY())) {
+            this.doRespawn();
+        }
         switch (type) {
             case "right":
                 this.rightDown = isDown;
@@ -210,9 +234,18 @@ class Player extends EntityCreature {
                 this.setHSpeed(0);
                 break;
             case "fire":
-                this.weapon.fireWeapon(this, self.map);
+                this.currentWeapon.fireWeapon(this, self.map);
+                break;
+            case "main":
+                if (this.weapons.length > 1) {
+                    this.currentWeapon = this.weapons[1];
+                }
+                break;
+            case "secondary":
+                this.currentWeapon = this.weapons[0];
                 break;
         }
+
         if (this.rightDown) {
             this.setHSpeed(this.getSpeed());
             this.doCollision();
@@ -249,7 +282,7 @@ class Player extends EntityCreature {
                 }
             }
             this.setY(this.getY() - this.getHeigth() + this.getVSpeed());
-            this.weapon.lowerCD();
+            this.currentWeapon.lowerCD();
             this.spawn(this.getX(), this.getY() - this.getHeigth());
         }
     }

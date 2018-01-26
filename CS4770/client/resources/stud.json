@@ -1,6 +1,6 @@
 [
   {
-    "Id": 669,
+    "Id": 667,
     "startX": 39,
     "startY": 11,
     "width": 45,
@@ -8,7 +8,7 @@
     "centerPX": 23,
     "offSetPX": 8,
     "name": "stud",
-    "weapon": "shotgun",
+    "weapon": [ "pistol", "shotgun" ],
     "hp": 100,
     "speed": 4,
     "jump": 5,

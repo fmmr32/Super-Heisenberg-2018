@@ -47,7 +47,7 @@ class MAP {
         options2.map = this;
         options2.weapon = loadWeapon(any.weapon);
         this.characters.push(new Player(options2));
-        this.characters[0].spawn(150, 10);
+        this.characters[0].spawn(this.spawnX, this.spawnY);
 
     }
 
