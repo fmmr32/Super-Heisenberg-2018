@@ -134,11 +134,13 @@ class MAP {
     }
 
     drawMap() {
+        var playerX = this.getPlayer() == undefined ? 0 : this.getPlayer().getX();
+        var playerY = this.getPlayer() == undefined ? 0 : this.getPlayer().getY() - this.getPlayer().getHeigth();
 
-        var offSetX = canvas.bg.width / 2 - this.getPlayer().getX();
-        offSetX = Math.min(offSetX, 0);
-        offSetX = Math.max(offSetX, canvas.bg.width - this.width);
-        var offSetY = canvas.bg.height - this.height;
+        console.log(playerX, playerY);
+
+        var offSetX = canvas.bg.width / 2 - playerX;
+        var offSetY = canvas.bg.height / 2 - playerY;
 
         console.log(offSetX, offSetY);
 
