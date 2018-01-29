@@ -9,8 +9,8 @@ class MAP {
         this.characters = [];
         this.entities = [];
         this.gravity = 0;
-        this.loadBlocks(container, file);
 
+        this.loadBlocks(container, file);
 
     }
 
@@ -56,7 +56,7 @@ class MAP {
         var any = JSON.parse(file);
         this.gravity = any.gravity;
         this.width = any.width;
-        this.heigth = any.heigth;
+        this.height = any.heigth;
         this.spawnX = any.spawnX;
         this.spawnY = any.spawnY;
         for (var tile of any.content) {
@@ -77,18 +77,18 @@ class MAP {
                     this.tiles[x][y] = block;
                 }
             }
-            this.setSprite(container, block);
+            this.setSprite(block);
         }
     }
 
-    setSprite(container, block) {
+    setSprite(block) {
         getSprite(block.Id).drawBackground(block.X, block.Y);
     }
 
 
 
-    doEntityTick() {
-        // this.doGravity();
+    doTick() {
+        this.drawMap();
         for (var char of this.characters) {
             char.doMove("none", true, true);
         }
@@ -127,14 +127,23 @@ class MAP {
     }
 
     isOOB(x, y) {
-        if (x > this.width || x < 0 || y > this.heigth || y < 0) {
+        if (x > this.width || x < 0 || y > this.height || y < 0) {
             return true;
         }
         return false;
     }
 
-}
+    drawMap() {
 
+        var offSetX = canvas.bg.width / 2 - this.getPlayer().getX();
+        offSetX = Math.min(offSetX, 0);
+        offSetX = Math.max(offSetX, canvas.bg.width - this.width);
+        var offSetY = canvas.bg.height - this.height;
+
+        console.log(offSetX, offSetY);
+
+    }
+}
 function loadMap(name, callback) {
     loadJSONFile(function (response) {
         map = new MAP(canvas, response);

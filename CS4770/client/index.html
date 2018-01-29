@@ -97,9 +97,10 @@
     var tick = 0;
     function game() {
         if (loaded) {
+            map.drawMap();
             running = true;
             canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
-            map.doEntityTick();
+            map.doTick();
         }
     }
 
