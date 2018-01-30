@@ -4,7 +4,7 @@ var characters = new Map();
 SPRITE = function (options) {
     this.container = options.context;
     this.width = options.width;
-    this.heigth = options.heigth;
+    this.height = options.height;
     this.image = options.image;
     this.name = options.name;
     this.id = options.id;
@@ -24,13 +24,13 @@ SPRITE = function (options) {
 
 SPRITE.prototype = {
     //draw function for the sprite
-    draw: function (desX, desY) {
+    draw: function (desX, desY, canv) {
         //all the values that the sprite holds
         var img = new Image();
         img.src = this.image.src;
         var width = this.width;
-        var heigth = this.heigth;
-        var context = this.container.fg.getContext("2d");
+        var height = this.height;
+        var context = this.container.getContext("2d");
         var image = this.image;
         //draws the actual image when the image is loaded
             context.drawImage(
@@ -38,19 +38,19 @@ SPRITE.prototype = {
                 image.startX, //start x of the image in the spritesheet
                 image.startY, //start y of the image in the spritesheet
                 width, //width of the sprite
-                heigth, //height of the sprite
+                height, //height of the sprite
                 desX, //destination x of the sprite on the canvas
                 desY, //destination of y of the sprite on the canvas
                 width, //width of sprite
-                heigth //heigth of sprite
+                height //height of sprite
             );
     },
-    drawBackground : function (desX, desY) {
+    drawBackground : function (desX, desY, canv) {
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;
-        var heigth = this.heigth;
-        var context = this.container.bg.getContext("2d");
+        var height = this.height;
+        var context = this.container.getContext("2d");
         var image = this.image;
         //draws the actual image when the image is loaded
         img.onload = function () {
@@ -59,12 +59,13 @@ SPRITE.prototype = {
                 image.startX, //start x of the image in the spritesheet
                 image.startY, //start y of the image in the spritesheet
                 width, //width of the sprite
-                heigth, //height of the sprite
+                height, //height of the sprite
                 desX, //destination x of the sprite on the canvas
                 desY, //destination of y of the sprite on the canvas
                 width, //width of sprite
-                heigth //heigth of sprite
+                height //height of sprite
             );
+            map.setImage(context);
         };
         img.src = image.src;
     }
@@ -92,7 +93,7 @@ function loadSprites(json, container, tile) {
         options.name = tile.name;
         //these values differ from sprite to sprite
         options.width = tile.width;
-        options.heigth = tile.heigth;
+        options.height = tile.height;
         options.image.startX = tile.startX;
         options.image.startY = tile.startY;
         options.center = tile.centerPX;

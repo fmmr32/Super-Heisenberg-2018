@@ -3,12 +3,15 @@
 
 class MAP {
     constructor(container, file) {
+
+
         this.container = container;
         this.file = file;
         this.tiles = [[], []];
         this.characters = [];
         this.entities = [];
         this.gravity = 0;
+
 
         this.loadBlocks(container, file);
 
@@ -27,7 +30,7 @@ class MAP {
 
         options.image = {};
         options.width = any.width;
-        options.heigth = any.heigth;
+        options.height = any.height;
         options.image.src = any.source;
         options.image.startX = any.startX;
         options.image.startY = any.startY;
@@ -40,7 +43,7 @@ class MAP {
         options2.hp = any.hp;
         options2.jump = any.jump;
         options2.speed = any.speed;
-        options2.heigth = options2.sprite.heigth;
+        options2.height = options2.sprite.height;
         options2.gravity = this.gravity;
 
 
@@ -52,11 +55,15 @@ class MAP {
     }
 
     loadBlocks(container, file) {
+        var ctx = document.createElement("canvas").getContext("2d");
+        ctx.canvas.width = this.width;
+        ctx.canvas.height = this.height;
+
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
         this.gravity = any.gravity;
         this.width = any.width;
-        this.height = any.heigth;
+        this.height = any.height;
         this.spawnX = any.spawnX;
         this.spawnY = any.spawnY;
         for (var tile of any.content) {
@@ -73,22 +80,28 @@ class MAP {
                 if (this.tiles[x] === undefined) {
                     this.tiles[x] = [];
                 }
-                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).heigth + getSprite(block.Id).offSet; y++) {
+                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
                     this.tiles[x][y] = block;
                 }
             }
-            this.setSprite(block);
+            this.setSprite(block, ctx);
         }
     }
 
-    setSprite(block) {
-        getSprite(block.Id).drawBackground(block.X, block.Y);
+    setImage(ctx) {
+        this.image = new Image();
+        this.image.src = ctx.canvas.toDataURL("image/png");
+
+    }
+
+
+    setSprite(block, canv) {
+        getSprite(block.Id).drawBackground(block.X, block.Y, canv);
     }
 
 
 
     doTick() {
-        this.drawMap();
         for (var char of this.characters) {
             char.doMove("none", true, true);
         }
@@ -134,16 +147,28 @@ class MAP {
     }
 
     drawMap() {
-        var playerX = this.getPlayer() == undefined ? 0 : this.getPlayer().getX();
-        var playerY = this.getPlayer() == undefined ? 0 : this.getPlayer().getY() - this.getPlayer().getHeigth();
 
-        console.log(playerX, playerY);
+        if (this.getPlayer() != undefined) {
+            var context = canvas.getContext("2d");
 
-        var offSetX = canvas.bg.width / 2 - playerX;
-        var offSetY = canvas.bg.height / 2 - playerY;
+            var player = this.getPlayer();
 
-        console.log(offSetX, offSetY);
+            var x = context.canvas.width / 2 - player.getX() - 32;
+            var y = 0;
 
+            var sWidth = context.canvas.width;
+            var sHeight = context.canvas.height;
+            console.log(x, y);
+
+            context.drawImage(this.image,-x, y, sWidth, sHeight, 0, 0, sHeight, sWidth);
+
+        }
+    }
+    clamp(value, min, max) {
+        console.log(value, min, max);
+        if (value < min) return min;
+        else if (value > max) return max;
+        return value;
     }
 }
 function loadMap(name, callback) {

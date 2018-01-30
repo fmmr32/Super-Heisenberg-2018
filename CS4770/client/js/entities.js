@@ -22,7 +22,7 @@
         this.posY = y;
     }
     getY() {
-        return this.posY + this.getHeigth();
+        return this.posY + this.getheight();
     }
 
     spawn(X, Y) {
@@ -32,8 +32,8 @@
 
     }
 
-    getHeigth() {
-        return this.getSprite().heigth;
+    getheight() {
+        return this.getSprite().height;
     }
 
 
@@ -106,7 +106,7 @@ class EntityMovable extends Entity {
                     }
                     //setting the values
                     this.setX(x);
-                    this.setY(y - this.getHeigth());
+                    this.setY(y - this.getheight());
                     this.setHSpeed(0);
                     this.setVSpeed(0);
 
@@ -157,8 +157,8 @@ class EntityMovable extends Entity {
     doMove(onTick) {
         if (onTick) {
             this.setX(this.getX() + this.getHSpeed());
-            this.setY(this.getY() - this.getSprite().heigth + this.getVSpeed());
-            this.spawn(this.getX(), this.getY() - this.getSprite().heigth);
+            this.setY(this.getY() - this.getSprite().height + this.getVSpeed());
+            this.spawn(this.getX(), this.getY() - this.getSprite().height);
             // canvas.fg.getContext("2d").fillText(this.angle, this.getX(), this.getY());
         }
     }
@@ -281,9 +281,9 @@ class Player extends EntityCreature {
                     this.jumping = false;
                 }
             }
-            this.setY(this.getY() - this.getHeigth() + this.getVSpeed());
+            this.setY(this.getY() - this.getheight() + this.getVSpeed());
             this.currentWeapon.lowerCD();
-            this.spawn(this.getX(), this.getY() - this.getHeigth());
+            this.spawn(this.getX(), this.getY() - this.getheight());
         }
     }
 

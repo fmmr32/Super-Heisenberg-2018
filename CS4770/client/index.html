@@ -6,18 +6,13 @@
 <script type="text/javascript" src="js/map.js"></script>
 <script type="text/javascript" src="js/sprite.js"></script>
 <script>
-    (function () {
-        var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-        window.requestAnimationFrame = requestAnimationFrame;
-    })();
 
 
     var canvas = {};
     var container = document.getElementById("container");
 
 
-    canvas.bg = create('canvas', 'bg', 0, 0, 500, 500);
-    canvas.fg = create('canvas', 'fg', 0, 0, 500, 500);
+    canvas = create('canvas', 'bg', 0, 0, 500, 500);
 
 
     function create(type, id, left, top, width, height) {
@@ -101,14 +96,18 @@
     //var interval = setInterval(game, 1000 / 60);
     var running = false;
     var tick = 0;
+
+    var interval = setInterval(update, 1000 / 60);
+
     function update() {
         if (loaded) {
-            map.drawMap();
             running = true;
-            canvas.fg.getContext("2d").clearRect(0, 0, 500, 500);
+            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             map.doTick();
+            map.drawMap();
+            
+            
         }
-        requestAnimationFrame(update);
     }
 
 
@@ -144,9 +143,6 @@
         };
     }
 
-    window.addEventListener("load", function () {
-        update();
-    });
 
 </script>
 <body>
