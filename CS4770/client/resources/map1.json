@@ -1,6 +1,6 @@
 {
   "gravity": 4,
-  "width": 680,
+  "width": 708,
   "height": 500,
   "spawnX": 150,
   "spawnY": 10,
@@ -159,6 +159,36 @@
       "blockId": 1,
       "blockX": 676,
       "blockY": 300,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 676,
+      "blockY": 291,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 676,
+      "blockY": 282,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 676,
+      "blockY": 273,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 676,
+      "blockY": 264,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 1,
+      "blockX": 676,
+      "blockY": 255,
       "meta": [ { "ricochet": true } ]
     }
 

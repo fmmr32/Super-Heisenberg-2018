@@ -2,18 +2,17 @@
 
 
 class MAP {
-    constructor(container, file) {
+    constructor(file) {
 
 
-        this.container = container;
         this.file = file;
         this.tiles = [[], []];
         this.characters = [];
         this.entities = [];
         this.gravity = 0;
+        this.offSetX = 0;
 
-
-        this.loadBlocks(container, file);
+        this.loadBlocks(file);
 
     }
 
@@ -54,16 +53,19 @@ class MAP {
 
     }
 
-    loadBlocks(container, file) {
-        var ctx = document.createElement("canvas").getContext("2d");
-        ctx.canvas.width = this.width;
-        ctx.canvas.height = this.height;
-
+    loadBlocks(file) {
+        
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
+
+        canvas = create('canvas', 'bg', 0, 0, this.width, this.height);
+        this.container = canvas;
+        console.log("Changing canvas");
+        changeCanvas(canvas);
+
         this.spawnX = any.spawnX;
         this.spawnY = any.spawnY;
         for (var tile of any.content) {
@@ -84,7 +86,7 @@ class MAP {
                     this.tiles[x][y] = block;
                 }
             }
-            this.setSprite(block, ctx);
+            this.setSprite(block, this.container);
         }
     }
 
@@ -140,10 +142,15 @@ class MAP {
     }
 
     isOOB(x, y) {
-        if (x > this.width || x < 0 || y > this.height || y < 0) {
-            return true;
+        if (x > this.width || x > container.clientWidth) {
+            return 1;
+        } else if (x < 0) {
+            return 2;
+        } else if (y > this.height || y < -1) {
+            return 3;
+        } else {
+            return 0;
         }
-        return false;
     }
 
     drawMap() {
@@ -152,15 +159,17 @@ class MAP {
             var context = canvas.getContext("2d");
 
             var player = this.getPlayer();
+           
+            this.offSetX = container.clientWidth / 2 - player.getX() - player.getSprite().getCenter()*2;
+            this.offSetX = Math.min(this.offSetX, 0);
+            this.offSetX = Math.max(this.offSetX, container.clientWidth - this.width);
 
-            var x = context.canvas.width / 2 - player.getX() - 32;
-            var y = 0;
+            var y = 0
 
             var sWidth = context.canvas.width;
             var sHeight = context.canvas.height;
-            console.log(x, y);
 
-            context.drawImage(this.image,-x, y, sWidth, sHeight, 0, 0, sHeight, sWidth);
+            context.drawImage(this.image, -this.offSetX, 0, container.clientWidth, container.clientWidth, 0, 0, container.clientWidth, container.clientHeight);
 
         }
     }
@@ -173,7 +182,7 @@ class MAP {
 }
 function loadMap(name, callback) {
     loadJSONFile(function (response) {
-        map = new MAP(canvas, response);
+        map = new MAP(response);
         getMap(map);
         callback(map);
     }, "/client/resources/" + name + ".json");

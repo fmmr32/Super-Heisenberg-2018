@@ -11,7 +11,7 @@ SPRITE = function (options) {
     this.center = options.center;
     this.offSet = options.offSet;
 
-      
+
     this.getCenter = function () {
         return this.center;
     };
@@ -19,12 +19,16 @@ SPRITE = function (options) {
     this.getOffSet = function () {
         return this.offSet;
     };
+
+    this.setCanvas = function (canvas) {
+        this.container = canvas;
+    };
 };
 
 
 SPRITE.prototype = {
     //draw function for the sprite
-    draw: function (desX, desY, canv) {
+    draw: function (desX, desY) {
         //all the values that the sprite holds
         var img = new Image();
         img.src = this.image.src;
@@ -33,19 +37,19 @@ SPRITE.prototype = {
         var context = this.container.getContext("2d");
         var image = this.image;
         //draws the actual image when the image is loaded
-            context.drawImage(
-                img, //the image
-                image.startX, //start x of the image in the spritesheet
-                image.startY, //start y of the image in the spritesheet
-                width, //width of the sprite
-                height, //height of the sprite
-                desX, //destination x of the sprite on the canvas
-                desY, //destination of y of the sprite on the canvas
-                width, //width of sprite
-                height //height of sprite
-            );
+        context.drawImage(
+            img, //the image
+            image.startX, //start x of the image in the spritesheet
+            image.startY, //start y of the image in the spritesheet
+            width, //width of the sprite
+            height, //height of the sprite
+            desX, //destination x of the sprite on the canvas
+            desY, //destination of y of the sprite on the canvas
+            width, //width of sprite
+            height //height of sprite
+        );
     },
-    drawBackground : function (desX, desY, canv) {
+    drawBackground: function (desX, desY, canv) {
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;
@@ -104,4 +108,12 @@ function loadSprites(json, container, tile) {
 
         newSprite(options);
     }
+}
+
+function changeCanvas(canvas) {
+    sprites.forEach(function (key) {
+        key.setCanvas(canvas);
+    });
+
+
 }

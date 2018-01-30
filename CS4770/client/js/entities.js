@@ -28,6 +28,8 @@
     spawn(X, Y) {
         this.posX = X;
         this.posY = Y;
+
+
         this.sprite.draw(X, Y);
 
     }
@@ -97,7 +99,7 @@ class EntityMovable extends Entity {
             //checking to see if the from y to the new y collides
             for (var y = fromFY; y <= toFY; y++) {
                 //somewhere it collides
-                if (x < 0 || x >= this.map.width || this.map.getBlock(x, y).Id != 0) {
+                if (x < 0 || x >= this.map.width || this.map.getBlock(x - this.map.offSetX, y).Id != 0) {
                     //setting back to the correct spawn x
                     if (this.getHSpeed() > 0) {
                         x -= this.getSprite().getCenter() * 2;
@@ -183,6 +185,7 @@ class EntityCreature extends EntityMovable {
 
     doRespawn() {
         if (this.respawn) {
+            console.log("Respawn called");
             this.spawn(this.map.spawnX, this.map.spawnY);
             this.setVSpeed(0);
             this.setHSpeed(0);
@@ -213,9 +216,7 @@ class Player extends EntityCreature {
 
 
     doMove(type, isDown, onTick) {
-        if (this.map.isOOB(this.getX(), this.getY())) {
-            this.doRespawn();
-        }
+
         switch (type) {
             case "right":
                 this.rightDown = isDown;
@@ -283,6 +284,29 @@ class Player extends EntityCreature {
             }
             this.setY(this.getY() - this.getheight() + this.getVSpeed());
             this.currentWeapon.lowerCD();
+            switch (this.map.isOOB(this.getX() + this.getSprite().getCenter()*2, this.getY())) {
+                case 1:
+                    this.setX(container.clientWidth - this.getSprite().getCenter()*2);
+                    break;
+                case 2:
+                    this.setX(0);
+                    break;
+                case 3:
+                    this.doRespawn();
+                    break;
+            }
+            switch (this.map.isOOB(this.getX(), this.getY())) {
+                case 1:
+                    this.setX(container.clientWidth + this.getSprite().getCenter() * 2);
+                    break;
+                case 2:
+                    this.setX(0);
+                    break;
+                case 3:
+                    this.doRespawn();
+                    break;
+            }
+
             this.spawn(this.getX(), this.getY() - this.getheight());
         }
     }
