@@ -36,7 +36,7 @@ class Weapon {
 
                 var temp = new Bullet(bullet.angle, bullet.alive, options);
                 temp.setX(character.getX() + character.getSprite().getCenter()*2);
-                temp.setY(character.getY() - character.getHeigth() / 2);
+                temp.setY(character.getY() - character.getheight() / 2);
                 this.tick = this.cooldown;
                 map.entities.push(temp);
             }
