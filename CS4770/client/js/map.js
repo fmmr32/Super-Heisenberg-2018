@@ -2,15 +2,17 @@
 
 
 class MAP {
-    constructor(container, file) {
-        this.container = container;
+    constructor(file) {
+
+
         this.file = file;
         this.tiles = [[], []];
         this.characters = [];
         this.entities = [];
         this.gravity = 0;
-        this.loadBlocks(container, file);
+        this.offSetX = 0;
 
+        this.loadBlocks(file);
 
     }
 
@@ -27,7 +29,7 @@ class MAP {
 
         options.image = {};
         options.width = any.width;
-        options.heigth = any.heigth;
+        options.height = any.height;
         options.image.src = any.source;
         options.image.startX = any.startX;
         options.image.startY = any.startY;
@@ -40,23 +42,30 @@ class MAP {
         options2.hp = any.hp;
         options2.jump = any.jump;
         options2.speed = any.speed;
-        options2.heigth = options2.sprite.heigth;
+        options2.height = options2.sprite.height;
         options2.gravity = this.gravity;
 
 
         options2.map = this;
         options2.weapon = loadWeapon(any.weapon);
         this.characters.push(new Player(options2));
-        this.characters[0].spawn(150, 10);
+        this.characters[0].spawn(this.spawnX, this.spawnY);
 
     }
 
-    loadBlocks(container, file) {
+    loadBlocks(file) {
+        
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
         this.gravity = any.gravity;
         this.width = any.width;
-        this.heigth = any.heigth;
+        this.height = any.height;
+
+        canvas = create('canvas', 'bg', 0, 0, this.width, this.height);
+        this.container = canvas;
+        console.log("Changing canvas");
+        changeCanvas(canvas);
+
         this.spawnX = any.spawnX;
         this.spawnY = any.spawnY;
         for (var tile of any.content) {
@@ -73,22 +82,28 @@ class MAP {
                 if (this.tiles[x] === undefined) {
                     this.tiles[x] = [];
                 }
-                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).heigth + getSprite(block.Id).offSet; y++) {
+                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
                     this.tiles[x][y] = block;
                 }
             }
-            this.setSprite(container, block);
+            this.setSprite(block, this.container);
         }
     }
 
-    setSprite(container, block) {
-        getSprite(block.Id).drawBackground(block.X, block.Y);
+    setImage(ctx) {
+        this.image = new Image();
+        this.image.src = ctx.canvas.toDataURL("image/png");
+
+    }
+
+
+    setSprite(block, canv) {
+        getSprite(block.Id).drawBackground(block.X, block.Y, canv);
     }
 
 
 
-    doEntityTick() {
-        // this.doGravity();
+    doTick() {
         for (var char of this.characters) {
             char.doMove("none", true, true);
         }
@@ -127,17 +142,47 @@ class MAP {
     }
 
     isOOB(x, y) {
-        if (x > this.width || x < 0 || y > this.heigth || y < 0) {
-            return true;
+        if (x > this.width || x > container.clientWidth) {
+            return 1;
+        } else if (x < 0) {
+            return 2;
+        } else if (y > this.height || y < -1) {
+            return 3;
+        } else {
+            return 0;
         }
-        return false;
     }
 
-}
+    drawMap() {
 
+        if (this.getPlayer() != undefined) {
+            var context = canvas.getContext("2d");
+
+            var player = this.getPlayer();
+           
+            this.offSetX = container.clientWidth / 2 - player.getX() - player.getSprite().getCenter()*2;
+            this.offSetX = Math.min(this.offSetX, 0);
+            this.offSetX = Math.max(this.offSetX, container.clientWidth - this.width);
+
+            var y = 0
+
+            var sWidth = context.canvas.width;
+            var sHeight = context.canvas.height;
+
+            context.drawImage(this.image, -this.offSetX, 0, container.clientWidth, container.clientWidth, 0, 0, container.clientWidth, container.clientHeight);
+
+        }
+    }
+    clamp(value, min, max) {
+        console.log(value, min, max);
+        if (value < min) return min;
+        else if (value > max) return max;
+        return value;
+    }
+}
 function loadMap(name, callback) {
     loadJSONFile(function (response) {
-        map = new MAP(canvas, response);
+        map = new MAP(response);
         getMap(map);
         callback(map);
     }, "/client/resources/" + name + ".json");

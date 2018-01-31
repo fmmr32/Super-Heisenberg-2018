@@ -6,6 +6,8 @@
     button[json.up] = "up";
     button[json.jump] = "jump";
     button[json.fire] = "fire";
+    button[json.secondary] = "secondary";
+    button[json.main] = "main";
 
     return button;
 

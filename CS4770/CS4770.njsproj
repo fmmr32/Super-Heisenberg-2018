@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="client\js\character.js" />
+    <Compile Include="client\js\entities.js" />
     <Compile Include="client\js\config.js" />
     <Compile Include="client\js\editor.js" />
     <Compile Include="client\js\gun.js" />
@@ -43,8 +43,6 @@
     <Content Include="client\js\config.json">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="client\resources\character.json" />
-    <Content Include="client\resources\character.png" />
     <Content Include="client\resources\entities.json" />
     <Content Include="client\resources\entities.png" />
     <Content Include="client\resources\map1.json" />

@@ -1,7 +1,11 @@
 {
+  
   "jump": 32,
   "left": 65,
   "right": 68,
   "fire": 70,
-  "up": 87
+  "up": 87,
+  "secondary": 49,
+  "main": 50
+
 }
