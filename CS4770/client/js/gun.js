@@ -35,8 +35,8 @@ class Weapon {
                 options.map = map;
 
                 var temp = new Bullet(bullet.angle, bullet.alive, options);
-                temp.setX(character.getX() + character.getSprite().getCenter()*2);
-                temp.setY(character.getY() - character.getheight() / 2);
+                temp.setX(character.getX() + character.getSprite().getCenter() * 2);
+                temp.setY(character.getY() - character.getHeight() / 2);
                 this.tick = this.cooldown;
                 map.entities.push(temp);
             }
@@ -107,10 +107,9 @@ class Bullet extends EntityMovable {
     bulletTravel(onTick) {
         if (this.alive > 0) {
             this.alive--;
-            //delete drawing and redraw at new x
 
+            //calculating the angle the bullet flies at and what the x,y changes to
             var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
-            // console.log(dy);
             dy = -dy;
 
             var dx;
@@ -147,11 +146,14 @@ class Bullet extends EntityMovable {
             var collision = this.doCollision(false);
 
             x += collision.modDX;
+            //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
                 var block = this.map.getBlock(x, this.getY());
+                console.log(block);
                 if (block.meta !== null) {
                     if (block.meta.ricochet) {
                         if (this.angle == 0) {
+                            console.log("stopping bullet");
                             return true;
                         }
                         switch (collision.code) {
@@ -169,16 +171,14 @@ class Bullet extends EntityMovable {
                                 break;
                         }
                     } else {
-                        this.setVSpeed(0);
-                        if (collision.code == 2) {
-                            this.setHSpeed(0);
-                        }
-
+                        return true;
                     }
+                } else {
+                    return true;
                 }
             }
 
-
+            //finally do the move tick
             this.doMove(onTick);
 
 
