@@ -8,10 +8,12 @@
     "centerPX": 23,
     "offSetPX": 8,
     "name": "stud",
-    "weapon": [ "pistol", "shotgun" ],
+    "weapon": [ 1 ],
     "hp": 100,
     "speed": 4,
     "jump": 5,
+    "leftHand": [ 5, 60 ],
+    "rightHand": [ 40, 60 ],
     "source": "../resources/stud.png"
   }
 ]

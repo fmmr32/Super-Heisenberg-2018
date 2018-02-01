@@ -49,7 +49,7 @@ SPRITE.prototype = {
             height //height of sprite
         );
     },
-    drawBackground: function (desX, desY, canv) {
+    drawBackground: function (desX, desY) {
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;
@@ -110,10 +110,8 @@ function loadSprites(json, container, tile) {
     }
 }
 
-function changeCanvas(canvas) {
-    sprites.forEach(function (key) {
+function changeCanvas(canvas,map) {
+     sprites.forEach(function (key) {
         key.setCanvas(canvas);
     });
-
-
 }

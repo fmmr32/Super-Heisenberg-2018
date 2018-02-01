@@ -1,31 +1,55 @@
-﻿function loadWeapon(list) {
+﻿var weapons = new Map();
+
+function loadWeapon(list) {
     var temp = [];
-    for (var name of list) {
-        switch (name) {
-            case "pistol":
-                temp.push(new Pistol(10, 5, 15, 0));
-                break;
-            case "shotgun":
-                temp.push(new Shotgun(10, 5, 30, 0));
-                break;
-        }
+    console.log(weapons);
+    for (var id of list) {
+        temp.push(weapons.get(id));
     }
     return temp;
 }
 
+function loadWeapons(file) {
+    for (var w of JSON.parse(file)) {
+        var img = new Image();
+        img.src = "../resources/weapons.png";
+        img.width = w.width;
+        img.height = w.height;
+        img.startX = w.startX;
+        img.startY = w.startY;
+        var frames = w.frames;
+        var frameRate = w.frameRate;
+        var columns = w.columns;
+
+        var animation = new Animation(img, frames, frameRate, columns);
+
+        switch (w.id) {
+            case 1:
+                weapons.set(w.id, new Pistol(w.damage, w.speed, w.cooldown, 0,animation));
+                break;
+            case 2:
+                weapons.set(w.id, new Shotgun(w.damage, w.speed, w.cooldown,0, animation));
+                break;
+        }
+        console.log(weapons);
+    }
+}
+
 class Weapon {
-    constructor(damage, speed, cooldown) {
+    constructor(damage, speed, cooldown, animation) {
         this.damage = damage;
         this.speed = speed;
         this.cooldown = cooldown;
         this.tick = 0;
         this.bullets = [];
+        this.animation = animation;
     }
 
 
 
     fireWeapon(character, map) {
         if (this.tick === 0) {
+            this.animation.animating = true;
             for (var bullet of this.bullets) {
                 var options = {};
                 options.speed = bullet.speed;
@@ -43,11 +67,16 @@ class Weapon {
         }
     }
 
+    drawGun(X, Y, flipped) {
+        this.animation.doAnimation(X, Y, flipped);
+    }
+
     lowerCD() {
         if (this.tick > 0) {
             this.tick--;
         }
     }
+
 
     get Damage() {
         return this.damage;
@@ -60,8 +89,8 @@ class Weapon {
 
 
 class Pistol extends Weapon {
-    constructor(damage, speed, cooldown, sprite) {
-        super(damage, speed, cooldown);
+    constructor(damage, speed, cooldown, sprite, animation) {
+        super(damage, speed, cooldown, animation);
         var options = {};
         options.x = 0;
         options.y = 0;
@@ -73,8 +102,8 @@ class Pistol extends Weapon {
 }
 
 class Shotgun extends Weapon {
-    constructor(damage, speed, cooldown, sprite) {
-        super(damage, speed, cooldown);
+    constructor(damage, speed, cooldown, sprite, animation) {
+        super(damage, speed, cooldown, animation);
         var options = {};
         options.x = 0;
         options.y = 0;

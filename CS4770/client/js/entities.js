@@ -1,10 +1,57 @@
-﻿class Entity {
+﻿class Animation {
+    constructor(image, frames, frameRate, columns) {
+        this.image = image;
+        this.frames = frames;
+        this.frameRate = frameRate;
+        this.columns = columns;
+        this.width = image.width;
+        this.height = image.height;
+        this.startX = image.startX;
+        this.startY = image.startY;
+
+        this.column = 0;
+        this.frame = 1;
+        this.row = 0;
+        this.animating = false;
+    }
+
+    doAnimation(X, Y, flipped) {
+        if (this.animating) {
+            this.frame++;
+            this.column++;
+            if (this.column == this.columns) {
+                this.column = 0;
+                this.row++;
+            }
+            if (this.frame == this.frames) {
+                this.frame = 1;
+                this.column = 0;
+                this.row = 0;
+                this.animating = false;
+            }
+        }
+        var ctx = canvas.getContext("2d");
+
+        var img = this.image;
+        if (flipped) {
+          //  img = img.translate(this.image.width, 0);
+        }
+         
+        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X, Y, this.width, this.height);
+
+    }
+
+}
+
+
+class Entity {
     constructor(options) {
         this.map = options.map;
         this.posX = options.x;
         this.posY = options.y;
         this.sprite = options.sprite;
     }
+
 
     getSprite() {
         return this.sprite;
@@ -24,9 +71,9 @@
     getY() {
         return this.posY + this.getHeight();
     }
-   
-    spawn(X, Y) {
 
+    spawn(X, Y) {
+        canvas.getContext("2d").save();
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place
@@ -34,8 +81,24 @@
         X += container.clientWidth / 2;
         X -= this.getSprite().width / 2;
         X = Math.floor(X);
-        this.sprite.draw(X, Y);
 
+       
+        this.sprite.draw(X, Y);
+        if (this.currentWeapon != undefined) {
+            var flipped = false;
+            if (this.getHSpeed() >= 0) {
+                X += this.rightHand[0];
+                Y += this.rightHand[1];
+            } else {
+                X += this.leftHand[0];
+                Y += this.leftHand[1];
+                flipped = true;
+            }
+
+            this.currentWeapon.drawGun(X, Y, flipped);
+        }
+
+        canvas.getContext("2d").restore();
     }
 
     getHeight() {
@@ -108,9 +171,10 @@ class EntityMovable extends Entity {
                     if (this.getHSpeed() > 0) {
                         x -= this.getSprite().getCenter() * 2;
                     } else if (this.getHSpeed() < 0) {
-                        x += this.getSprite().getOffSet()/2;
+                        x += this.getSprite().getOffSet() / 2;
                     }
-                    //setting the values
+
+                    x += this.getLastOffSet() >= 0 ? 1 : -1;
 
                     this.setX(x);
                     this.setY(y - this.getHeight());
@@ -144,11 +208,10 @@ class EntityMovable extends Entity {
             if (this.map.getBlock(x, this.getY()).Id == 0) {
                 if (this.map.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
                     x += this.getLastOffSet();
-                } else {
+                } else if (this.map.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
                     x -= this.getLastOffSet();
                 }
             }
-
 
             if (this.map.getBlock(x, this.getY()).Id == 0) {
                 this.onFloor = false;
@@ -178,6 +241,8 @@ class EntityCreature extends EntityMovable {
         this.weapons = options.weapon;
         this.currentWeapon = this.weapons[0];
 
+        this.leftHand = options.leftHand;
+        this.rightHand = options.rightHand;
 
         this.gravity = options.gravity;
 
@@ -263,6 +328,7 @@ class Player extends EntityCreature {
         } else {
             this.setHSpeed(0);
         }
+
         //handling the jumping
         if (this.jumpDown && this.onFloor) {
 

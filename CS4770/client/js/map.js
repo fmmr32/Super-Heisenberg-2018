@@ -10,8 +10,8 @@ class MAP {
         this.characters = [];
         this.entities = [];
         this.gravity = 0;
-        // this.offSetX = 0;
 
+    
         this.loadBlocks(file);
 
     }
@@ -44,7 +44,8 @@ class MAP {
         options2.speed = any.speed;
         options2.height = options2.sprite.height;
         options2.gravity = this.gravity;
-
+        options2.leftHand = any.leftHand;
+        options2.rightHand = any.rightHand;
 
         options2.map = this;
         options2.weapon = loadWeapon(any.weapon);
@@ -61,9 +62,12 @@ class MAP {
         this.width = any.width;
         this.height = any.height;
 
-        canvas = create('canvas', 'bg', 0, 0, this.width, this.height);
+        canvas = create('canvas', 'fg', 0, 0, this.width, this.height);
+      
+
+
         this.container = canvas;
-        changeCanvas(canvas);
+        changeCanvas(canvas, this);
 
         this.spawnX = any.spawnX;
         this.spawnY = any.spawnY;
@@ -85,7 +89,7 @@ class MAP {
                     this.tiles[x][y] = block;
                 }
             }
-            this.setSprite(block, this.container);
+            this.setSprite(block);
         }
     }
 
@@ -96,8 +100,8 @@ class MAP {
     }
 
 
-    setSprite(block, canv) {
-        getSprite(block.Id).drawBackground(block.X, block.Y, canv);
+    setSprite(block) {
+        getSprite(block.Id).drawBackground(block.X, block.Y);
     }
 
 
@@ -156,14 +160,18 @@ class MAP {
     drawMap() {
 
         if (this.getPlayer() != undefined) {
-            var x = container.clientWidth / 2 - this.getPlayer().getX();
+            var x = container.clientWidth / 2 - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
+
+      
             var context = canvas.getContext("2d");
-            context.drawImage(this.image, 0, 0, this.width, this.height, x - Math.floor(this.getPlayer().getSprite().width / 2), 0, this.width, this.height);
+
+
+            context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
 
         }
     }
-
 }
+   
 
 function loadMap(name, callback) {
     loadJSONFile(function (response) {

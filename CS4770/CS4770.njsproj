@@ -45,6 +45,9 @@
     </Content>
     <Content Include="client\resources\entities.json" />
     <Content Include="client\resources\entities.png" />
+    <Content Include="client\resources\weapons.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\map1.json" />
     <Content Include="client\resources\stud.json" />
     <Content Include="client\resources\stud.png" />
@@ -52,6 +55,7 @@
     <Content Include="client\resources\temp\tiles.png" />
     <Content Include="client\resources\tiles.json" />
     <Content Include="client\resources\tiles.png" />
+    <Content Include="client\resources\weapons.png" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
