@@ -22,19 +22,23 @@
         this.posY = y;
     }
     getY() {
-        return this.posY + this.getheight();
+        return this.posY + this.getHeight();
     }
-
+   
     spawn(X, Y) {
+
         this.posX = X;
         this.posY = Y;
-
-
+        //makes sure the entity is drawn at the correct place
+        X -= this.map.getPlayer().getX();
+        X += container.clientWidth / 2;
+        X -= this.getSprite().width / 2;
+        X = Math.floor(X);
         this.sprite.draw(X, Y);
 
     }
 
-    getheight() {
+    getHeight() {
         return this.getSprite().height;
     }
 
@@ -83,7 +87,7 @@ class EntityMovable extends Entity {
         var creaX = this.getX() + this.getSprite().getCenter();
         if (this.getHSpeed() > 0) {
             creaX += this.getSprite().getCenter();
-        } else if (this.getHSpeed() < 0) {
+        } else if (this.getHSpeed() <= 0) {
             creaX -= this.getSprite().getCenter();
         }
         var creaY = this.getY() - 1;
@@ -99,16 +103,18 @@ class EntityMovable extends Entity {
             //checking to see if the from y to the new y collides
             for (var y = fromFY; y <= toFY; y++) {
                 //somewhere it collides
-                if (x < 0 || x >= this.map.width || this.map.getBlock(x - this.map.offSetX, y).Id != 0) {
+                if (x < 0 || x >= this.map.width || this.map.getBlock(x, y).Id != 0) {
                     //setting back to the correct spawn x
                     if (this.getHSpeed() > 0) {
                         x -= this.getSprite().getCenter() * 2;
-                    } else if (this.getHSpeed() == 0) {
-                        x -= this.getSprite().getCenter();
+                    } else if (this.getHSpeed() < 0) {
+                        x += this.getSprite().getOffSet()/2;
                     }
                     //setting the values
+
                     this.setX(x);
-                    this.setY(y - this.getheight());
+                    this.setY(y - this.getHeight());
+
                     this.setHSpeed(0);
                     this.setVSpeed(0);
 
@@ -161,7 +167,6 @@ class EntityMovable extends Entity {
             this.setX(this.getX() + this.getHSpeed());
             this.setY(this.getY() - this.getSprite().height + this.getVSpeed());
             this.spawn(this.getX(), this.getY() - this.getSprite().height);
-            // canvas.fg.getContext("2d").fillText(this.angle, this.getX(), this.getY());
         }
     }
 }
@@ -216,7 +221,7 @@ class Player extends EntityCreature {
 
 
     doMove(type, isDown, onTick) {
-
+        //see what type of movement the player did
         switch (type) {
             case "right":
                 this.rightDown = isDown;
@@ -246,7 +251,7 @@ class Player extends EntityCreature {
                 this.currentWeapon = this.weapons[0];
                 break;
         }
-
+        //handling to what the player did
         if (this.rightDown) {
             this.setHSpeed(this.getSpeed());
             this.doCollision();
@@ -258,7 +263,7 @@ class Player extends EntityCreature {
         } else {
             this.setHSpeed(0);
         }
-
+        //handling the jumping
         if (this.jumpDown && this.onFloor) {
 
 
@@ -268,9 +273,10 @@ class Player extends EntityCreature {
                 this.onFloor = false;
             }
         }
+        //doing the gravity fuction
         this.doGravity();
 
-
+        //handles what happens on the tick update
         if (onTick) {
 
             this.setX(this.getX() + this.getHSpeed());
@@ -282,19 +288,10 @@ class Player extends EntityCreature {
                     this.jumping = false;
                 }
             }
-            this.setY(this.getY() - this.getheight() + this.getVSpeed());
+            //setting the height correctly
+            this.setY(this.getY() - this.getHeight() + this.getVSpeed());
             this.currentWeapon.lowerCD();
-            switch (this.map.isOOB(this.getX() + this.getSprite().getCenter()*2, this.getY())) {
-                case 1:
-                    this.setX(container.clientWidth - this.getSprite().getCenter()*2);
-                    break;
-                case 2:
-                    this.setX(0);
-                    break;
-                case 3:
-                    this.doRespawn();
-                    break;
-            }
+            //check for Out of bounds
             switch (this.map.isOOB(this.getX(), this.getY())) {
                 case 1:
                     this.setX(container.clientWidth + this.getSprite().getCenter() * 2);
@@ -306,8 +303,8 @@ class Player extends EntityCreature {
                     this.doRespawn();
                     break;
             }
-
-            this.spawn(this.getX(), this.getY() - this.getheight());
+            //spawning at the new place
+            this.spawn(this.getX(), this.getY() - this.getHeight());
         }
     }
 
