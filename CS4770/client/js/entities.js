@@ -31,13 +31,16 @@
             }
         }
         var ctx = canvas.getContext("2d");
-
+        ctx.save();
         var img = this.image;
         if (flipped) {
-          //  img = img.translate(this.image.width, 0);
+          //  ctx.translate(X, Y);
+           // ctx.scale(-1,-1);
         }
+        //console.log(this);
          
         ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X, Y, this.width, this.height);
+        ctx.restore();
 
     }
 

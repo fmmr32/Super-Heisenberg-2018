@@ -12,8 +12,8 @@
     "hp": 100,
     "speed": 4,
     "jump": 5,
-    "leftHand": [ 5, 60 ],
-    "rightHand": [ 40, 60 ],
+    "leftHand": [ -5, 55 ],
+    "rightHand": [ 33, 55 ],
     "source": "../resources/stud.png"
   }
 ]
