@@ -1,22 +1,200 @@
 ﻿[
   {
-    "id": 3,
-    "name": "dirt",
-    "source": "../resources/tiles.png",
-    "width": 32,
-    "height": 9,
-    "startX": 0,
-    "startY": 12,
-    "offSetY":  0
-  },
-  {
     "id": 1,
-    "name": "stone",
-    "source": "../resources/tiles.png",
+    "name": "DirtGrassL",
+    "source": "../resources/gameTile.png",
     "width": 32,
-    "height": 10,
+    "height": 38,
     "startX": 0,
-    "startY": 44,
-    "offSetY": 5
+    "startY": 26,
+    "offSetY": 6
+  },
+
+  {
+    "id": 2,
+    "name": "DirtGrassM",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 38,
+    "startX": 32,
+    "startY": 26,
+    "offSetY": 6
+  },
+
+  {
+    "id": 3,
+    "name": "DirtGrassR",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 38,
+    "startX": 64,
+    "startY": 26,
+    "offSetY": 6
+  },
+
+  {
+    "id": 4,
+    "name": "StoneGrassL",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 38,
+    "startX": 0,
+    "startY": 90,
+    "offSetY": 6
+  },
+
+  {
+    "id": 5,
+    "name": "StoneGrassM",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 38,
+    "startX": 32,
+    "startY": 90,
+    "offSetY": 6
+  },
+
+  {
+    "id": 6,
+    "name": "StoneGrassR",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 38,
+    "startX": 64,
+    "startY": 90,
+    "offSetY": 6
+  },
+
+  {
+    "id": 7,
+    "name": "DirtL",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 284,
+    "offSetY": 4
+  },
+
+  {
+    "id": 8,
+    "name": "DirtM",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 32,
+    "startY": 284,
+    "offSetY": 4
+  },
+
+  {
+    "id": 9,
+    "name": "DirtR",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 64,
+    "startY": 284,
+    "offSetY": 4
+  },
+
+  {
+    "id": 10,
+    "name": "StoneL",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 348,
+    "offSetY": 4
+  },
+
+  {
+    "id": 11,
+    "name": "StoneM",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 32,
+    "startY": 348,
+    "offSetY": 4
+  },
+
+  {
+    "id": 12,
+    "name": "StoneR",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 64,
+    "startY": 348,
+    "offSetY": 4
+  },
+
+  {
+    "id": 13,
+    "name": "SnowL",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 399,
+    "offSetY": 4
+  },
+
+  {
+    "id": 14,
+    "name": "SnowM",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 32,
+    "startY": 399,
+    "offSetY": 4
+  },
+
+  {
+    "id": 15,
+    "name": "SnowR",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 64,
+    "startY": 399,
+    "offSetY": 4
+  },
+
+  {
+    "id": 16,
+    "name": "IceL",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 503,
+    "offSetY": 4
+  },
+
+  {
+    "id": 17,
+    "name": "IceM",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 32,
+    "startY": 503,
+    "offSetY": 4
+  },
+
+  {
+    "id": 18,
+    "name": "IceR",
+    "source": "../resources/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 64,
+    "startY": 503,
+    "offSetY": 4
   }
+
 ]
