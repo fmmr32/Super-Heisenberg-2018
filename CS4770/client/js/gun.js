@@ -17,6 +17,8 @@ function loadWeapons(file) {
         imgNormal.height = w.height;
         imgNormal.startX = w.sheets[0].startX;
         imgNormal.startY = w.sheets[0].startY;
+        imgNormal.offSetX = w.sheets[0].offSetX;
+        imgNormal.offSetY = w.sheets[0].offSetY;
 
         var imgFlipped = new Image();
         imgFlipped.src = "../resources/weapons.png";
@@ -24,8 +26,8 @@ function loadWeapons(file) {
         imgFlipped.height = w.height;
         imgFlipped.startX = w.sheets[1].startX;
         imgFlipped.startY = w.sheets[1].startY;
-
-        
+        imgFlipped.offSetX = w.sheets[1].offSetX;
+        imgFlipped.offSetY = w.sheets[1].offSetY;
 
         var frames = w.frames;
         var frameRate = w.frameRate;
@@ -71,7 +73,7 @@ class Weapon {
 
     fireWeapon(character, map) {
         if (this.tick === 0) {
-            if (character.getHSpeed() >= 0) {
+            if (character.getLastOffSet() < 0) {
                 this.animation.normal.animating = true;
             } else {
                 this.animation.flipped.animating = true;
@@ -90,7 +92,7 @@ class Weapon {
                 var offsetHand = character.rightHand;
                 var offsetGun = this.barrel.Normal;
 
-                if (character.getHSpeed() < 0) {
+                if (character.getLastOffSet() > 0) {
                     angle = -angle - 180;
                     offsetHand = character.leftHand;
                     offsetGun = this.barrel.Flipped;

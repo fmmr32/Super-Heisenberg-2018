@@ -1,13 +1,17 @@
 ﻿class Animation {
     constructor(image, frames, frameRate, columns) {
         this.image = image;
+
         this.frames = frames;
         this.frameRate = frameRate;
         this.columns = columns;
+
         this.width = image.width;
         this.height = image.height;
         this.startX = image.startX;
         this.startY = image.startY;
+        this.offSetX = image.offSetX;
+        this.offSetY = image.offSetY;
 
         this.column = 0;
         this.frame = 1;
@@ -32,7 +36,7 @@
         }
         var ctx = canvas.getContext("2d");
         var img = this.image;
-        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X, Y, this.width, this.height);
+        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX, Y+this.offSetY, this.width, this.height);
 
     }
 
@@ -81,7 +85,7 @@ class Entity {
         this.sprite.draw(X, Y);
         if (this.currentWeapon != undefined) {
             var flipped = false;
-            if (this.getHSpeed() >= 0) {
+            if (this.getLastOffSet() <= 0) {
                 X += this.rightHand[0];
                 Y += this.rightHand[1];
             } else {
