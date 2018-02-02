@@ -10,27 +10,45 @@ function loadWeapon(list) {
 
 function loadWeapons(file) {
     for (var w of JSON.parse(file)) {
-        var img = new Image();
-        img.src = "../resources/weapons.png";
-        img.width = w.width;
-        img.height = w.height;
-        img.startX = w.startX;
-        img.startY = w.startY;
+
+        var imgNormal = new Image();
+        imgNormal.src = "../resources/weapons.png";
+        imgNormal.width = w.width;
+        imgNormal.height = w.height;
+        imgNormal.startX = w.sheets[0].startX;
+        imgNormal.startY = w.sheets[0].startY;
+
+        var imgFlipped = new Image();
+        imgFlipped.src = "../resources/weapons.png";
+        imgFlipped.width = w.width;
+        imgFlipped.height = w.height;
+        imgFlipped.startX = w.sheets[1].startX;
+        imgFlipped.startY = w.sheets[1].startY;
+
+        
+
         var frames = w.frames;
         var frameRate = w.frameRate;
         var columns = w.columns;
         var barrel = {};
-        barrel.x = w.barrelX;
-        barrel.y = w.barrelY;
+        barrel.Normal = {};
+        barrel.Flipped = {};
+        barrel.Normal.x = w.sheets[0].barrelX;
+        barrel.Normal.y = w.sheets[0].barrelY;
+        barrel.Flipped.x = w.sheets[1].barrelX;
+        barrel.Flipped.y = w.sheets[1].barrelY;
 
-        var animation = new Animation(img, frames, frameRate, columns);
+        var animations = {};
+
+        animations.normal = new Animation(imgNormal, frames, frameRate, columns);
+        animations.flipped = new Animation(imgFlipped, frames, frameRate, columns);
 
         switch (w.id) {
             case 1:
-                weapons.set(w.id, new Pistol(w.damage, w.speed, w.cooldown, 0,animation, barrel));
+                weapons.set(w.id, new Pistol(w.damage, w.speed, w.cooldown, 0,animations, barrel));
                 break;
             case 2:
-                weapons.set(w.id, new Shotgun(w.damage, w.speed, w.cooldown, 0, animation, barrel));
+                weapons.set(w.id, new Shotgun(w.damage, w.speed, w.cooldown, 0, animations, barrel));
                 break;
         }
     }
@@ -45,16 +63,24 @@ class Weapon {
         this.bullets = [];
         this.animation = animation;
         this.barrel = barrel;
+
+
     }
 
 
 
     fireWeapon(character, map) {
         if (this.tick === 0) {
-            this.animation.animating = true;
+            if (character.getHSpeed() >= 0) {
+                this.animation.normal.animating = true;
+            } else {
+                this.animation.flipped.animating = true;
+            }
+
             for (var bullet of this.bullets) {
                 var options = {};
                 options.speed = bullet.speed;
+
                 options.x = bullet.x;
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
@@ -62,12 +88,13 @@ class Weapon {
 
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand;
-                var offsetGun = this.barrel;
+                var offsetGun = this.barrel.Normal;
 
                 if (character.getHSpeed() < 0) {
-                    angle = -angle;
+                    angle = -angle - 180;
                     offsetHand = character.leftHand;
-                    offsetGun = -offsetGun;
+                    offsetGun = this.barrel.Flipped;
+                    options.sprite = getSprite(998);
                 }
 
                 var temp = new Bullet(angle, bullet.alive, options);
@@ -82,7 +109,13 @@ class Weapon {
     }
 
     drawGun(X, Y, flipped) {
-        this.animation.doAnimation(X, Y, flipped);
+        if (flipped) {
+            this.animation.flipped.doAnimation(X, Y);
+        } else {
+            this.animation.normal.doAnimation(X, Y);
+        }
+
+        
     }
 
     lowerCD() {
@@ -154,30 +187,24 @@ class Bullet extends EntityMovable {
             //calculating the angle the bullet flies at and what the x,y changes to
             var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
             dy = -dy;
-
             var dx;
             if (this.angle >= 0) {
                 dx = this.speed - Math.abs(dy);
             } else {
                 dx = -this.speed + Math.abs(dy);
             }
-            if (dx >= 0) {
-                dx = Math.floor(dx);
-            } else {
-                dx = Math.ceil(dx);
-            }
+            dx = Math.floor(dx);
+
             if (dy >= 0) {
                 dy = Math.floor(dy);
             } else {
                 dy = Math.ceil(dy);
             }
-
             this.setHSpeed(dx);
 
             this.setVSpeed(dy);
 
             var x = this.getX();
-
             if (this.angle >= 0) {
                 this.lastOffSet = this.getSprite().offSet;
                 x += this.getSprite().getCenter();
@@ -194,8 +221,7 @@ class Bullet extends EntityMovable {
                 var block = this.map.getBlock(x, this.getY());
                 if (block.meta !== null) {
                     if (block.meta.ricochet) {
-                        if (this.angle == 0) {
-                            console.log("stopping bullet");
+                        if (this.angle == 0 || this.angle == -180) {
                             return true;
                         }
                         switch (collision.code) {

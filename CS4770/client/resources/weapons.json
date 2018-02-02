@@ -5,15 +5,25 @@
     "columns": 3,
     "width": 32,
     "height": 32,
-    "frames": 8,
-    "frameRate": 24,
-    "startX": 0,
-    "startY": 0,
     "damage": 10,
     "speed": 5,
+    "frames": 8,
+    "frameRate": 24, 
     "cooldown": 15,
-    "barrelX":16,
-    "barrelY":1
+    "sheets": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 16,
+        "barrelY": 1
+      },
+      {
+        "startX": 0,
+        "startY": 97,
+        "barrelX": -29,
+        "barrelY": 1
+      }
+    ]
   }
 
 ]

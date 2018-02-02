@@ -15,7 +15,7 @@
         this.animating = false;
     }
 
-    doAnimation(X, Y, flipped) {
+    doAnimation(X, Y) {
         if (this.animating) {
             this.frame++;
             this.column++;
@@ -31,16 +31,8 @@
             }
         }
         var ctx = canvas.getContext("2d");
-        ctx.save();
         var img = this.image;
-        if (flipped) {
-          //  ctx.translate(X, Y);
-           // ctx.scale(-1,-1);
-        }
-        //console.log(this);
-         
         ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X, Y, this.width, this.height);
-        ctx.restore();
 
     }
 
@@ -97,7 +89,6 @@ class Entity {
                 Y += this.leftHand[1];
                 flipped = true;
             }
-
             this.currentWeapon.drawGun(X, Y, flipped);
         }
 

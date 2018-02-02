@@ -12,7 +12,7 @@
     "hp": 100,
     "speed": 4,
     "jump": 5,
-    "leftHand": [ -5, 55 ],
+    "leftHand": [ -20, 55 ],
     "rightHand": [ 33, 55 ],
     "source": "../resources/stud.png"
   }
