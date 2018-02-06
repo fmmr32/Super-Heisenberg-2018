@@ -71,8 +71,9 @@ class Weapon {
 
 
 
-    fireWeapon(character, map) {
-        if (this.tick === 0) {
+    fireWeapon(character, level) {
+        //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
+        if (this.tick === 0 && !this.animation.normal.animating && !this.animation.flipped.animating) {
             if (character.getLastOffSet() < 0) {
                 this.animation.normal.animating = true;
             } else {
@@ -86,7 +87,7 @@ class Weapon {
                 options.x = bullet.x;
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
-                options.map = map;
+                options.level = level;
 
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand;
@@ -105,7 +106,7 @@ class Weapon {
                 temp.setX(character.getX() + offsetHand[0] + offsetGun.x);
                 temp.setY(character.getY() - character.getHeight() + offsetHand[1] + offsetGun.y);
                 this.tick = this.cooldown;
-                map.entities.push(temp);
+                level.entities.push(temp);
             }
         }
     }
@@ -145,7 +146,6 @@ class Pistol extends Weapon {
         options.y = 0;
         options.speed = 5;
         options.sprite = getSprite(999);
-
         this.bullets.push(new Bullet(0, 120, options));
     }
 }
@@ -183,6 +183,10 @@ class Bullet extends EntityMovable {
 
 
     bulletTravel(onTick) {
+        if (this.sprite == undefined) {
+            this.sprite = getSprite(999);
+        }
+
         if (this.alive > 0) {
             this.alive--;
 
@@ -220,7 +224,7 @@ class Bullet extends EntityMovable {
             x += collision.modDX;
             //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
-                var block = this.map.getBlock(x, this.getY());
+                var block = this.level.getBlock(x, this.getY());
                 if (block.meta !== null) {
                     if (block.meta.ricochet) {
                         if (this.angle == 0 || this.angle == -180) {

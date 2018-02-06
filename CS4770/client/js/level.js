@@ -1,13 +1,12 @@
 ﻿
 
 
-class MAP {
+class Level {
     constructor(file) {
 
 
         this.file = file;
         this.tiles = [[], []];
-        this.characters = [];
         this.entities = [];
         this.gravity = 0;
 
@@ -47,10 +46,10 @@ class MAP {
         options2.leftHand = any.leftHand;
         options2.rightHand = any.rightHand;
 
-        options2.map = this;
+        options2.level = this;
         options2.weapon = loadWeapon(any.weapon);
-        this.characters.push(new Player(options2));
-        this.characters[0].spawn(this.spawnX, this.spawnY);
+        this.entities.push(new Player(options2));
+        this.entities[0].spawn(this.spawnX, this.spawnY);
 
     }
 
@@ -107,9 +106,7 @@ class MAP {
 
 
     doTick() {
-        for (var char of this.characters) {
-            char.doMove("none", true, true);
-        }
+   
 
 
         for (var entity of this.entities) {
@@ -117,13 +114,15 @@ class MAP {
                 if (entity.bulletTravel(true)) {
                     this.entities.splice(this.entities.indexOf(entity), 1);
                 }
+            } else {
+                entity.doMove("none", true, true);
             }
 
         }
     }
 
     getPlayer() {
-        for (var char of this.characters) {
+        for (var char of this.entities) {
             if (char instanceof Player) {
                 return char;
             }
@@ -175,7 +174,7 @@ class MAP {
 
 function loadMap(name, callback) {
     loadJSONFile(function (response) {
-        map = new MAP(response);
+        map = new Level(response);
         getMap(map);
         callback(map);
     }, "/client/resources/" + name + ".json");

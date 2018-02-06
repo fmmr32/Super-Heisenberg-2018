@@ -12,7 +12,7 @@
     "cooldown": 15,
     "sheets": [
       {
-        "startX": 181,
+        "startX": 196,
         "startY": 0,
         "barrelX": 16,
         "barrelY": 1,
@@ -20,7 +20,7 @@
         "offSetY": 0
       },
       {
-        "startX": 181,
+        "startX": 196,
         "startY": 97,
         "barrelX": -29,
         "barrelY": 1,
@@ -33,16 +33,16 @@
     "name": "shotgun",
     "id": 2,
     "columns": 3,
-    "width": 60,
-    "height": 60,
+    "width": 65,
+    "height": 65,
     "damage": 10,
     "speed": 5,
-    "frames": 10,
-    "frameRate": 30,
+    "frames": 8,
+    "frameRate": 24,
     "cooldown": 30,
     "sheets": [
       {
-        "startX": 278,
+        "startX": 0,
         "startY": 0,
         "barrelX": 16,
         "barrelY": 1,
@@ -51,7 +51,7 @@
       },
       {
         "startX": 0,
-        "startY": 97,
+        "startY": 196,
         "barrelX": -29,
         "barrelY": 1,
         "offSetX": 4,

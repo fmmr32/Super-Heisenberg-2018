@@ -110,8 +110,8 @@ function loadSprites(json, container, tile) {
     }
 }
 
-function changeCanvas(canvas,map) {
-     sprites.forEach(function (key) {
+function changeCanvas(canvas) {
+    sprites.forEach(function (key) {
         key.setCanvas(canvas);
     });
 }

@@ -8,10 +8,10 @@
     "centerPX": 23,
     "offSetPX": 8,
     "name": "stud",
-    "weapon": [ 1 ],
+    "weapon": [ 1,2 ],
     "hp": 100,
     "speed": 4,
-    "jump": 5,
+    "jump": 0.5,
     "leftHand": [ -20, 55 ],
     "rightHand": [ 33, 55 ],
     "source": "../resources/stud.png"

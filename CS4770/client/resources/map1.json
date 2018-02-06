@@ -1,5 +1,5 @@
 {
-  "gravity": 4,
+  "gravity": 9.81,
   "width": 708,
   "height": 500,
   "spawnX": 150,
@@ -121,6 +121,12 @@
       "blockId": 15,
       "blockX": 614,
       "blockY": 360,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 14,
+      "blockX": 582,
+      "blockY": 324,
       "meta": [ { "ricochet": true } ]
     }
 

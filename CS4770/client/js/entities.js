@@ -17,10 +17,17 @@
         this.frame = 1;
         this.row = 0;
         this.animating = false;
+
+        this.then = 0;
+        this.delta = 0;
     }
 
     doAnimation(X, Y) {
-        if (this.animating) {
+        var now = Date.now();
+        this.delta = now - this.then;
+
+        //this loops the animation frame on the animation framerate
+        if (this.animating && this.delta > 1000/this.frameRate) {
             this.frame++;
             this.column++;
             if (this.column == this.columns) {
@@ -33,10 +40,12 @@
                 this.row = 0;
                 this.animating = false;
             }
+
+            this.then = now - (this.delta % this.frameRate);
         }
         var ctx = canvas.getContext("2d");
         var img = this.image;
-        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX, Y+this.offSetY, this.width, this.height);
+        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX, Y + this.offSetY, this.width, this.height);
 
     }
 
@@ -45,7 +54,7 @@
 
 class Entity {
     constructor(options) {
-        this.map = options.map;
+        this.level = options.level;
         this.posX = options.x;
         this.posY = options.y;
         this.sprite = options.sprite;
@@ -65,6 +74,7 @@ class Entity {
     }
 
     setY(y) {
+        this.maxY = Math.min(y, this.maxY);
         this.posY = y;
     }
     getY() {
@@ -76,12 +86,12 @@ class Entity {
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place
-        X -= this.map.getPlayer().getX();
+        X -= this.level.getPlayer().getX();
         X += container.clientWidth / 2;
         X -= this.getSprite().width / 2;
         X = Math.floor(X);
 
-       
+
         this.sprite.draw(X, Y);
         if (this.currentWeapon != undefined) {
             var flipped = false;
@@ -118,6 +128,8 @@ class EntityMovable extends Entity {
         this.lastOffSet = 0;
         this.elapsedTime = 1;
         this.onFloor = false;
+
+        this.maxY = 900;
     }
 
     getSpeed() {
@@ -125,7 +137,7 @@ class EntityMovable extends Entity {
     }
 
     setVSpeed(s) {
-        this.vs = s;
+        this.vs = Math.floor(s);
     }
 
     getVSpeed() {
@@ -133,7 +145,7 @@ class EntityMovable extends Entity {
     }
 
     setHSpeed(s) {
-        this.hs = s;
+        this.hs = Math.floor(s);
 
     }
 
@@ -164,17 +176,12 @@ class EntityMovable extends Entity {
             //checking to see if the from y to the new y collides
             for (var y = fromFY; y <= toFY; y++) {
                 //somewhere it collides
-                if (x < 0 || x >= this.map.width || this.map.getBlock(x, y).Id != 0) {
+                if (x < 0 || x >= this.level.width || this.level.getBlock(x, y).Id != 0) {
                     //setting back to the correct spawn x
-                    if (this.getHSpeed() > 0) {
-                        x -= this.getSprite().getCenter() * 2;
-                    } else if (this.getHSpeed() < 0) {
-                        x += this.getSprite().getOffSet() / 2;
-                    }
+                    console.log(x, y, this.level.getBlock(x, y));
 
-                    x += this.getLastOffSet() >= 0 ? 1 : -1;
 
-                    this.setX(x);
+                    //     this.setX(x);
                     this.setY(y - this.getHeight());
 
                     this.setHSpeed(0);
@@ -201,26 +208,24 @@ class EntityMovable extends Entity {
     }
 
     doGravity() {
-        if (tick % 40 == 0) {
-            var x = this.getX() + this.getSprite().getCenter();
-            if (this.map.getBlock(x, this.getY()).Id == 0) {
-                if (this.map.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
-                    x += this.getLastOffSet();
-                } else if (this.map.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
-                    x -= this.getLastOffSet();
-                }
+        var x = this.getX() + this.getSprite().getCenter();
+        if (this.level.getBlock(x, this.getY()).Id == 0) {
+            if (this.level.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
+                x += this.getLastOffSet();
+            } else if (this.level.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
+                x -= this.getLastOffSet();
             }
-
-            if (this.map.getBlock(x, this.getY()).Id == 0) {
-                this.onFloor = false;
-                this.setVSpeed(this.getVSpeed() + this.map.gravity);
-                this.elapsedTime++;
-            } else {
-                this.elapsedTime = 1;
-                this.onFloor = true;
-            }
-            this.doCollision();
         }
+
+        if (this.level.getBlock(x, this.getY()).Id == 0) {
+            this.onFloor = false;
+            this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
+            this.elapsedTime++;
+        } else {
+            this.elapsedTime = 0;
+            this.onFloor = true;
+        }
+        this.doCollision();
     }
 
     doMove(onTick) {
@@ -254,7 +259,7 @@ class EntityCreature extends EntityMovable {
     doRespawn() {
         if (this.respawn) {
             console.log("Respawn called");
-            this.spawn(this.map.spawnX, this.map.spawnY);
+            this.spawn(this.level.spawnX, this.level.spawnY);
             this.setVSpeed(0);
             this.setHSpeed(0);
         }
@@ -303,7 +308,7 @@ class Player extends EntityCreature {
                 this.setHSpeed(0);
                 break;
             case "fire":
-                this.currentWeapon.fireWeapon(this, self.map);
+                this.currentWeapon.fireWeapon(this, this.level);
                 break;
             case "main":
                 if (this.weapons.length > 1) {
@@ -332,7 +337,7 @@ class Player extends EntityCreature {
 
 
             if (onTick) {
-                var y = -this.getJump() * this.map.gravity;
+                var y = -this.getJump() * this.level.gravity;
                 this.setVSpeed(y);
                 this.onFloor = false;
             }
@@ -345,7 +350,7 @@ class Player extends EntityCreature {
 
             this.setX(this.getX() + this.getHSpeed());
             if (this.jumping) {
-                var y = -this.getJump() * this.map.gravity;
+                var y = -this.getJump() * this.level.gravity;
                 this.setVSpeed(y);
                 this.jumpCounter++;
                 if (this.jumpCounter == 0) {
@@ -356,7 +361,7 @@ class Player extends EntityCreature {
             this.setY(this.getY() - this.getHeight() + this.getVSpeed());
             this.currentWeapon.lowerCD();
             //check for Out of bounds
-            switch (this.map.isOOB(this.getX(), this.getY())) {
+            switch (this.level.isOOB(this.getX(), this.getY())) {
                 case 1:
                     this.setX(container.clientWidth + this.getSprite().getCenter() * 2);
                     break;

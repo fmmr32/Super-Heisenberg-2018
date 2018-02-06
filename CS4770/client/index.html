@@ -3,7 +3,7 @@
 <script type="text/javascript" src="js/config.js"></script>
 <script type="text/javascript" src="js/entities.js"></script>
 <script type="text/javascript" src="js/gun.js"></script>
-<script type="text/javascript" src="js/map.js"></script>
+<script type="text/javascript" src="js/level.js"></script>
 <script type="text/javascript" src="js/sprite.js"></script>
 <script>
 
@@ -18,18 +18,10 @@
         if (left != 0) { elem.style.left = left; }
         if (top != 0) { elem.style.top = top; }
         if (height != 0) {
-            if (type === 'canvas') {
-                elem.height = height;
-            } else {
-                elem.style.height = height;
-            }
+            elem.height = height;
         }
         if (width != 0) {
-            if (type === 'canvas') {
-                elem.width = width;
-            } else {
-                elem.style.width = width;
-            }
+            elem.width = width;
         }
         container.appendChild(elem);
         return elem;
@@ -62,7 +54,7 @@
             resource = "/client/js/";
             conf =
                 loadJSONFile(function (response) {
-                conf = CONFIG(response);
+                    conf = CONFIG(response);
                 }, resource + x);
         } else if (x == "weapons.json") {
             loadJSONFile(function (response) {
@@ -75,7 +67,7 @@
             }, resource + x);
         }
     }
-    
+
 
 
 
@@ -94,23 +86,18 @@
     });
 
 
-    //var interval = setInterval(game, 1000 / 60);
     var running = false;
-    var tick = 0;
+    //var tick = 0;
 
     var interval = setInterval(update, 1000 / 60);
 
     function update() {
         if (loaded) {
+      ///      tick++;
             running = true;
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             map.drawMap();
             map.doTick();
-           
-            
-           
-            
-            
         }
     }
 
