@@ -4,6 +4,13 @@
   "height": 500,
   "spawnX": 150,
   "spawnY": 10,
+  "entities": [
+    {
+      "Id": 997,
+      "X": 20,
+      "Y": 285
+    }
+  ],
   "content": [
     {
       "blockId": 1,

@@ -3,8 +3,8 @@
     "id": 999,
     "name": "bullet",
     "source": "../resources/entities.png",
-    "startX": 10,
-    "startY": 9,
+    "startX": 99,
+    "startY": 43,
     "width": 12,
     "height": 14,
     "centerPX": 6,
@@ -14,11 +14,29 @@
     "id": 998,
     "name": "bullet",
     "source": "../resources/entities.png",
-    "startX": 10,
-    "startY": 42,
+    "startX": 99,
+    "startY": 9,
     "width": 12,
     "height": 14,
     "centerPX": 6,
     "offSetPX": 6
+  },
+  {
+    "id": 997,
+    "name": "coin",
+    "source": "../resources/entities.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 22,
+    "height": 21,
+    "centerPX": 12,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 18,
+        "frameRate": 10,
+        "columns": 4
+      }
+    ]
   }
 ]

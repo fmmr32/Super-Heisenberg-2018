@@ -1,5 +1,5 @@
 ﻿class Animation {
-    constructor(image, frames, frameRate, columns) {
+    constructor(image, frames, frameRate, columns, forcedAnimate) {
         this.image = image;
 
         this.frames = frames;
@@ -16,35 +16,41 @@
         this.column = 0;
         this.frame = 1;
         this.row = 0;
-        this.animating = false;
+
+        this.forcedAnimate = forcedAnimate;
+        this.animating = forcedAnimate;
 
         this.then = 0;
         this.delta = 0;
     }
 
     doAnimation(X, Y) {
+
         var now = Date.now();
         this.delta = now - this.then;
-
         //this loops the animation frame on the animation framerate
-        if (this.animating && this.delta > 1000/this.frameRate) {
+        if (this.animating && this.delta > 1000 / this.frameRate) {
             this.frame++;
             this.column++;
             if (this.column == this.columns) {
                 this.column = 0;
                 this.row++;
             }
-            if (this.frame == this.frames) {
+            if (this.frame > this.frames) {
                 this.frame = 1;
                 this.column = 0;
                 this.row = 0;
-                this.animating = false;
+                this.animating = this.forcedAnimate;
             }
 
             this.then = now - (this.delta % this.frameRate);
+
         }
+
+
         var ctx = canvas.getContext("2d");
         var img = this.image;
+
         ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX, Y + this.offSetY, this.width, this.height);
 
     }
@@ -58,6 +64,12 @@ class Entity {
         this.posX = options.x;
         this.posY = options.y;
         this.sprite = options.sprite;
+
+
+        if (options.animation != undefined) {
+            this.animation = options.animation;
+        }
+
     }
 
 
@@ -86,13 +98,20 @@ class Entity {
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place
-        X -= this.level.getPlayer().getX();
+        try {
+            X -= this.level.getPlayer().getX();
+        } catch (err) {
+
+        }
         X += container.clientWidth / 2;
         X -= this.getSprite().width / 2;
         X = Math.floor(X);
 
+        if (this.animation == undefined) {
 
-        this.sprite.draw(X, Y);
+            this.sprite.draw(X, Y);
+        }
+
         if (this.currentWeapon != undefined) {
             var flipped = false;
             if (this.getLastOffSet() <= 0) {
@@ -104,6 +123,9 @@ class Entity {
                 flipped = true;
             }
             this.currentWeapon.drawGun(X, Y, flipped);
+        }
+        if (this.animation != undefined) {
+            this.animation.doAnimation(X, Y);
         }
 
         canvas.getContext("2d").restore();
@@ -178,7 +200,7 @@ class EntityMovable extends Entity {
                 //somewhere it collides
                 if (x < 0 || x >= this.level.width || this.level.getBlock(x, y).Id != 0) {
                     //setting back to the correct spawn x
-                    console.log(x, y, this.level.getBlock(x, y));
+                    //console.log(x, y, this.level.getBlock(x, y));
 
 
                     //     this.setX(x);
@@ -317,6 +339,9 @@ class Player extends EntityCreature {
                 break;
             case "secondary":
                 this.currentWeapon = this.weapons[0];
+                break;
+            case "action":
+                //insert for interacting with stuff like levers..
                 break;
         }
         //handling to what the player did

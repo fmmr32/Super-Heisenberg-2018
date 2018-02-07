@@ -6,6 +6,7 @@
   "fire": 70,
   "up": 87,
   "secondary": 49,
-  "main": 50
+  "main": 50,
+  "action": 69
 
 }

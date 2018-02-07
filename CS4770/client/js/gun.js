@@ -42,8 +42,8 @@ function loadWeapons(file) {
 
         var animations = {};
 
-        animations.normal = new Animation(imgNormal, frames, frameRate, columns);
-        animations.flipped = new Animation(imgFlipped, frames, frameRate, columns);
+        animations.normal = new Animation(imgNormal, frames, frameRate, columns, false);
+        animations.flipped = new Animation(imgFlipped, frames, frameRate, columns, false);
 
         switch (w.id) {
             case 1:

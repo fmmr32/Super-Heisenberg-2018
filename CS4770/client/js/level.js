@@ -23,7 +23,7 @@ class Level {
         any = any[0];
 
         var options = {};
-        options.Id = any.Id;
+        options.id = any.Id;
         options.name = any.name;
 
         options.image = {};
@@ -49,7 +49,8 @@ class Level {
         options2.level = this;
         options2.weapon = loadWeapon(any.weapon);
         this.entities.push(new Player(options2));
-        this.entities[0].spawn(this.spawnX, this.spawnY);
+        this.getPlayer().spawn(this.spawnX, this.spawnY);
+
 
     }
 
@@ -90,6 +91,37 @@ class Level {
             }
             this.setSprite(block);
         }
+        for (var ent of any.entities) {
+            var id = ent.Id;
+            var x = ent.X;
+            var y = ent.Y;
+
+            var img = new Image();
+            img.src = getSprite(id).image.src;
+            img.width = getSprite(id).width;
+            img.height = getSprite(id).height;
+            img.startX = getSprite(id).image.startX;
+            img.startY = getSprite(id).image.startY;
+            img.offSetX = 0;
+            img.offSetY = 0;
+
+
+            var frames = getSprite(id).animation.frames;
+            var frameRate = getSprite(id).animation.frameRate;
+            var columns = getSprite(id).animation.columns;
+
+            var animation = new Animation(img, frames, frameRate, columns, true);
+            var options = {};
+            options.x = x;
+            options.y = y;
+            options.level = this;
+            options.sprite = getSprite(id);
+            options.animation = animation;
+
+            var entity = new Entity(options);
+            this.entities.push(entity);
+        }
+
     }
 
     setImage(ctx) {
@@ -114,8 +146,10 @@ class Level {
                 if (entity.bulletTravel(true)) {
                     this.entities.splice(this.entities.indexOf(entity), 1);
                 }
-            } else {
+            } else if (entity instanceof EntityCreature) {
                 entity.doMove("none", true, true);
+            } else {
+                entity.spawn(entity.getX(), entity.getY() - entity.getHeight());
             }
 
         }
