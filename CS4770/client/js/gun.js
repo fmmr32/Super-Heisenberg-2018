@@ -93,6 +93,7 @@ class Weapon {
                 var offsetHand = character.rightHand;
                 var offsetGun = this.barrel.Normal;
 
+                //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
                     angle = -angle - 180;
                     offsetHand = character.leftHand;

@@ -38,10 +38,6 @@
         });
 
         socket.on(file, function (data) {
-            if (file.includes("map")) {
-
-                loaded = true;
-            }
             callback(data.toString());
         });
 
@@ -87,13 +83,11 @@
 
 
     var running = false;
-    //var tick = 0;
 
     var interval = setInterval(update, 1000 / 60);
 
     function update() {
         if (loaded) {
-      ///      tick++;
             running = true;
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             map.drawMap();

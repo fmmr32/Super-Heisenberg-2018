@@ -10,14 +10,14 @@ class Level {
         this.entities = [];
         this.gravity = 0;
 
-    
+
         this.loadBlocks(file);
 
     }
 
 
 
-
+    //temporary load character function
     loadCharacter(response) {
         var any = JSON.parse(response);
         any = any[0];
@@ -63,14 +63,16 @@ class Level {
         this.height = any.height;
 
         canvas = create('canvas', 'fg', 0, 0, this.width, this.height);
-      
 
+        var background = create('canvas', 'bg', 0, 0, this.width, this.height);
 
         this.container = canvas;
         changeCanvas(canvas, this);
 
         this.spawnX = any.spawnX;
         this.spawnY = any.spawnY;
+
+        //loading in the tiles of a level
         for (var tile of any.content) {
             var block = {};
             block.Id = tile.blockId;
@@ -89,8 +91,9 @@ class Level {
                     this.tiles[x][y] = block;
                 }
             }
-            this.setSprite(block);
+            this.setSprite(block, background);
         }
+        //loading in the entities of a level
         for (var ent of any.entities) {
             var id = ent.Id;
             var x = ent.X;
@@ -131,28 +134,35 @@ class Level {
     }
 
 
-    setSprite(block) {
-        getSprite(block.Id).drawBackground(block.X, block.Y);
+    setSprite(block, background) {
+        getSprite(block.Id).drawBackground(block.X, block.Y, background);
     }
 
 
 
     doTick() {
-   
+
 
 
         for (var entity of this.entities) {
+            //doing the bullet handling
             if (entity instanceof Bullet) {
                 if (entity.bulletTravel(true)) {
-                    this.entities.splice(this.entities.indexOf(entity), 1);
+                    this.removeEntity(entity);
                 }
+            //handles the creatures
             } else if (entity instanceof EntityCreature) {
                 entity.doMove("none", true, true);
+             //handles other entities
             } else {
                 entity.spawn(entity.getX(), entity.getY() - entity.getHeight());
             }
 
         }
+    }
+
+    removeEntity(entity) {
+        this.entities.splice(this.entities.indexOf(entity), 1);
     }
 
     getPlayer() {
@@ -178,6 +188,15 @@ class Level {
         return this.tiles[X][Y];
     }
 
+    getEntity(X, Y) {
+        for (var entity of this.entities) {
+            if (entity.getX() < X && X < entity.getX() + entity.getSprite().width && entity.getY() - entity.getHeight() < Y && Y < entity.getY()) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
     isOOB(x, y) {
         if (x > this.width) {
             return 1;
@@ -190,12 +209,13 @@ class Level {
         }
     }
 
+    //redraws the canvas with the player centered
     drawMap() {
 
         if (this.getPlayer() != undefined) {
             var x = container.clientWidth / 2 - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
 
-      
+
             var context = canvas.getContext("2d");
 
 
@@ -204,7 +224,7 @@ class Level {
         }
     }
 }
-   
+
 
 function loadMap(name, callback) {
     loadJSONFile(function (response) {

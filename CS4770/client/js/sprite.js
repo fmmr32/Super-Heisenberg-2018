@@ -52,13 +52,14 @@ SPRITE.prototype = {
             height //height of sprite
         );
     },
-    drawBackground: function (desX, desY) {
+    drawBackground: function (desX, desY, canvas) {
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;
         var height = this.height;
-        var context = this.container.getContext("2d");
+        var context = canvas.getContext("2d");
         var image = this.image;
+
         //draws the actual image when the image is loaded
         img.onload = function () {
             context.drawImage(
@@ -123,4 +124,6 @@ function changeCanvas(canvas) {
     sprites.forEach(function (key) {
         key.setCanvas(canvas);
     });
+ 
+    loaded = true;
 }

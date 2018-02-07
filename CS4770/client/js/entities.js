@@ -94,6 +94,7 @@ class Entity {
     }
 
     spawn(X, Y) {
+
         canvas.getContext("2d").save();
         this.posX = X;
         this.posY = Y;
@@ -101,7 +102,6 @@ class Entity {
         try {
             X -= this.level.getPlayer().getX();
         } catch (err) {
-
         }
         X += container.clientWidth / 2;
         X -= this.getSprite().width / 2;
@@ -112,6 +112,7 @@ class Entity {
             this.sprite.draw(X, Y);
         }
 
+        //drawing the weapon on the entity if it has one
         if (this.currentWeapon != undefined) {
             var flipped = false;
             if (this.getLastOffSet() <= 0) {
@@ -124,6 +125,8 @@ class Entity {
             }
             this.currentWeapon.drawGun(X, Y, flipped);
         }
+
+        //running an animation loop for standard entities
         if (this.animation != undefined) {
             this.animation.doAnimation(X, Y);
         }
@@ -179,49 +182,65 @@ class EntityMovable extends Entity {
         return this.lastOffSet;
     }
     doCollision() {
+
+        //getting the from and to values of the entity
         var creaX = this.getX() + this.getSprite().getCenter();
         if (this.getHSpeed() > 0) {
             creaX += this.getSprite().getCenter();
         } else if (this.getHSpeed() <= 0) {
             creaX -= this.getSprite().getCenter();
         }
-        var creaY = this.getY() - 1;
+        var creaY = this.getY() - this.getHeight();
 
         var fromX = Math.min(creaX, creaX + this.getHSpeed());
-        var fromFY = Math.min(creaY, creaY + this.getVSpeed());
+        var fromY = Math.min(creaY, creaY + this.getVSpeed());
 
         var toX = Math.max(creaX, creaX + this.getHSpeed());
-        var toFY = Math.max(creaY, creaY + this.getVSpeed());
+        var toY = Math.max(creaY, creaY + this.getVSpeed() + this.getHeight()-1);
 
         //checking to see if the from x to the new x collides
         for (var x = fromX; x <= toX; x++) {
             //checking to see if the from y to the new y collides
-            for (var y = fromFY; y <= toFY; y++) {
+            for (var y = fromY; y <= toY; y++) {
                 //somewhere it collides
-                if (x < 0 || x >= this.level.width || this.level.getBlock(x, y).Id != 0) {
-                    //setting back to the correct spawn x
-                    //console.log(x, y, this.level.getBlock(x, y));
+                if (!this.level.isOOB(x, y)) {
+                    if (this.level.getBlock(x, y).Id != 0) {
+                        //setting back to the correct spawn x
+                        //console.log(x, y, this.level.getBlock(x, y));
 
 
-                    //     this.setX(x);
-                    this.setY(y - this.getHeight());
+                        //     this.setX(x);
+                        this.setY(y - this.getHeight());
 
-                    this.setHSpeed(0);
-                    this.setVSpeed(0);
+                        this.setHSpeed(0);
+                        this.setVSpeed(0);
 
-                    //below is needed for bullets, ignored for creatures
-                    var temp = {};
-                    temp.modDX = Math.abs(fromX - x);
-                    if (y == fromFY) {
-                        temp.code = 2;
-                    } else {
-                        if (this.getVSpeed() > 0) {
-                            temp.code = 3;
+                        //below is needed for bullets, ignored for creatures
+                        var temp = {};
+                        temp.modDX = Math.abs(fromX - x);
+                        if (y == fromY) {
+                            temp.code = 2;
                         } else {
-                            temp.code = 1;
+                            if (this.getVSpeed() > 0) {
+                                temp.code = 3;
+                            } else {
+                                temp.code = 1;
+                            }
+                        }
+                        return temp;
+                    }
+                    var collidingEntity = this.level.getEntity(x, y);
+                    if (collidingEntity != null && collidingEntity != this) {
+                        if (collidingEntity instanceof Bullet && this instanceof EntityCreature) {
+                            //do damage to the origin entity
+                        } else if (this instanceof Player && collidingEntity instanceof EntityCreature) {
+                            //see if there is touch damage
+                        } else if (this instanceof Player) {
+                            //picking up a coin?
+                            this.money++;
+                            this.level.removeEntity(collidingEntity);
                         }
                     }
-                    return temp;
                 }
             }
         }
@@ -229,8 +248,10 @@ class EntityMovable extends Entity {
 
     }
 
+    //handles the gravity
     doGravity() {
         var x = this.getX() + this.getSprite().getCenter();
+        //checks if a enitty is in the air then setting the last offset, this allows the player to stand on the edge
         if (this.level.getBlock(x, this.getY()).Id == 0) {
             if (this.level.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
                 x += this.getLastOffSet();
@@ -238,7 +259,7 @@ class EntityMovable extends Entity {
                 x -= this.getLastOffSet();
             }
         }
-
+        //see if the entity is in the air then let the entity fall
         if (this.level.getBlock(x, this.getY()).Id == 0) {
             this.onFloor = false;
             this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
@@ -250,6 +271,7 @@ class EntityMovable extends Entity {
         this.doCollision();
     }
 
+    //bacis do move function for an entity
     doMove(onTick) {
         if (onTick) {
             this.setX(this.getX() + this.getHSpeed());
@@ -280,7 +302,6 @@ class EntityCreature extends EntityMovable {
 
     doRespawn() {
         if (this.respawn) {
-            console.log("Respawn called");
             this.spawn(this.level.spawnX, this.level.spawnY);
             this.setVSpeed(0);
             this.setHSpeed(0);
@@ -306,6 +327,8 @@ class Player extends EntityCreature {
         this.jumping = false;
         this.jumpCounter = 0;
         this.startY = 0;
+
+        this.money = 0;
     }
 
 
