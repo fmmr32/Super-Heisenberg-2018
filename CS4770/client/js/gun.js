@@ -101,7 +101,7 @@ class Weapon {
                     options.sprite = getSprite(998);
                 }
 
-                var temp = new Bullet(angle, bullet.alive, options);
+                var temp = new Bullet(angle, bullet.alive, options, character);
                
 
                 temp.setX(character.getX() + offsetHand[0] + offsetGun.x);
@@ -176,10 +176,11 @@ class Shotgun extends Weapon {
 
 
 class Bullet extends EntityMovable {
-    constructor(angle, alive, options) {
+    constructor(angle, alive, options, owner) {
         super(options);
         this.angle = angle;
         this.alive = alive;
+        this.owner = owner;
     }
 
 
@@ -263,6 +264,10 @@ class Bullet extends EntityMovable {
             return true;
 
         }
+    }
+
+    getOwner() {
+        return this.owner;
     }
 
 }

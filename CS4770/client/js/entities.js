@@ -153,7 +153,7 @@ class EntityMovable extends Entity {
         this.lastOffSet = 0;
         this.elapsedTime = 1;
         this.onFloor = false;
-
+        this.flagged = false;
         this.maxY = 900;
     }
 
@@ -187,7 +187,7 @@ class EntityMovable extends Entity {
         var creaX = this.getX() + this.getSprite().getCenter();
         if (this.getHSpeed() > 0) {
             creaX += this.getSprite().getCenter();
-        } else if (this.getHSpeed() <= 0) {
+        } else if (this.getHSpeed() < 0) {
             creaX -= this.getSprite().getCenter();
         }
         var creaY = this.getY() - this.getHeight();
@@ -206,10 +206,10 @@ class EntityMovable extends Entity {
                 if (!this.level.isOOB(x, y)) {
                     if (this.level.getBlock(x, y).Id != 0) {
                         //setting back to the correct spawn x
-                        //console.log(x, y, this.level.getBlock(x, y));
+                        if (this.getVSpeed() == 0) {
+                            y = toY+1;
+                        }
 
-
-                        //     this.setX(x);
                         this.setY(y - this.getHeight());
 
                         this.setHSpeed(0);
@@ -232,9 +232,12 @@ class EntityMovable extends Entity {
                     var collidingEntity = this.level.getEntity(x, y);
                     if (collidingEntity != null && collidingEntity != this) {
                         if (collidingEntity instanceof Bullet && this instanceof EntityCreature) {
-                            //do damage to the origin entity
+                            if (collidingEntity.getOwner() != this) {
+                                //do damage to origin entity...
+                            }
                         } else if (this instanceof Player && collidingEntity instanceof EntityCreature) {
                             //see if there is touch damage
+                            console.log("touching someone");
                         } else if (this instanceof Player) {
                             //picking up a coin?
                             this.money++;
@@ -293,11 +296,15 @@ class EntityCreature extends EntityMovable {
 
         this.gravity = options.gravity;
 
-
+        this.startY = 0;
         this.jump = options.jump;
 
         this.respawn = false;
-
+        this.leftDown = false;
+        this.rightDown = false;
+        this.jumpDown = false;
+        this.jumping = false;
+        this.jumpCounter = 0;
     }
 
     doRespawn() {
@@ -312,26 +319,6 @@ class EntityCreature extends EntityMovable {
     getJump() {
         return this.jump;
     }
-
-
-}
-
-
-class Player extends EntityCreature {
-    constructor(options) {
-        super(options);
-        this.respawn = true;
-        this.leftDown = false;
-        this.rightDown = false;
-        this.jumpDown = false;
-        this.jumping = false;
-        this.jumpCounter = 0;
-        this.startY = 0;
-
-        this.money = 0;
-    }
-
-
 
     doMove(type, isDown, onTick) {
         //see what type of movement the player did
@@ -349,8 +336,10 @@ class Player extends EntityCreature {
 
                 this.jumpDown = isDown;
                 break;
-            case "stopH":
-                this.setHSpeed(0);
+            case "stop":
+                this.rightDown = false;
+                this.leftDown = false;
+                this.jumpDown = false;
                 break;
             case "fire":
                 this.currentWeapon.fireWeapon(this, this.level);
@@ -424,5 +413,25 @@ class Player extends EntityCreature {
             this.spawn(this.getX(), this.getY() - this.getHeight());
         }
     }
+
+
+}
+
+
+class Player extends EntityCreature {
+    constructor(options) {
+        super(options);
+        this.respawn = true;
+       
+        
+
+        this.money = 0;
+    }
+
+
+    getMoney() {
+        return this.money;
+    }
+    
 
 }
