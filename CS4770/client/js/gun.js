@@ -42,8 +42,8 @@ function loadWeapons(file) {
 
         var animations = {};
 
-        animations.normal = new Animation(imgNormal, frames, frameRate, columns);
-        animations.flipped = new Animation(imgFlipped, frames, frameRate, columns);
+        animations.normal = new Animation(imgNormal, frames, frameRate, columns, false);
+        animations.flipped = new Animation(imgFlipped, frames, frameRate, columns, false);
 
         switch (w.id) {
             case 1:
@@ -71,8 +71,9 @@ class Weapon {
 
 
 
-    fireWeapon(character, map) {
-        if (this.tick === 0) {
+    fireWeapon(character, level) {
+        //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
+        if (this.tick === 0 && !this.animation.normal.animating && !this.animation.flipped.animating) {
             if (character.getLastOffSet() < 0) {
                 this.animation.normal.animating = true;
             } else {
@@ -86,12 +87,14 @@ class Weapon {
                 options.x = bullet.x;
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
-                options.map = map;
+                options.level = level;
+                options.damage = this.damage;
 
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand;
                 var offsetGun = this.barrel.Normal;
 
+                //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
                     angle = -angle - 180;
                     offsetHand = character.leftHand;
@@ -99,13 +102,13 @@ class Weapon {
                     options.sprite = getSprite(998);
                 }
 
-                var temp = new Bullet(angle, bullet.alive, options);
+                var temp = new Bullet(angle, bullet.alive, options, character);
                
 
                 temp.setX(character.getX() + offsetHand[0] + offsetGun.x);
                 temp.setY(character.getY() - character.getHeight() + offsetHand[1] + offsetGun.y);
                 this.tick = this.cooldown;
-                map.entities.push(temp);
+                level.entities.push(temp);
             }
         }
     }
@@ -145,7 +148,6 @@ class Pistol extends Weapon {
         options.y = 0;
         options.speed = 5;
         options.sprite = getSprite(999);
-
         this.bullets.push(new Bullet(0, 120, options));
     }
 }
@@ -175,14 +177,20 @@ class Shotgun extends Weapon {
 
 
 class Bullet extends EntityMovable {
-    constructor(angle, alive, options) {
+    constructor(angle, alive, options, owner) {
         super(options);
         this.angle = angle;
         this.alive = alive;
+        this.owner = owner;
+        this.damage = options.damage;
     }
 
 
     bulletTravel(onTick) {
+        if (this.sprite == undefined) {
+            this.sprite = getSprite(999);
+        }
+
         if (this.alive > 0) {
             this.alive--;
 
@@ -220,7 +228,7 @@ class Bullet extends EntityMovable {
             x += collision.modDX;
             //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
-                var block = this.map.getBlock(x, this.getY());
+                var block = this.level.getBlock(x, this.getY());
                 if (block.meta !== null) {
                     if (block.meta.ricochet) {
                         if (this.angle == 0 || this.angle == -180) {
@@ -258,6 +266,10 @@ class Bullet extends EntityMovable {
             return true;
 
         }
+    }
+
+    getOwner() {
+        return this.owner;
     }
 
 }

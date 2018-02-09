@@ -35,7 +35,7 @@
     <Compile Include="client\js\config.js" />
     <Compile Include="client\js\editor.js" />
     <Compile Include="client\js\gun.js" />
-    <Compile Include="client\js\map.js" />
+    <Compile Include="client\js\level.js" />
     <Compile Include="client\js\sprite.js" />
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />

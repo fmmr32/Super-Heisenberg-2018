@@ -1,9 +1,62 @@
 {
-  "gravity": 4,
+  "gravity": 9.81,
   "width": 708,
   "height": 500,
   "spawnX": 150,
   "spawnY": 10,
+  "creatures": [
+    {
+      "Id": 996,
+      "X": 70,
+      "Y": 210,
+      "moveSet": [
+        {
+          "type": "left",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+        {
+          "type": "right",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0
+        }
+      ]
+    },
+    {
+      "Id": 996,
+      "X": 498,
+      "Y": 250
+    }
+  ],
+  "entities": [
+    {
+      "Id": 997,
+      "X": 20,
+      "Y": 285
+    },
+    {
+      "Id": 997,
+      "X": 40,
+      "Y": 285
+    },
+    {
+      "Id": 997,
+      "X": 20,
+      "Y": 245
+    },
+    {
+      "Id": 997,
+      "X": 100,
+      "Y": 285
+    },
+    {
+      "Id": 997,
+      "X": 300,
+      "Y": 315
+    }
+  ],
   "content": [
     {
       "blockId": 1,
@@ -121,6 +174,12 @@
       "blockId": 15,
       "blockX": 614,
       "blockY": 360,
+      "meta": [ { "ricochet": true } ]
+    },
+    {
+      "blockId": 14,
+      "blockX": 582,
+      "blockY": 324,
       "meta": [ { "ricochet": true } ]
     }
 

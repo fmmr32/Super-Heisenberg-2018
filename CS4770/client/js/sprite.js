@@ -11,6 +11,12 @@ SPRITE = function (options) {
     this.center = options.center;
     this.offSet = options.offSet;
 
+    if (options.animation != undefined) {
+        this.animation = options.animation;
+    }
+    if (options.complex != undefined) {
+        this.complex = options.complex;
+    }
 
     this.getCenter = function () {
         return this.center;
@@ -49,13 +55,14 @@ SPRITE.prototype = {
             height //height of sprite
         );
     },
-    drawBackground: function (desX, desY) {
+    drawBackground: function (desX, desY, canvas) {
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;
         var height = this.height;
-        var context = this.container.getContext("2d");
+        var context = canvas.getContext("2d");
         var image = this.image;
+
         //draws the actual image when the image is loaded
         img.onload = function () {
             context.drawImage(
@@ -105,13 +112,23 @@ function loadSprites(json, container, tile) {
         if (tile.offSetY !== undefined) {
             options.offSet = tile.offSetY;
         }
+        if (tile.animation != undefined) {
+            options.animation = tile.animation;
+         
+        }
+        if (tile.complex != undefined) {
+            options.complex = tile.complex;
+           
+        }
 
         newSprite(options);
     }
 }
 
-function changeCanvas(canvas,map) {
-     sprites.forEach(function (key) {
+function changeCanvas(canvas) {
+    sprites.forEach(function (key) {
         key.setCanvas(canvas);
     });
+ 
+    loaded = true;
 }
