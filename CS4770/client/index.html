@@ -1,15 +1,67 @@
-﻿<div id="container" style="height:500px; width:500px; overflow:hidden; border: 2px solid"></div>
+﻿<div id ="signDiv">	
+	username: <input id ="signDiv-username" type ="text"></input><br>
+	password: <input id ="signDiv-password" type+"password"></input>
+	<button id="signDiv-signIn">Sign in</button>
+	<button id="signDiv-signUp">Sign up</button>
+</div>
+
+
+<div id="gameDiv" style="display:none;">
+   
+ 
+   
+</div>
+
 <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script type="text/javascript" src="js/config.js"></script>
 <script type="text/javascript" src="js/entities.js"></script>
 <script type="text/javascript" src="js/gun.js"></script>
 <script type="text/javascript" src="js/map.js"></script>
 <script type="text/javascript" src="js/sprite.js"></script>
+
+ 
+
+
+
+	
+	
+	
 <script>
 
+//codes for login
+
+	var socket = io();
+	
+	//sign
+	var signDiv = document.getElementById('signDiv');
+	var signDivUsername = document.getElementById('signDiv-username');
+	var signDivSignIn = document.getElementById('signDiv-signIn');
+	var signDivSignUp = document.getElementById('signDiv-signUp');
+	var signDivPassword = document.getElementById('signDiv-password');
+	
+    signDivSignIn.onclick = function(){
+            socket.emit('signIn',{username:signDivUsername.value,password:signDivPassword.value});
+        }
+        signDivSignUp.onclick = function(){
+            socket.emit('signUp',{username:signDivUsername.value,password:signDivPassword.value});
+        }
+        socket.on('signInResponse',function(data){
+            if(data.success){
+                signDiv.style.display = 'none';
+                gameDiv.style.display = 'inline-block';
+            } else
+                alert("Sign in unsuccessul.");
+        });
+        socket.on('signUpResponse',function(data){
+            if(data.success){
+                alert("Sign up successul.");
+            } else
+                alert("Sign up unsuccessul.");
+        });
+	//game
 
     var canvas = {};
-    var container = document.getElementById("container");
+    var container = document.getElementById("gameDiv");
 
 
     function create(type, id, left, top, width, height) {
@@ -38,7 +90,7 @@
     var neededFiles = ["tiles.json", "entities.json", "config.json", "weapons.json"];
 
 
-    var socket = io();
+    
     var loaded = false;
     function loadJSONFile(callback, file) {
         socket.emit('loadJSON', {
