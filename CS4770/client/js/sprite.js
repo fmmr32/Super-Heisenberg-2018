@@ -14,6 +14,9 @@ SPRITE = function (options) {
     if (options.animation != undefined) {
         this.animation = options.animation;
     }
+    if (options.complex != undefined) {
+        this.complex = options.complex;
+    }
 
     this.getCenter = function () {
         return this.center;
@@ -110,10 +113,12 @@ function loadSprites(json, container, tile) {
             options.offSet = tile.offSetY;
         }
         if (tile.animation != undefined) {
-            options.animation = {};
-            options.animation.frames = tile.animation[0].frames;
-            options.animation.frameRate = tile.animation[0].frameRate;
-            options.animation.columns = tile.animation[0].columns;
+            options.animation = tile.animation;
+         
+        }
+        if (tile.complex != undefined) {
+            options.complex = tile.complex;
+           
         }
 
         newSprite(options);

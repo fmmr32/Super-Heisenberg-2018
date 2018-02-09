@@ -4,7 +4,7 @@
     "name": "bullet",
     "source": "../resources/entities.png",
     "startX": 99,
-    "startY": 43,
+    "startY": 9,
     "width": 12,
     "height": 14,
     "centerPX": 6,
@@ -15,7 +15,7 @@
     "name": "bullet",
     "source": "../resources/entities.png",
     "startX": 99,
-    "startY": 9,
+    "startY": 43,
     "width": 12,
     "height": 14,
     "centerPX": 6,
@@ -31,12 +31,57 @@
     "height": 21,
     "centerPX": 12,
     "offSetPX": 0,
-    "animation": [
-      {
-        "frames": 18,
-        "frameRate": 10,
-        "columns": 4
-      }
-    ]
+    "animation": {
+      "frames": 18,
+      "frameRate": 10,
+      "columns": 4
+    }
+
+  },
+  {
+    "id": 996,
+    "name": "goomba",
+    "source": "../resources/entities.png",
+    "startX": 95,
+    "startY": 69,
+    "width": 25,
+    "height": 20,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 2,
+      "hp": 10,
+      "moveSet": [
+        {
+          "type": "left",
+          "advanceAfter": 10,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+        {
+          "type": "right",
+          "advanceAfter": 5,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+        {
+          "type": "jump",
+          "advanceAfter": 1,
+          "delayAfter": 1,
+          "delayBefore": 0
+        },
+        {
+          "type": "right",
+          "advanceAfter": 4,
+          "delayAfter": 0,
+          "delayBefore": 0
+        }
+
+      ],
+      "weapon": [],
+      "jump": 0.5,
+      "damage": 2
+    }
+
   }
 ]

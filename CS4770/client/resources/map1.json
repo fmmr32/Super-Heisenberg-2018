@@ -4,6 +4,32 @@
   "height": 500,
   "spawnX": 150,
   "spawnY": 10,
+  "creatures": [
+    {
+      "Id": 996,
+      "X": 70,
+      "Y": 210,
+      "moveSet": [
+        {
+          "type": "left",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+        {
+          "type": "right",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0
+        }
+      ]
+    },
+    {
+      "Id": 996,
+      "X": 498,
+      "Y": 250
+    }
+  ],
   "entities": [
     {
       "Id": 997,

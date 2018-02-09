@@ -108,21 +108,51 @@ class Level {
             img.offSetX = 0;
             img.offSetY = 0;
 
+            if (getSprite(id).animation != undefined) {
+                var frames = getSprite(id).animation.frames;
+                var frameRate = getSprite(id).animation.frameRate;
+                var columns = getSprite(id).animation.columns;
 
-            var frames = getSprite(id).animation.frames;
-            var frameRate = getSprite(id).animation.frameRate;
-            var columns = getSprite(id).animation.columns;
+                var animation = new Animation(img, frames, frameRate, columns, true);
 
-            var animation = new Animation(img, frames, frameRate, columns, true);
+                var options = {};
+                options.x = x;
+                options.y = y;
+                options.level = this;
+                options.sprite = getSprite(id);
+                options.animation = animation;
+
+                var entity = new Entity(options);
+                this.entities.push(entity);
+            }
+        }
+        for (var ent of any.creatures) {
+            var id = ent.Id;
+            var x = ent.X;
+            var y = ent.Y;
+
+            var sprite = getSprite(id);
+
             var options = {};
+            options.gravity = this.gravity;
+            options.jump = sprite.complex.jump;
+            options.hp = sprite.complex.hp;
+            options.speed = sprite.complex.speed;
+            options.moves = sprite.complex.moves;
+            options.level = this;
             options.x = x;
             options.y = y;
-            options.level = this;
-            options.sprite = getSprite(id);
-            options.animation = animation;
+            options.sprite = sprite;
+            options.weapon = sprite.complex.weapon;
+            options.damage = sprite.complex.damage;
+            options.moveSet = new MoveSet(sprite.complex.moveSet);
+            if (ent.moveSet != undefined) {
+                options.moveSet = new MoveSet(ent.moveSet);
+            }
 
-            var entity = new Entity(options);
-            this.entities.push(entity);
+
+            var creature = new EntityCreature(options);
+            this.entities.push(creature);
         }
 
     }
@@ -142,23 +172,38 @@ class Level {
 
     doTick() {
 
-
-
         for (var entity of this.entities) {
             //doing the bullet handling
+            if (!(entity instanceof Bullet) && !(entity instanceof Player)) {
+                if (this.outSideFrame(entity.getX())) {
+                    continue;
+                } else {
+                    entity.sleep = false;
+                }
+            }
+
             if (entity instanceof Bullet) {
                 if (entity.bulletTravel(true)) {
                     this.removeEntity(entity);
                 }
-            //handles the creatures
+                //handles the creatures
             } else if (entity instanceof EntityCreature) {
                 entity.doMove("none", true, true);
-             //handles other entities
+                //handles other entities
             } else {
                 entity.spawn(entity.getX(), entity.getY() - entity.getHeight());
             }
 
         }
+    }
+
+    outSideFrame(X) {
+        var x = this.getPlayer().getX();
+
+        if (x + container.clientWidth / 2 +20 < X) {
+            return true;
+        }
+        return false;
     }
 
     removeEntity(entity) {

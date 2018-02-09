@@ -88,6 +88,7 @@ class Weapon {
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
                 options.level = level;
+                options.damage = this.damage;
 
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand;
@@ -181,6 +182,7 @@ class Bullet extends EntityMovable {
         this.angle = angle;
         this.alive = alive;
         this.owner = owner;
+        this.damage = options.damage;
     }
 
 

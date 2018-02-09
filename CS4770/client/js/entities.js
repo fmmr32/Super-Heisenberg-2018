@@ -21,15 +21,14 @@
         this.animating = forcedAnimate;
 
         this.then = 0;
-        this.delta = 0;
     }
 
     doAnimation(X, Y) {
 
         var now = Date.now();
-        this.delta = now - this.then;
+        var delta = now - this.then;
         //this loops the animation frame on the animation framerate
-        if (this.animating && this.delta > 1000 / this.frameRate) {
+        if (this.animating && delta > 1000 / this.frameRate) {
             this.frame++;
             this.column++;
             if (this.column == this.columns) {
@@ -43,7 +42,7 @@
                 this.animating = this.forcedAnimate;
             }
 
-            this.then = now - (this.delta % this.frameRate);
+            this.then = now - (delta % this.frameRate);
 
         }
 
@@ -58,6 +57,53 @@
 }
 
 
+class MoveSet {
+    constructor(options) {
+        this.moves = options;
+
+        this.currentMove = 0;
+        this.tick = 0;
+
+        this.then = 0;
+
+        this.delay = 0;
+    }
+
+    doMove() {
+        var now = Date.now();
+        var delta = now - this.then;
+        var move = "stop";
+        var current = this.moves[this.currentMove];
+        if (delta > 1000 * (this.delay + current.delayBefore)) {
+            var current = this.moves[this.currentMove];
+            move = current.type;
+
+            this.then = now - (delta % this.delay);
+            this.delay = current.delayAfter;
+            this.tick++;
+            if (this.tick == current.advanceAfter) {
+                this.advanceMove(current);
+            }
+
+            if (isNaN(this.then)) {
+                this.then = now
+            }
+        }
+        return move;
+    }
+
+    advanceMove(move) {
+        this.tick = 0;
+        this.currentMove++;
+        this.delta = move.delayAfter;
+        if (this.currentMove == this.moves.length) {
+            this.currentMove = 0;
+        }
+    }
+
+
+}
+
 class Entity {
     constructor(options) {
         this.level = options.level;
@@ -65,6 +111,7 @@ class Entity {
         this.posY = options.y;
         this.sprite = options.sprite;
 
+        this.sleep = true;
 
         if (options.animation != undefined) {
             this.animation = options.animation;
@@ -95,6 +142,7 @@ class Entity {
 
     spawn(X, Y) {
 
+
         canvas.getContext("2d").save();
         this.posX = X;
         this.posY = Y;
@@ -107,8 +155,9 @@ class Entity {
         X -= this.getSprite().width / 2;
         X = Math.floor(X);
 
-        if (this.animation == undefined) {
 
+
+        if (this.animation == undefined) {
             this.sprite.draw(X, Y);
         }
 
@@ -153,8 +202,12 @@ class EntityMovable extends Entity {
         this.lastOffSet = 0;
         this.elapsedTime = 1;
         this.onFloor = false;
-        this.flagged = false;
         this.maxY = 900;
+    }
+
+
+    getDamage() {
+        return this.damage;
     }
 
     getSpeed() {
@@ -182,7 +235,6 @@ class EntityMovable extends Entity {
         return this.lastOffSet;
     }
     doCollision() {
-
         //getting the from and to values of the entity
         var creaX = this.getX() + this.getSprite().getCenter();
         if (this.getHSpeed() > 0) {
@@ -196,25 +248,28 @@ class EntityMovable extends Entity {
         var fromY = Math.min(creaY, creaY + this.getVSpeed());
 
         var toX = Math.max(creaX, creaX + this.getHSpeed());
-        var toY = Math.max(creaY, creaY + this.getVSpeed() + this.getHeight()-1);
+        var toY = Math.max(creaY, creaY + this.getVSpeed() + this.getHeight() - 1);
+
+
 
         //checking to see if the from x to the new x collides
         for (var x = fromX; x <= toX; x++) {
             //checking to see if the from y to the new y collides
             for (var y = fromY; y <= toY; y++) {
+
                 //somewhere it collides
                 if (!this.level.isOOB(x, y)) {
                     if (this.level.getBlock(x, y).Id != 0) {
                         //setting back to the correct spawn x
                         if (this.getVSpeed() == 0) {
-                            y = toY+1;
+                            y = toY + 1;
                         }
+
 
                         this.setY(y - this.getHeight());
 
                         this.setHSpeed(0);
                         this.setVSpeed(0);
-
                         //below is needed for bullets, ignored for creatures
                         var temp = {};
                         temp.modDX = Math.abs(fromX - x);
@@ -229,15 +284,20 @@ class EntityMovable extends Entity {
                         }
                         return temp;
                     }
+
+
                     var collidingEntity = this.level.getEntity(x, y);
+
                     if (collidingEntity != null && collidingEntity != this) {
                         if (collidingEntity instanceof Bullet && this instanceof EntityCreature) {
                             if (collidingEntity.getOwner() != this) {
                                 //do damage to origin entity...
+                                this.doDamage(collidingEntity.getDamage());
+                                this.level.removeEntity(collidingEntity);
                             }
                         } else if (this instanceof Player && collidingEntity instanceof EntityCreature) {
                             //see if there is touch damage
-                            console.log("touching someone");
+                            this.doDamage(collidingEntity.getDamage());
                         } else if (this instanceof Player) {
                             //picking up a coin?
                             this.money++;
@@ -247,6 +307,7 @@ class EntityMovable extends Entity {
                 }
             }
         }
+
         return { code: 0, modDX: 0 };
 
     }
@@ -265,12 +326,15 @@ class EntityMovable extends Entity {
         //see if the entity is in the air then let the entity fall
         if (this.level.getBlock(x, this.getY()).Id == 0) {
             this.onFloor = false;
+
+
             this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
             this.elapsedTime++;
         } else {
             this.elapsedTime = 0;
             this.onFloor = true;
         }
+
         this.doCollision();
     }
 
@@ -288,6 +352,10 @@ class EntityCreature extends EntityMovable {
     constructor(options) {
         super(options);
         this.hp = options.hp;
+        this.maxHp = this.hp;
+        this.immunityFrame = 0;
+
+
         this.weapons = options.weapon;
         this.currentWeapon = this.weapons[0];
 
@@ -305,6 +373,23 @@ class EntityCreature extends EntityMovable {
         this.jumpDown = false;
         this.jumping = false;
         this.jumpCounter = 0;
+
+        if (options.moveSet != undefined) {
+            this.moveSet = options.moveSet;
+            this.damage = options.damage;
+        }
+    }
+
+    doDamage(damage) {
+        if (this.immunityFrame == 0) {
+            this.hp -= damage;
+            if (this instanceof Player) {
+                this.immunityFrame = 1500;
+            }
+            if (this.hp <= 0) {
+                this.doRespawn();
+            }
+        }
     }
 
     doRespawn() {
@@ -312,6 +397,9 @@ class EntityCreature extends EntityMovable {
             this.spawn(this.level.spawnX, this.level.spawnY);
             this.setVSpeed(0);
             this.setHSpeed(0);
+            this.hp = this.maxHp;
+        } else {
+            this.level.removeEntity(this);
         }
     }
 
@@ -321,98 +409,116 @@ class EntityCreature extends EntityMovable {
     }
 
     doMove(type, isDown, onTick) {
-        //see what type of movement the player did
-        switch (type) {
-            case "right":
-                this.rightDown = isDown;
-                break;
-            case "left":
-                this.leftDown = isDown;
-                break;
-            case "jump":
-                if (isDown && this.jumpDown) {
-                    return;
+        if (!this.sleep) {
+            if (this.moveSet != undefined) {
+                type = this.moveSet.doMove();
+            }
+            if (this.immunityFrame > 0) {
+                this.immunityFrame -= 60;
+                if (this.immunityFrame < 0) {
+                    this.immunityFrame = 0;
                 }
+            }
 
-                this.jumpDown = isDown;
-                break;
-            case "stop":
-                this.rightDown = false;
-                this.leftDown = false;
-                this.jumpDown = false;
-                break;
-            case "fire":
-                this.currentWeapon.fireWeapon(this, this.level);
-                break;
-            case "main":
-                if (this.weapons.length > 1) {
-                    this.currentWeapon = this.weapons[1];
+
+            //see what type of movement the player did
+            switch (type) {
+                case "right":
+                    this.rightDown = isDown;
+                    this.leftDown = false;
+                    break;
+                case "left":
+                    this.leftDown = isDown;
+                    this.rightDown = false;
+                    break;
+                case "jump":
+                    if (isDown && this.jumpDown) {
+                        break;
+                    }
+                    this.jumpDown = isDown;
+                    break;
+                case "stop":
+                    this.rightDown = false;
+                    this.leftDown = false;
+                    this.jumpDown = false;
+                    break;
+                case "fire":
+                    this.currentWeapon.fireWeapon(this, this.level);
+                    break;
+                case "main":
+                    if (this.weapons.length > 1) {
+                        this.currentWeapon = this.weapons[1];
+                    }
+                    break;
+                case "secondary":
+                    this.currentWeapon = this.weapons[0];
+                    break;
+                case "action":
+                    //insert for interacting with stuff like levers..
+                    break;
+            }
+            var code = 0;
+            //handling to what the player did
+            if (this.rightDown) {
+                this.setHSpeed(this.getSpeed());
+                code = this.doCollision();
+                this.lastOffSet = -this.getSprite().getOffSet();
+            } else if (this.leftDown) {
+                this.setHSpeed(-this.getSpeed());
+                code = this.doCollision();
+                this.lastOffSet = this.getSprite().getOffSet();
+            } else {
+                this.setHSpeed(0);
+            }
+
+
+            //handling the jumping
+            if (this.jumpDown && this.onFloor) {
+
+                if (onTick) {
+                    var y = -this.getJump() * this.level.gravity;
+                    this.setVSpeed(y);
+                    this.onFloor = false;
                 }
-                break;
-            case "secondary":
-                this.currentWeapon = this.weapons[0];
-                break;
-            case "action":
-                //insert for interacting with stuff like levers..
-                break;
-        }
-        //handling to what the player did
-        if (this.rightDown) {
-            this.setHSpeed(this.getSpeed());
-            this.doCollision();
-            this.lastOffSet = -this.getSprite().getOffSet();
-        } else if (this.leftDown) {
-            this.setHSpeed(-this.getSpeed());
-            this.doCollision();
-            this.lastOffSet = this.getSprite().getOffSet();
-        } else {
-            this.setHSpeed(0);
-        }
+            }
+            //doing the gravity fuction
+            this.doGravity();
 
-        //handling the jumping
-        if (this.jumpDown && this.onFloor) {
-
-
+            //handles what happens on the tick update
             if (onTick) {
-                var y = -this.getJump() * this.level.gravity;
-                this.setVSpeed(y);
-                this.onFloor = false;
-            }
-        }
-        //doing the gravity fuction
-        this.doGravity();
 
-        //handles what happens on the tick update
-        if (onTick) {
-
-            this.setX(this.getX() + this.getHSpeed());
-            if (this.jumping) {
-                var y = -this.getJump() * this.level.gravity;
-                this.setVSpeed(y);
-                this.jumpCounter++;
-                if (this.jumpCounter == 0) {
-                    this.jumping = false;
+                this.setX(this.getX() + this.getHSpeed());
+                if (this.jumping) {
+                    var y = -this.getJump() * this.level.gravity;
+                    this.setVSpeed(y);
+                    this.jumpCounter++;
+                    if (this.jumpCounter == 0) {
+                        this.jumping = false;
+                    }
                 }
+                //setting the height correctly
+                this.setY(this.getY() - this.getHeight() + this.getVSpeed());
+                if (this.currentWeapon != undefined) {
+                    this.currentWeapon.lowerCD();
+                }
+                //check for Out of bounds
+                switch (this.level.isOOB(this.getX(), this.getY())) {
+                    case 1:
+                        this.setX(container.clientWidth + this.getSprite().getCenter() * 2);
+                        break;
+                    case 2:
+                        this.setX(0);
+                        break;
+                    case 3:
+                        this.doRespawn();
+                        break;
+                }
+                //spawning at the new place
+                this.spawn(this.getX(), this.getY() - this.getHeight());
             }
-            //setting the height correctly
-            this.setY(this.getY() - this.getHeight() + this.getVSpeed());
-            this.currentWeapon.lowerCD();
-            //check for Out of bounds
-            switch (this.level.isOOB(this.getX(), this.getY())) {
-                case 1:
-                    this.setX(container.clientWidth + this.getSprite().getCenter() * 2);
-                    break;
-                case 2:
-                    this.setX(0);
-                    break;
-                case 3:
-                    this.doRespawn();
-                    break;
-            }
-            //spawning at the new place
-            this.spawn(this.getX(), this.getY() - this.getHeight());
         }
     }
+
 
 
 }
@@ -422,8 +528,8 @@ class Player extends EntityCreature {
     constructor(options) {
         super(options);
         this.respawn = true;
-       
-        
+
+        this.sleep = false;
 
         this.money = 0;
     }
@@ -432,6 +538,6 @@ class Player extends EntityCreature {
     getMoney() {
         return this.money;
     }
-    
+
 
 }
