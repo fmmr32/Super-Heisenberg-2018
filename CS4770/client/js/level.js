@@ -143,8 +143,10 @@ class Level {
             options.x = x;
             options.y = y;
             options.sprite = sprite;
-            options.weapon = sprite.complex.weapon;
+            options.weapon = loadWeapon(sprite.complex.weapon);
             options.damage = sprite.complex.damage;
+            options.leftHand = sprite.complex.leftHand;
+            options.rightHand = sprite.complex.rightHand;
             options.moveSet = new MoveSet(sprite.complex.moveSet);
             if (ent.moveSet != undefined) {
                 options.moveSet = new MoveSet(ent.moveSet);

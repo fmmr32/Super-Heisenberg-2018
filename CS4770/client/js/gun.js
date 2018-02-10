@@ -3,10 +3,34 @@
 function loadWeapon(list) {
     var temp = [];
     for (var id of list) {
-        temp.push(weapons.get(id));
+        var newob = deepCopy(weapons.get(id));
+        console.log(newob);
+        console.log(weapons.get(id));
+        temp.push(newob);
     }
     return temp;
 }
+
+function deepCopy(c) {
+    if (c instanceof Pistol) {
+        var animation = {};
+        animation.normal = deepCopy(c.animation.normal);
+        animation.flipped = deepCopy(c.animation.flipped);
+        return new Pistol(c.damage, c.speed, c.cooldown, c.sprite, animation, c.barrel);
+    } else if (c instanceof Shotgun) {
+        var animation = {};
+        animation.normal = deepCopy(c.animation.normal);
+        animation.flipped = deepCopy(c.animation.flipped);
+        return new Shotgun(c.damage, c.speed, c.cooldown, c.sprite, animation, c.barrel);
+    } else if (c instanceof Animation) {
+        return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
+    } else {
+        console.log(c);
+        return null;
+    }
+}
+
+
 
 function loadWeapons(file) {
     for (var w of JSON.parse(file)) {
@@ -47,7 +71,7 @@ function loadWeapons(file) {
 
         switch (w.id) {
             case 1:
-                weapons.set(w.id, new Pistol(w.damage, w.speed, w.cooldown, 0,animations, barrel));
+                weapons.set(w.id, new Pistol(w.damage, w.speed, w.cooldown, 0, animations, barrel));
                 break;
             case 2:
                 weapons.set(w.id, new Shotgun(w.damage, w.speed, w.cooldown, 0, animations, barrel));
@@ -103,7 +127,7 @@ class Weapon {
                 }
 
                 var temp = new Bullet(angle, bullet.alive, options, character);
-               
+
 
                 temp.setX(character.getX() + offsetHand[0] + offsetGun.x);
                 temp.setY(character.getY() - character.getHeight() + offsetHand[1] + offsetGun.y);
@@ -120,7 +144,7 @@ class Weapon {
             this.animation.normal.doAnimation(X, Y);
         }
 
-        
+
     }
 
     lowerCD() {
@@ -163,7 +187,7 @@ class Shotgun extends Weapon {
 
         this.bullets.push(new Bullet(15, 60, options));
         this.bullets.push(new Bullet(0, 60, options));
-        this.bullets.push(new Bullet(195, 70, options));
+        this.bullets.push(new Bullet(195, 60, options));
 
 
 
