@@ -157,7 +157,7 @@ class Level {
             var creature = new EntityCreature(options);
             this.entities.push(creature);
         }
-       
+
 
     }
 
@@ -177,43 +177,46 @@ class Level {
 
 
     doTick() {
+        if (this.getPlayer() != null) {
+            for (var entity of this.entities) {
+                //doing the bullet handling
+                if (!(entity instanceof Bullet) && !(entity instanceof Player)) {
+                    if (this.outSideFrame(entity.getX()) && this.sleep) {
+                        continue;
+                    } else {
+                        entity.sleep = false;
+                    }
+                }
 
-        for (var entity of this.entities) {
-            //doing the bullet handling
-            if (!(entity instanceof Bullet) && !(entity instanceof Player)) {
-                if (this.outSideFrame(entity.getX())) {
-                    continue;
+                if (entity instanceof Bullet) {
+                    if (entity.bulletTravel(true)) {
+                        this.removeEntity(entity);
+                    }
+                    //handles the creatures
+                } else if (entity instanceof EntityCreature) {
+                    entity.doMove("none", true, true);
+                    //handles other entities
                 } else {
-                    entity.sleep = false;
+                    entity.spawn(entity.getX(), entity.getY() - entity.getHeight());
                 }
-            }
 
-            if (entity instanceof Bullet) {
-                if (entity.bulletTravel(true)) {
-                    this.removeEntity(entity);
-                }
-                //handles the creatures
-            } else if (entity instanceof EntityCreature) {
-                entity.doMove("none", true, true);
-                //handles other entities
-            } else {
-                entity.spawn(entity.getX(), entity.getY() - entity.getHeight());
             }
-
         }
     }
 
     outSideFrame(X) {
         var x = this.getPlayer().getX();
 
-        if (x + container.clientWidth / 2 +20 < X) {
+        if (x + container.clientWidth / 2 + 20 < X) {
             return true;
         }
         return false;
     }
 
     removeEntity(entity) {
-        this.entities.splice(this.entities.indexOf(entity), 1);
+        if (this.entities.indexOf(entity) != -1) {
+            this.entities.splice(this.entities.indexOf(entity), 1);
+        }
     }
 
     getPlayer() {
@@ -222,6 +225,7 @@ class Level {
                 return char;
             }
         }
+        return null;
     }
 
     getBlock(X, Y) {
@@ -269,10 +273,48 @@ class Level {
 
             var context = canvas.getContext("2d");
 
+            try {
+                context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
+                context.beginPath();
+                context.lineWidth = "6";
+                context.strokeStyle = "black";
+                context.rect(20, 10, 20, 105);
+                context.stroke();
 
-            context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
+                context.beginPath();
+                context.moveTo(30, 13);
+                context.lineWidth = "14";
+                context.strokeStyle = "green";
+                context.lineTo(30, 113);
+                context.stroke();
+
+                context.beginPath();
+                context.moveTo(30, 13);
+                context.lineWidth = "14";
+                context.strokeStyle = "red";
+
+                var difference = this.getPlayer().maxHp - this.getPlayer().hp;
+                var fromMax = difference / this.getPlayer().maxHp*100;
+
+                context.lineTo(30, 13 +  fromMax);
+                context.stroke();
+
+            } catch (err) {
+                console.log(err);
+            }
 
         }
+    }
+
+    calcRect(inner) {
+        var minX = 20;
+            var minY =10;
+
+            if (inner) {
+                minX += 6;
+                minY += 6;
+            }
+            return [minX, minY];
     }
 }
 

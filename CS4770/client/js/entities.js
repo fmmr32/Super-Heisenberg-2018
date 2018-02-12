@@ -147,10 +147,7 @@ class Entity {
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place
-        try {
-            X -= this.level.getPlayer().getX();
-        } catch (err) {
-        }
+        X -= this.level.getPlayer().getX();
         X += container.clientWidth / 2;
         X -= this.getSprite().width / 2;
         X = Math.floor(X);
@@ -287,15 +284,23 @@ class EntityMovable extends Entity {
 
 
                     var collidingEntity = this.level.getEntity(x, y);
-
                     if (collidingEntity != null && collidingEntity != this) {
                         if (collidingEntity instanceof Bullet && this instanceof EntityCreature) {
+                            console.log(collidingEntity);
                             if (collidingEntity.getOwner() != this) {
+                                var owner = collidingEntity.getOwner();
                                 //do damage to origin entity...
                                 this.doDamage(collidingEntity.getDamage());
                                 this.level.removeEntity(collidingEntity);
                             }
-                        } else if (this instanceof Player && collidingEntity instanceof EntityCreature) {
+                        } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature) {
+                            if (this.getOwner() != collidingEntity) {
+                                collidingEntity.doDamage(this.getDamage());
+                                collidingEntity.level.removeEntity(this);
+                            }
+                        }
+
+                        else if (this instanceof Player && collidingEntity instanceof EntityCreature) {
                             //see if there is touch damage
                             this.doDamage(collidingEntity.getDamage());
                         } else if (this instanceof Player) {
@@ -483,7 +488,6 @@ class EntityCreature extends EntityMovable {
             }
             //doing the gravity fuction
             this.doGravity();
-
             //handles what happens on the tick update
             if (onTick) {
 

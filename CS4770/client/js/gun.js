@@ -281,8 +281,11 @@ class Bullet extends EntityMovable {
             }
 
             //finally do the move tick
-            this.doMove(onTick);
+            try {
+                this.doMove(onTick);
+            } catch (err) {
 
+            }
 
             return false;
         } else {
