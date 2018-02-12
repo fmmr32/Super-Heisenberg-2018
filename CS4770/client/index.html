@@ -1,19 +1,18 @@
-﻿<div id="signDiv">
-    username: <input id="signDiv-username" type="text"><br>
-    password: <input id="signDiv-password" type+"password">
-    <button id="signDiv-signIn">Sign in</button>
-    <button id="signDiv-signUp">Sign up</button>
+﻿<div id="main" style="height:500px; width:500px;  position: absolute; margin: auto; top: 0;right: 0; left: 0; bottom: 0;border: 2px solid;">
 
-    <button id="skipSign">Play Offline</button>
+
+    <div id="signDiv">
+        username: <input id="signDiv-username" type="text"><br>
+        password: <input id="signDiv-password" type+"password">
+        <button id="signDiv-signIn">Sign in</button>
+        <button id="signDiv-signUp">Sign up</button>
+
+        <button id="skipSign">Play Offline</button>
+    </div>
+
+
+    <div id="gameDiv" style="display:none;overflow:hidden; background:url('../resources/Devacuda.png'); background-size:cover;" />
 </div>
-
-
-<div id="gameDiv" style="display:none; height:500px; width:500px; overflow:hidden; border: 2px solid">
-
-
-
-</div>
-
 <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script type="text/javascript" src="js/config.js"></script>
 <script type="text/javascript" src="js/entities.js"></script>
@@ -65,7 +64,7 @@
         loadGame();
     }
 
-   
+
 
     //game
 
@@ -84,7 +83,9 @@
         if (width != 0) {
             elem.width = width;
         }
-        container.appendChild(elem);
+        if (id != "bg") {
+            container.appendChild(elem);
+        }
         return elem;
     }
 
@@ -152,7 +153,7 @@
     }
 
 
- 
+
 
 
     var running = false;

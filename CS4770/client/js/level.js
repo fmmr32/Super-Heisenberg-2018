@@ -13,6 +13,7 @@ class Level {
 
         this.loadBlocks(file);
 
+
     }
 
 
@@ -156,12 +157,15 @@ class Level {
             var creature = new EntityCreature(options);
             this.entities.push(creature);
         }
+       
 
     }
 
     setImage(ctx) {
         this.image = new Image();
         this.image.src = ctx.canvas.toDataURL("image/png");
+
+
 
     }
 
