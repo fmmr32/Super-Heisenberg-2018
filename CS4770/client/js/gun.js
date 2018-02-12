@@ -69,17 +69,9 @@ function loadWeapons(file) {
         options.speed = w.speed;
         options.sprite = getSprite(999);
 
-        switch (w.id) {
-            case 1:
-                bullets.push(new Bullet(0, 120,options))
-                break;
-            case 2:
-                bullets.push(new Bullet(15, 60, options));
-                bullets.push(new Bullet(0, 60, options));
-                bullets.push(new Bullet(195, 60, options));
-                break;
+        for (var bullet of w.bullets) {
+            bullets.push(new Bullet(bullet.angle, bullet.alive, options));
         }
-        
 
         weapons.set(w.id, new Weapon(w.damage, w.speed, w.cooldown, animations, barrel, bullets));
     }

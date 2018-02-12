@@ -27,6 +27,12 @@
         "offSetX": 0,
         "offSetY": 0
       }
+    ],
+    "bullets": [
+      {
+        "angle": 0,
+        "alive": 120
+      }
     ]
   },
   {
@@ -57,6 +63,21 @@
         "offSetX": 4,
         "offSetY": -20
       }
+    ],
+    "bullets": [
+      {
+        "angle": 15,
+        "alive": 60
+      },
+      {
+        "angle": 0,
+        "alive": 60
+      },
+      {
+        "angle": 195,
+        "alive": 60
+      }
+
     ]
   }
 
