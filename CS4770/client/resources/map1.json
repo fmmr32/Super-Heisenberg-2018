@@ -11,18 +11,13 @@
       "Y": 210,
       "moveSet": [
         {
-          "type": "left",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-        {
-          "type": "right",
+          "type": "stop",
           "advanceAfter": 1,
           "delayAfter": 0,
           "delayBefore": 0
         }
-      ]
+      ],
+      "hp": 100
     },
     {
       "Id": 996,

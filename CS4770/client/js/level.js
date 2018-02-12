@@ -138,6 +138,10 @@ class Level {
             options.gravity = this.gravity;
             options.jump = sprite.complex.jump;
             options.hp = sprite.complex.hp;
+            if (ent.hp != undefined) {
+                options.hp = ent.hp;
+            }
+
             options.speed = sprite.complex.speed;
             options.moves = sprite.complex.moves;
             options.level = this;
@@ -181,7 +185,7 @@ class Level {
             for (var entity of this.entities) {
                 //doing the bullet handling
                 if (!(entity instanceof Bullet) && !(entity instanceof Player)) {
-                    if (this.outSideFrame(entity.getX()) && this.sleep) {
+                    if (this.outSideFrame(entity.getX()) && entity.sleep) {
                         continue;
                     } else {
                         entity.sleep = false;
@@ -216,7 +220,9 @@ class Level {
     removeEntity(entity) {
         if (this.entities.indexOf(entity) != -1) {
             this.entities.splice(this.entities.indexOf(entity), 1);
+            return true;
         }
+        return false;
     }
 
     getPlayer() {
@@ -306,16 +312,6 @@ class Level {
         }
     }
 
-    calcRect(inner) {
-        var minX = 20;
-            var minY =10;
-
-            if (inner) {
-                minX += 6;
-                minY += 6;
-            }
-            return [minX, minY];
-    }
 }
 
 

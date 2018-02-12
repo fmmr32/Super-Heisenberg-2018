@@ -111,7 +111,6 @@ class Entity {
         this.posY = options.y;
         this.sprite = options.sprite;
 
-        this.sleep = true;
 
         if (options.animation != undefined) {
             this.animation = options.animation;
@@ -199,7 +198,6 @@ class EntityMovable extends Entity {
         this.lastOffSet = 0;
         this.elapsedTime = 1;
         this.onFloor = false;
-        this.maxY = 900;
     }
 
 
@@ -290,6 +288,7 @@ class EntityMovable extends Entity {
                             if (collidingEntity.getOwner() != this) {
                                 var owner = collidingEntity.getOwner();
                                 //do damage to origin entity...
+                                console.log("doing damage");
                                 this.doDamage(collidingEntity.getDamage());
                                 this.level.removeEntity(collidingEntity);
                             }
@@ -369,7 +368,6 @@ class EntityCreature extends EntityMovable {
 
         this.gravity = options.gravity;
 
-        this.startY = 0;
         this.jump = options.jump;
 
         this.respawn = false;
@@ -382,6 +380,7 @@ class EntityCreature extends EntityMovable {
         if (options.moveSet != undefined) {
             this.moveSet = options.moveSet;
             this.damage = options.damage;
+            this.sleep = true;
         }
     }
 
@@ -532,8 +531,6 @@ class Player extends EntityCreature {
     constructor(options) {
         super(options);
         this.respawn = true;
-
-        this.sleep = false;
 
         this.money = 0;
     }

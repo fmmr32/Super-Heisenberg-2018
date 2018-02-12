@@ -4,24 +4,17 @@ function loadWeapon(list) {
     var temp = [];
     for (var id of list) {
         var newob = deepCopy(weapons.get(id));
-        console.log(newob);
-        console.log(weapons.get(id));
         temp.push(newob);
     }
     return temp;
 }
 
 function deepCopy(c) {
-    if (c instanceof Pistol) {
+    if (c instanceof Weapon) {
         var animation = {};
         animation.normal = deepCopy(c.animation.normal);
         animation.flipped = deepCopy(c.animation.flipped);
-        return new Pistol(c.damage, c.speed, c.cooldown, c.sprite, animation, c.barrel);
-    } else if (c instanceof Shotgun) {
-        var animation = {};
-        animation.normal = deepCopy(c.animation.normal);
-        animation.flipped = deepCopy(c.animation.flipped);
-        return new Shotgun(c.damage, c.speed, c.cooldown, c.sprite, animation, c.barrel);
+        return new Weapon(c.damage, c.speed, c.cooldown, animation, c.barrel, c.bullets);
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
@@ -69,33 +62,45 @@ function loadWeapons(file) {
         animations.normal = new Animation(imgNormal, frames, frameRate, columns, false);
         animations.flipped = new Animation(imgFlipped, frames, frameRate, columns, false);
 
+        var bullets = [];
+        var options = {};
+        options.x = 0;
+        options.y = 0;
+        options.speed = w.speed;
+        options.sprite = getSprite(999);
+
         switch (w.id) {
             case 1:
-                weapons.set(w.id, new Pistol(w.damage, w.speed, w.cooldown, 0, animations, barrel));
+                bullets.push(new Bullet(0, 120,options))
                 break;
             case 2:
-                weapons.set(w.id, new Shotgun(w.damage, w.speed, w.cooldown, 0, animations, barrel));
+                bullets.push(new Bullet(15, 60, options));
+                bullets.push(new Bullet(0, 60, options));
+                bullets.push(new Bullet(195, 60, options));
                 break;
         }
+        
+
+        weapons.set(w.id, new Weapon(w.damage, w.speed, w.cooldown, animations, barrel, bullets));
     }
 }
 
 class Weapon {
-    constructor(damage, speed, cooldown, animation, barrel) {
+    constructor(damage, speed, cooldown, animation, barrel, bullets) {
         this.damage = damage;
         this.speed = speed;
         this.cooldown = cooldown;
         this.tick = 0;
-        this.bullets = [];
+        this.bullets = bullets;
         this.animation = animation;
         this.barrel = barrel;
-
 
     }
 
 
 
     fireWeapon(character, level) {
+
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
         if (this.tick === 0 && !this.animation.normal.animating && !this.animation.flipped.animating) {
             if (character.getLastOffSet() < 0) {
@@ -154,47 +159,13 @@ class Weapon {
     }
 
 
-    get Damage() {
+    getDamage() {
         return this.damage;
     }
 
-    get Speed() {
+    getSpeed() {
         return this.speed;
     }
-}
-
-
-class Pistol extends Weapon {
-    constructor(damage, speed, cooldown, sprite, animation, barrel) {
-        super(damage, speed, cooldown, animation, barrel);
-        var options = {};
-        options.x = 0;
-        options.y = 0;
-        options.speed = 5;
-        options.sprite = getSprite(999);
-        this.bullets.push(new Bullet(0, 120, options));
-    }
-}
-
-class Shotgun extends Weapon {
-    constructor(damage, speed, cooldown, sprite, animation, barrel) {
-        super(damage, speed, cooldown, animation, barrel);
-        var options = {};
-        options.x = 0;
-        options.y = 0;
-        options.speed = 5;
-        options.sprite = getSprite(999);
-
-        this.bullets.push(new Bullet(15, 60, options));
-        this.bullets.push(new Bullet(0, 60, options));
-        this.bullets.push(new Bullet(195, 60, options));
-
-
-
-
-    }
-
-
 }
 
 
@@ -284,7 +255,7 @@ class Bullet extends EntityMovable {
             try {
                 this.doMove(onTick);
             } catch (err) {
-
+                return true;
             }
 
             return false;
