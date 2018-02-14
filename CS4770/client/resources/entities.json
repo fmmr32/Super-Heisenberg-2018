@@ -83,7 +83,8 @@
       "leftHand": [ -20, -3 ],
       "rightHand": [ 10, -3 ],
       "jump": 0.5,
-      "damage": 2
+      "damage": 2,
+      "healthBar": true
     }
 
   }

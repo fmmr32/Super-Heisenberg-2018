@@ -49,6 +49,7 @@ class Level {
 
         options2.level = this;
         options2.weapon = loadWeapon(any.weapon);
+        options2.name = any.name;
         this.entities.push(new Player(options2));
         this.getPlayer().spawn(this.spawnX, this.spawnY);
 
@@ -155,6 +156,12 @@ class Level {
             options.moveSet = new MoveSet(sprite.complex.moveSet);
             if (ent.moveSet != undefined) {
                 options.moveSet = new MoveSet(ent.moveSet);
+            }
+            if (ent.name != undefined || sprite.name != undefined) {
+                options.name = ent.name != undefined ? ent.name : sprite.name;
+            }
+            if (ent.healthBar != undefined || sprite.complex.healthBar != undefined) {
+                options.healthBar = { x: 125, y: 10, alignment:"h"};
             }
 
 
@@ -273,42 +280,13 @@ class Level {
     //redraws the canvas with the player centered
     drawMap() {
 
-        if (this.getPlayer() != undefined) {
+        if (this.getPlayer() != undefined && this.image != undefined) {
             var x = container.clientWidth / 2 - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
 
 
             var context = canvas.getContext("2d");
 
-            try {
-                context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
-                context.beginPath();
-                context.lineWidth = "6";
-                context.strokeStyle = "black";
-                context.rect(20, 10, 20, 105);
-                context.stroke();
-
-                context.beginPath();
-                context.moveTo(30, 13);
-                context.lineWidth = "14";
-                context.strokeStyle = "green";
-                context.lineTo(30, 113);
-                context.stroke();
-
-                context.beginPath();
-                context.moveTo(30, 13);
-                context.lineWidth = "14";
-                context.strokeStyle = "red";
-
-                var difference = this.getPlayer().maxHp - this.getPlayer().hp;
-                var fromMax = difference / this.getPlayer().maxHp*100;
-
-                context.lineTo(30, 13 +  fromMax);
-                context.stroke();
-
-            } catch (err) {
-                console.log(err);
-            }
-
+            context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
         }
     }
 

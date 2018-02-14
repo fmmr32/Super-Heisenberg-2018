@@ -57,6 +57,96 @@
 }
 
 
+
+class HealthBar {
+    constructor(maxHp, canvas, name, alignment, x, y) {
+        HealthBar.bars = HealthBar.bars || [];
+
+        this.maxHp = maxHp;
+        this.name = name;
+        this.context = canvas;
+
+        this.alignment = alignment;
+        this.x = x;
+        this.y = y;
+
+        if (this.alignment == "h") {
+            this.width = 100;
+            this.height = 16;
+        } else {
+            this.width = 16;
+            this.height = 100;
+        }
+        for (var bars of HealthBar.bars) {
+
+            if (this.x <= bars.x && bars.x <= this.x + this.width && this.y <= bars.y && bars.y <= this.y + this.height) {
+                if (this.alignment == "h") {
+                    this.y += this.height*2;
+                } else {
+                    this.x += this.width*2;
+                }
+            }
+        }
+
+
+        HealthBar.bars.push(this);
+    }
+
+
+    drawHp(hp) {
+        this.context.beginPath();
+        this.context.lineWidth = "3";
+        this.context.strokeStyle = "black";
+
+        if (this.alignment == "v") {
+            this.context.rect(this.x, this.y, this.width, this.height);
+        } else {
+            this.context.rect(this.x, this.y, this.width, this.height);
+        }
+        
+        this.context.stroke();
+
+        this.context.beginPath();
+        
+        this.context.lineWidth = "14";
+        this.context.strokeStyle = "red";
+
+        if (this.alignment == "v") {
+            this.context.moveTo(this.x + this.width / 2, this.y + 1);
+            this.context.lineTo(this.x + this.width / 2, this.y + this.height);
+        } else {
+            this.context.moveTo(this.x + 1, this.y + this.height / 2);
+            this.context.lineTo(this.x + this.width, this.y + this.height/2);
+        }
+        this.context.stroke();
+
+        this.context.beginPath();
+        this.context.lineWidth = "14";
+        this.context.strokeStyle = "green";
+
+        var fromMax =   hp / this.maxHp * 100 ;
+
+
+        if (this.alignment == "v") {
+            this.context.moveTo(this.x + this.width / 2, this.y + (this.height - fromMax));
+            this.context.lineTo(this.x + this.width/2, this.y + this.height);
+        } else {
+            this.context.moveTo(this.x + 1, this.y + this.height / 2);
+            this.context.lineTo(this.x + (this.width - (100 - fromMax)), this.y + this.height / 2);
+        }
+        this.context.stroke();
+
+        if (this.alignment == "v") {
+            this.context.fillText(this.name, this.x - this.name.length / 2, this.y + this.height + 14, this.width);
+        } else {
+            this.context.fillText(this.name, this.x + this.width / 2 - this.name.length, this.y + this.height + 12, this.width);
+        }
+       
+    }
+
+
+}
+
 class MoveSet {
     constructor(options) {
         this.moves = options;
@@ -176,6 +266,10 @@ class Entity {
             this.animation.doAnimation(X, Y);
         }
 
+        if (this.healthBar != undefined) {
+            this.healthBar.drawHp(this.hp);
+        }
+
         canvas.getContext("2d").restore();
     }
 
@@ -284,11 +378,9 @@ class EntityMovable extends Entity {
                     var collidingEntity = this.level.getEntity(x, y);
                     if (collidingEntity != null && collidingEntity != this) {
                         if (collidingEntity instanceof Bullet && this instanceof EntityCreature) {
-                            console.log(collidingEntity);
                             if (collidingEntity.getOwner() != this) {
                                 var owner = collidingEntity.getOwner();
                                 //do damage to origin entity...
-                                console.log("doing damage");
                                 this.doDamage(collidingEntity.getDamage());
                                 this.level.removeEntity(collidingEntity);
                             }
@@ -376,6 +468,11 @@ class EntityCreature extends EntityMovable {
         this.jumpDown = false;
         this.jumping = false;
         this.jumpCounter = 0;
+
+        if (options.healthBar != undefined) {
+            this.healthBar = new HealthBar(options.hp, canvas.getContext("2d"), options.name, options.healthBar.alignment, options.healthBar.x, options.healthBar.y);
+        }
+
 
         if (options.moveSet != undefined) {
             this.moveSet = options.moveSet;
@@ -533,6 +630,8 @@ class Player extends EntityCreature {
         this.respawn = true;
 
         this.money = 0;
+
+        this.healthBar = new HealthBar(options.hp, canvas.getContext("2d"), options.name, "v", 10, 10);
     }
 
 

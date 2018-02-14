@@ -17,7 +17,9 @@
           "delayBefore": 0
         }
       ],
-      "hp": 100
+      "hp": 200,
+      "name": "GOOMBA KING",
+      "healthBar": true
     },
     {
       "Id": 996,
