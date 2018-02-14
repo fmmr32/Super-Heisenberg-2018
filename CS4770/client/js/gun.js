@@ -18,7 +18,8 @@ function deepCopy(c) {
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
-        console.log(c);
+        loadNeeded();
+        loadGame();
         return null;
     }
 }

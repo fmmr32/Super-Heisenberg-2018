@@ -81,9 +81,9 @@ class HealthBar {
 
             if (this.x <= bars.x && bars.x <= this.x + this.width && this.y <= bars.y && bars.y <= this.y + this.height) {
                 if (this.alignment == "h") {
-                    this.y += this.height*2;
+                    this.y += this.height * 2;
                 } else {
-                    this.x += this.width*2;
+                    this.x += this.width * 2;
                 }
             }
         }
@@ -94,6 +94,7 @@ class HealthBar {
 
 
     drawHp(hp) {
+        //box
         this.context.beginPath();
         this.context.lineWidth = "3";
         this.context.strokeStyle = "black";
@@ -103,12 +104,12 @@ class HealthBar {
         } else {
             this.context.rect(this.x, this.y, this.width, this.height);
         }
-        
+
         this.context.stroke();
 
+        //red bar
         this.context.beginPath();
-        
-        this.context.lineWidth = "14";
+        this.context.lineWidth = Math.min(this.width, this.height)-2;
         this.context.strokeStyle = "red";
 
         if (this.alignment == "v") {
@@ -116,20 +117,21 @@ class HealthBar {
             this.context.lineTo(this.x + this.width / 2, this.y + this.height);
         } else {
             this.context.moveTo(this.x + 1, this.y + this.height / 2);
-            this.context.lineTo(this.x + this.width, this.y + this.height/2);
+            this.context.lineTo(this.x + this.width, this.y + this.height / 2);
         }
         this.context.stroke();
 
+        //green bar
         this.context.beginPath();
-        this.context.lineWidth = "14";
+        this.context.lineWidth = Math.min(this.width, this.height) - 2;
         this.context.strokeStyle = "green";
 
-        var fromMax =   hp / this.maxHp * 100 ;
+        var fromMax = hp / this.maxHp * 100;
 
 
         if (this.alignment == "v") {
             this.context.moveTo(this.x + this.width / 2, this.y + (this.height - fromMax));
-            this.context.lineTo(this.x + this.width/2, this.y + this.height);
+            this.context.lineTo(this.x + this.width / 2, this.y + this.height);
         } else {
             this.context.moveTo(this.x + 1, this.y + this.height / 2);
             this.context.lineTo(this.x + (this.width - (100 - fromMax)), this.y + this.height / 2);
@@ -141,7 +143,20 @@ class HealthBar {
         } else {
             this.context.fillText(this.name, this.x + this.width / 2 - this.name.length, this.y + this.height + 12, this.width);
         }
-       
+
+    }
+
+    removeBar(b) {
+        HealthBar.bars.splice(HealthBar.bars.indexOf(this), 1);
+        for (var bar of HealthBar.bars) {
+            if (b.x <= bar.x && (bar.x <= b.x + b.width || b.x <= bar.x + width) && b.y < bar.y) {
+                if (bar.alignment == b.alignment) {
+                    bar.y -= bar.height * 2;
+                    //moves all bars up.
+                    this.removeBar(bar);
+                }
+            }
+        }
     }
 
 
@@ -381,13 +396,15 @@ class EntityMovable extends Entity {
                             if (collidingEntity.getOwner() != this) {
                                 var owner = collidingEntity.getOwner();
                                 //do damage to origin entity...
-                                this.doDamage(collidingEntity.getDamage());
-                                this.level.removeEntity(collidingEntity);
+                                if (this.level.removeEntity(collidingEntity)) {
+                                    this.doDamage(collidingEntity.getDamage());
+                                }
                             }
                         } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature) {
                             if (this.getOwner() != collidingEntity) {
-                                collidingEntity.doDamage(this.getDamage());
-                                collidingEntity.level.removeEntity(this);
+                                if (collidingEntity.level.removeEntity(this)) {
+                                    collidingEntity.doDamage(this.getDamage());
+                                }
                             }
                         }
 
@@ -482,11 +499,14 @@ class EntityCreature extends EntityMovable {
     }
 
     doDamage(damage) {
+        //checks if the immunityFrame is 0 so the creature can be damaged
         if (this.immunityFrame == 0) {
             this.hp -= damage;
+            //immunityFrame is set if this is a player
             if (this instanceof Player) {
                 this.immunityFrame = 1500;
             }
+            //doing the respawn
             if (this.hp <= 0) {
                 this.doRespawn();
             }
@@ -494,12 +514,18 @@ class EntityCreature extends EntityMovable {
     }
 
     doRespawn() {
+        //checks if the creature is able to respawn
         if (this.respawn) {
             this.spawn(this.level.spawnX, this.level.spawnY);
             this.setVSpeed(0);
             this.setHSpeed(0);
             this.hp = this.maxHp;
         } else {
+            //removes the healthbar if any
+            if (this.healthBar != undefined) {
+                this.healthBar.removeBar(this.healthBar);
+            }
+            //removes the entity from the game
             this.level.removeEntity(this);
         }
     }

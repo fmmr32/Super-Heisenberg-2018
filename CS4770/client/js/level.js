@@ -290,6 +290,9 @@ class Level {
         }
     }
 
+    reload() {
+        this.loadBlocks(this.file);
+    }
 }
 
 

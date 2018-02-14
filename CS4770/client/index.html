@@ -119,12 +119,7 @@
         map = newMap;
     };
 
-    function loadGame() {
-        //setting the divs correctly
-        signDiv.style.display = 'none';
-        gameDiv.style.display = '';
-
-        //loading the needed files
+    function loadNeeded() {
         for (var x of neededFiles) {
             var resource = "/client/resources/";
             if (x == "config.json") {
@@ -144,6 +139,18 @@
                 }, resource + x);
             }
         }
+    }
+
+
+    function loadGame() {
+        //setting the divs correctly
+        signDiv.style.display = 'none';
+        gameDiv.style.display = '';
+        loadNeeded();
+        //loading the needed files
+       
+
+        
 
         //loading the test map
         loadMap("map1", function (m) {
@@ -155,8 +162,7 @@
 
         
     }
-
-
+ 
 
 
 
@@ -209,7 +215,7 @@
     }
 
 
-  //  window.onload = loadGame();
+    window.onload = loadGame();
 
 </script>
 <body>
