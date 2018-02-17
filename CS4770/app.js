@@ -21,7 +21,7 @@ console.log("Server started.");
 var SOCKET_LIST = {};
 
 
-
+/*________________________________________Login____________________________________________________________*/
  
 var isValidPassword = function(data,callback){
     db.account.find({username:data.username,password:data.password},function(err,res){
@@ -53,10 +53,53 @@ var addUser = function(data,callback){
 };
 
 
+/*__________________________________________Load game thingies_________________________________*/
+
+var loadLevel = function (data, callback) {
+    db.levels.find({ id: data.id }, function (err, result) {
+        callback(result);
+    });
+};
+
+var loadWeapons = function (data, callback) {
+    db.weapons.find({}, function (err, result) {
+        callback(result);
+    });
+};
+
+var loadCharacter = function (data, callback) {
+    db.character.find({}, function (err, result) {
+        callback(result);
+    });
+}
+
+
+
+
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     console.log('socket connection');
-  
+
+    socket.on('loadDB', function (data) {
+        console.log(data.collection);
+        if (data.type == 'level') {
+            loadLevel(data.id, function (result) {
+                socket.emit('level', result)
+            });
+        }
+        else if (data.type == "weapon") {
+            loadWeapons(data, function (result) {
+                socket.emit('weapons', result);
+            });
+        }
+        else if (data.type == "character") {
+            loadCharacter(data, function (result) {
+                socket.emit('character', result);
+            });
+        }
+    });
+
+
    
     socket.on('loadJSON', function (data) {
         console.log(data.fileName);
