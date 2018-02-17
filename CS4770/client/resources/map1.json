@@ -16,20 +16,7 @@
           "delayAfter": 0,
           "delayBefore": 0
         }
-      ],
-      "hp": 200,
-      "name": "GOOMBA KING",
-      "healthBar": true
-    },
-    {
-      "Id": 996,
-      "X": 498,
-      "Y": 250
-    },
-    {
-      "Id": 996,
-      "X": 500,
-      "Y": 250
+      ]
     }
   ],
   "entities": [

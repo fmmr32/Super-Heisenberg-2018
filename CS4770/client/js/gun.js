@@ -28,7 +28,6 @@ function deepCopy(c) {
 
 function loadWeapons(file) {
     for (var w of JSON.parse(file)) {
-
         var imgNormal = new Image();
         imgNormal.src = "../resources/weapons.png";
         imgNormal.width = w.width;
@@ -68,10 +67,18 @@ function loadWeapons(file) {
         options.x = 0;
         options.y = 0;
         options.speed = w.speed;
-        options.sprite = getSprite(999);
-
-        for (var bullet of w.bullets) {
-            bullets.push(new Bullet(bullet.angle, bullet.alive, options));
+        options.sprite = getSprite(w.bulletSprite);
+        options.spriteFlip = getSprite(w.bulletSpriteFlip);
+        options.gravity = w.gravity;
+        if (w.bullets != undefined) {
+            for (var bullet of w.bullets) {
+                bullets.push(new Bullet(bullet.angle, bullet.alive, options));
+            }
+        }
+        if (w.grenades != undefined) {
+            for (var grenade of w.grenades) {
+                bullets.push(new Grenade(grenade.angle, grenade.alive, options, grenade.id, w.factor));
+            }
         }
 
         weapons.set(w.id, new Weapon(w.damage, w.speed, w.cooldown, animations, barrel, bullets));
@@ -109,9 +116,10 @@ class Weapon {
                 options.x = bullet.x;
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
+                options.spriteFlip = bullet.spriteFlip;
                 options.level = level;
                 options.damage = this.damage;
-
+                options.gravity = bullet.gravity;
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand;
                 var offsetGun = this.barrel.Normal;
@@ -121,10 +129,16 @@ class Weapon {
                     angle = -angle - 180;
                     offsetHand = character.leftHand;
                     offsetGun = this.barrel.Flipped;
-                    options.sprite = getSprite(998);
                 }
 
-                var temp = new Bullet(angle, bullet.alive, options, character);
+                var temp;
+
+                if (bullet instanceof Grenade) {
+                    temp = new Grenade(angle, bullet.alive, options, bullet.id, bullet.factor, character);
+                } else {
+                    temp = new Bullet(angle, bullet.alive, options, character);
+                }
+
 
 
                 temp.setX(character.getX() + offsetHand[0] + offsetGun.x);
@@ -171,14 +185,14 @@ class Bullet extends EntityMovable {
         this.alive = alive;
         this.owner = owner;
         this.damage = options.damage;
+
+        this.sprite = options.sprite;
+        this.spriteFlip = options.spriteFlip;
+        this.gravity = options.gravity;
     }
 
 
     bulletTravel(onTick) {
-        if (this.sprite == undefined) {
-            this.sprite = getSprite(999);
-        }
-
         if (this.alive > 0) {
             this.alive--;
 
@@ -210,9 +224,11 @@ class Bullet extends EntityMovable {
                 this.lastOffSet = -this.getSprite().offSet;
                 x -= this.getSprite().getCenter();
             }
+            if (this.gravity) {
+                this.doGravity();
+            }
 
-            var collision = this.doCollision(false);
-
+            var collision = this.doCollision();
             x += collision.modDX;
             //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
@@ -243,9 +259,8 @@ class Bullet extends EntityMovable {
                     return true;
                 }
             }
-
             //finally do the move tick
-                this.doMove(onTick);
+            this.doMove(onTick, this.getHSpeed() < 0);
 
             return false;
         } else {
@@ -259,4 +274,77 @@ class Bullet extends EntityMovable {
         return this.owner;
     }
 
+}
+
+class Grenade extends Bullet {
+    constructor(angle, alive, options, id, factor, owner) {
+        super(angle, alive, options, owner);
+        this.factor = factor;
+        this.id = id;
+
+        var img = new Image();
+        img.src = getSprite(id).image.src;
+        img.width = getSprite(id).width;
+        img.height = getSprite(id).height;
+        img.startX = getSprite(id).image.startX;
+        img.startY = getSprite(id).image.startY;
+
+        img.offSetX = 0;
+        img.offSetY = 0;
+
+        var frames = getSprite(id).animation.frames;
+        var frameRate = getSprite(id).animation.frameRate;
+        var columns = getSprite(id).animation.columns;
+
+        this.exploding = false;
+        this.damaged = [];
+
+        this.animation = new Animation(img, frames, frameRate, columns, false);
+        this.animation.factor = this.factor;
+    }
+
+    bulletTravel(onTick) {
+        if (super.bulletTravel(onTick)) {
+            this.doExplosion();
+            return true;
+        }
+        return false;
+    }
+
+    getOwner() {
+        return this.owner;
+    }
+
+    doExplosion() {
+        var options = {};
+        options.x = this.getX();
+        options.y = this.getY() - this.getHeight();
+        options.sprite = this.getSprite();
+        options.level = this.level;
+        this.animation.animating = true;
+        this.animation.despawn = true;
+        options.animation = this.animation;
+
+        this.level.entities.push(new Entity(options));
+
+        var xOff = -(this.factor - 1) * this.animation.width / 2;
+        var yOff = -(this.factor - 1) * this.animation.height / 2;
+
+        var xMin = Math.min(this.getX() + this.animation.width * this.animation.factor, this.getX() + xOff);
+        var xMax = Math.max(this.getX() + this.animation.width * this.animation.factor, this.getX() + xOff);
+
+        var yMin = Math.min(this.getY() - this.getHeight() + this.animation.width * this.animation.factor, this.getY() - this.getHeight() + yOff);
+        var yMax = Math.max(this.getY() - this.getHeight() + this.animation.width * this.animation.factor, this.getY() - this.getHeight() + yOff);
+
+        for (var x = xMin; x < xMax; x++) {
+            for (var y = yMin; y < yMax; y++) {
+                var ent = this.level.getEntity(x, y);
+                if (ent != null && ent instanceof EntityCreature && ent != this.getOwner() && this.damaged.indexOf(ent) == -1) {
+                    ent.doDamage(this.getDamage());
+                    this.damaged.push(ent);
+                }
+            }
+        }
+
+    }
 }

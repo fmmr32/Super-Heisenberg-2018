@@ -20,6 +20,8 @@
         this.forcedAnimate = forcedAnimate;
         this.animating = forcedAnimate;
 
+        this.factor = 1;
+        this.despawn = false;
         this.then = 0;
     }
 
@@ -40,6 +42,9 @@
                 this.column = 0;
                 this.row = 0;
                 this.animating = this.forcedAnimate;
+                if (this.despawn) {
+                    return true;
+                }
             }
 
             this.then = now - (delta % this.frameRate);
@@ -49,9 +54,9 @@
 
         var ctx = canvas.getContext("2d");
         var img = this.image;
+        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX - (this.factor - 1) * this.width / 2, Y + this.offSetY - (this.factor - 1) * this.height / 2, this.width * this.factor, this.height * this.factor);
 
-        ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX, Y + this.offSetY, this.width, this.height);
-
+        
     }
 
 }
@@ -139,9 +144,9 @@ class HealthBar {
         this.context.stroke();
 
         if (this.alignment == "v") {
-            this.context.fillText(this.name, this.x - this.name.length / 2, this.y + this.height + 14, this.width);
+            this.context.fillText(this.name, this.x, this.y + this.height + 14);
         } else {
-            this.context.fillText(this.name, this.x + this.width / 2 - this.name.length, this.y + this.height + 12, this.width);
+            this.context.fillText(this.name, this.x, this.y + this.height + 12, this.width);
         }
 
     }
@@ -149,7 +154,7 @@ class HealthBar {
     removeBar(b) {
         HealthBar.bars.splice(HealthBar.bars.indexOf(this), 1);
         for (var bar of HealthBar.bars) {
-            if (b.x <= bar.x && (bar.x <= b.x + b.width || b.x <= bar.x + width) && b.y < bar.y) {
+            if (b.x <= bar.x && (bar.x <= b.x + b.width || b.x <= bar.x + bar.width) && b.y < bar.y) {
                 if (bar.alignment == b.alignment) {
                     bar.y -= bar.height * 2;
                     //moves all bars up.
@@ -244,10 +249,9 @@ class Entity {
         return this.posY + this.getHeight();
     }
 
-    spawn(X, Y) {
+    spawn(X, Y, flipped) {
 
 
-        canvas.getContext("2d").save();
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place
@@ -258,8 +262,16 @@ class Entity {
 
 
 
-        if (this.animation == undefined) {
-            this.sprite.draw(X, Y);
+        if (this.animation == undefined || this instanceof Grenade) {
+            if (flipped == undefined || !flipped) {
+                this.sprite.draw(X, Y);
+            } else {
+                this.spriteFlip.draw(X, Y);
+            }
+        } else{
+            if (this.animation.doAnimation(X, Y)) {
+                this.level.removeEntity(this);
+            }
         }
 
         //drawing the weapon on the entity if it has one
@@ -276,16 +288,10 @@ class Entity {
             this.currentWeapon.drawGun(X, Y, flipped);
         }
 
-        //running an animation loop for standard entities
-        if (this.animation != undefined) {
-            this.animation.doAnimation(X, Y);
-        }
-
         if (this.healthBar != undefined) {
             this.healthBar.drawHp(this.hp);
         }
 
-        canvas.getContext("2d").restore();
     }
 
     getHeight() {
@@ -392,7 +398,7 @@ class EntityMovable extends Entity {
 
                     var collidingEntity = this.level.getEntity(x, y);
                     if (collidingEntity != null && collidingEntity != this) {
-                        if (collidingEntity instanceof Bullet && this instanceof EntityCreature) {
+                        if (collidingEntity instanceof Bullet && this instanceof EntityCreature && !(collidingEntity instanceof Grenade)) {
                             if (collidingEntity.getOwner() != this) {
                                 var owner = collidingEntity.getOwner();
                                 //do damage to origin entity...
@@ -400,7 +406,7 @@ class EntityMovable extends Entity {
                                     this.doDamage(collidingEntity.getDamage());
                                 }
                             }
-                        } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature) {
+                        } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature && !(this instanceof Grenade)) {
                             if (this.getOwner() != collidingEntity) {
                                 if (collidingEntity.level.removeEntity(this)) {
                                     collidingEntity.doDamage(this.getDamage());
@@ -452,11 +458,11 @@ class EntityMovable extends Entity {
     }
 
     //bacis do move function for an entity
-    doMove(onTick) {
+    doMove(onTick, flipped) {
         if (onTick) {
             this.setX(this.getX() + this.getHSpeed());
             this.setY(this.getY() - this.getSprite().height + this.getVSpeed());
-            this.spawn(this.getX(), this.getY() - this.getSprite().height);
+            this.spawn(this.getX(), this.getY() - this.getSprite().height, flipped);
         }
     }
 }
@@ -475,7 +481,6 @@ class EntityCreature extends EntityMovable {
         this.leftHand = options.leftHand;
         this.rightHand = options.rightHand;
 
-        this.gravity = options.gravity;
 
         this.jump = options.jump;
 
@@ -656,7 +661,6 @@ class Player extends EntityCreature {
         this.respawn = true;
 
         this.money = 0;
-
         this.healthBar = new HealthBar(options.hp, canvas.getContext("2d"), options.name, "v", 10, 10);
     }
 

@@ -1,20 +1,20 @@
 ﻿<div id="main" style="height:500px; width:500px;  position: absolute; margin: auto; top: 0;right: 0; left: 0; bottom: 0;border: 2px solid;">
 
-<div id = "form-wrapper">
-    
-    <div id="signDiv">
-        username: <input id="signDiv-username" type="text"><br>
-        password: <input id="signDiv-password" type+"password">
-        <button id="signDiv-signIn">Sign in</button>
-        <button id="signDiv-signUp">Sign up</button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <button id="skipSign">Play Offline</button>
+    <div id="form-wrapper">
+
+        <div id="signDiv">
+            username: <input id="signDiv-username" type="text"><br>
+            password: <input id="signDiv-password" type+"password">
+            <button id="signDiv-signIn">Sign in</button>
+            <button id="signDiv-signUp">Sign up</button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button id="skipSign">Play Offline</button>
+        </div>
     </div>
-</div>
 
 
-    <div id="gameDiv" style="display:none;overflow:hidden; "/>
+    <div id="gameDiv" style="display:none;overflow:hidden; " />
 </div>
-<link rel = "stylesheet" type ="text/css" href="resources/login-middle.css">
+<link rel="stylesheet" type="text/css" href="resources/login-middle.css">
 <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script type="text/javascript" src="js/config.js"></script>
 <script type="text/javascript" src="js/entities.js"></script>
@@ -52,7 +52,7 @@
     }
     socket.on('signInResponse', function (data) {
         if (data.success) {
-            loadGame();
+            loadGame(false);
         } else
             alert("Sign in unsuccessul.");
     });
@@ -63,14 +63,14 @@
             alert("Sign up unsuccessul.");
     });
     offLinePlay.onclick = function () {
-        loadGame();
+        loadGame(false);
     }
 
 
 
     //game
 
-    var canvas = {};
+    var canvas;
     var container = document.getElementById("gameDiv");
 
 
@@ -142,37 +142,32 @@
     }
 
 
-    function loadGame() {
+    function loadGame(reload) {
         //setting the divs correctly
         signDiv.style.display = 'none';
         gameDiv.style.display = '';
-        loadNeeded();
+        if (!reload) {
+            loadNeeded();
+        }
         //loading the needed files
-       
 
-        
 
         //loading the test map
         loadMap("map1", function (m) {
+            
             loadJSONFile(function (response) {
-                m.loadCharacter(response);
+                    m.loadCharacter(response);
             }
                 , "/client/resources/stud.json");
         });
-
-        
     }
- 
 
 
-
-    var running = false;
 
     var interval = setInterval(update, 1000 / 60);
 
     function update() {
         if (loaded) {
-            running = true;
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             map.drawMap();
             map.doTick();
@@ -183,7 +178,7 @@
     document.onkeydown = function (e) {
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-        if (charCode && running) {
+        if (charCode && loaded) {
             map.getPlayer().doMove(conf[charCode], true);
         }
     };
@@ -191,7 +186,7 @@
     document.onkeyup = function (e) {
         e = e || window.event
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-        if (charCode && running) {
+        if (charCode && loaded) {
             map.getPlayer().doMove(conf[charCode], false);
         }
     };
@@ -200,7 +195,7 @@
     //only needed for some debugging ..
     document.onmousedown = function (e) {
         e = e || window.event;
-        if (running) {
+        if (loaded) {
             var poss = getMousePos(canvas, e);
             console.log(poss.x + " " + poss.y);
         }

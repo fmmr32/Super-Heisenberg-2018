@@ -20,6 +20,10 @@ class Level {
 
     //temporary load character function
     loadCharacter(response) {
+        if (this.getPlayer() != undefined) {
+            return;
+        }
+
         var any = JSON.parse(response);
         any = any[0];
 
@@ -43,7 +47,6 @@ class Level {
         options2.jump = any.jump;
         options2.speed = any.speed;
         options2.height = options2.sprite.height;
-        options2.gravity = this.gravity;
         options2.leftHand = any.leftHand;
         options2.rightHand = any.rightHand;
 
@@ -52,7 +55,7 @@ class Level {
         options2.name = any.name;
         this.entities.push(new Player(options2));
         this.getPlayer().spawn(this.spawnX, this.spawnY);
-
+        this.player = response;
 
     }
 
@@ -64,6 +67,9 @@ class Level {
         this.width = any.width;
         this.height = any.height;
 
+        while (container.children.length != 0) {
+            container.children[0].remove();
+        }
         canvas = create('canvas', 'fg', 0, 0, this.width, this.height);
 
         var background = create('canvas', 'bg', 0, 0, this.width, this.height);
@@ -102,11 +108,13 @@ class Level {
             var y = ent.Y;
 
             var img = new Image();
+
             img.src = getSprite(id).image.src;
             img.width = getSprite(id).width;
             img.height = getSprite(id).height;
             img.startX = getSprite(id).image.startX;
             img.startY = getSprite(id).image.startY;
+
             img.offSetX = 0;
             img.offSetY = 0;
 
@@ -136,7 +144,6 @@ class Level {
             var sprite = getSprite(id);
 
             var options = {};
-            options.gravity = this.gravity;
             options.jump = sprite.complex.jump;
             options.hp = sprite.complex.hp;
             if (ent.hp != undefined) {
@@ -161,7 +168,7 @@ class Level {
                 options.name = ent.name != undefined ? ent.name : sprite.name;
             }
             if (ent.healthBar != undefined || sprite.complex.healthBar != undefined) {
-                options.healthBar = { x: 125, y: 10, alignment:"h"};
+                options.healthBar = { x: 125, y: 10, alignment: "h" };
             }
 
 
@@ -258,8 +265,11 @@ class Level {
 
     getEntity(X, Y) {
         for (var entity of this.entities) {
-            if (entity.getX() < X && X < entity.getX() + entity.getSprite().width && entity.getY() - entity.getHeight() < Y && Y < entity.getY()) {
-                return entity;
+            try {
+                if (entity.getX() < X && X < entity.getX() + entity.getSprite().width && entity.getY() - entity.getHeight() < Y && Y < entity.getY()) {
+                    return entity;
+                }
+            } catch (err) {
             }
         }
         return null;
@@ -291,17 +301,34 @@ class Level {
     }
 
     reload() {
+        loaded = false;
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.remove();
+        // canvas = {};
+        this.entities.splice(0, this.entities.length);
+        HealthBar.bars.splice(0, HealthBar.bars.length);
         this.loadBlocks(this.file);
+        this.loadCharacter(this.player);
     }
 }
 
 
-function loadMap(name, callback) {
+function loadMap(name, callback){
+
     loadJSONFile(function (response) {
-        map = new Level(response);
-        getMap(map);
-        callback(map);
+        try {
+            map = new Level(response);
+            getMap(map);
+            callback(map);
+        } catch (err) {
+            loaded = false;
+            console.log(err);
+            canvas.remove();
+            canvas = undefined;
+            loadGame(false);
+        }
     }, "/client/resources/" + name + ".json");
+
 }
 
 
