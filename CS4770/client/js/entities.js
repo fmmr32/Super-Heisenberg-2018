@@ -230,7 +230,7 @@ class Entity {
 
 
     getSprite() {
-        return this.sprite;
+        return this.sprite[0];
     }
 
     setX(x) {
@@ -249,9 +249,8 @@ class Entity {
         return this.posY + this.getHeight();
     }
 
-    spawn(X, Y, flipped) {
-
-
+    spawn(X, Y, flipCode) {
+       
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place
@@ -261,15 +260,10 @@ class Entity {
         X = Math.floor(X);
 
 
-
         if (this.animation == undefined || this instanceof Grenade) {
-            if (flipped == undefined || !flipped) {
-                this.sprite.draw(X, Y);
-            } else {
-                this.spriteFlip.draw(X, Y);
-            }
-        } else{
-            if (this.animation.doAnimation(X, Y)) {
+                this.sprite[0].draw(X, Y);
+        } else {
+            if (this.animation[flipCode].doAnimation(X, Y)) {
                 this.level.removeEntity(this);
             }
         }
@@ -457,12 +451,24 @@ class EntityMovable extends Entity {
         this.doCollision();
     }
 
+    getFlipCode() {
+        if (this.getHSpeed() > 0) {
+            return 0;
+        } else if (this.getHSpeed() < 0) {
+            return 1;
+        } else if (this.getLastOffSet() > 0) {
+            return 3;
+        } else {
+            return 2;
+        }
+    }
+
     //bacis do move function for an entity
-    doMove(onTick, flipped) {
+    doMove(onTick, flipCode) {
         if (onTick) {
             this.setX(this.getX() + this.getHSpeed());
             this.setY(this.getY() - this.getSprite().height + this.getVSpeed());
-            this.spawn(this.getX(), this.getY() - this.getSprite().height, flipped);
+            this.spawn(this.getX(), this.getY() - this.getSprite().height, flipCode);
         }
     }
 }
@@ -521,7 +527,7 @@ class EntityCreature extends EntityMovable {
     doRespawn() {
         //checks if the creature is able to respawn
         if (this.respawn) {
-            this.spawn(this.level.spawnX, this.level.spawnY);
+            this.spawn(this.level.spawnX, this.level.spawnY, 2);
             this.setVSpeed(0);
             this.setHSpeed(0);
             this.hp = this.maxHp;
@@ -645,7 +651,7 @@ class EntityCreature extends EntityMovable {
                         break;
                 }
                 //spawning at the new place
-                this.spawn(this.getX(), this.getY() - this.getHeight());
+                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode());
             }
         }
     }

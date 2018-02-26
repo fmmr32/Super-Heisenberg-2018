@@ -11,9 +11,9 @@ function loadWeapon(list) {
 
 function deepCopy(c) {
     if (c instanceof Weapon) {
-        var animation = {};
-        animation.normal = deepCopy(c.animation.normal);
-        animation.flipped = deepCopy(c.animation.flipped);
+        var animation = [];
+        animation.push(deepCopy(c.animation[0]));
+        animation.push(deepCopy(c.animation[1]));
         return new Weapon(c.damage, c.speed, c.cooldown, animation, c.barrel, c.bullets);
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
@@ -32,19 +32,19 @@ function loadWeapons(file) {
         imgNormal.src = "../resources/weapons.png";
         imgNormal.width = w.width;
         imgNormal.height = w.height;
-        imgNormal.startX = w.sheets[0].startX;
-        imgNormal.startY = w.sheets[0].startY;
-        imgNormal.offSetX = w.sheets[0].offSetX;
-        imgNormal.offSetY = w.sheets[0].offSetY;
+        imgNormal.startX = w.animation[0].startX;
+        imgNormal.startY = w.animation[0].startY;
+        imgNormal.offSetX = w.animation[0].offSetX;
+        imgNormal.offSetY = w.animation[0].offSetY;
 
         var imgFlipped = new Image();
         imgFlipped.src = "../resources/weapons.png";
         imgFlipped.width = w.width;
         imgFlipped.height = w.height;
-        imgFlipped.startX = w.sheets[1].startX;
-        imgFlipped.startY = w.sheets[1].startY;
-        imgFlipped.offSetX = w.sheets[1].offSetX;
-        imgFlipped.offSetY = w.sheets[1].offSetY;
+        imgFlipped.startX = w.animation[1].startX;
+        imgFlipped.startY = w.animation[1].startY;
+        imgFlipped.offSetX = w.animation[1].offSetX;
+        imgFlipped.offSetY = w.animation[1].offSetY;
 
         var frames = w.frames;
         var frameRate = w.frameRate;
@@ -52,23 +52,26 @@ function loadWeapons(file) {
         var barrel = {};
         barrel.Normal = {};
         barrel.Flipped = {};
-        barrel.Normal.x = w.sheets[0].barrelX;
-        barrel.Normal.y = w.sheets[0].barrelY;
-        barrel.Flipped.x = w.sheets[1].barrelX;
-        barrel.Flipped.y = w.sheets[1].barrelY;
+        barrel.Normal.x = w.animation[0].barrelX;
+        barrel.Normal.y = w.animation[0].barrelY;
+        barrel.Flipped.x = w.animation[1].barrelX;
+        barrel.Flipped.y = w.animation[1].barrelY;
 
-        var animations = {};
+        var animations = [];
 
-        animations.normal = new Animation(imgNormal, frames, frameRate, columns, false);
-        animations.flipped = new Animation(imgFlipped, frames, frameRate, columns, false);
+        animations.push(new Animation(imgNormal, frames, frameRate, columns, false));
+        animations.push(new Animation(imgFlipped, frames, frameRate, columns, false));
+
+        console.log(animations);
 
         var bullets = [];
         var options = {};
         options.x = 0;
         options.y = 0;
         options.speed = w.speed;
-        options.sprite = getSprite(w.bulletSprite);
-        options.spriteFlip = getSprite(w.bulletSpriteFlip);
+        options.sprite = [];
+        options.sprite.push(getSprite(w.bulletSprite));
+        options.sprite.push(getSprite(w.bulletSpriteFlip));
         options.gravity = w.gravity;
         if (w.bullets != undefined) {
             for (var bullet of w.bullets) {
@@ -102,11 +105,12 @@ class Weapon {
     fireWeapon(character, level) {
 
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
-        if (this.tick === 0 && !this.animation.normal.animating && !this.animation.flipped.animating) {
+        if (this.tick === 0 && !this.animation[0].animating && !this.animation[1].animating) {
+
             if (character.getLastOffSet() < 0) {
-                this.animation.normal.animating = true;
+                this.animation[0].animating = true;
             } else {
-                this.animation.flipped.animating = true;
+                this.animation[1].animating = true;
             }
 
             for (var bullet of this.bullets) {
@@ -148,12 +152,12 @@ class Weapon {
             }
         }
     }
-
+    //clean this up
     drawGun(X, Y, flipped) {
         if (flipped) {
-            this.animation.flipped.doAnimation(X, Y);
+            this.animation[1].doAnimation(X, Y);
         } else {
-            this.animation.normal.doAnimation(X, Y);
+            this.animation[0].doAnimation(X, Y);
         }
 
 
@@ -283,6 +287,7 @@ class Grenade extends Bullet {
         this.id = id;
 
         var img = new Image();
+        console.log(getSprite(id));
         img.src = getSprite(id).image.src;
         img.width = getSprite(id).width;
         img.height = getSprite(id).height;
