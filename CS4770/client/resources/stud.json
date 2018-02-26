@@ -3,17 +3,55 @@
     "Id": 667,
     "startX": 39,
     "startY": 11,
-    "width": 45,
-    "height": 96,
-    "centerPX": 23,
-    "offSetPX": 8,
+    "width": 64,
+    "height": 64,
+    "centerPX": 32,
+    "offSetPX": 3,
     "name": "Heisenberg",
     "weapon": [ 2,4 ],
     "hp": 100,
     "speed": 4,
     "jump": 0.5,
-    "leftHand": [ -20, 55 ],
-    "rightHand": [ 33, 55 ],
-    "source": "../resources/stud.png"
+    "leftHand": [ -10, 0],
+    "rightHand": [ 40, 0 ],
+    "source": "../resources/studss.png",
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": -15,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 3
+      },
+      {
+        "startX": 0,
+        "startY": 128,
+        "offSetX": 0,
+        "offSetY": -15,
+        "frames": 4,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": -15,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 128,
+        "offSetX": 0,
+        "offSetY": -15,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      }
+    ]
   }
 ]

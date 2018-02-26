@@ -13,7 +13,7 @@
     "bulletSprite": 999,
     "bulletSpriteFlip": 998,
     "gravity": false,
-    "sheets": [
+    "animation": [
       {
         "startX": 196,
         "startY": 129,
@@ -52,13 +52,13 @@
     "bulletSprite": 999,
     "bulletSpriteFlip": 998,
     "gravity": false,
-    "sheets": [
+    "animation": [
       {
         "startX": 0,
         "startY": 0,
         "barrelX": 16,
         "barrelY": 1,
-        "offSetX": -40,
+        "offSetX":-5,
         "offSetY": -20
       },
       {
@@ -66,7 +66,7 @@
         "startY": 196,
         "barrelX": -29,
         "barrelY": 1,
-        "offSetX": 4,
+        "offSetX": -15,
         "offSetY": -20
       }
     ],
@@ -101,7 +101,7 @@
     "bulletSprite": 995,
     "bulletSpriteFlip": 995,
     "gravity": true,
-    "sheets": [
+    "animation": [
       {
         "startX": 196,
         "startY": 0,
@@ -142,7 +142,7 @@
     "bulletSprite": 995,
     "bulletSpriteFlip": 995,
     "gravity": false,
-    "sheets": [
+    "animation": [
       {
         "startX": 196,
         "startY": 129,

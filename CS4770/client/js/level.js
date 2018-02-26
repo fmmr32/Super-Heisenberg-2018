@@ -42,7 +42,8 @@ class Level {
         options.context = this.container;
 
         var options2 = {};
-        options2.sprite = new SPRITE(options);
+        options2.sprite = [];
+        options2.sprite.push(new SPRITE(options));
         options2.hp = any.hp;
         options2.jump = any.jump;
         options2.speed = any.speed;
@@ -50,11 +51,34 @@ class Level {
         options2.leftHand = any.leftHand;
         options2.rightHand = any.rightHand;
 
+        options2.animation = [];
+        for (var ani of any.animation) {
+            var img = new Image();
+            img.src = "../resources/studss.png";
+            img.width = any.width;
+            img.height = any.height;
+            img.startX = ani.startX;
+            img.startY = ani.startY;
+            img.offSetX = ani.offSetX;
+            img.offSetY = ani.offSetY;
+
+            var frames = ani.frames;
+            var frameRate = ani.frameRate;
+            var columns = ani.columns;
+
+            var animation = new Animation(img, frames, frameRate, columns, true);
+            animation.factor = 1.5;
+
+            options2.animation.push(animation);
+
+        }
+
+
         options2.level = this;
         options2.weapon = loadWeapon(any.weapon);
         options2.name = any.name;
         this.entities.push(new Player(options2));
-        this.getPlayer().spawn(this.spawnX, this.spawnY);
+        this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
         this.player = response;
 
     }
@@ -129,8 +153,10 @@ class Level {
                 options.x = x;
                 options.y = y;
                 options.level = this;
-                options.sprite = getSprite(id);
-                options.animation = animation;
+                options.sprite = [];
+                options.sprite.push(getSprite(id));
+                options.animation = [];
+                options.animation.push(animation);
 
                 var entity = new Entity(options);
                 this.entities.push(entity);
@@ -150,12 +176,15 @@ class Level {
                 options.hp = ent.hp;
             }
 
+
             options.speed = sprite.complex.speed;
             options.moves = sprite.complex.moves;
             options.level = this;
             options.x = x;
             options.y = y;
-            options.sprite = sprite;
+
+            options.sprite = [];
+            options.sprite.push(sprite);
             options.weapon = loadWeapon(sprite.complex.weapon);
             options.damage = sprite.complex.damage;
             options.leftHand = sprite.complex.leftHand;
@@ -215,7 +244,7 @@ class Level {
                     entity.doMove("none", true, true);
                     //handles other entities
                 } else {
-                    entity.spawn(entity.getX(), entity.getY() - entity.getHeight());
+                    entity.spawn(entity.getX(), entity.getY() - entity.getHeight(), 0);
                 }
 
             }
@@ -293,8 +322,8 @@ class Level {
         if (this.getPlayer() != undefined && this.image != undefined) {
             var x = container.clientWidth / 2 - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
 
-
             var context = canvas.getContext("2d");
+
 
             context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
         }
