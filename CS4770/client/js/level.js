@@ -110,9 +110,21 @@ class Level {
             block.meta = tile.meta;
             block.X = tile.blockX;
             block.Y = tile.blockY;
-            block.meta = {};
+            block.meta = [];
+
+            //checks for if a block has a specify meta
+            block.hasMeta = function (m) {
+                if (this.meta != null && this.meta[m] != undefined) {
+                    return true;
+                }
+                return false;
+            }
+            if (getSprite(tile.blockId).meta != undefined) {
+                block.meta = getSprite(tile.blockId).meta;
+            }
+
             for (var m of tile.meta) {
-                block.meta = m;
+                block.meta[Object.keys(m)] = Object.values(m);
             }
             for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
                 if (this.tiles[x] === undefined) {
@@ -141,6 +153,7 @@ class Level {
             img.offSetX = 0;
             img.offSetY = 0;
 
+            //loading the entity animation
             if (getSprite(id).animation != undefined) {
                 var frames = getSprite(id).animation.frames;
                 var frameRate = getSprite(id).animation.frameRate;
@@ -159,6 +172,7 @@ class Level {
                 this.entities.push(entity);
             }
         }
+        //loading the creatures
         for (var ent of any.creatures) {
             var id = ent.Id;
             var x = ent.X;
@@ -185,6 +199,7 @@ class Level {
             options.damage = sprite.complex.damage;
             options.leftHand = sprite.complex.leftHand;
             options.rightHand = sprite.complex.rightHand;
+
             options.moveSet = new MoveSet(sprite.complex.moveSet);
             if (ent.moveSet != undefined) {
                 options.moveSet = new MoveSet(ent.moveSet);
@@ -283,6 +298,12 @@ class Level {
             block.meta = null;
             block.X = X;
             block.Y = Y;
+            block.hasMeta = function (m) {
+                if (block.meta != null && block.meta[m] != undefined) {
+                    return true;
+                }
+                return false;
+            }
             this.tiles[X][Y] = block;
         }
         return this.tiles[X][Y];
@@ -338,7 +359,7 @@ class Level {
 }
 
 
-function loadMap(name, callback){
+function loadMap(name, callback) {
 
     loadJSONFile(function (response) {
         try {

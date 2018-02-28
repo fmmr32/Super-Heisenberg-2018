@@ -4,9 +4,11 @@
     "id": 1,
     "columns": 3,
     "width": 32,
+    "factor": 1,
     "height": 32,
     "damage": 10,
     "speed": 5,
+    "impact": "explode",
     "frames": 8,
     "frameRate": 24,
     "cooldown": 15,
@@ -43,8 +45,10 @@
     "id": 2,
     "columns": 3,
     "width": 65,
+    "factor": 1,
     "height": 65,
     "damage": 10,
+    "impact": "die",
     "speed": 5,
     "frames": 8,
     "frameRate": 24,
@@ -58,7 +62,7 @@
         "startY": 0,
         "barrelX": 16,
         "barrelY": 1,
-        "offSetX":-5,
+        "offSetX": -5,
         "offSetY": -20
       },
       {
@@ -97,6 +101,7 @@
     "speed": 5,
     "frames": 10,
     "frameRate": 25,
+    "impact": "ricochet",
     "cooldown": 30,
     "bulletSprite": 995,
     "bulletSpriteFlip": 995,
@@ -122,7 +127,7 @@
     "grenades": [
       {
         "id": 994,
-        "angle": 40,
+        "angle": 15,
         "alive": 120
       }
     ]
@@ -138,6 +143,7 @@
     "frames": 8,
     "factor": 9,
     "frameRate": 24,
+    "impact": "explode",
     "cooldown": 15,
     "bulletSprite": 995,
     "bulletSpriteFlip": 995,

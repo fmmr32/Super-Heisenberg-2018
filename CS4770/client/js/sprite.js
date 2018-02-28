@@ -20,6 +20,9 @@ SPRITE = function (options) {
     if (options.healthBar != undefined) {
         this.healthBar = options.healthBar;
     }
+    if (options.meta != undefined) {
+        this.meta = options.meta;
+    }
 
     this.getCenter = function () {
         return this.center;
@@ -121,6 +124,12 @@ function loadSprites(json, container, tile) {
         }
         if (tile.complex != undefined) {
             options.complex = tile.complex;
+        }
+        if (tile.meta != undefined) {
+            options.meta = [];
+            for (var m of tile.meta) {
+                options.meta[Object.keys(m)] = Object.values(m);
+            }
         }
 
         newSprite(options);

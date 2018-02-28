@@ -261,7 +261,7 @@ class Entity {
 
 
         if (this.animation == undefined || this instanceof Grenade) {
-            this.sprite[flipCode != undefined ? flipCode : 0].draw(X, Y);
+            this.sprite[(flipCode != undefined && this.sprite[flipCode] != undefined) ? flipCode : 0].draw(X, Y);
         } else {
             if (this.animation[flipCode].doAnimation(X, Y)) {
                 this.level.removeEntity(this);
@@ -364,6 +364,7 @@ class EntityMovable extends Entity {
                 //somewhere it collides
                 if (!this.level.isOOB(x, y)) {
                     if (this.level.getBlock(x, y).Id != 0) {
+
                         //setting back to the correct spawn x
                         if (this.getVSpeed() == 0) {
                             y = toY + 1;
@@ -396,12 +397,27 @@ class EntityMovable extends Entity {
                             if (collidingEntity.getOwner() != this) {
                                 var owner = collidingEntity.getOwner();
                                 //do damage to origin entity...
+                                if (collidingEntity.impact == "explode") {
+                                    var gren = new Grenade(0, 0, collidingEntity, 994, collidingEntity.getOwner());
+                                    gren.setX(collidingEntity.getX());
+                                    gren.setY(collidingEntity.getY() - collidingEntity.getHeight());
+                                    gren
+                                    return { code: 0, modDX: 0 };
+                                }
+
                                 if (this.level.removeEntity(collidingEntity)) {
                                     this.doDamage(collidingEntity.getDamage());
                                 }
                             }
                         } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature && !(this instanceof Grenade)) {
                             if (this.getOwner() != collidingEntity) {
+                                if (this.impact == "explode") {
+                                    var gren = new Grenade(0, 0, this, 994, this.getOwner());
+                                    gren.setX(this.getX());
+                                    gren.setY(this.getY() - this.getHeight());
+                                    gren
+                                    return { code: 0, modDX: 0 };
+                                }
                                 if (collidingEntity.level.removeEntity(this)) {
                                     collidingEntity.doDamage(this.getDamage());
                                 }
@@ -451,8 +467,14 @@ class EntityMovable extends Entity {
         this.doCollision();
     }
 
-    getFlipCode() {
-        if (this.getHSpeed() > 0) {
+    getFlipCode(overRide) {
+        if (overRide) {
+            if (this.getLastOffSet() > 0) {
+                return 3;
+            } else {
+                return this.animation == undefined ? 0 : 2;
+            }
+        } else if (this.getHSpeed() > 0) {
             return 0;
         } else if (this.getHSpeed() < 0) {
             return 1;
@@ -470,6 +492,23 @@ class EntityMovable extends Entity {
             this.setY(this.getY() - this.getSprite().height + this.getVSpeed());
             this.spawn(this.getX(), this.getY() - this.getSprite().height, flipCode);
         }
+    }
+}
+
+class EntityInteractable extends Entity {
+    constructor(options) {
+        super(options);
+        this.state = false; //false if not activated, true if activated
+        this.action = null; //action to be done when true;
+    }
+
+    flipState() {
+        this.state = !this.state;
+        this.doAction();
+    }
+
+    doAction() {
+
     }
 }
 
@@ -595,18 +634,22 @@ class EntityCreature extends EntityMovable {
                     //insert for interacting with stuff like levers..
                     break;
             }
-            var code = 0;
+            var overRide = false;
             //handling to what the player did
             if (this.rightDown) {
                 this.setHSpeed(this.getSpeed());
-                code = this.doCollision();
                 this.lastOffSet = -this.getSprite().getOffSet();
             } else if (this.leftDown) {
                 this.setHSpeed(-this.getSpeed());
-                code = this.doCollision();
                 this.lastOffSet = this.getSprite().getOffSet();
             } else {
-                this.setHSpeed(0);
+                //handles if the player is on ice
+                if (!this.level.getBlock(this.getX(), this.getY()).hasMeta("ice")) {
+                    this.setHSpeed(0);
+                } else {
+                    //this makes sure the correct sprite is chosen
+                    overRide = true;
+                }
             }
 
 
@@ -651,7 +694,7 @@ class EntityCreature extends EntityMovable {
                         break;
                 }
                 //spawning at the new place
-                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode());
+                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode(overRide));
             }
         }
     }
