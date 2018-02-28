@@ -250,7 +250,6 @@ class Entity {
     }
 
     spawn(X, Y, flipCode) {
-       
         this.posX = X;
         this.posY = Y;
         //makes sure the entity is drawn at the correct place

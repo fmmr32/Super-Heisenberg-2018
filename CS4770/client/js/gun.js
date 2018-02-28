@@ -287,7 +287,6 @@ class Grenade extends Bullet {
         this.id = id;
 
         var img = new Image();
-        console.log(getSprite(id));
         img.src = getSprite(id).image.src;
         img.width = getSprite(id).width;
         img.height = getSprite(id).height;
@@ -303,9 +302,9 @@ class Grenade extends Bullet {
 
         this.exploding = false;
         this.damaged = [];
-
-        this.animation = new Animation(img, frames, frameRate, columns, false);
-        this.animation.factor = this.factor;
+        this.animation = [];
+        this.animation.push(new Animation(img, frames, frameRate, columns, false));
+        this.animation[0].factor = this.factor;
     }
 
     bulletTravel(onTick) {
@@ -324,10 +323,11 @@ class Grenade extends Bullet {
         var options = {};
         options.x = this.getX();
         options.y = this.getY() - this.getHeight();
-        options.sprite = this.getSprite();
+        options.sprite = [];
+        options.sprite.push(this.getSprite());
         options.level = this.level;
-        this.animation.animating = true;
-        this.animation.despawn = true;
+        this.animation[0].animating = true;
+        this.animation[0].despawn = true;
         options.animation = this.animation;
 
         this.level.entities.push(new Entity(options));
