@@ -42,8 +42,7 @@ class Level {
         options.context = this.container;
 
         var options2 = {};
-        options2.sprite = [];
-        options2.sprite.push(new SPRITE(options));
+        options2.sprite = [new SPRITE(options)];
         options2.hp = any.hp;
         options2.jump = any.jump;
         options2.speed = any.speed;
@@ -147,7 +146,6 @@ class Level {
                 var frameRate = getSprite(id).animation.frameRate;
                 var columns = getSprite(id).animation.columns;
 
-                var animation = new Animation(img, frames, frameRate, columns, true);
 
                 var options = {};
                 options.x = x;
@@ -155,8 +153,7 @@ class Level {
                 options.level = this;
                 options.sprite = [];
                 options.sprite.push(getSprite(id));
-                options.animation = [];
-                options.animation.push(animation);
+                options.animation = [new Animation(img, frames, frameRate, columns, true)];
 
                 var entity = new Entity(options);
                 this.entities.push(entity);
@@ -183,8 +180,7 @@ class Level {
             options.x = x;
             options.y = y;
 
-            options.sprite = [];
-            options.sprite.push(sprite);
+            options.sprite = [sprite];
             options.weapon = loadWeapon(sprite.complex.weapon);
             options.damage = sprite.complex.damage;
             options.leftHand = sprite.complex.leftHand;

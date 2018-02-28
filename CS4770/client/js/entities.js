@@ -1,4 +1,5 @@
-﻿class Animation {
+﻿
+class Animation {
     constructor(image, frames, frameRate, columns, forcedAnimate) {
         this.image = image;
 
@@ -56,7 +57,7 @@
         var img = this.image;
         ctx.drawImage(img, this.column * this.width + this.startX, this.row * this.height + this.startY, this.width, this.height, X + this.offSetX - (this.factor - 1) * this.width / 2, Y + this.offSetY - (this.factor - 1) * this.height / 2, this.width * this.factor, this.height * this.factor);
 
-        
+
     }
 
 }
@@ -114,7 +115,7 @@ class HealthBar {
 
         //red bar
         this.context.beginPath();
-        this.context.lineWidth = Math.min(this.width, this.height)-2;
+        this.context.lineWidth = Math.min(this.width, this.height) - 2;
         this.context.strokeStyle = "red";
 
         if (this.alignment == "v") {
@@ -260,7 +261,7 @@ class Entity {
 
 
         if (this.animation == undefined || this instanceof Grenade) {
-                this.sprite[0].draw(X, Y);
+            this.sprite[flipCode != undefined ? flipCode : 0].draw(X, Y);
         } else {
             if (this.animation[flipCode].doAnimation(X, Y)) {
                 this.level.removeEntity(this);
@@ -269,14 +270,14 @@ class Entity {
 
         //drawing the weapon on the entity if it has one
         if (this.currentWeapon != undefined) {
-            var flipped = false;
+            var flipped = 0;
             if (this.getLastOffSet() <= 0) {
                 X += this.rightHand[0];
                 Y += this.rightHand[1];
             } else {
                 X += this.leftHand[0];
                 Y += this.leftHand[1];
-                flipped = true;
+                flipped = 1;
             }
             this.currentWeapon.drawGun(X, Y, flipped);
         }
@@ -458,7 +459,7 @@ class EntityMovable extends Entity {
         } else if (this.getLastOffSet() > 0) {
             return 3;
         } else {
-            return 2;
+            return this.animation == undefined ? 0 : 2;
         }
     }
 

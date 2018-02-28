@@ -11,9 +11,7 @@ function loadWeapon(list) {
 
 function deepCopy(c) {
     if (c instanceof Weapon) {
-        var animation = [];
-        animation.push(deepCopy(c.animation[0]));
-        animation.push(deepCopy(c.animation[1]));
+        var animation = [deepCopy(c.animation[0]), deepCopy(c.animation[1])];
         return new Weapon(c.damage, c.speed, c.cooldown, animation, c.barrel, c.bullets);
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
@@ -57,21 +55,14 @@ function loadWeapons(file) {
         barrel.Flipped.x = w.animation[1].barrelX;
         barrel.Flipped.y = w.animation[1].barrelY;
 
-        var animations = [];
-
-        animations.push(new Animation(imgNormal, frames, frameRate, columns, false));
-        animations.push(new Animation(imgFlipped, frames, frameRate, columns, false));
-
-        console.log(animations);
+        var animations = [new Animation(imgNormal, frames, frameRate, columns, false), new Animation(imgFlipped, frames, frameRate, columns, false)];
 
         var bullets = [];
         var options = {};
         options.x = 0;
         options.y = 0;
         options.speed = w.speed;
-        options.sprite = [];
-        options.sprite.push(getSprite(w.bulletSprite));
-        options.sprite.push(getSprite(w.bulletSpriteFlip));
+        options.sprite = [getSprite(w.bulletSprite), getSprite(w.bulletSpriteFlip)];
         options.gravity = w.gravity;
         if (w.bullets != undefined) {
             for (var bullet of w.bullets) {
@@ -116,11 +107,9 @@ class Weapon {
             for (var bullet of this.bullets) {
                 var options = {};
                 options.speed = bullet.speed;
-
                 options.x = bullet.x;
                 options.y = bullet.y;
                 options.sprite = bullet.sprite;
-                options.spriteFlip = bullet.spriteFlip;
                 options.level = level;
                 options.damage = this.damage;
                 options.gravity = bullet.gravity;
@@ -154,13 +143,7 @@ class Weapon {
     }
     //clean this up
     drawGun(X, Y, flipped) {
-        if (flipped) {
-            this.animation[1].doAnimation(X, Y);
-        } else {
-            this.animation[0].doAnimation(X, Y);
-        }
-
-
+        this.animation[flipped].doAnimation(X, Y);
     }
 
     lowerCD() {
@@ -191,7 +174,6 @@ class Bullet extends EntityMovable {
         this.damage = options.damage;
 
         this.sprite = options.sprite;
-        this.spriteFlip = options.spriteFlip;
         this.gravity = options.gravity;
     }
 
@@ -264,7 +246,7 @@ class Bullet extends EntityMovable {
                 }
             }
             //finally do the move tick
-            this.doMove(onTick, this.getHSpeed() < 0);
+            this.doMove(onTick, +(this.getHSpeed() < 0));
 
             return false;
         } else {
@@ -273,6 +255,7 @@ class Bullet extends EntityMovable {
 
         }
     }
+
 
     getOwner() {
         return this.owner;
@@ -302,8 +285,7 @@ class Grenade extends Bullet {
 
         this.exploding = false;
         this.damaged = [];
-        this.animation = [];
-        this.animation.push(new Animation(img, frames, frameRate, columns, false));
+        this.animation = new Array(1).fill(new Animation(img, frames, frameRate, columns, false));
         this.animation[0].factor = this.factor;
     }
 
@@ -323,8 +305,7 @@ class Grenade extends Bullet {
         var options = {};
         options.x = this.getX();
         options.y = this.getY() - this.getHeight();
-        options.sprite = [];
-        options.sprite.push(this.getSprite());
+        options.sprite = new Array(1).fill(this.getSprite());
         options.level = this.level;
         this.animation[0].animating = true;
         this.animation[0].despawn = true;
