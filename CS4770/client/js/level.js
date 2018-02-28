@@ -120,9 +120,10 @@ class Level {
                 return false;
             }
             if (getSprite(tile.blockId).meta != undefined) {
-                block.meta = getSprite(tile.blockId).meta;
+                for (var key in getSprite(tile.blockId).meta) {
+                    block.meta[key] = getSprite(tile.blockId).meta[key];
+                }
             }
-
             for (var m of tile.meta) {
                 block.meta[Object.keys(m)] = Object.values(m);
             }

@@ -169,7 +169,12 @@
       "blockId": 17,
       "blockX": 582,
       "blockY": 324,
-      "meta": [ { "ricochet": true } ]
+      "meta": [
+        { "ricochet": true },
+        {
+          "passThrough": true
+        }
+      ]
     }
 
 

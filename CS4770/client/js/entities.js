@@ -363,8 +363,7 @@ class EntityMovable extends Entity {
 
                 //somewhere it collides
                 if (!this.level.isOOB(x, y)) {
-                    if (this.level.getBlock(x, y).Id != 0) {
-
+                    if (this.level.getBlock(x, y).Id != 0 && !this.level.getBlock(x, y).hasMeta("passThrough")) {
                         //setting back to the correct spawn x
                         if (this.getVSpeed() == 0) {
                             y = toY + 1;
