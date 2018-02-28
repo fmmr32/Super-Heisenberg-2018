@@ -73,7 +73,11 @@ var loadCharacter = function (data, callback) {
     });
 }
 
-
+var loadLevelsList = function (callback) {
+    db.levels.find({}, {name: 1, author: 1, date: 1}, function (err, result) {
+        callback(result);
+    });
+}
 
 
 var io = require('socket.io')(serv, {});
@@ -95,6 +99,11 @@ io.sockets.on('connection', function (socket) {
         else if (data.type == "character") {
             loadCharacter(data, function (result) {
                 socket.emit('character', result);
+            });
+        }
+        else if (data.type == "levelsList") {
+            loadLevelsList(function (result) {
+                socket.emit('levelList', result);
             });
         }
     });
