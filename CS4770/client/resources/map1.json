@@ -170,10 +170,7 @@
       "blockX": 582,
       "blockY": 324,
       "meta": [
-        { "ricochet": true },
-        {
-          "passThrough": true
-        }
+        { "ricochet": true }
       ]
     }
 

@@ -1,5 +1,29 @@
 ﻿
 
+class Block {
+    constructor(id, x, y) {
+        this.Id = id;
+        this.X = x;
+        this.Y = y;
+        this.meta = [];
+    }
+    //checks if a block has that meta
+    hasMeta(m) {
+        if (this.meta != null && this.meta[m] != undefined) {
+            return true;
+        }
+        return false;
+    }
+    //adds a new meta parameter
+    addMeta(key, value) {
+        this.meta[key] = value;
+    }
+    //deletes a meta parameter
+    deleteMeta(key) {
+        delete this.meta[key];
+    }
+
+}
 
 class Level {
     constructor(file) {
@@ -105,27 +129,15 @@ class Level {
 
         //loading in the tiles of a level
         for (var tile of any.content) {
-            var block = {};
-            block.Id = tile.blockId;
-            block.meta = tile.meta;
-            block.X = tile.blockX;
-            block.Y = tile.blockY;
-            block.meta = [];
+            var block = new Block(tile.blockId, tile.blockX, tile.blockY);
 
-            //checks for if a block has a specify meta
-            block.hasMeta = function (m) {
-                if (this.meta != null && this.meta[m] != undefined) {
-                    return true;
-                }
-                return false;
-            }
             if (getSprite(tile.blockId).meta != undefined) {
                 for (var key in getSprite(tile.blockId).meta) {
-                    block.meta[key] = getSprite(tile.blockId).meta[key];
+                    block.addMeta(key, getSprite(tile.blockId).meta[key]);
                 }
             }
             for (var m of tile.meta) {
-                block.meta[Object.keys(m)] = Object.values(m);
+                block.addMeta(Object.keys(m), Object.values(m));
             }
             for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
                 if (this.tiles[x] === undefined) {
@@ -294,17 +306,7 @@ class Level {
             this.tiles[X] = [];
         }
         if (this.tiles[X][Y] === undefined) {
-            var block = {};
-            block.Id = 0;
-            block.meta = null;
-            block.X = X;
-            block.Y = Y;
-            block.hasMeta = function (m) {
-                if (block.meta != null && block.meta[m] != undefined) {
-                    return true;
-                }
-                return false;
-            }
+            var block = new Block(0, X, Y);
             this.tiles[X][Y] = block;
         }
         return this.tiles[X][Y];
