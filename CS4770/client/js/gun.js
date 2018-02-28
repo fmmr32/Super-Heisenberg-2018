@@ -64,6 +64,8 @@ function loadWeapons(file) {
         options.speed = w.speed;
         options.sprite = [getSprite(w.bulletSprite), getSprite(w.bulletSpriteFlip)];
         options.gravity = w.gravity;
+        options.impact = w.impact;
+        options.factor = w.factor;
         if (w.bullets != undefined) {
             for (var bullet of w.bullets) {
                 bullets.push(new Bullet(bullet.angle, bullet.alive, options));
@@ -75,12 +77,12 @@ function loadWeapons(file) {
             }
         }
 
-        weapons.set(w.id, new Weapon(w.damage, w.speed, w.cooldown, animations, barrel, bullets));
+        weapons.set(w.id, new Weapon(w.damage, w.speed, w.cooldown, animations, barrel, bullets, w.impact));
     }
 }
 
 class Weapon {
-    constructor(damage, speed, cooldown, animation, barrel, bullets) {
+    constructor(damage, speed, cooldown, animation, barrel, bullets, impact) {
         this.damage = damage;
         this.speed = speed;
         this.cooldown = cooldown;
@@ -88,6 +90,7 @@ class Weapon {
         this.bullets = bullets;
         this.animation = animation;
         this.barrel = barrel;
+        this.impact = impact;
 
     }
 
@@ -113,6 +116,8 @@ class Weapon {
                 options.level = level;
                 options.damage = this.damage;
                 options.gravity = bullet.gravity;
+                options.impact = bullet.impact;
+                options.factor = bullet.factor;
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand;
                 var offsetGun = this.barrel.Normal;
@@ -127,7 +132,7 @@ class Weapon {
                 var temp;
 
                 if (bullet instanceof Grenade) {
-                    temp = new Grenade(angle, bullet.alive, options, bullet.id, bullet.factor, character);
+                    temp = new Grenade(angle, bullet.alive, options, bullet.id, character);
                 } else {
                     temp = new Bullet(angle, bullet.alive, options, character);
                 }
@@ -172,6 +177,9 @@ class Bullet extends EntityMovable {
         this.alive = alive;
         this.owner = owner;
         this.damage = options.damage;
+
+        this.factor = options.factor;
+        this.impact = options.impact;
 
         this.sprite = options.sprite;
         this.gravity = options.gravity;
@@ -219,8 +227,8 @@ class Bullet extends EntityMovable {
             //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
                 var block = this.level.getBlock(x, this.getY());
-                if (block.meta !== null) {
-                    if (block.meta.ricochet) {
+                if (block.meta !== null && block.hasMeta("ricochet")) {
+                    if (block.meta["ricochet"] && this.impact == "ricochet") {
                         if (this.angle == 0 || this.angle == -180) {
                             return true;
                         }
@@ -238,6 +246,14 @@ class Bullet extends EntityMovable {
                                 this.angle += 180;
                                 break;
                         }
+                    } if (this.impact == "explode") {
+                        if (!(this instanceof Grenade)) {
+                            var gren = new Grenade(0, 0, this, 994, this.getOwner());
+                            gren.setX(this.getX());
+                            gren.setY(this.getY() - this.getHeight());
+                            gren.doExplosion();
+                        }
+                        return true;
                     } else {
                         return true;
                     }
@@ -264,9 +280,8 @@ class Bullet extends EntityMovable {
 }
 
 class Grenade extends Bullet {
-    constructor(angle, alive, options, id, factor, owner) {
+    constructor(angle, alive, options, id, owner) {
         super(angle, alive, options, owner);
-        this.factor = factor;
         this.id = id;
 
         var img = new Image();
@@ -295,10 +310,6 @@ class Grenade extends Bullet {
             return true;
         }
         return false;
-    }
-
-    getOwner() {
-        return this.owner;
     }
 
     doExplosion() {

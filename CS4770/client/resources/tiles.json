@@ -172,7 +172,8 @@
     "height": 36,
     "startX": 0,
     "startY": 503,
-    "offSetY": 4
+    "offSetY": 4,
+    "meta": [{"ice": true}]
   },
 
   {
@@ -183,7 +184,8 @@
     "height": 36,
     "startX": 32,
     "startY": 503,
-    "offSetY": 4
+    "offSetY": 4,
+    "meta": [ { "ice": true } ]
   },
 
   {
@@ -194,7 +196,8 @@
     "height": 36,
     "startX": 64,
     "startY": 503,
-    "offSetY": 4
+    "offSetY": 4,
+    "meta": [ { "ice": true } ]
   }
 
 ]

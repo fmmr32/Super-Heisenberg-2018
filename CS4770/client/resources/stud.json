@@ -8,7 +8,7 @@
     "centerPX": 32,
     "offSetPX": 3,
     "name": "Heisenberg",
-    "weapon": [ 2,4 ],
+    "weapon": [ 3,2 ],
     "hp": 100,
     "speed": 4,
     "jump": 0.5,
