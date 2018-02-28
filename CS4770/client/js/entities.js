@@ -270,16 +270,16 @@ class Entity {
 
         //drawing the weapon on the entity if it has one
         if (this.currentWeapon != undefined) {
-            var flipped = 0;
+            var flipped = false;
             if (this.getLastOffSet() <= 0) {
                 X += this.rightHand[0];
                 Y += this.rightHand[1];
             } else {
                 X += this.leftHand[0];
                 Y += this.leftHand[1];
-                flipped = 1;
+                flipped = true;
             }
-            this.currentWeapon.drawGun(X, Y, flipped);
+            this.currentWeapon.drawGun(X, Y, +flipped);
         }
 
         if (this.healthBar != undefined) {
