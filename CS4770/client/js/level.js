@@ -355,6 +355,10 @@ class Level {
         this.loadLevel(this.file);
         this.loadCharacter(this.player);
     }
+
+    exitMap(loot) {
+        var money = this.getPlayer().getMoney();
+    }
 }
 
 

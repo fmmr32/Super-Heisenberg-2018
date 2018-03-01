@@ -45,6 +45,9 @@
     </Content>
     <Content Include="client\resources\entities.json" />
     <Content Include="client\resources\entities.png" />
+    <Content Include="client\resources\player.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\weapons.json">
       <SubType>Code</SubType>
     </Content>

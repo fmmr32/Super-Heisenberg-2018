@@ -737,6 +737,12 @@ class EntityCreature extends EntityMovable {
                         }
                     }
                     break;
+                case "aim":
+                    //aiming towards the player, HELP MATH IS SCARY
+                    if (this.currentWeapon != undefined) {
+                        this.currentWeapon.setAngle();
+                    }
+                    break;
             }
             var overRide = false;
             //handling to what the player did
@@ -823,4 +829,18 @@ class Player extends EntityCreature {
     }
 
 
+}
+
+
+class Boss extends EntityCreature {
+    constructor(options) {
+        super(options);
+
+        this.loot = null //add the loot of the boss
+    }
+
+
+    doRespawn() {
+        this.level.exitMap(loot);
+    }
 }

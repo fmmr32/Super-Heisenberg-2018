@@ -157,6 +157,11 @@ class Weapon {
         }
     }
 
+    setAngle(angle) {
+        for (var bullet of this.bullets) {
+            bullet.angle = angle;
+        }
+    }
 
     getDamage() {
         return this.damage;
