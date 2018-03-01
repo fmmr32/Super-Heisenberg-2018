@@ -10,12 +10,12 @@
             <button id="skipSign">Play Offline</button>
         </div>
     </div>
-
-    <div id="menuDiv" style="display:none;overflow:hidden">
+    <div id="menuDiv" style="display:none;overflow:hidden;">
         <button id="playStoryMode">Story Mode</button>
         <button id="loadLevelsList">User Created Levels</button>
         <button id="changeSettings">Settings</button>
     </div>
+    <div id="levelsList"></div>
 
     <div id="gameDiv" style="display:none;overflow:hidden; " />
 
@@ -42,13 +42,18 @@
 
         var socket = io();
 
-        //sign
+        //login menu
         var signDiv = document.getElementById('signDiv');
         var signDivUsername = document.getElementById('signDiv-username');
         var signDivSignIn = document.getElementById('signDiv-signIn');
         var signDivSignUp = document.getElementById('signDiv-signUp');
         var signDivPassword = document.getElementById('signDiv-password');
+
+        //main menu after sign-in
+        var menuDiv = document.getElementById('menuDiv');
+        var storyMode = document.getElementById('playStoryMode');
         var loadLevelsList = document.getElementById('loadLevelsList');
+        var settings = document.getElementById('changeSettings');
 
         var offLinePlay = document.getElementById("skipSign");
 
@@ -60,7 +65,7 @@
         }
         socket.on('signInResponse', function (data) {
             if (data.success) {
-                loadGame(false);
+                loadMenu();
             } else
                 alert("Sign in unsuccessul.");
         });
@@ -75,7 +80,7 @@
         }
 
         loadLevelsList.onclick = function () {
-            loadLevelsList();
+            loadLevelsListFunct();
         }
 
 
@@ -126,15 +131,22 @@
                 type: name
             });
 
-            socket.on(levelList, function (data) {
+            socket.on('levelList', function (data) {
                 callback(data.toString());
             });
         }
 
-        var loadLevelsList = function () {
+        var loadLevelsListFunct = function () {
+            menuDiv.style.display = 'none';
+            /*
             loadDB('levelsList', function (data) {
                 console.log(data);
-            });
+            });*/
+            var levelsList = document.getElementById('levelsList');
+            var levelRow = document.createElement("P");
+            var t = document.createTextNode("Desert      Brandon     March 1st, 2018");
+            levelRow.appendChild(t);
+            levelsList.appendChild(levelRow);
         }
 
   
@@ -145,6 +157,13 @@
         function getMap(newMap) {
             map = newMap;
         };
+
+        var loadMenu = function () {
+            signDiv.style.display = 'none';
+            gameDiv.style.display = '';
+           menuDiv.style.display = 'block';
+        }
+
 
         function loadNeeded() {
             for (var x of neededFiles) {
