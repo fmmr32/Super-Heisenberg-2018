@@ -91,6 +91,7 @@ SPRITE.prototype = {
 function newSprite(options) {
     var sprite = new SPRITE(options);
     sprites.set(options.id, sprite);
+    return sprite;
 }
 
 function getSprite(id) {

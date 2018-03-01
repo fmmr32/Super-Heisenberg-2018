@@ -31,11 +31,13 @@
     "height": 21,
     "centerPX": 12,
     "offSetPX": 0,
-    "animation": {
-      "frames": 18,
-      "frameRate": 10,
-      "columns": 4
-    }
+    "animation": [
+      {
+        "frames": 18,
+        "frameRate": 10,
+        "columns": 4
+      }
+    ]
 
   },
   {
@@ -107,11 +109,40 @@
     "height": 16,
     "centerPX": 9,
     "offSetPX": 0,
-    "animation": {
-      "frames": 6,
-      "frameRate": 10,
-      "columns": 2
-    }
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 10,
+        "columns": 2
+      }
+    ]
+  },
+  {
+    "id": 993,
+    "name": "lever",
+    "source": "../resources/entities.png",
+    "startX": 126,
+    "startY": 0,
+    "width": 60,
+    "height": 35,
+    "centerPX": 7,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 126,
+        "startY": 0
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 126,
+        "startY": 35
+      }
+    ]
   }
 
 ]

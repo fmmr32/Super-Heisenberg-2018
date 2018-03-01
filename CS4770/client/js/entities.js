@@ -60,6 +60,39 @@ class Animation {
 
     }
 
+    //loads an animation for a specific id
+    static loadAnimation(id) {
+        if (getSprite(id).animation != undefined) {
+            return this.loadAnimationArray(getSprite(id).animation, id);
+        }
+        return null;
+    }
+
+    static loadAnimationArray(animations,id, src, factor) {
+        var a = [];
+        for (var ani of animations) {
+            var frames = ani.frames;
+            var frameRate = ani.frameRate;
+            var columns = ani.columns;
+            var img = new Image();
+
+            img.src = src != undefined ? src : getSprite(id).image.src;
+            img.width = ani.width != undefined ? ani.width : getSprite(id).width;
+            img.height = ani.height != undefined ? ani.height : getSprite(id).height;
+            img.startX = ani.startX != undefined ? ani.startX : getSprite(id).image.startX;
+            img.startY = ani.startY != undefined ? ani.startY : getSprite(id).image.startY;
+
+            img.offSetX = ani.offSetX != undefined ? ani.offSetX : 0;
+            img.offSetY = ani.offSetY != undefined ? ani.offSetY : 0;
+
+            var animation = new Animation(img, frames, frameRate, columns, true);
+            if (factor != undefined) animation.factor = factor;
+
+            a.push(animation);
+        }
+        return a;
+    }
+
 }
 
 
@@ -427,9 +460,16 @@ class EntityMovable extends Entity {
                             //see if there is touch damage
                             this.doDamage(collidingEntity.getDamage());
                         } else if (this instanceof Player) {
-                            //picking up a coin?
-                            this.money++;
-                            this.level.removeEntity(collidingEntity);
+                            //doing with plates
+                            if (collidingEntity instanceof EntityInteractable) {
+                                if (collidingEntity.type == "pressurePlate") {
+                                    //do stuff with a plate
+                                }
+                            } else {
+                                //picking up a coin?
+                                this.money++;
+                                this.level.removeEntity(collidingEntity);
+                            }
                         }
                     }
                 }
@@ -497,17 +537,66 @@ class EntityMovable extends Entity {
 class EntityInteractable extends Entity {
     constructor(options) {
         super(options);
+        this.type = options.name;
         this.state = false; //false if not activated, true if activated
-        this.action = null; //action to be done when true;
+        this.action = options.action; //action to be done when true;
+        this.repeatable = options.repeatable;
+        if (this.action.type == "spawn") this.action.hasSpawned = false;
+    }
+    spawn(x, y) {
+        super.spawn(x, y, +(this.state));
     }
 
     flipState() {
-        this.state = !this.state;
-        this.doAction();
+        if (this.state && !this.repeatable) {
+            return;
+        }
+
+            this.state = !this.state;
+            this.doAction(this.state);
     }
 
-    doAction() {
+    doAction(state) {
+        //looping through all the actions
+        for (var action of this.action) {
+            //filter by type
+            switch (action.type) {
+                case "spawn":
+                    //check if already spawned
+                    if (!action.hasSpawned) {
+                        var x = action.x;
+                        var y = action.y;
+                        var id = action.id;
+                        var amount = action.amount;
+                        var entType = action.entType;
+                        //loop for amount
+                        for (var i = 0; i < amount; i++) {
+                            //filter by type
+                            switch (entType) {
+                                //spawning a creature
+                                case "EntityCreature":
+                                    this.level.loadCreature([{ X: x, Y: y, Id: id }]);
+                                    break;
+                                //spawning a basic entity
+                                default:
+                                    this.level.loadEntity([{ X: x, Y: y, Id: id }]);
+                                    break;
+                            }
+                        }
+                        action.hasSpawned = true;
+                    }
 
+                    break;
+                case "meta":
+                    //adding or removing a meta tag
+                    if (this.state) {
+                        this.level.getBlock(action.x, action.y).addMeta(Object.keys(action.meta), Object.values(action.meta))
+                    } else {
+                        this.level.getBlock(action.x, action.y).deleteMeta(Object.keys(action.meta))
+                    }
+                    break;
+            }
+        }
     }
 }
 
@@ -631,6 +720,22 @@ class EntityCreature extends EntityMovable {
                     break;
                 case "action":
                     //insert for interacting with stuff like levers..
+                    if (isDown) {
+                        for (var x = this.getX(); x < this.getX() + this.getSprite().width; x++) {
+                            var br = false;
+                            for (var y = this.getY() - this.getHeight(); y < this.getY(); y++) {
+                                if (this.level.getEntity(x, y) != null) {
+                                    if (this.level.getEntity(x, y) instanceof EntityInteractable) {
+                                        var ent = this.level.getEntity(x, y);
+                                        br = true;
+                                        ent.flipState();
+                                        break;
+                                    }
+                                }
+                            }
+                            if (br) break;
+                        }
+                    }
                     break;
             }
             var overRide = false;

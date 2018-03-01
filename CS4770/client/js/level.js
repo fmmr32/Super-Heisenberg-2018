@@ -35,7 +35,7 @@ class Level {
         this.gravity = 0;
 
 
-        this.loadBlocks(file);
+        this.loadLevel(file);
 
 
     }
@@ -66,7 +66,8 @@ class Level {
         options.context = this.container;
 
         var options2 = {};
-        options2.sprite = [new SPRITE(options)];
+
+        options2.sprite = [newSprite(options)];
         options2.hp = any.hp;
         options2.jump = any.jump;
         options2.speed = any.speed;
@@ -74,27 +75,7 @@ class Level {
         options2.leftHand = any.leftHand;
         options2.rightHand = any.rightHand;
 
-        options2.animation = [];
-        for (var ani of any.animation) {
-            var img = new Image();
-            img.src = "../resources/studss.png";
-            img.width = any.width;
-            img.height = any.height;
-            img.startX = ani.startX;
-            img.startY = ani.startY;
-            img.offSetX = ani.offSetX;
-            img.offSetY = ani.offSetY;
-
-            var frames = ani.frames;
-            var frameRate = ani.frameRate;
-            var columns = ani.columns;
-
-            var animation = new Animation(img, frames, frameRate, columns, true);
-            animation.factor = 1.5;
-
-            options2.animation.push(animation);
-
-        }
+        options2.animation = Animation.loadAnimationArray(any.animation,any.Id, any.source,1.5);
 
 
         options2.level = this;
@@ -106,7 +87,7 @@ class Level {
 
     }
 
-    loadBlocks(file) {
+    loadLevel(file) {
 
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
@@ -150,43 +131,57 @@ class Level {
             this.setSprite(block, background);
         }
         //loading in the entities of a level
-        for (var ent of any.entities) {
-            var id = ent.Id;
-            var x = ent.X;
-            var y = ent.Y;
+        this.loadEntity(any.entities);
 
-            var img = new Image();
+        //loading in the interactable objects
+        this.loadInteracts(any.interacts);
 
-            img.src = getSprite(id).image.src;
-            img.width = getSprite(id).width;
-            img.height = getSprite(id).height;
-            img.startX = getSprite(id).image.startX;
-            img.startY = getSprite(id).image.startY;
-
-            img.offSetX = 0;
-            img.offSetY = 0;
-
-            //loading the entity animation
-            if (getSprite(id).animation != undefined) {
-                var frames = getSprite(id).animation.frames;
-                var frameRate = getSprite(id).animation.frameRate;
-                var columns = getSprite(id).animation.columns;
-
-
-                var options = {};
-                options.x = x;
-                options.y = y;
-                options.level = this;
-                options.sprite = [];
-                options.sprite.push(getSprite(id));
-                options.animation = [new Animation(img, frames, frameRate, columns, true)];
-
-                var entity = new Entity(options);
-                this.entities.push(entity);
-            }
-        }
         //loading the creatures
-        for (var ent of any.creatures) {
+        this.loadCreature(any.creatures);
+
+
+
+    }
+    //takes in an arracy of basic interact values
+    loadInteracts(interacts) {
+        for (var interact of interacts) {
+            var id = interact.Id;
+
+            var options = {};
+            options.x = interact.X;
+            options.y = interact.Y;
+            options.action = interact.action;
+            options.animation = Animation.loadAnimation(id);
+            options.level = this;
+            options.sprite = [getSprite(id)];
+            options.name = getSprite(id).name;
+            options.repeatable = interact.repeatable;
+            this.entities.push(new EntityInteractable(options));
+        }
+    }
+
+    //takes in an array of basic entitie values, each value consists of id, x, y
+    loadEntity(entities) {
+        for (var ent of entities) {
+            var id = ent.Id;
+
+            var options = {};
+            options.x = ent.X;
+            options.y = ent.Y;
+            options.level = this;
+            options.sprite = [getSprite(id)];
+            //loading the entity animation
+
+            options.animation = Animation.loadAnimation(id);
+            this.entities.push(new Entity(options));
+        }
+    }
+
+   
+    //takes in an array of creature values, can be basic information as in id, x, y but can be more complex
+    loadCreature(creatures) {
+        //loading the creatures
+        for (var ent of creatures) {
             var id = ent.Id;
             var x = ent.X;
             var y = ent.Y;
@@ -214,22 +209,23 @@ class Level {
             options.rightHand = sprite.complex.rightHand;
 
             options.moveSet = new MoveSet(sprite.complex.moveSet);
+            //overrides the default moveSet
             if (ent.moveSet != undefined) {
                 options.moveSet = new MoveSet(ent.moveSet);
             }
+            //gets the correct name
             if (ent.name != undefined || sprite.name != undefined) {
                 options.name = ent.name != undefined ? ent.name : sprite.name;
             }
+            //sets a healthbar if any
             if (ent.healthBar != undefined || sprite.complex.healthBar != undefined) {
                 options.healthBar = { x: 125, y: 10, alignment: "h" };
             }
-
+            options.animation = Animation.loadAnimation(id);
 
             var creature = new EntityCreature(options);
             this.entities.push(creature);
         }
-
-
     }
 
     setImage(ctx) {
@@ -356,7 +352,7 @@ class Level {
         // canvas = {};
         this.entities.splice(0, this.entities.length);
         HealthBar.bars.splice(0, HealthBar.bars.length);
-        this.loadBlocks(this.file);
+        this.loadLevel(this.file);
         this.loadCharacter(this.player);
     }
 }
@@ -374,7 +370,8 @@ function loadMap(name, callback) {
             console.log(err);
             canvas.remove();
             canvas = undefined;
-            loadGame(false);
+            clearInterval(interval)
+         //   loadGame(false);
         }
     }, "/client/resources/" + name + ".json");
 

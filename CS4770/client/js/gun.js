@@ -294,9 +294,9 @@ class Grenade extends Bullet {
         img.offSetX = 0;
         img.offSetY = 0;
 
-        var frames = getSprite(id).animation.frames;
-        var frameRate = getSprite(id).animation.frameRate;
-        var columns = getSprite(id).animation.columns;
+        var frames = getSprite(id).animation[0].frames;
+        var frameRate = getSprite(id).animation[0].frameRate;
+        var columns = getSprite(id).animation[0].columns;
 
         this.exploding = false;
         this.damaged = [];
@@ -322,7 +322,9 @@ class Grenade extends Bullet {
         this.animation[0].despawn = true;
         options.animation = this.animation;
 
+        console.log(options);
         this.level.entities.push(new Entity(options));
+        console.log(this.level.entities);
 
         var xOff = -(this.factor - 1) * this.animation.width / 2;
         var yOff = -(this.factor - 1) * this.animation.height / 2;
