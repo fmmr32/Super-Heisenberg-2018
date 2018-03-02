@@ -3,6 +3,7 @@
     "playerName": "player1",
     "currentCharacter": 667,
     "achievements": [],
+    "unlockedCharacters": [667],
     "money": 0,
     "weapons": [
       {
