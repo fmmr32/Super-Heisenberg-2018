@@ -60,6 +60,39 @@ class Animation {
 
     }
 
+    //loads an animation for a specific id
+    static loadAnimation(id) {
+        if (getSprite(id).animation != undefined) {
+            return this.loadAnimationArray(getSprite(id).animation, id);
+        }
+        return null;
+    }
+
+    static loadAnimationArray(animations, id, src, factor) {
+        var a = [];
+        for (var ani of animations) {
+            var frames = ani.frames;
+            var frameRate = ani.frameRate;
+            var columns = ani.columns;
+            var img = new Image();
+
+            img.src = src != undefined ? src : getSprite(id).image.src;
+            img.width = ani.width != undefined ? ani.width : getSprite(id).width;
+            img.height = ani.height != undefined ? ani.height : getSprite(id).height;
+            img.startX = ani.startX != undefined ? ani.startX : getSprite(id).image.startX;
+            img.startY = ani.startY != undefined ? ani.startY : getSprite(id).image.startY;
+
+            img.offSetX = ani.offSetX != undefined ? ani.offSetX : 0;
+            img.offSetY = ani.offSetY != undefined ? ani.offSetY : 0;
+
+            var animation = new Animation(img, frames, frameRate, columns, true);
+            if (factor != undefined) animation.factor = factor;
+
+            a.push(animation);
+        }
+        return a;
+    }
+
 }
 
 
@@ -272,11 +305,11 @@ class Entity {
         if (this.currentWeapon != undefined) {
             var flipped = false;
             if (this.getLastOffSet() <= 0) {
-                X += this.rightHand[0];
-                Y += this.rightHand[1];
+                X += this.rightHand[flipCode == 7 || flipCode == 5 ? 1 : 0][0];
+                Y += this.rightHand[flipCode == 7 || flipCode == 5 ? 1 : 0][1];
             } else {
-                X += this.leftHand[0];
-                Y += this.leftHand[1];
+                X += this.leftHand[flipCode == 7 || flipCode == 5 ? 1 : 0][0];
+                Y += this.leftHand[flipCode == 7 || flipCode == 5 ? 1 : 0][1];
                 flipped = true;
             }
             this.currentWeapon.drawGun(X, Y, +flipped);
@@ -405,7 +438,7 @@ class EntityMovable extends Entity {
                                 }
 
                                 if (this.level.removeEntity(collidingEntity)) {
-                                    this.doDamage(collidingEntity.getDamage());
+                                    this.doDamage(collidingEntity.getDamage(), owner);
                                 }
                             }
                         } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature && !(this instanceof Grenade)) {
@@ -418,7 +451,7 @@ class EntityMovable extends Entity {
                                     return { code: 0, modDX: 0 };
                                 }
                                 if (collidingEntity.level.removeEntity(this)) {
-                                    collidingEntity.doDamage(this.getDamage());
+                                    collidingEntity.doDamage(this.getDamage(), this.getOwner());
                                 }
                             }
                         }
@@ -427,9 +460,16 @@ class EntityMovable extends Entity {
                             //see if there is touch damage
                             this.doDamage(collidingEntity.getDamage());
                         } else if (this instanceof Player) {
-                            //picking up a coin?
-                            this.money++;
-                            this.level.removeEntity(collidingEntity);
+                            //doing with plates
+                            if (collidingEntity instanceof EntityInteractable) {
+                                if (collidingEntity.type == "pressurePlate") {
+                                    //do stuff with a plate
+                                }
+                            } else {
+                                //picking up a coin?
+                                this.money++;
+                                this.level.removeEntity(collidingEntity);
+                            }
                         }
                     }
                 }
@@ -466,12 +506,25 @@ class EntityMovable extends Entity {
         this.doCollision();
     }
 
-    getFlipCode(overRide) {
+    getFlipCode(overRide, slide) {
         if (overRide) {
             if (this.getLastOffSet() > 0) {
                 return 3;
             } else {
                 return this.animation == undefined ? 0 : 2;
+            }
+
+        } else if (this.getVSpeed() != 0) {
+            if (this.getHSpeed() > 0 || this.getLastOffSet() < 0) {
+                return 4;
+            } else {
+                return 6;
+            }
+        } else if (slide != undefined && slide) {
+            if (this.getHSpeed() > 0 || this.getLastOffSet() < 0) {
+                return 5;
+            } else {
+                return 7;
             }
         } else if (this.getHSpeed() > 0) {
             return 0;
@@ -497,17 +550,66 @@ class EntityMovable extends Entity {
 class EntityInteractable extends Entity {
     constructor(options) {
         super(options);
+        this.type = options.name;
         this.state = false; //false if not activated, true if activated
-        this.action = null; //action to be done when true;
+        this.action = options.action; //action to be done when true;
+        this.repeatable = options.repeatable;
+        if (this.action.type == "spawn") this.action.hasSpawned = false;
+    }
+    spawn(x, y) {
+        super.spawn(x, y, +(this.state));
     }
 
     flipState() {
+        if (this.state && !this.repeatable) {
+            return;
+        }
+
         this.state = !this.state;
-        this.doAction();
+        this.doAction(this.state);
     }
 
-    doAction() {
+    doAction(state) {
+        //looping through all the actions
+        for (var action of this.action) {
+            //filter by type
+            switch (action.type) {
+                case "spawn":
+                    //check if already spawned
+                    if (!action.hasSpawned) {
+                        var x = action.x;
+                        var y = action.y;
+                        var id = action.id;
+                        var amount = action.amount;
+                        var entType = action.entType;
+                        //loop for amount
+                        for (var i = 0; i < amount; i++) {
+                            //filter by type
+                            switch (entType) {
+                                //spawning a creature
+                                case "EntityCreature":
+                                    this.level.loadCreature([{ X: x, Y: y, Id: id }]);
+                                    break;
+                                //spawning a basic entity
+                                default:
+                                    this.level.loadEntity([{ X: x, Y: y, Id: id }]);
+                                    break;
+                            }
+                        }
+                        action.hasSpawned = true;
+                    }
 
+                    break;
+                case "meta":
+                    //adding or removing a meta tag
+                    if (this.state) {
+                        this.level.getBlock(action.x, action.y).addMeta(Object.keys(action.meta), Object.values(action.meta))
+                    } else {
+                        this.level.getBlock(action.x, action.y).deleteMeta(Object.keys(action.meta))
+                    }
+                    break;
+            }
+        }
     }
 }
 
@@ -533,6 +635,7 @@ class EntityCreature extends EntityMovable {
         this.rightDown = false;
         this.jumpDown = false;
         this.jumping = false;
+        this.slideDown = false;
         this.jumpCounter = 0;
 
         if (options.healthBar != undefined) {
@@ -547,7 +650,7 @@ class EntityCreature extends EntityMovable {
         }
     }
 
-    doDamage(damage) {
+    doDamage(damage, source) {
         //checks if the immunityFrame is 0 so the creature can be damaged
         if (this.immunityFrame == 0) {
             this.hp -= damage;
@@ -557,12 +660,12 @@ class EntityCreature extends EntityMovable {
             }
             //doing the respawn
             if (this.hp <= 0) {
-                this.doRespawn();
+                this.doRespawn(source);
             }
         }
     }
 
-    doRespawn() {
+    doRespawn(source) {
         //checks if the creature is able to respawn
         if (this.respawn) {
             this.spawn(this.level.spawnX, this.level.spawnY, 2);
@@ -574,8 +677,14 @@ class EntityCreature extends EntityMovable {
             if (this.healthBar != undefined) {
                 this.healthBar.removeBar(this.healthBar);
             }
+            if (source instanceof Player) {
+                source.killcount++;
+                document.dispatchEvent(new Event("kill"));
+            }
             //removes the entity from the game
             this.level.removeEntity(this);
+
+
         }
     }
 
@@ -595,10 +704,12 @@ class EntityCreature extends EntityMovable {
                     this.immunityFrame = 0;
                 }
             }
-
-
+           
             //see what type of movement the player did
             switch (type) {
+                case "down":
+                    this.slideDown = isDown;
+                    break;
                 case "right":
                     this.rightDown = isDown;
                     this.leftDown = false;
@@ -612,6 +723,7 @@ class EntityCreature extends EntityMovable {
                         break;
                     }
                     this.jumpDown = isDown;
+                    this.slideDown = false;
                     break;
                 case "stop":
                     this.rightDown = false;
@@ -631,10 +743,37 @@ class EntityCreature extends EntityMovable {
                     break;
                 case "action":
                     //insert for interacting with stuff like levers..
+                    if (isDown) {
+                        for (var x = this.getX(); x < this.getX() + this.getSprite().width; x++) {
+                            var br = false;
+                            for (var y = this.getY() - this.getHeight(); y < this.getY(); y++) {
+                                if (this.level.getEntity(x, y) != null) {
+                                    if (this.level.getEntity(x, y) instanceof EntityInteractable) {
+                                        var ent = this.level.getEntity(x, y);
+                                        br = true;
+                                        ent.flipState();
+                                        break;
+                                    }
+                                }
+                            }
+                            if (br) break;
+                        }
+                    }
                     break;
+                case "aim":
+                    //aiming towards the player, HELP MATH IS SCARY
+                    if (this.currentWeapon != undefined) {
+                        this.currentWeapon.setAngle();
+                    }
+                    break;
+
             }
             var overRide = false;
+            var slide = false;
             //handling to what the player did
+            if (this.slideDown) {
+                slide = true;
+            }
             if (this.rightDown) {
                 this.setHSpeed(this.getSpeed());
                 this.lastOffSet = -this.getSprite().getOffSet();
@@ -693,7 +832,7 @@ class EntityCreature extends EntityMovable {
                         break;
                 }
                 //spawning at the new place
-                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode(overRide));
+                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode(overRide, slide));
             }
         }
     }
@@ -707,8 +846,11 @@ class Player extends EntityCreature {
     constructor(options) {
         super(options);
         this.respawn = true;
-
-        this.money = 0;
+        this.achievements = [];
+        this.money = options.money;
+        this.artifacts = options.artifacts;
+        this.timeplayed = options.timeplayed;
+        this.killcount = options.killcount;
         this.healthBar = new HealthBar(options.hp, canvas.getContext("2d"), options.name, "v", 10, 10);
     }
 
@@ -717,5 +859,22 @@ class Player extends EntityCreature {
         return this.money;
     }
 
+    awardAchievement(id) {
+        this.achievements.push(id);
+    }
 
+}
+
+
+class Boss extends EntityCreature {
+    constructor(options) {
+        super(options);
+
+        this.loot = null //add the loot of the boss
+    }
+
+
+    doRespawn() {
+        this.level.exitMap(loot);
+    }
 }

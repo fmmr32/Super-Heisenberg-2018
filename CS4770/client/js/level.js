@@ -1,4 +1,48 @@
-﻿
+﻿class Achievement {
+    constructor(id, maxKills, level) {
+        this.id = id;
+        this.maxKills = maxKills;
+        this.level = level;
+        this.type = "kill";
+
+
+        this.image;
+       }
+
+    trackKills() {
+        if (this.level.getPlayer() != undefined) {
+            if (this.level.getPlayer().killcount >= this.maxKills && this.level.getPlayer().achievements.indexOf(this.id) == -1) {
+                this.level.getPlayer().awardAchievement(this.id);
+                //add something for achievement get
+                console.log("WOOOO K");
+            }
+        }
+    }
+
+    completedLvl() {
+
+    }
+
+    bossKill() {
+
+    }
+
+    getFunction(name) {
+        switch (name) {
+            case "kill":
+                return this.trackKills();
+            case "completed":
+                return this.completedLvl();
+            case "boss":
+                return this.bossKill();
+            default:
+                return null;
+        }
+    }
+
+
+}
+
 
 class Block {
     constructor(id, x, y) {
@@ -26,87 +70,79 @@ class Block {
 }
 
 class Level {
-    constructor(file) {
+    constructor(player, file) {
 
-
+        this.user = JSON.parse(player);
         this.file = file;
         this.tiles = [[], []];
         this.entities = [];
         this.gravity = 0;
 
 
-        this.loadBlocks(file);
-
-
+        this.loadLevel(file);
     }
 
 
 
     //temporary load character function
     loadCharacter(response) {
-        if (this.getPlayer() != undefined) {
-            return;
-        }
 
         var any = JSON.parse(response);
-        any = any[0];
 
-        var options = {};
-        options.id = any.Id;
-        options.name = any.name;
+        for (var chars of any) {
+            if (chars.Id == this.user.currentCharacter) {
+                if (this.getPlayer() != undefined) {
+                    return;
+                }
 
-        options.image = {};
-        options.width = any.width;
-        options.height = any.height;
-        options.image.src = any.source;
-        options.image.startX = any.startX;
-        options.image.startY = any.startY;
-        options.center = any.centerPX;
-        options.offSet = any.offSetPX;
-        options.context = this.container;
 
-        var options2 = {};
-        options2.sprite = [new SPRITE(options)];
-        options2.hp = any.hp;
-        options2.jump = any.jump;
-        options2.speed = any.speed;
-        options2.height = options2.sprite.height;
-        options2.leftHand = any.leftHand;
-        options2.rightHand = any.rightHand;
 
-        options2.animation = [];
-        for (var ani of any.animation) {
-            var img = new Image();
-            img.src = "../resources/studss.png";
-            img.width = any.width;
-            img.height = any.height;
-            img.startX = ani.startX;
-            img.startY = ani.startY;
-            img.offSetX = ani.offSetX;
-            img.offSetY = ani.offSetY;
+                var options = {};
+                options.id = chars.Id;
+                options.name = chars.name;
 
-            var frames = ani.frames;
-            var frameRate = ani.frameRate;
-            var columns = ani.columns;
+                options.image = {};
+                options.width = chars.width;
+                options.height = chars.height;
+                options.image.src = chars.source;
+                options.image.startX = chars.startX;
+                options.image.startY = chars.startY;
+                options.center = chars.centerPX;
+                options.offSet = chars.offSetPX;
+                options.context = this.container;
 
-            var animation = new Animation(img, frames, frameRate, columns, true);
-            animation.factor = 1.5;
+                var options2 = {};
 
-            options2.animation.push(animation);
+                options2.sprite = [newSprite(options)];
+                options2.hp = chars.hp;
+                options2.jump = chars.jump;
+                options2.speed = chars.speed;
+                options2.height = options2.sprite.height;
+                options2.leftHand = [chars.leftHand, chars.leftHandLow];
+                options2.rightHand = [chars.rightHand, chars.rightHandLow];
 
+                options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
+
+
+                options2.level = this;
+                options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
+                options2.name = chars.name;
+
+                options2.money = this.user.money;
+                options2.killcount = this.user.killcount;
+                options2.timeplayed = this.user.timeplayed;
+                options2.artifacts = this.user.artifacts;
+
+                this.entities.push(new Player(options2));
+                this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
+                this.player = response;
+                this.time = performance.now();
+                break;
+            }
         }
-
-
-        options2.level = this;
-        options2.weapon = loadWeapon(any.weapon);
-        options2.name = any.name;
-        this.entities.push(new Player(options2));
-        this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
-        this.player = response;
-
     }
 
-    loadBlocks(file) {
+    loadLevel(file) {
 
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
@@ -150,43 +186,57 @@ class Level {
             this.setSprite(block, background);
         }
         //loading in the entities of a level
-        for (var ent of any.entities) {
-            var id = ent.Id;
-            var x = ent.X;
-            var y = ent.Y;
+        this.loadEntity(any.entities);
 
-            var img = new Image();
+        //loading in the interactable objects
+        this.loadInteracts(any.interacts);
 
-            img.src = getSprite(id).image.src;
-            img.width = getSprite(id).width;
-            img.height = getSprite(id).height;
-            img.startX = getSprite(id).image.startX;
-            img.startY = getSprite(id).image.startY;
-
-            img.offSetX = 0;
-            img.offSetY = 0;
-
-            //loading the entity animation
-            if (getSprite(id).animation != undefined) {
-                var frames = getSprite(id).animation.frames;
-                var frameRate = getSprite(id).animation.frameRate;
-                var columns = getSprite(id).animation.columns;
-
-
-                var options = {};
-                options.x = x;
-                options.y = y;
-                options.level = this;
-                options.sprite = [];
-                options.sprite.push(getSprite(id));
-                options.animation = [new Animation(img, frames, frameRate, columns, true)];
-
-                var entity = new Entity(options);
-                this.entities.push(entity);
-            }
-        }
         //loading the creatures
-        for (var ent of any.creatures) {
+        this.loadCreature(any.creatures);
+
+
+
+    }
+    //takes in an arracy of basic interact values
+    loadInteracts(interacts) {
+        for (var interact of interacts) {
+            var id = interact.Id;
+
+            var options = {};
+            options.x = interact.X;
+            options.y = interact.Y;
+            options.action = interact.action;
+            options.animation = Animation.loadAnimation(id);
+            options.level = this;
+            options.sprite = [getSprite(id)];
+            options.name = getSprite(id).name;
+            options.repeatable = interact.repeatable;
+            this.entities.push(new EntityInteractable(options));
+        }
+    }
+
+    //takes in an array of basic entitie values, each value consists of id, x, y
+    loadEntity(entities) {
+        for (var ent of entities) {
+            var id = ent.Id;
+
+            var options = {};
+            options.x = ent.X;
+            options.y = ent.Y;
+            options.level = this;
+            options.sprite = [getSprite(id)];
+            //loading the entity animation
+
+            options.animation = Animation.loadAnimation(id);
+            this.entities.push(new Entity(options));
+        }
+    }
+
+
+    //takes in an array of creature values, can be basic information as in id, x, y but can be more complex
+    loadCreature(creatures) {
+        //loading the creatures
+        for (var ent of creatures) {
             var id = ent.Id;
             var x = ent.X;
             var y = ent.Y;
@@ -208,28 +258,29 @@ class Level {
             options.y = y;
 
             options.sprite = [sprite];
-            options.weapon = loadWeapon(sprite.complex.weapon);
+            options.weapon = loadWeapon(sprite.complex.weapon, this.user);
             options.damage = sprite.complex.damage;
             options.leftHand = sprite.complex.leftHand;
             options.rightHand = sprite.complex.rightHand;
 
             options.moveSet = new MoveSet(sprite.complex.moveSet);
+            //overrides the default moveSet
             if (ent.moveSet != undefined) {
                 options.moveSet = new MoveSet(ent.moveSet);
             }
+            //gets the correct name
             if (ent.name != undefined || sprite.name != undefined) {
                 options.name = ent.name != undefined ? ent.name : sprite.name;
             }
+            //sets a healthbar if any
             if (ent.healthBar != undefined || sprite.complex.healthBar != undefined) {
                 options.healthBar = { x: 125, y: 10, alignment: "h" };
             }
-
+            options.animation = Animation.loadAnimation(id);
 
             var creature = new EntityCreature(options);
             this.entities.push(creature);
         }
-
-
     }
 
     setImage(ctx) {
@@ -265,6 +316,10 @@ class Level {
                     }
                     //handles the creatures
                 } else if (entity instanceof EntityCreature) {
+                    if (entity instanceof Player) {
+                        entity.timeplayed = Math.floor(performance.now() - this.time);
+                    }
+
                     entity.doMove("none", true, true);
                     //handles other entities
                 } else {
@@ -356,17 +411,27 @@ class Level {
         // canvas = {};
         this.entities.splice(0, this.entities.length);
         HealthBar.bars.splice(0, HealthBar.bars.length);
-        this.loadBlocks(this.file);
+        this.loadLevel(this.file);
         this.loadCharacter(this.player);
+    }
+
+    exitMap(loot, completed) {
+        var money = this.getPlayer().getMoney();
+        var kills = this.getPlayer().killcount;
+        var timeplayed = this.getPlayer().timeplayed;
+        if (completed) {
+            //add more...
+            document.dispatchEvent(new Event("completed Level"));
+        }
+
     }
 }
 
 
-function loadMap(name, callback) {
-
+function loadMap(name, player, callback) {
     loadJSONFile(function (response) {
         try {
-            map = new Level(response);
+            map = new Level(player, response);
             getMap(map);
             callback(map);
         } catch (err) {
@@ -374,7 +439,8 @@ function loadMap(name, callback) {
             console.log(err);
             canvas.remove();
             canvas = undefined;
-            loadGame(false);
+            clearInterval(interval)
+            //   loadGame(false);
         }
     }, "/client/resources/" + name + ".json");
 

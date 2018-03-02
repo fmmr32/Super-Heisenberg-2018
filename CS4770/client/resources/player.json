@@ -1,0 +1,27 @@
+﻿
+  {
+    "playerName": "player1",
+    "currentCharacter": 667,
+    "achievements": [],
+    "money": 0,
+    "weapons": [
+      {
+        "id": 1,
+        "damageMult": 1,
+        "speedMult": 1,
+        "impact": "explode"
+      },
+      {
+        "id": 2,
+        "damageMult": 1,
+        "speedMult": 1,
+        "impact": "ricochet"
+      }
+    ],
+    "equipped": [ 1, 2 ],
+    "artifacts": [],
+    "storyProgress": [],
+    "levelsMade": [],
+    "killcount": 0,
+    "timeplayed": 0
+  }

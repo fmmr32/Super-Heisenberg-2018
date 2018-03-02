@@ -1,4 +1,4 @@
-﻿<div id="main" style="height:500px; width:500px;  position: absolute; margin: auto; top: 0;right: 0; left: 0; bottom: 0;border: 2px solid;">
+﻿<div id="main" style="height:500px; width:720px;  position: absolute; margin: auto; top: 0;right: 0; left: 0; bottom: 0;border: 2px solid;">
 
     <div id="form-wrapper">
 
@@ -57,6 +57,7 @@
 
         var offLinePlay = document.getElementById("skipSign");
 
+
         signDivSignIn.onclick = function () {
             socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
         }
@@ -76,7 +77,7 @@
                 alert("Sign up unsuccessul.");
         });
         offLinePlay.onclick = function () {
-            loadGame(false);
+            loadCurretUser();
         }
 
         loadLevelsList.onclick = function () {
@@ -128,10 +129,10 @@
         //This loads things from the database
         var loadDB = function (type, callback) {
             socket.emit('loadDB', {
-                collectionName: type
+                type: name
             });
 
-            socket.on(collectionName, function (data) {
+            socket.on('levelList', function (data) {
                 callback(data.toString());
             });
         }
@@ -153,10 +154,27 @@
 
 
         var map;
+        var ach = [];
+
+        //needs to be fetched from the db and put into a json like file
+        function loadCurretUser() {
+            loadJSONFile(function (response) {
+                loadGame(false, response);
+            }, "/client/resources/player.json")
+        }
 
         function getMap(newMap) {
             map = newMap;
+            //get something for load 
+            loadAchievements();
         };
+
+        function loadAchievements() {
+            var a = new Achievement(1, 1, map);
+            document.addEventListener(a.type, function () { a.getFunction("kill") }, false);
+
+            ach.push(a);
+        }
 
         var loadMenu = function () {
             signDiv.style.display = 'none';
@@ -186,9 +204,9 @@
                 }
             }
         }
+      
 
-
-        function loadGame(reload) {
+        function loadGame(reload, player) {
             //setting the divs correctly
             signDiv.style.display = 'none';
             gameDiv.style.display = '';
@@ -199,12 +217,12 @@
 
 
             //loading the test map
-            loadMap("map1", function (m) {
+            loadMap("map1",player, function (m) {
 
                 loadJSONFile(function (response) {
                     m.loadCharacter(response);
                 }
-                    , "/client/resources/stud.json");
+                    , "/client/resources/characters.json");
             });
         }
 
@@ -255,8 +273,23 @@
             };
         }
 
+       
 
-       //window.onload = loadGame();
+        function msToTime(duration) {
+            var milliseconds = parseInt((duration % 1000) / 100)
+                , seconds = parseInt((duration / 1000) % 60)
+                , minutes = parseInt((duration / (1000 * 60)) % 60)
+                , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+            return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+        }
+
+
+        window.onload = loadCurretUser();
 
     </script>
     <body>

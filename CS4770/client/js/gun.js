@@ -1,15 +1,25 @@
 ﻿var weapons = new Map();
 
-function loadWeapon(list) {
+function loadWeapon(list,user, weaponMod) {
     var temp = [];
     for (var id of list) {
-        var newob = deepCopy(weapons.get(id));
+        var newob = deepCopy(weapons.get(id), user);
+        if (weaponMod != undefined) {
+            for (var mods of weaponMod) {
+                if (mods.id == id) {
+                    newob.impact = mods.impact;
+                    newob.damage = Math.floor(newob.damage*mods.damageMult);
+                    newob.cooldown = Math.floor(newob.cooldown/mods.speedMult);
+                }
+            }
+        }
+
         temp.push(newob);
     }
     return temp;
 }
 
-function deepCopy(c) {
+function deepCopy(c,user) {
     if (c instanceof Weapon) {
         var animation = [deepCopy(c.animation[0]), deepCopy(c.animation[1])];
         return new Weapon(c.damage, c.speed, c.cooldown, animation, c.barrel, c.bullets);
@@ -17,7 +27,7 @@ function deepCopy(c) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
         loadNeeded();
-        loadGame();
+        loadGame(false, user);
         return null;
     }
 }
@@ -97,9 +107,8 @@ class Weapon {
 
 
     fireWeapon(character, level) {
-
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
-        if (this.tick === 0 && !this.animation[0].animating && !this.animation[1].animating) {
+        if (this.tick === 0) {
 
             if (character.getLastOffSet() < 0) {
                 this.animation[0].animating = true;
@@ -116,16 +125,16 @@ class Weapon {
                 options.level = level;
                 options.damage = this.damage;
                 options.gravity = bullet.gravity;
-                options.impact = bullet.impact;
+                options.impact = this.impact;
                 options.factor = bullet.factor;
                 var angle = bullet.angle;
-                var offsetHand = character.rightHand;
+                var offsetHand = character.rightHand[character.slideDown ? 1 : 0];
                 var offsetGun = this.barrel.Normal;
 
                 //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
                     angle = -angle - 180;
-                    offsetHand = character.leftHand;
+                    offsetHand = character.leftHand[character.slideDown ? 1 : 0];
                     offsetGun = this.barrel.Flipped;
                 }
 
@@ -157,6 +166,11 @@ class Weapon {
         }
     }
 
+    setAngle(angle) {
+        for (var bullet of this.bullets) {
+            bullet.angle = angle;
+        }
+    }
 
     getDamage() {
         return this.damage;
@@ -183,6 +197,7 @@ class Bullet extends EntityMovable {
 
         this.sprite = options.sprite;
         this.gravity = options.gravity;
+
     }
 
 
@@ -227,8 +242,8 @@ class Bullet extends EntityMovable {
             //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
                 var block = this.level.getBlock(x, this.getY());
-                if (block.meta !== null && block.hasMeta("ricochet")) {
-                    if (block.meta["ricochet"] && this.impact == "ricochet") {
+                if (block.meta !== null) {
+                    if (this.impact == "ricochet" && block.hasMeta("ricochet")) {
                         if (this.angle == 0 || this.angle == -180) {
                             return true;
                         }
@@ -254,16 +269,13 @@ class Bullet extends EntityMovable {
                             gren.doExplosion();
                         }
                         return true;
-                    } else {
-                        return true;
-                    }
+                    } 
                 } else {
                     return true;
                 }
             }
             //finally do the move tick
             this.doMove(onTick, +(this.getHSpeed() < 0));
-
             return false;
         } else {
             //despawn
@@ -294,9 +306,9 @@ class Grenade extends Bullet {
         img.offSetX = 0;
         img.offSetY = 0;
 
-        var frames = getSprite(id).animation.frames;
-        var frameRate = getSprite(id).animation.frameRate;
-        var columns = getSprite(id).animation.columns;
+        var frames = getSprite(id).animation[0].frames;
+        var frameRate = getSprite(id).animation[0].frameRate;
+        var columns = getSprite(id).animation[0].columns;
 
         this.exploding = false;
         this.damaged = [];

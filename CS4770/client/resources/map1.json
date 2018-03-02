@@ -46,6 +46,46 @@
       "Y": 315
     }
   ],
+  "interacts": [
+    {
+      "Id": 993,
+      "X": 500,
+      "Y": 328,
+      "repeatable": true,
+      "action": [
+        {
+          "x": 582,
+          "y": 328,
+          "type": "meta",
+          "meta": { "passThrough": true }
+        },
+        {
+          "x": 582,
+          "y": 300,
+          "type": "spawn",
+          "id": 997,
+          "entType": "Entity",
+          "amount": 1
+        },
+        {
+          "x": 582,
+          "y": 270,
+          "type": "spawn",
+          "id": 997,
+          "entType": "Entity",
+          "amount": 1
+        },
+        {
+          "x": 550,
+          "y": 300,
+          "type": "spawn",
+          "id": 997,
+          "entType": "Entity",
+          "amount": 1
+        }
+      ]
+    }
+  ],
   "content": [
     {
       "blockId": 1,

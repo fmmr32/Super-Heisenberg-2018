@@ -1,15 +1,9 @@
 ﻿CONFIG = function (json) {
     json = JSON.parse(json);
     var button = [];
-    button[json.left] = "left";
-    button[json.right] = "right";
-    button[json.up] = "up";
-    button[json.jump] = "jump";
-    button[json.fire] = "fire";
-    button[json.secondary] = "secondary";
-    button[json.main] = "main";
-    button[json.action] = "action";
-
+    for (var any of Object.keys(json)) {
+        button[json[any]] = any;
+    }
     return button;
 
 };

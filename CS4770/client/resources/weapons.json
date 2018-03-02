@@ -8,7 +8,7 @@
     "height": 32,
     "damage": 10,
     "speed": 5,
-    "impact": "explode",
+    "impact": "die",
     "frames": 8,
     "frameRate": 24,
     "cooldown": 15,
