@@ -1,8 +1,7 @@
-﻿[
+﻿
   {
-    "_comment": "THIS IS ALL THIS A DRAWUP OF HOW PLAYER PROGRESS MAY LOOK LIKE",
     "playerName": "player1",
-    "currentCharacter": "Heisenberg",
+    "currentCharacter": 667,
     "achievements": [],
     "money": 0,
     "weapons": [
@@ -16,15 +15,13 @@
         "id": 2,
         "damageMult": 1,
         "speedMult": 1,
-        "impact": "explode"
+        "impact": "ricochet"
       }
     ],
-    "equipped": [ 0, 1 ],
-    "_comment2": "ARTIFACTS WILL BE AN ARRAY WITH THE ID'S OF COLLECTED ARTIFACTS",
+    "equipped": [ 1, 2 ],
     "artifacts": [],
     "storyProgress": [],
-    "_comment3": "LEVELS MADE WILL BE AN UNIQUE ID IN THE ARRAY",
-    "levelsMade": []
-
+    "levelsMade": [],
+    "killcount": 0,
+    "timeplayed": 0
   }
-]

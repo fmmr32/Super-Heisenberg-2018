@@ -438,7 +438,7 @@ class EntityMovable extends Entity {
                                 }
 
                                 if (this.level.removeEntity(collidingEntity)) {
-                                    this.doDamage(collidingEntity.getDamage());
+                                    this.doDamage(collidingEntity.getDamage(), owner);
                                 }
                             }
                         } else if (this instanceof Bullet && collidingEntity instanceof EntityCreature && !(this instanceof Grenade)) {
@@ -451,7 +451,7 @@ class EntityMovable extends Entity {
                                     return { code: 0, modDX: 0 };
                                 }
                                 if (collidingEntity.level.removeEntity(this)) {
-                                    collidingEntity.doDamage(this.getDamage());
+                                    collidingEntity.doDamage(this.getDamage(), this.getOwner());
                                 }
                             }
                         }
@@ -636,7 +636,7 @@ class EntityCreature extends EntityMovable {
         }
     }
 
-    doDamage(damage) {
+    doDamage(damage, source) {
         //checks if the immunityFrame is 0 so the creature can be damaged
         if (this.immunityFrame == 0) {
             this.hp -= damage;
@@ -646,12 +646,12 @@ class EntityCreature extends EntityMovable {
             }
             //doing the respawn
             if (this.hp <= 0) {
-                this.doRespawn();
+                this.doRespawn(source);
             }
         }
     }
 
-    doRespawn() {
+    doRespawn(source) {
         //checks if the creature is able to respawn
         if (this.respawn) {
             this.spawn(this.level.spawnX, this.level.spawnY, 2);
@@ -663,8 +663,14 @@ class EntityCreature extends EntityMovable {
             if (this.healthBar != undefined) {
                 this.healthBar.removeBar(this.healthBar);
             }
+            if (source instanceof Player) {
+                source.killcount++;
+                document.dispatchEvent(new Event("kill"));
+            }
             //removes the entity from the game
             this.level.removeEntity(this);
+
+          
         }
     }
 
@@ -818,8 +824,11 @@ class Player extends EntityCreature {
     constructor(options) {
         super(options);
         this.respawn = true;
-
-        this.money = 0;
+        this.achievements = [];
+        this.money = options.money;
+        this.artifacts = options.artifacts;
+        this.timeplayed = options.timeplayed;
+        this.killcount = options.killcount;
         this.healthBar = new HealthBar(options.hp, canvas.getContext("2d"), options.name, "v", 10, 10);
     }
 
@@ -828,6 +837,9 @@ class Player extends EntityCreature {
         return this.money;
     }
 
+    awardAchievement(id) {
+        this.achievements.push(id);
+    }
 
 }
 

@@ -52,7 +52,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="client\resources\map1.json" />
-    <Content Include="client\resources\stud.json" />
+    <Content Include="client\resources\characters.json" />
     <Content Include="client\resources\stud.png" />
     <Content Include="client\resources\temp\stone.png" />
     <Content Include="client\resources\temp\tiles.png" />

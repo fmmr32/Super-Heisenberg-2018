@@ -1,4 +1,48 @@
-﻿
+﻿class Achievement {
+    constructor(id, maxKills, level) {
+        this.id = id;
+        this.maxKills = maxKills;
+        this.level = level;
+        this.type = "kill";
+
+
+        this.image;
+       }
+
+    trackKills() {
+        if (this.level.getPlayer() != undefined) {
+            if (this.level.getPlayer().killcount >= this.maxKills && this.level.getPlayer().achievements.indexOf(this.id) == -1) {
+                this.level.getPlayer().awardAchievement(this.id);
+                //add something for achievement get
+                console.log("WOOOO K");
+            }
+        }
+    }
+
+    completedLvl() {
+
+    }
+
+    bossKill() {
+
+    }
+
+    getFunction(name) {
+        switch (name) {
+            case "kill":
+                return this.trackKills();
+            case "completed":
+                return this.completedLvl();
+            case "boss":
+                return this.bossKill();
+            default:
+                return null;
+        }
+    }
+
+
+}
+
 
 class Block {
     constructor(id, x, y) {
@@ -26,9 +70,9 @@ class Block {
 }
 
 class Level {
-    constructor(file) {
+    constructor(player, file) {
 
-
+        this.user = JSON.parse(player);
         this.file = file;
         this.tiles = [[], []];
         this.entities = [];
@@ -36,55 +80,66 @@ class Level {
 
 
         this.loadLevel(file);
-
-
     }
 
 
 
     //temporary load character function
     loadCharacter(response) {
-        if (this.getPlayer() != undefined) {
-            return;
-        }
 
         var any = JSON.parse(response);
-        any = any[0];
 
-        var options = {};
-        options.id = any.Id;
-        options.name = any.name;
-
-        options.image = {};
-        options.width = any.width;
-        options.height = any.height;
-        options.image.src = any.source;
-        options.image.startX = any.startX;
-        options.image.startY = any.startY;
-        options.center = any.centerPX;
-        options.offSet = any.offSetPX;
-        options.context = this.container;
-
-        var options2 = {};
-
-        options2.sprite = [newSprite(options)];
-        options2.hp = any.hp;
-        options2.jump = any.jump;
-        options2.speed = any.speed;
-        options2.height = options2.sprite.height;
-        options2.leftHand = any.leftHand;
-        options2.rightHand = any.rightHand;
-
-        options2.animation = Animation.loadAnimationArray(any.animation,any.Id, any.source,1.5);
+        for (var chars of any) {
+            if (chars.Id == this.user.currentCharacter) {
+                if (this.getPlayer() != undefined) {
+                    return;
+                }
 
 
-        options2.level = this;
-        options2.weapon = loadWeapon(any.weapon);
-        options2.name = any.name;
-        this.entities.push(new Player(options2));
-        this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
-        this.player = response;
 
+                var options = {};
+                options.id = chars.Id;
+                options.name = chars.name;
+
+                options.image = {};
+                options.width = chars.width;
+                options.height = chars.height;
+                options.image.src = chars.source;
+                options.image.startX = chars.startX;
+                options.image.startY = chars.startY;
+                options.center = chars.centerPX;
+                options.offSet = chars.offSetPX;
+                options.context = this.container;
+
+                var options2 = {};
+
+                options2.sprite = [newSprite(options)];
+                options2.hp = chars.hp;
+                options2.jump = chars.jump;
+                options2.speed = chars.speed;
+                options2.height = options2.sprite.height;
+                options2.leftHand = chars.leftHand;
+                options2.rightHand = chars.rightHand;
+
+                options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source, 1.5);
+
+
+                options2.level = this;
+                options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
+                options2.name = chars.name;
+
+                options2.money = this.user.money;
+                options2.killcount = this.user.killcount;
+                options2.timeplayed = this.user.timeplayed;
+                options2.artifacts = this.user.artifacts;
+
+                this.entities.push(new Player(options2));
+                this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
+                this.player = response;
+                this.time = performance.now();
+                break;
+            }
+        }
     }
 
     loadLevel(file) {
@@ -177,7 +232,7 @@ class Level {
         }
     }
 
-   
+
     //takes in an array of creature values, can be basic information as in id, x, y but can be more complex
     loadCreature(creatures) {
         //loading the creatures
@@ -203,7 +258,7 @@ class Level {
             options.y = y;
 
             options.sprite = [sprite];
-            options.weapon = loadWeapon(sprite.complex.weapon);
+            options.weapon = loadWeapon(sprite.complex.weapon, this.user);
             options.damage = sprite.complex.damage;
             options.leftHand = sprite.complex.leftHand;
             options.rightHand = sprite.complex.rightHand;
@@ -261,6 +316,10 @@ class Level {
                     }
                     //handles the creatures
                 } else if (entity instanceof EntityCreature) {
+                    if (entity instanceof Player) {
+                        entity.timeplayed = Math.floor(performance.now() - this.time);
+                    }
+
                     entity.doMove("none", true, true);
                     //handles other entities
                 } else {
@@ -356,17 +415,23 @@ class Level {
         this.loadCharacter(this.player);
     }
 
-    exitMap(loot) {
+    exitMap(loot, completed) {
         var money = this.getPlayer().getMoney();
+        var kills = this.getPlayer().killcount;
+        var timeplayed = this.getPlayer().timeplayed;
+        if (completed) {
+            //add more...
+            document.dispatchEvent(new Event("completed Level"));
+        }
+
     }
 }
 
 
-function loadMap(name, callback) {
-
+function loadMap(name, player, callback) {
     loadJSONFile(function (response) {
         try {
-            map = new Level(response);
+            map = new Level(player, response);
             getMap(map);
             callback(map);
         } catch (err) {
@@ -375,7 +440,7 @@ function loadMap(name, callback) {
             canvas.remove();
             canvas = undefined;
             clearInterval(interval)
-         //   loadGame(false);
+            //   loadGame(false);
         }
     }, "/client/resources/" + name + ".json");
 
