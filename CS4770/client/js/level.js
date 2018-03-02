@@ -7,7 +7,7 @@
 
 
         this.image;
-       }
+    }
 
     trackKills() {
         if (this.level.getPlayer() != undefined) {
@@ -395,15 +395,20 @@ class Level {
     drawMap() {
 
         if (this.getPlayer() != undefined && this.image != undefined) {
-            var width = container.clientWidth / 3;
+            var width = container.clientWidth / 2;
 
-            var x = width - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
-            x = Math.min(0, x);
-            x = Math.max(x, -width);
+            this.offSetX = width - this.getPlayer().getX() - 32;
+            this.offSetX = Math.min(0, this.offSetX);
+
+            //case for when the map is smaller than the viewport
+            var space = container.clientWidth - this.width
+            if (space > 0) { space = 0; }
+
+            this.offSetX = Math.max(this.offSetX, space);
             var context = canvas.getContext("2d");
-            this.offSetX = x;
 
-            context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
+
+            context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, 0, this.width, this.height);
         }
     }
 
