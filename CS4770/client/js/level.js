@@ -118,10 +118,10 @@ class Level {
                 options2.jump = chars.jump;
                 options2.speed = chars.speed;
                 options2.height = options2.sprite.height;
-                options2.leftHand = chars.leftHand;
-                options2.rightHand = chars.rightHand;
+                options2.leftHand = [chars.leftHand, chars.leftHandLow];
+                options2.rightHand = [chars.rightHand, chars.rightHandLow];
 
-                options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source, 1.5);
+                options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
 
 
                 options2.level = this;

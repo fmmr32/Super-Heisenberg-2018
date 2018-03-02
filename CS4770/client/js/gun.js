@@ -107,7 +107,6 @@ class Weapon {
 
 
     fireWeapon(character, level) {
-
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
         if (this.tick === 0) {
 
@@ -129,13 +128,13 @@ class Weapon {
                 options.impact = this.impact;
                 options.factor = bullet.factor;
                 var angle = bullet.angle;
-                var offsetHand = character.rightHand;
+                var offsetHand = character.rightHand[character.slideDown ? 1 : 0];
                 var offsetGun = this.barrel.Normal;
 
                 //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
                     angle = -angle - 180;
-                    offsetHand = character.leftHand;
+                    offsetHand = character.leftHand[character.slideDown ? 1 : 0];
                     offsetGun = this.barrel.Flipped;
                 }
 

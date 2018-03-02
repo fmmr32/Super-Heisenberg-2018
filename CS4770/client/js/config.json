@@ -4,6 +4,7 @@
   "left": 65,
   "right": 68,
   "fire": 70,
+  "down": 83,
   "up": 87,
   "secondary": 49,
   "main": 50,

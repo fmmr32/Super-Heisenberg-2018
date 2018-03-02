@@ -68,7 +68,7 @@ class Animation {
         return null;
     }
 
-    static loadAnimationArray(animations,id, src, factor) {
+    static loadAnimationArray(animations, id, src, factor) {
         var a = [];
         for (var ani of animations) {
             var frames = ani.frames;
@@ -305,11 +305,11 @@ class Entity {
         if (this.currentWeapon != undefined) {
             var flipped = false;
             if (this.getLastOffSet() <= 0) {
-                X += this.rightHand[0];
-                Y += this.rightHand[1];
+                X += this.rightHand[flipCode == 7 || flipCode == 5 ? 1 : 0][0];
+                Y += this.rightHand[flipCode == 7 || flipCode == 5 ? 1 : 0][1];
             } else {
-                X += this.leftHand[0];
-                Y += this.leftHand[1];
+                X += this.leftHand[flipCode == 7 || flipCode == 5 ? 1 : 0][0];
+                Y += this.leftHand[flipCode == 7 || flipCode == 5 ? 1 : 0][1];
                 flipped = true;
             }
             this.currentWeapon.drawGun(X, Y, +flipped);
@@ -506,12 +506,25 @@ class EntityMovable extends Entity {
         this.doCollision();
     }
 
-    getFlipCode(overRide) {
+    getFlipCode(overRide, slide) {
         if (overRide) {
             if (this.getLastOffSet() > 0) {
                 return 3;
             } else {
                 return this.animation == undefined ? 0 : 2;
+            }
+
+        } else if (this.getVSpeed() != 0) {
+            if (this.getHSpeed() > 0 || this.getLastOffSet() < 0) {
+                return 4;
+            } else {
+                return 6;
+            }
+        } else if (slide != undefined && slide) {
+            if (this.getHSpeed() > 0 || this.getLastOffSet() < 0) {
+                return 5;
+            } else {
+                return 7;
             }
         } else if (this.getHSpeed() > 0) {
             return 0;
@@ -552,8 +565,8 @@ class EntityInteractable extends Entity {
             return;
         }
 
-            this.state = !this.state;
-            this.doAction(this.state);
+        this.state = !this.state;
+        this.doAction(this.state);
     }
 
     doAction(state) {
@@ -622,6 +635,7 @@ class EntityCreature extends EntityMovable {
         this.rightDown = false;
         this.jumpDown = false;
         this.jumping = false;
+        this.slideDown = false;
         this.jumpCounter = 0;
 
         if (options.healthBar != undefined) {
@@ -670,7 +684,7 @@ class EntityCreature extends EntityMovable {
             //removes the entity from the game
             this.level.removeEntity(this);
 
-          
+
         }
     }
 
@@ -690,10 +704,12 @@ class EntityCreature extends EntityMovable {
                     this.immunityFrame = 0;
                 }
             }
-
-
+           
             //see what type of movement the player did
             switch (type) {
+                case "down":
+                    this.slideDown = isDown;
+                    break;
                 case "right":
                     this.rightDown = isDown;
                     this.leftDown = false;
@@ -707,6 +723,7 @@ class EntityCreature extends EntityMovable {
                         break;
                     }
                     this.jumpDown = isDown;
+                    this.slideDown = false;
                     break;
                 case "stop":
                     this.rightDown = false;
@@ -749,9 +766,14 @@ class EntityCreature extends EntityMovable {
                         this.currentWeapon.setAngle();
                     }
                     break;
+
             }
             var overRide = false;
+            var slide = false;
             //handling to what the player did
+            if (this.slideDown) {
+                slide = true;
+            }
             if (this.rightDown) {
                 this.setHSpeed(this.getSpeed());
                 this.lastOffSet = -this.getSprite().getOffSet();
@@ -810,7 +832,7 @@ class EntityCreature extends EntityMovable {
                         break;
                 }
                 //spawning at the new place
-                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode(overRide));
+                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode(overRide, slide));
             }
         }
     }
