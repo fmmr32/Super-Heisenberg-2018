@@ -395,10 +395,13 @@ class Level {
     drawMap() {
 
         if (this.getPlayer() != undefined && this.image != undefined) {
-            var x = container.clientWidth / 2 - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
+            var width = container.clientWidth / 3;
 
+            var x = width - this.getPlayer().getX() - this.getPlayer().getSprite().getCenter();
+            x = Math.min(0, x);
+            x = Math.max(x, -width);
             var context = canvas.getContext("2d");
-
+            this.offSetX = x;
 
             context.drawImage(this.image, 0, 0, this.width, this.height, x, 0, this.width, this.height);
         }

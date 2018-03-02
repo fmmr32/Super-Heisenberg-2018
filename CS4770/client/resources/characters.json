@@ -3,19 +3,19 @@
     "Id": 667,
     "startX": 39,
     "startY": 11,
-    "width": 100,
-    "height": 100,
+    "width": 70,
+    "height": 96,
     "centerPX": 32,
     "offSetPX": 3,
     "name": "Heisenberg",
     "hp": 100,
     "speed": 4,
     "jump": 0.5,
-    "leftHand": [ 10, 38],
-    "rightHand": [ 50, 38 ],
-    "leftHandLow": [30, 55],
-    "rightHandLow": [45,55],
-    "source": "../resources/Stud96.png",
+    "leftHand": [ -6, 36],
+    "rightHand": [ 45, 36 ],
+    "leftHandLow": [13, 55],
+    "rightHandLow": [28,55],
+    "source": "../resources/stud69.png",
     "animation": [
       {
         "startX": 0,
@@ -28,7 +28,7 @@
       },
       {
         "startX": 0,
-        "startY": 200,
+        "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 4,
@@ -46,7 +46,7 @@
       },
       {
         "startX": 0,
-        "startY": 200,
+        "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -54,8 +54,8 @@
         "columns": 1
       },
       {
-        "startX": 100,
-        "startY": 100,
+        "startX": 70,
+        "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -63,8 +63,8 @@
         "columns": 1
       },
       {
-        "startX": 200,
-        "startY": 100,
+        "startX": 140,
+        "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -72,8 +72,8 @@
         "columns": 1
       },
       {
-        "startX": 100,
-        "startY": 300,
+        "startX": 70,
+        "startY": 288,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -81,8 +81,8 @@
         "columns": 1
       },
       {
-        "startX": 200,
-        "startY": 300,
+        "startX": 140,
+        "startY": 288,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,

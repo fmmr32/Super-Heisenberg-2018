@@ -286,11 +286,11 @@ class Entity {
     spawn(X, Y, flipCode) {
         this.posX = X;
         this.posY = Y;
+
         //makes sure the entity is drawn at the correct place
-        X -= this.level.getPlayer().getX();
-        X += container.clientWidth / 2;
-        X -= this.getSprite().width / 2;
-        X = Math.floor(X);
+        X += this.level.offSetX;
+
+
 
 
         if (this.animation == undefined || this instanceof Grenade) {
@@ -704,7 +704,7 @@ class EntityCreature extends EntityMovable {
                     this.immunityFrame = 0;
                 }
             }
-           
+
             //see what type of movement the player did
             switch (type) {
                 case "down":
