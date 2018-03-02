@@ -128,10 +128,10 @@
         //This loads things from the database
         var loadDB = function (type, callback) {
             socket.emit('loadDB', {
-                type: name
+                collectionName: type
             });
 
-            socket.on('levelList', function (data) {
+            socket.on(collectionName, function (data) {
                 callback(data.toString());
             });
         }
@@ -256,7 +256,7 @@
         }
 
 
-       window.onload = loadGame();
+       //window.onload = loadGame();
 
     </script>
     <body>
