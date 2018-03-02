@@ -1,5 +1,5 @@
 ﻿var mongojs = require('mongojs');
-var db = mongojs('localhost:27017/CS4770GAME',['account','progress']);
+var db = mongojs('localhost:27017/CS4770GAME',['account','progress','player']);
 
 
 
