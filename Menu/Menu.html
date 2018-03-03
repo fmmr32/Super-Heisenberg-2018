@@ -1,0 +1,185 @@
+<HTML>
+<HEAD>
+<STYLE>
+	body{
+	background-image: url(loginScreen.png);
+	background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center; 
+	}
+
+	div {
+	
+	}
+
+	img{
+		display: block;
+		margin: 0 auto;
+		overflow: hidden;
+    	z-index: 3;
+	}
+
+	img:hover{
+		overflow: hidden;
+		transform: scale(1.1,1.1);
+      	-webkit-transition-duration: 1s;
+    	-moz-transition-duration: 1s;
+    	-o-transition-duration: 1s;
+    	transition-duration: 1s;
+    	z-index: 3;
+	}
+
+	.container{
+		display: table;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+	}
+
+	#main{
+		display: table-cell;
+		vertical-align: middle;
+		padding-top: 100px;
+	}
+
+	#playOptions{
+		display: none;
+		vertical-align: middle;
+	}
+
+	#levelEditorOptions{
+		display: none;
+		vertical-align: middle;
+	}
+
+	#top{ 
+		padding-bottom: 50px;
+	}
+
+	#other{
+		padding-bottom: 50px;
+	}
+
+	#bottom{
+	}
+
+	#Play{
+	}
+
+	#BrowseLevels{
+	}
+
+	#LevelEditor{
+	}
+
+	#Options{
+	}
+
+	#NewGame{
+	}
+
+	#LoadGame{	
+	}
+
+	#NewLevel{
+	}
+
+	#LoadLevel{
+	}
+
+</STYLE>
+</HEAD>
+
+<BODY>
+
+<div class=container>
+
+	<div id='main'>
+		
+		<div id='top'>
+			<img src='Play.png' id='Play' onclick='playOptions()''></img>
+		</div>
+
+		<div id='other'>
+			<img src='BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
+		</div>
+	
+		<div id='other'>
+			<img src='LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
+		</div>
+	
+		<div id='bottom'>
+			<img src='Options.png' id='Options' onclick='options()'></img>		
+		</div>
+	
+	</div>
+
+
+	<div id='playOptions'>
+	
+		<div id='top'>
+			<img src='NewGame.png' id='NewGame'></img>
+		</div>
+		
+		<div id='other'>
+			<img src='LoadGame.png' id='LoadGame'></img>
+		</div>
+	
+		<div id='bottom'>
+			<img src='Back.png' id='Back' onclick='back()'></img>
+		</div>
+	
+	</div>	
+
+	<div id='levelEditorOptions'>
+	
+		<div id='top'>
+			<img src='NewLevel.png' id='NewLevel'></img>
+		</div>
+	
+		<div id='other'>
+			<img src='LoadLevel.png' id='LoadLevel'></img>
+		</div>
+	
+		<div id='bottom'>
+			<img src='Back.png' id='Back' onclick='back()'></img>
+		</div>
+	
+	</div>	
+
+	<div id='levelBrowser'>
+
+
+	</div>
+
+
+</div>
+
+
+
+<script type="text/javascript">
+	function playOptions(){
+		document.getElementById("main").style.display = "none";
+		document.getElementById("playOptions").style.display = "table-cell";
+	}
+
+	function levelBrowser(){}
+
+	function levelEditorOptions(){
+		document.getElementById("main").style.display = "none";
+		document.getElementById("levelEditorOptions").style.display = "table-cell";
+	}
+
+	function options(){}
+
+	function back(){
+		document.getElementById("playOptions").style.display = "none";
+		document.getElementById("levelEditorOptions").style.display = "none";
+		document.getElementById("main").style.display = "table-cell";	
+	}
+</script>	
+
+
+</BODY>	
+</html>
+
