@@ -3,29 +3,50 @@
 
     </head>
     <body style=" background: grey;" >
-        <canvas id="canvas" width="720px" height="480px" style="background: #fff;  magrin:20px;" oncontextmenu="return false;" ></canvas>
+	
+	<div id = "gameDiv" style=" float: left; width: 720px; height: 480px; overflow:scroll; "> 
+        <canvas id="canvas" width="1080px" height="720px" style="background: #fff;  magrin:20px;" oncontextmenu="return false;" ></canvas>
+		
+	</div>
+		<div id = "sidebar" style ="float: right; background: lightgrey">
+			<div id = "options" style = "float: left;">
+			
+			<select name = "tile">
+				<option Value = "1">Tile 1</option>
+				<option Value = "2">Tile 2</option>
+				<option Value = "3">Tile 3</option>
+			</select>
+			</div>
+			
+			<div id = "tilediv" style ="float: right;">
+			<canvas id = "tileCanvas" width = "200" height = "100" style="background: #fff;  magrin:20px; overflow:scroll;" oncontextmenu="return false;"></canvas>
+			</div>
+		</div> 
+		
         <script type="text/javascript" language="javascript">
-
+		
 //*******Grid***************************************************************************************
-    var bw = 720;
-    var bh = 480;
-    var p = 0;
-    var cw = 32;
-    var ch = 32;
 
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
+	
+	var bw = canvas.width;
+    var bh = canvas.height;
+    var p = 0;
+    var cw = 32;
+    var ch = 32;
+	
     function drawBoard(){
 	//square width
     for (var x = 0; x <= bw; x += 32) {
-                context.moveTo(0.5 + x + p, p);
-            context.lineTo(0.5 + x + p, bh + p);
+        context.moveTo(0.5 + x + p, p);
+        context.lineTo(0.5 + x + p, bh + p);
     }
 
 	//square height
     for (var x = 0; x <= bh; x += 32) {
-                context.moveTo(p, 0.5 + x + p);
-            context.lineTo(bw + p, 0.5 + x + p);
+        context.moveTo(p, 0.5 + x + p);
+        context.lineTo(bw + p, 0.5 + x + p);
     }
 
     context.strokeStyle = "black";
@@ -35,7 +56,7 @@
     drawBoard();
 
 
-
+	
 //*******Editor*************************************************************************************
 
 var editor = null;
@@ -43,94 +64,152 @@ var selection = null;       //Selection var for tile placement.
 var mouseClicked = false;   //Var for mouse listeners
 var mouseReleased = true;
 var mouseLeft = false;
-var mouseRight = false;
+var mouseRight = false; 
 
 
 function StartEditor()
 {
-                editor = new Editor(500, 500);
-            }
+    editor = new Editor(720, 480);
+}
 
 
-document.addEventListener("mousemove", onMouseMove, false);
+//document.addEventListener("mousemove", onMouseMove, false);
 
 function Editor(areaW, areaH) {
-                this.areaH = areaH;
-            this.areaW = areaW;
+    this.areaH = areaH;
+    this.areaW = areaW;
 
 
 };
 
 
+var map = {
+	gravity: 9.81,
+	width: 720,
+	height: 480,
+	spawnX: 150,
+	SpawnY: 10,
+	
+	creatures: [{
+	
+		moveset: 
+		[
+			{
+	
+			}
+		]
+	}],
+	
+	entities: [
+		{
+	
+		}
+	],
+	content: [
+		{
+		
+		}
+	]
+}
+
+	
+
 this.canvas.addEventListener("mousedown", function (e) {
-    if (e.which == 1) {
-                mouseLeft = true
+    if (e.which == 1) {	
+       mouseLeft = true
 	    placeTile();
 		console.log("LMB");
-
+		
     if (selection != null)
             editor.placeTile();
     }
     else if (e.which == 3) {
-                mouseRight = true;
-            console.log("RMB");
+        mouseRight = true;
+		console.log("RMB");
 		removeTile();
     }
-
-
-
+	
+		
+		
 window.addEventListener("mouseup", function(e) { 
 	switch (e.which) {
-	case 1:
+	case 1: 
 		console.log("LMBup");
-		mouseLeft = false;
-		break;
+		mouseLeft = false; 
+		break; 
 	case 3:
-		console.log("RMBup");
+		console.log("RMBup");	
 		mouseRight = false;
 		break;
 	}
 }, false);
-
-
+		
+		
 },false);
-
+/*
 function onMouseMove()
 {
     if (mouseLeft) {
-                console.log("LMB+MOVE");
-            placeTile();
-
+	 console.log("LMB+MOVE");
+	 placeTile();
+	 
         if (selection != null) {
-                placeTile();
+            placeTile();
 			
-            }
+        }
     }
     else if (mouseRight)
     {
-                console.log("RMB+MOVE");
-            removeTile();
+	 console.log("RMB+MOVE");
+       removeTile();
     }
 };
-
+*/
 
 
 
 
 function removeTile(map, block)
 {
-		var x = Math.floor(event.clientX/cw)*cw;
+		var x = Math.floor(event.clientX/cw)*cw; 
 		var y = Math.floor(event.clientY/ch)*ch;
 		context.clearRect(x,y,32,32);
+
 };
 
 function placeTile()
 {
-    var x = Math.floor(event.clientX/cw)*cw;
+    var x = Math.floor(event.clientX/cw)*cw; 
     var y = Math.floor(event.clientY/ch)*ch;
 	context.fillRect(x,y,32,32);
+	var t = {
+			id: 1,
+			posX:x,
+			posY:y
+			}
+			
+			var t = document.getElementById("tile");
+			
+	    
+    for (var i = 0; i < map.content.length; i++) {
+        if (map.content[i].posX == x) {
+			console.log("spot taken");
+            
+        }
+		else if(map.content[i].posX != x)
+			{
+				map.content.push(t);
+				console.log("pushing");
+				break;
+			}
+		}
+	
+	
+	console.log(map);
+	
+	
    // context.drawImage(selection, x, y);
 };
     </script>
     </body>
-</html>
+    </html>
