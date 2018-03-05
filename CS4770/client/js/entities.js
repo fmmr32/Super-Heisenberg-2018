@@ -752,6 +752,7 @@ class EntityCreature extends EntityMovable {
                                         var ent = this.level.getEntity(x, y);
                                         br = true;
                                         ent.flipState();
+                                        document.dispatchEvent(new Event("pull"));
                                         break;
                                     }
                                 }
@@ -861,6 +862,10 @@ class Player extends EntityCreature {
 
     awardAchievement(id) {
         this.achievements.push(id);
+    }
+
+    hasAchievement(id) {
+        return this.achievements.indexOf(id) == -1;
     }
 
 }

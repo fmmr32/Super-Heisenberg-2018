@@ -1,8 +1,31 @@
 ﻿[
   {
     "id": 1,
-    "name": "kill enemiex",
-    "maxcount": 10,
-    "type": "kill"
+    "name": "kill enemie",
+    "type": "kill",
+    "maxKills": 1,
+    "function": {
+      "arguments": "",
+      "body": [
+        "if (this.level.getPlayer().killcount >= this.maxKills) {",
+        "this.level.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();",
+        "}"
+      ]
+    },
+    "text": "YOU HAVE KILLED 1 ENEMY"
+  },
+  {
+    "id": 2,
+    "name": "pull a level",
+    "type": "pull",
+    "function": {
+      "argumets": "",
+      "body": [
+        "this.level.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();"
+      ]
+    },
+    "text": "YOU HAVE PULLED THE LEVER KRONK"
   }
 ]

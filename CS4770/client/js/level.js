@@ -1,45 +1,4 @@
-﻿class Achievement {
-    constructor(file) {
-        for (var any of Object.keys(file)) {
-            this[any] = file[any];
-        }
-        console.log(this);
-        this.image;
-    }
-
-    trackKills() {
-        if (this.level.getPlayer() != undefined) {
-            if (this.level.getPlayer().killcount >= this.maxKills && this.level.getPlayer().achievements.indexOf(this.id) == -1) {
-                this.level.getPlayer().awardAchievement(this.id);
-                //add something for achievement get
-                console.log("WOOOO K");
-            }
-        }
-    }
-
-    completedLvl() {
-
-    }
-
-    bossKill() {
-
-    }
-
-    getFunction(name) {
-        switch (name) {
-            case "kill":
-                return this.trackKills();
-            case "completed":
-                return this.completedLvl();
-            case "boss":
-                return this.bossKill();
-            default:
-                return null;
-        }
-    }
-
-
-}
+﻿
 
 
 class Block {
