@@ -1,5 +1,5 @@
 ﻿var mongojs = require('mongojs');
-var db = mongojs('localhost:27017/CS4770GAME',['account','progress','player']);
+var db = mongojs('localhost:27017/CS4770GAME',['account','progress','player','levels','entity','character','weapons','tiles','achievements']);
 
 
 
@@ -77,6 +77,12 @@ var loadLevelsList = function (callback) {
     db.levels.find({}, {name: 1, author: 1, date: 1}, function (err, result) {
         callback(result);
     });
+}
+
+/*_____________________________ Write Game Thingies _____________________________*/
+
+var writeLevel = function (callback) {
+
 }
 
 
