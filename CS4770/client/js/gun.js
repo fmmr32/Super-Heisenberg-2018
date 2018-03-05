@@ -93,10 +93,12 @@ function loadWeapons(file) {
 
 class Weapon {
     constructor(damage, speed, cooldown, animation, barrel, bullets, impact) {
+        this.tick = 0;
+
         this.damage = damage;
         this.speed = speed;
         this.cooldown = cooldown;
-        this.tick = 0;
+        
         this.bullets = bullets;
         this.animation = animation;
         this.barrel = barrel;

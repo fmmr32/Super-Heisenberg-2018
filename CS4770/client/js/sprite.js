@@ -2,26 +2,9 @@
 var characters = new Map();
 
 SPRITE = function (options) {
-    this.container = options.context;
-    this.width = options.width;
-    this.height = options.height;
-    this.image = options.image;
-    this.name = options.name;
-    this.id = options.id;
-    this.center = options.center;
-    this.offSet = options.offSet;
-
-    if (options.animation != undefined) {
-        this.animation = options.animation;
-    }
-    if (options.complex != undefined) {
-        this.complex = options.complex;
-    }
-    if (options.healthBar != undefined) {
-        this.healthBar = options.healthBar;
-    }
-    if (options.meta != undefined) {
-        this.meta = options.meta;
+    //dynamic way of adding stuff to the sprites
+    for (var i of Object.keys(options)) {
+        this[i] = options[i];
     }
 
     this.getCenter = function () {

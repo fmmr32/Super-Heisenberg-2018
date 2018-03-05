@@ -1,11 +1,9 @@
 ﻿class Achievement {
-    constructor(id, maxKills, level) {
-        this.id = id;
-        this.maxKills = maxKills;
-        this.level = level;
-        this.type = "kill";
-
-
+    constructor(file) {
+        for (var any of Object.keys(file)) {
+            this[any] = file[any];
+        }
+        console.log(this);
         this.image;
     }
 

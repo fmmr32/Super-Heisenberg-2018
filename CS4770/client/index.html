@@ -170,10 +170,18 @@
         };
 
         function loadAchievements() {
-            var a = new Achievement(1, 1, map);
-            document.addEventListener(a.type, function () { a.getFunction("kill") }, false);
+            loadJSONFile(function (response) {
+                for (var ac of JSON.parse(response)) {
+                    var a = new Achievement(ac);
+                    document.addEventListener(a.type, function () { a.getFunction("kill") }, false);
+                    ach.push(a);
+                }
+            }, "/client/resources/achievements.json");
 
-            ach.push(a);
+            
+           
+
+         
         }
 
         var loadMenu = function () {
@@ -289,7 +297,7 @@
         }
 
 
-        //window.onload = loadCurretUser();
+        window.onload = loadCurretUser();
 
     </script>
     <body>
