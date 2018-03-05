@@ -20,12 +20,13 @@
     "name": "pull a level",
     "type": "pull",
     "function": {
-      "argumets": "",
+      "arguments": "",
       "body": [
         "this.level.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();"
       ]
     },
-    "text": "YOU HAVE PULLED THE LEVER KRONK"
+    "text1": "YOU HAVE PULLED THE LEVER KRONK",
+    "text": "THIS IS A TEST MESSAGE, IF YOU SEE THIS MESSAGE DO NOT PANIC. NOTHING IS GOING WRONG I AM THE RULE OF THE WORLD, FEAR ME"
   }
 ]
