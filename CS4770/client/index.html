@@ -126,16 +126,7 @@
     }
     var conf;
 
-    //This loads things from the database
-    var loadDB = function (type, callback) {
-        socket.emit('loadDB', {
-            type: name
-        });
 
-        socket.on('levelList', function (data) {
-            callback(data.toString());
-        });
-    }
 
     var loadLevelsListFunct = function () {
         menuDiv.style.display = 'none';
@@ -154,6 +145,7 @@
 
 
     var map;
+    //achievement array
     var ach = [];
 
     //needs to be fetched from the db and put into a json like file
@@ -173,7 +165,11 @@
         loadJSONFile(function (response) {
             for (var ac of JSON.parse(response)) {
                 var a = new Achievement(ac, map);
-                document.addEventListener(a.type, function (e) { for (var a of ach[e.type]){a.function(); }});
+                document.addEventListener(a.type, function (e) {
+                    for (var a of ach[e.type]) {
+                        a.function();
+                    }
+                });
                 if (ach[a.type] == undefined) {
                     ach[a.type] = [];
                 }

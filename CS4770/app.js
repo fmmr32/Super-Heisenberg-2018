@@ -81,9 +81,11 @@ var loadLevelsList = function (callback) {
 
 /*_____________________________ Write Game Thingies _____________________________*/
 
-var writeLevel = function (callback) {
-
+var writeLevel = function (data) {
+    db.levels.update({ id: data.data.id }, { data });
 }
+
+/*_______________________________________________________________________________*/
 
 
 var io = require('socket.io')(serv, {});
@@ -92,25 +94,31 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('loadDB', function (data) {
         console.log(data.collection);
-        if (data.type == 'level') {
+        if (data.collectionName == 'level') {
             loadLevel(data.id, function (result) {
                 socket.emit('level', result)
             });
         }
-        else if (data.type == "weapon") {
+        else if (data.collectionName == "weapon") {
             loadWeapons(data, function (result) {
                 socket.emit('weapons', result);
             });
         }
-        else if (data.type == "character") {
+        else if (data.collectionName == "character") {
             loadCharacter(data, function (result) {
                 socket.emit('character', result);
             });
         }
-        else if (data.type == "levelsList") {
+        else if (data.collectionName == "levelsList") {
             loadLevelsList(function (result) {
                 socket.emit('levelList', result);
             });
+        }
+    });
+
+    socket.on('writeDB', function (data) {
+        if (data.type == 'level') {
+            writeLevel(data);
         }
     });
 
