@@ -52,6 +52,9 @@
     <Content Include="client\resources\achievements.json">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="client\resources\dialogs.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\entities.json" />
     <Content Include="client\resources\entities.png" />
     <Content Include="client\resources\player.json">

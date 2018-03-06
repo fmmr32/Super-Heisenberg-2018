@@ -35,7 +35,6 @@ class Level {
         this.entities = [];
         this.gravity = 0;
 
-
         this.loadLevel(file);
     }
 
@@ -106,6 +105,10 @@ class Level {
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
+        this.startDialog = any.startDialog;
+        this.endDialog = any.endDialog;
+        this.doingDialog = this.startDialog != -1;
+        
 
         while (container.children.length != 0) {
             container.children[0].remove();
@@ -189,6 +192,14 @@ class Level {
         }
     }
 
+    checkEnd() {
+        for (var ent of this.entities) {
+            if (!(ent instanceof EntityInteractable) && !(ent instanceof Player)) {
+                return;
+            }
+        }
+        this.exitMap(null, true);
+    }
 
     //takes in an array of creature values, can be basic information as in id, x, y but can be more complex
     loadCreature(creatures) {
@@ -243,9 +254,6 @@ class Level {
     setImage(ctx) {
         this.image = new Image();
         this.image.src = ctx.canvas.toDataURL("image/png");
-
-
-
     }
 
 
@@ -284,6 +292,7 @@ class Level {
                 }
 
             }
+            this.checkEnd();
         }
     }
 
@@ -386,7 +395,12 @@ class Level {
         var timeplayed = this.getPlayer().timeplayed;
         if (completed) {
             //add more...
-            document.dispatchEvent(new Event("completed Level"));
+            if (this.endDialog != -1) {
+                this.doingDialog = true;
+            } else {
+                //goto overworld
+                clearInter(interval);
+            }
         }
 
     }

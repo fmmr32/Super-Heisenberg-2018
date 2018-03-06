@@ -211,7 +211,7 @@
         }
     }
 
-
+    var diag = [];
     function loadGame(reload, player) {
         //setting the divs correctly
         signDiv.style.display = 'none';
@@ -220,11 +220,11 @@
             loadNeeded();
         }
         //loading the needed files
+        loadDialog(player);
 
 
-        //loading the test map
+        ////loading the test map
         loadMap("map1", player, function (m) {
-
             loadJSONFile(function (response) {
                 m.loadCharacter(response);
             }
@@ -238,12 +238,20 @@
     var popUps = [];
 
     function update() {
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         if (loaded) {
-            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-            map.drawMap();
-            map.doTick();
-            for (var pops of popUps) {
-                pops.doPopUp();
+            if (!map.doingDialog) {
+                map.drawMap();
+                map.doTick();
+                for (var pops of popUps) {
+                    pops.doPopUp();
+                }
+            } else if (diag.length != 0) {
+                if (diag[map.startDialog == -1 ? map.endDialog : map.startDialog].y != container.clientHeight) {
+                    diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.y = container.clientHeight - diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.image.height;
+                }
+
+                diag[map.startDialog == -1 ? map.endDialog : map.startDialog].doDialog();
             }
         }
     }
@@ -253,14 +261,20 @@
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && loaded) {
-            map.getPlayer().doMove(conf[charCode], true);
+            if (!map.doingDialog) {
+                map.getPlayer().doMove(conf[charCode], true);
+            } else if (diag.length != 0) {
+                if (conf[charCode] == "action") {
+                    diag[map.startDialog == -1 ? map.endDialog : map.startDialog].nextText();
+                }
+            }
         }
     };
 
     document.onkeyup = function (e) {
         e = e || window.event
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-        if (charCode && loaded) {
+        if (charCode && loaded && map != undefined) {
             map.getPlayer().doMove(conf[charCode], false);
         }
     };
