@@ -34,6 +34,7 @@ class Level {
         this.tiles = [[], []];
         this.entities = [];
         this.gravity = 0;
+        this.popUps = [];
 
         this.loadLevel(file);
     }
@@ -264,6 +265,12 @@ class Level {
 
 
     doTick() {
+        this.drawMap();
+        for (var popUp of this.popUps) {
+            popUp.doPopUp();
+        }
+
+
         if (this.getPlayer() != null) {
             for (var entity of this.entities) {
                 //doing the bullet handling
@@ -399,10 +406,20 @@ class Level {
                 this.doingDialog = true;
             } else {
                 //goto overworld
-                clearInter(interval);
+                this.toOverWorld();
             }
         }
 
+    }
+
+    toOverWorld() {
+        this.doingDialog = false;
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.remove();
+        while (container.children.length != 0) {
+            container.children[0].remove();
+        }
+        overWorld.toOverWorld(JSON.stringify(this.user));
     }
 }
 

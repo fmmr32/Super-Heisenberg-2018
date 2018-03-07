@@ -24,7 +24,7 @@
         var duration = 2;
         var position = "top";
         var size = 15;
-        popUps.push(new PopUp(image, text, duration, position, size));
+        this.level.popUps.push(new PopUp(image, text, duration, position, size));
     }
 
 }
@@ -137,10 +137,9 @@ class PopUp {
             if (!start) {
                 map.startDialog = -1;
                 map.doingDialog = false;
-                console.log("did it")
             } else {
                 //go to overworld
-                clearInterval(interval);
+                map.toOverWorld();                
             }
         }
     }

@@ -39,6 +39,9 @@
     <Compile Include="client\js\editor.js" />
     <Compile Include="client\js\gun.js" />
     <Compile Include="client\js\level.js" />
+    <Compile Include="client\js\overworld.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="client\js\sprite.js" />
     <Compile Include="client\js\util.js">
       <SubType>Code</SubType>
@@ -57,6 +60,12 @@
     </Content>
     <Content Include="client\resources\entities.json" />
     <Content Include="client\resources\entities.png" />
+    <Content Include="client\resources\overworld.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="client\resources\overWorldCharacters.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\player.json">
       <SubType>Code</SubType>
     </Content>

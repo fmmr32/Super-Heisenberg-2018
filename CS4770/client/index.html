@@ -29,7 +29,7 @@
 <script type="text/javascript" src="js/level.js"></script>
 <script type="text/javascript" src="js/sprite.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
-
+<script type="text/javascript" src="js/overworld.js"></script>
 
 
 
@@ -145,6 +145,7 @@
 
 
     var map;
+    var overWorld;
     //achievement array
     var ach = [];
 
@@ -160,6 +161,10 @@
         //get something for load
         loadAchievements();
     };
+
+    function getOverWorld(newMap) {
+        overWorld = newMap;
+    }
 
     function loadAchievements() {
         loadJSONFile(function (response) {
@@ -224,11 +229,11 @@
 
 
         ////loading the test map
-        loadMap("map1", player, function (m) {
+        loadOverworld(player, function (m) {
             loadJSONFile(function (response) {
-                m.loadCharacter(response);
+                m.loadPlayer(response);
             }
-                , "/client/resources/characters.json");
+                , "/client/resources/overWorldCharacters.json");
         });
     }
 
@@ -238,15 +243,13 @@
     var popUps = [];
 
     function update() {
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         if (loaded) {
-            if (!map.doingDialog) {
-                map.drawMap();
+            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+            if (overWorld.onOverworld) {
+                overWorld.doTick();
+            } else if (!map.doingDialog) {
                 map.doTick();
-                for (var pops of popUps) {
-                    pops.doPopUp();
-                }
-            } else if (diag.length != 0) {
+            } else if (map.doingDialog) {
                 if (diag[map.startDialog == -1 ? map.endDialog : map.startDialog].y != container.clientHeight) {
                     diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.y = container.clientHeight - diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.image.height;
                 }
@@ -261,12 +264,16 @@
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && loaded) {
-            if (!map.doingDialog) {
+            if (overWorld.onOverworld) {
+                overWorld.getPlayer().doMove(conf[charCode]);
+            } else if (!map.doingDialog) {
                 map.getPlayer().doMove(conf[charCode], true);
-            } else if (diag.length != 0) {
+            } else if (map.doingDialog) {
                 if (conf[charCode] == "action") {
                     diag[map.startDialog == -1 ? map.endDialog : map.startDialog].nextText();
                 }
+            } else if (overWorld.onOverworld) {
+                overWorld.getPlayer().doMove(conf[charCode]);
             }
         }
     };
