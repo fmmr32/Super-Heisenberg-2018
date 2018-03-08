@@ -75,7 +75,6 @@ class Animation {
             var frameRate = ani.frameRate;
             var columns = ani.columns;
             var img = new Image();
-
             img.src = src != undefined ? src : getSprite(id).image.src;
             img.width = ani.width != undefined ? ani.width : getSprite(id).width;
             img.height = ani.height != undefined ? ani.height : getSprite(id).height;

@@ -1,0 +1,52 @@
+﻿[
+  {
+    "src": "../resources/OverWorldTemp.png",
+    "startX": 240,
+    "startY": 180,
+    "portals": [
+      {
+        "mapName": "map1",
+        "X": 180,
+        "Y": 180
+      }
+    ],
+    "paths": [
+      {
+        "id": 0,
+        "startX": 180,
+        "startY": 180,
+        "endX": 240,
+        "endY": 180,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 1,
+        "startX": 240,
+        "startY": 180,
+        "endX": 270,
+        "endY": 180,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 2,
+        "startX": 270,
+        "startY": 180,
+        "endX": 525,
+        "endY": 180,
+        "startPointer": 3,
+        "endPointer": -1
+      },
+      {
+        "id": 3,
+        "startX": 525,
+        "startY": 180,
+        "endX": 525,
+        "endY": 270,
+        "startPointer": -1,
+        "endPointer": 2
+      }
+    ]
+  }
+]
