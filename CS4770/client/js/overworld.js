@@ -50,47 +50,75 @@
             this.setY(y);
             this.setX(x);
         }
+        //this checks if the player is traveling and set te correct place
         if (this.p != -1) {
             var path = this.world.paths[this.p];
             var delta = this.world.getChange(this.getDirection());
             var blockx = false;
             var blocky = false;
+            //checks the x direction
             if ((this.getX() != path.endX && this.getDirection() == 6) || (this.getX() != path.startX && this.getDirection() == 5)) {
                 this.setX(this.getX() + delta[0]);
             } else {
                 blockx = true;
             }
+            //checks the y direction
             if ((this.getY() != path.endY && this.getDirection() == 4) || (this.getY() != path.startY && this.getDirection() == 7)) {
                 this.setY(this.getY() + delta[1]);
             } else {
                 blocky = true;
             }
-        //    console.log(blockx, blocky);
+            //when the player has reached the destination we set the new path
             if (blockx && blocky) {
-                this.p = path.pointer;
+                this.p = this.getPointer(path, this.getX(), this.getY());
                 this.setDirection(this.calcDirection(this.getX(), this.getY(), this.p));
             }
         }
+        //drawing the player
         this.animation[this.getDirection()].doAnimation(x, y);
     }
+    //gets the correct next path
+    getPointer(path, x, y) {
+        if (path.startX == x && path.startY == y) {
+            return path.endPointer;
+        } else if (path.endX == x && path.startY == y) {
+            return path.startPointer;
+        } else if (path.starY == y && path.startX == x) {
+            return path.endPointer;
+        } else {
+            return path.startPointer;
+        }
+    }
+                /**
+        directions:
+        0: standing still facing down
+        1: standing still facing left
+        2: standing still facing up
+        3: standing still facing right
+        4: moving down
+        5: moving left
+        7: moving up
+        6: moving right
+        **/
+    //calculates the direction the player is traveling to
     calcDirection(startX, startY, p) {
         if (p == -1) {
             this.moving = false;
             return 0;
         } else {
             var path = this.world.paths[p];
-            if (startX > path.endX && startY == path.endY) {
+            if (startX == path.startX && startY == path.endY) {
                 return 6;
-            } else if (startX > path.startX && startY == path.endY) {
+            } else if (startX == path.endX && startY == path.endY) {
                 return 5;
-            } else if (startY > path.endY && startX == path.endX) {
+            } else if (startY == path.endY && startX == path.endX) {
                 return 7;
             } else {
                 return 4;
             }
         }
     }
-
+    //handles the movements in the overworld
     doMove(type) {
         if (!this.moving) {
             switch (type) {
@@ -160,7 +188,7 @@ class OverWorld {
 
         canvas = create("canvas", "fg", 0, 0, this.width, this.height);
     }
-
+    //loads the overworld
     loadOverWorld(file) {
         this.makeCanvas();
 
@@ -180,7 +208,7 @@ class OverWorld {
             this.startY = any.startY;
         }
     }
-
+//loads the player
     loadPlayer(file) {
         for (var ani of JSON.parse(file)) {
             if (ani.id == this.user.currentCharacter) {
@@ -224,7 +252,7 @@ class OverWorld {
             this.height = 500;
         }
     }
-
+    //check if the player is on a portal to a level or shop
     onPortal(x, y) {
         for (var portal of this.portals) {
             if (portal.X == x && portal.Y == y) {
@@ -233,34 +261,46 @@ class OverWorld {
         }
         return null;
     }
-
+    //checks if the player is trying to walk on a path and returns said path
     onPath(x, y, d) {
         for (var path of this.paths) {
             if ((x == path.startX || x == path.endX) && (y == path.startY || y == path.endY)) {
-                var delta = this.getDelta(d, x, y);
-                if ((x >= path.startX && delta[0] <= path.endX) || (x >= path.endX && delta[0] <= path.startX) && (y >= path.startY && delta[1] <= path.endY) || (y >= path.endY && delta[1] <= path.startY)) {
+                var delta = this.getDelta(d,path);
+                if ((x + delta[0] == path.startX || x + delta[0] == path.endX) && (y + delta[1] == path.startY || y + delta[1] == path.endY) ) {
                     return path;
                 }
             }
         }
         return -1;
     }
-
-    getDelta(d, x, y) {
+            /**
+        directions:
+        0: standing still facing down
+        1: standing still facing left
+        2: standing still facing up
+        3: standing still facing right
+        4: moving down
+        5: moving left
+        7: moving up
+        6: moving right
+        **/
+    //gets the difference  between start and end of a path
+    getDelta(d, path) {
+        //change this with the path...
         switch (d) {
             case 6:
-                return [x + 1, y];
+                return [path.endX - path.startX, 0];
             case 5:
-                return [x - 1, y];
+                return [-(path.endX - path.startX), 0];
             case 4:
-                return [x, y + 1];
+                return [0, path.endY - path.startY];
             case 7:
-                return [x, y - 1];
+                return [0, -(path.endY - path.startY)];
             default:
-                return [x, y];
+                return [0, 0];
         }
     }
-
+    //gets the way the player has to move
     getChange(d) {
         switch (d) {
             case 6:
@@ -277,7 +317,7 @@ class OverWorld {
     }
 
     toMap(name) {
-        ////loading the test map
+        //loading the map the player chose
         this.onOverworld = false;
         this.playerx = this.getPlayer().getX();
         this.playery = this.getPlayer().getY();
@@ -291,6 +331,7 @@ class OverWorld {
         });
     }
 
+    //going back to the overworld
     toOverWorld(player) {
         this.makeCanvas();
         this.onOverworld = true;

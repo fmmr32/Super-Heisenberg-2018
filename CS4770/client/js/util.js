@@ -58,7 +58,6 @@ class PopUp {
         this.traveling = true;
         this.finished = false;
 
-        console.log(this.y);
         this.r = 1;
     }
 
@@ -123,7 +122,6 @@ class PopUp {
 
     doDialog() {
         if (this.index < this.text.length) {
-            console.log(this.x, this.y, this.size * (this.r));
             var ctx = canvas.getContext("2d");
             ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height, this.x - this.image.width / 4, this.y - this.size, this.image.width, this.image.height);
             ctx.font = this.size + "px sans-serif";
@@ -182,7 +180,6 @@ class Dialog {
 
             var popUp = this.popUp;
             var image = this.image;
-            console.log(bar.posX)
             var size = this.size;
             var r = this.r;
             bar.onload = function () {
