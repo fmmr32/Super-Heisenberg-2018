@@ -11,10 +11,10 @@
 		<div id = "sidebar" style ="float: right; background: lightgrey">
 			<div id = "options" style = "float: left;">
 			
-			<select name = "tile">
-				<option Value = "1">Tile 1</option>
-				<option Value = "2">Tile 2</option>
-				<option Value = "3">Tile 3</option>
+			<select id = "gameElement">
+				<option Value = "Creature">Creature</option>
+				<option Value = "Entities">Entities</option>
+				<option Value = "Content">Content</option>
 			</select>
 			</div>
 			
@@ -32,18 +32,18 @@
 	
 	var bw = canvas.width;
     var bh = canvas.height;
-    var p = 0;
-    var cw = 32;
-    var ch = 32;
+    var p = 0;		//offset
+    var cw = 32;	//cell width
+    var ch = 32;	//cell height
 	
     function drawBoard(){
-	//square width
+	//grid square width
     for (var x = 0; x <= bw; x += 32) {
         context.moveTo(0.5 + x + p, p);
         context.lineTo(0.5 + x + p, bh + p);
     }
 
-	//square height
+	//grid square height
     for (var x = 0; x <= bh; x += 32) {
         context.moveTo(p, 0.5 + x + p);
         context.lineTo(bw + p, 0.5 + x + p);
@@ -62,6 +62,7 @@
 var editor = null;
 var selection = null;       //Selection var for tile placement.
 var mouseClicked = false;   //Var for mouse listeners
+var move = null;
 var mouseReleased = true;
 var mouseLeft = false;
 var mouseRight = false; 
@@ -73,7 +74,7 @@ function StartEditor()
 }
 
 
-//document.addEventListener("mousemove", onMouseMove, false);
+document.addEventListener("mousemove", onMouseMove, false);
 
 function Editor(areaW, areaH) {
     this.areaH = areaH;
@@ -120,8 +121,7 @@ this.canvas.addEventListener("mousedown", function (e) {
 	    placeTile();
 		console.log("LMB");
 		
-    if (selection != null)
-            editor.placeTile();
+
     }
     else if (e.which == 3) {
         mouseRight = true;
@@ -146,7 +146,7 @@ window.addEventListener("mouseup", function(e) {
 		
 		
 },false);
-/*
+
 function onMouseMove()
 {
     if (mouseLeft) {
@@ -164,16 +164,53 @@ function onMouseMove()
        removeTile();
     }
 };
-*/
 
 
 
 
-function removeTile(map, block)
+
+function removeTile()
 {
 		var x = Math.floor(event.clientX/cw)*cw; 
 		var y = Math.floor(event.clientY/ch)*ch;
-		context.clearRect(x,y,32,32);
+		var k;
+		var type = null;
+
+		context.clearRect(x+1,y+1,cw-1,ch-1);
+		
+		
+			for (k = 0; k < map.content.length; k++) {
+				if (map.content[k].posX == x && map.content[k].posY == y){type = "content"; break;}
+			}
+			for(k = 0; k< map.entities.length;k++){
+				if(type != null){break;}
+					if (map.entities[k].posX == x && map.entities[k].posY == y){type = "entities";}
+			}
+			for(k = 0; k< map.creatures.length;k++){
+				if(type != null){break;}
+					if(map.creatures[k].posX == x && map.creatures[k].posY == y){type = "creatures"; break;}
+			}
+		
+		
+		
+		if(type == "content"){
+			
+			console.log("Deleting Content...");
+			map.content.splice(k,1)
+		
+		}
+		else if(type == "entities"){
+			
+			console.log("Deleting Entity...");
+			map.entities.splice(k,1)
+		
+		}
+		else if(type == "creatures"){
+			
+			console.log("Deleting Creature...");
+			map.creatures.splice(k,1)
+		
+		}	
 
 };
 
@@ -181,35 +218,143 @@ function placeTile()
 {
     var x = Math.floor(event.clientX/cw)*cw; 
     var y = Math.floor(event.clientY/ch)*ch;
-	context.fillRect(x,y,32,32);
-	var t = {
-			id: 1,
+	context.fillRect(x,y,cw,ch);
+	var g = document.getElementById("gameElement");
+	var elem = g.options[g.selectedIndex].text;
+	
+	if(elem === "Creature"){
+	
+	placeCreature();
+	
+	}
+	
+	if(elem === "Entities"){
+	
+	placeEntity();
+	
+	}
+	
+	if(elem === "Content"){
+	
+	placeContent();
+	
+	}
+	
+
+	
+	
+	function placeCreature(){
+			
+	var taken = false;
+	var i;
+		var creat = {
+			id: selection,
 			posX:x,
-			posY:y
-			}
+			posY:y,
+			moveset: move
+			}			
+	    //check to see if tile position is already in existance
+    for ( i = 0; i < map.creatures.length; i++) {
+	
+        if (map.creatures[i].posX == x && map.creatures[i].posY == y){
 			
-			var t = document.getElementById("tile");
+			taken = true;
+			break;
+			} 
+		}
+		if(taken){
+			console.log("Overwriting position...");
+			map.creatures.splice(i,1)
+			map.creatures.push(creat);
+
 			
-	    
-    for (var i = 0; i < map.content.length; i++) {
-        if (map.content[i].posX == x) {
-			console.log("spot taken");
             
         }
-		else if(map.content[i].posX != x)
-			{
-				map.content.push(t);
+		else{
+				map.creatures.push(creat);
 				console.log("pushing");
-				break;
+				
 			}
+		
+	
+	}
+	
+	
+	function placeEntity(){
+			
+	var taken = false;
+	var i;
+		var ent = {
+			id: selection,
+			posX:x,
+			posY:y
+			}			
+	    //check to see if tile position is already in existance
+    for ( i = 0; i < map.entities.length; i++) {
+	
+        if (map.entities[i].posX == x && map.entities[i].posY == y){
+			
+			taken = true;
+			break;
+			} 
 		}
+		if(taken){
+			console.log("Overwriting position...");
+			map.entities.splice(i,1)
+			map.entities.push(ent);
+
+			
+            
+        }
+		else{
+				map.entities.push(ent);
+				console.log("pushing");
+				
+			}
+		
 	
+	}
+	function placeContent(){
 	
+	var taken = false;
+	var i;
+		var cont = {
+			id: selection,
+			posX:x,
+			posY:y
+			}			
+	    //check to see if tile position is already in existance
+    for ( i = 0; i < map.content.length; i++) {
+	
+        if (map.content[i].posX == x && map.content[i].posY == y){
+			
+			taken = true;
+			break;
+			} 
+		}
+		if(taken){
+			console.log("Overwriting position...");
+			map.content.splice(i,1)
+			map.content.push(cont);
+
+			
+            
+        }
+		else{
+				map.content.push(cont);
+				console.log("pushing");
+				
+			}
+		
+	
+	}
 	console.log(map);
 	
 	
    // context.drawImage(selection, x, y);
 };
+
+
     </script>
     </body>
     </html>

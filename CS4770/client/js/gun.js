@@ -86,23 +86,27 @@ function loadWeapons(file) {
                 bullets.push(new Grenade(grenade.angle, grenade.alive, options, grenade.id, w.factor));
             }
         }
+        var options = {};
+        options.name = w.name;
+        options.damage = w.damage;
+        options.speed = w.speed;
+        options.cooldown = w.cooldown;
+        options.animations = animations;
+        options.barrel = barrel;
+        options.bullets = bullets;
+        options.impact = w.impact;
+        options.price = w.price;
 
-        weapons.set(w.id, new Weapon(w.damage, w.speed, w.cooldown, animations, barrel, bullets, w.impact));
+        weapons.set(w.id, new Weapon(options));
     }
 }
 
 class Weapon {
-    constructor(damage, speed, cooldown, animation, barrel, bullets, impact) {
+    constructor(options) {
         this.tick = 0;
-
-        this.damage = damage;
-        this.speed = speed;
-        this.cooldown = cooldown;
-        
-        this.bullets = bullets;
-        this.animation = animation;
-        this.barrel = barrel;
-        this.impact = impact;
+        for (var obj of Object.keys(options)) {
+            this[obj] = options[obj];
+        }
 
     }
 
