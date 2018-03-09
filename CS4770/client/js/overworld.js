@@ -89,17 +89,17 @@
             return path.startPointer;
         }
     }
-                /**
-        directions:
-        0: standing still facing down
-        1: standing still facing left
-        2: standing still facing up
-        3: standing still facing right
-        4: moving down
-        5: moving left
-        7: moving up
-        6: moving right
-        **/
+    /**
+directions:
+0: standing still facing down
+1: standing still facing left
+2: standing still facing up
+3: standing still facing right
+4: moving down
+5: moving left
+7: moving up
+6: moving right
+**/
     //calculates the direction the player is traveling to
     calcDirection(startX, startY, p) {
         if (p == -1) {
@@ -156,10 +156,9 @@
                     break;
                 case "action":
                     var portal = this.world.onPortal(this.getX(), this.getY())
-                    console.log(portal);
                     if (portal != null) {
                         //load into level
-                        this.world.toMap(portal.mapName);
+                        this.world.handlePortal(portal);
                     }
                     break;
             }
@@ -168,25 +167,22 @@
 }
 
 class OverWorld {
-    constructor(player, file, playerx, playery) {
+    constructor(player, file) {
         this.user = JSON.parse(player);
         this.file = file;
         this.onOverworld = true;
         this.paths = [];
-        this.width = 720;
-        this.height = 500;
+        this.width = container.clientWidth;
+        this.height = container.clientHeight - 100;
         this.loadOverWorld(file);
 
-        if (playerx != undefined) {
-            this.playerx = playerx;
-            this.playery = playery;
-        }
-        
     }
 
     makeCanvas() {
 
         canvas = create("canvas", "fg", 0, 0, this.width, this.height);
+
+
     }
     //loads the overworld
     loadOverWorld(file) {
@@ -199,6 +195,8 @@ class OverWorld {
             this.img = new Image();
             this.img.src = any.src;
             this.portals = any.portals;
+
+            console.log(this.portals);
             this.paths[-1] = { id: -1, startX: 0, startY: 0, endX: 0, endY: 0 };
             for (var paths of any.paths) {
                 this.paths[paths.id] = paths;
@@ -208,7 +206,7 @@ class OverWorld {
             this.startY = any.startY;
         }
     }
-//loads the player
+    //loads the player
     loadPlayer(file) {
         for (var ani of JSON.parse(file)) {
             if (ani.id == this.user.currentCharacter) {
@@ -217,11 +215,7 @@ class OverWorld {
                 options.src = ani.src;
                 this.player = new OverWorldPlayer(options);
                 loaded = true;
-                if (this.playerx == undefined) {
-                    this.getPlayer().spawn(this.startX, this.startY);
-                } else {
-                    this.getPlayer().spawn(this.playerx, this.playery);
-                }
+                this.getPlayer().spawn(this.startX, this.startY);
                 break;
             }
         }
@@ -245,11 +239,11 @@ class OverWorld {
         }
     }
     check() {
-        if (this.width != 720) {
-            this.width = 720;
+        if (this.width != container.clientWidth) {
+            this.width = container.clientWidth;
         }
-        if (this.height != 500) {
-            this.height = 500;
+        if (this.height != container.clientHeight) {
+            this.height = container.clientHeight;
         }
     }
     //check if the player is on a portal to a level or shop
@@ -265,25 +259,25 @@ class OverWorld {
     onPath(x, y, d) {
         for (var path of this.paths) {
             if ((x == path.startX || x == path.endX) && (y == path.startY || y == path.endY)) {
-                var delta = this.getDelta(d,path);
-                if ((x + delta[0] == path.startX || x + delta[0] == path.endX) && (y + delta[1] == path.startY || y + delta[1] == path.endY) ) {
+                var delta = this.getDelta(d, path);
+                if ((x + delta[0] == path.startX || x + delta[0] == path.endX) && (y + delta[1] == path.startY || y + delta[1] == path.endY)) {
                     return path;
                 }
             }
         }
         return -1;
     }
-            /**
-        directions:
-        0: standing still facing down
-        1: standing still facing left
-        2: standing still facing up
-        3: standing still facing right
-        4: moving down
-        5: moving left
-        7: moving up
-        6: moving right
-        **/
+    /**
+directions:
+0: standing still facing down
+1: standing still facing left
+2: standing still facing up
+3: standing still facing right
+4: moving down
+5: moving left
+7: moving up
+6: moving right
+**/
     //gets the difference  between start and end of a path
     getDelta(d, path) {
         //change this with the path...
@@ -304,13 +298,13 @@ class OverWorld {
     getChange(d) {
         switch (d) {
             case 6:
-                return [ 1, 0];
+                return [1, 0];
             case 5:
                 return [- 1, 0];
             case 4:
                 return [0, + 1];
             case 7:
-                return [0,  - 1];
+                return [0, - 1];
             default:
                 return [0, 0];
         }
@@ -319,8 +313,7 @@ class OverWorld {
     toMap(name) {
         //loading the map the player chose
         this.onOverworld = false;
-        this.playerx = this.getPlayer().getX();
-        this.playery = this.getPlayer().getY();
+        loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
         loadMap(name, JSON.stringify(this.user), function (m) {
@@ -332,17 +325,33 @@ class OverWorld {
     }
 
     //going back to the overworld
-    toOverWorld(player) {
+    toOverWorld() {
         this.makeCanvas();
         this.onOverworld = true;
+    }
+
+    handlePortal(portal) {
+        switch (portal.type) {
+            case "level":
+                this.toMap(portal.mapName);
+                break;
+            case "store":
+                this.onOverworld = false;
+                shop.inShop = true;
+                break;
+        }
+    }
+    //handles the going to shop
+    toShop() {
+
     }
 }
 
 
-function loadOverworld(player, callback, playerx, playery) {
+function loadOverworld(player, callback) {
     loadJSONFile(function (response) {
         try {
-            overWorld = new OverWorld(player, response, playerx, playery);
+            overWorld = new OverWorld(player, response);
             getOverWorld(overWorld);
             callback(overWorld);
         } catch (err) {

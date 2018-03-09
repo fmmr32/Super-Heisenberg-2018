@@ -30,8 +30,7 @@
 <script type="text/javascript" src="js/sprite.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/overworld.js"></script>
-
-
+<script type="text/javascript" src="js/shop.js"></script>
 
 
 
@@ -194,7 +193,7 @@
     }
 
 
-    function loadNeeded() {
+    function loadNeeded(player) {
         for (var x of neededFiles) {
             var resource = "/client/resources/";
             if (x == "config.json") {
@@ -206,6 +205,7 @@
             } else if (x == "weapons.json") {
                 loadJSONFile(function (response) {
                     loadWeapons(response);
+                    shop = loadShop(player)
                 }, resource + x);
             }
             else {
@@ -222,8 +222,9 @@
         signDiv.style.display = 'none';
         gameDiv.style.display = '';
         if (!reload) {
-            loadNeeded();
+            loadNeeded(player);
         }
+
         //loading the needed files
         loadDialog(player);
 
@@ -235,9 +236,12 @@
             }
                 , "/client/resources/overWorldCharacters.json");
         });
+
+       ;
+
     }
 
-
+    var shop;
 
     var interval = setInterval(update, 1000 / 60);
     var popUps = [];
@@ -245,7 +249,9 @@
     function update() {
         if (loaded) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-            if (overWorld.onOverworld) {
+            if (shop.inShop) {
+                shop.openShop();
+            } else if (overWorld.onOverworld) {
                 overWorld.doTick();
             } else if (!map.doingDialog) {
                 map.doTick();
@@ -264,7 +270,9 @@
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && loaded) {
-            if (overWorld.onOverworld) {
+            if (shop.inShop) {
+                shop.navigate(conf[charCode]);
+            } else if (overWorld.onOverworld) {
                 overWorld.getPlayer().doMove(conf[charCode]);
             } else if (!map.doingDialog) {
                 map.getPlayer().doMove(conf[charCode], true);

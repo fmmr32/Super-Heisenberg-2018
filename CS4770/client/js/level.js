@@ -419,7 +419,7 @@ class Level {
         while (container.children.length != 0) {
             container.children[0].remove();
         }
-        overWorld.toOverWorld(JSON.stringify(this.user));
+        overWorld.toOverWorld();
     }
 }
 
