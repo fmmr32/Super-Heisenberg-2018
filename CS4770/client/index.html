@@ -14,6 +14,8 @@
         <button id="playStoryMode">Story Mode</button>
         <button id="loadLevelsList">User Created Levels</button>
         <button id="changeSettings">Settings</button>
+        
+        <button id="testdatabase">test database</button>
     </div>
     <div id="levelsList"></div>
 
@@ -31,6 +33,7 @@
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/overworld.js"></script>
 <script type="text/javascript" src="js/shop.js"></script>
+<script type="text/javascript" src="js/database.js"></script>
 
 
 
@@ -55,6 +58,9 @@
     var settings = document.getElementById('changeSettings');
 
     var offLinePlay = document.getElementById("skipSign");
+
+    //Test database button
+    var testDatabase = document.getElementById("testdatabase");
 
 
     signDivSignIn.onclick = function () {
@@ -83,12 +89,25 @@
         loadLevelsListFunct();
     }
 
+    //Test database
+    testDatabase.onclick = function () {
+        testDatabaseFunct();
+    }
+
 
 
     //game
 
     var canvas;
     var container = document.getElementById("gameDiv");
+
+    testDatabaseFunct = function () {
+        console.log("test database: before loadDB");
+        loadDB('player', function (data) {
+            console.log("test database");
+            console.log(data.playerName);
+        });
+    }
 
 
     function create(type, id, left, top, width, height) {
@@ -144,7 +163,6 @@
 
 
     var map;
-    var overWorld;
     //achievement array
     var ach = [];
 
@@ -160,10 +178,6 @@
         //get something for load
         loadAchievements();
     };
-
-    function getOverWorld(newMap) {
-        overWorld = newMap;
-    }
 
     function loadAchievements() {
         loadJSONFile(function (response) {
@@ -216,7 +230,7 @@
         }
     }
 
-    var diag = [];
+
     function loadGame(reload, player) {
         //setting the divs correctly
         signDiv.style.display = 'none';
@@ -226,15 +240,15 @@
         }
 
         //loading the needed files
-        loadDialog(player);
 
 
-        ////loading the test map
-        loadOverworld(player, function (m) {
+        //loading the test map
+        loadMap("map1", player, function (m) {
+
             loadJSONFile(function (response) {
-                m.loadPlayer(response);
+                m.loadCharacter(response);
             }
-                , "/client/resources/overWorldCharacters.json");
+                , "/client/resources/characters.json");
         });
 
        ;
@@ -289,7 +303,7 @@
     document.onkeyup = function (e) {
         e = e || window.event
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-        if (charCode && loaded && map != undefined) {
+        if (charCode && loaded) {
             map.getPlayer().doMove(conf[charCode], false);
         }
     };
@@ -328,7 +342,7 @@
     }
 
 
-    window.onload = loadCurretUser();
+    //window.onload = loadCurretUser();
 
 </script>
 <body>

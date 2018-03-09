@@ -1,5 +1,5 @@
 ﻿var mongojs = require('mongojs');
-var db = mongojs('localhost:27017/CS4770GAME',['account','progress','player','levels','entity','character','weapons','tiles','achievements']);
+var db = mongojs('localhost:27017/CS4770GAME', ['account', 'player','progress','levels','entity','character','weapons','tiles','achievements']);
 
 
 
@@ -79,6 +79,12 @@ var loadLevelsList = function (callback) {
     });
 }
 
+var loadplayer = function (callback) {
+    db.player.find({}, function (err, result) {
+        callback(result);
+    });
+}
+
 /*_____________________________ Write Game Thingies _____________________________*/
 
 var writeLevel = function (data) {
@@ -93,25 +99,30 @@ io.sockets.on('connection', function (socket) {
     console.log('socket connection');
 
     socket.on('loadDB', function (data) {
-        console.log(data.collection);
         if (data.collectionName == 'level') {
             loadLevel(data.id, function (result) {
                 socket.emit('level', result)
             });
         }
-        else if (data.collectionName == "weapon") {
+        else if (data.collection == "weapon") {
             loadWeapons(data, function (result) {
                 socket.emit('weapons', result);
             });
         }
-        else if (data.collectionName == "character") {
+        else if (data.collection == "character") {
             loadCharacter(data, function (result) {
                 socket.emit('character', result);
             });
         }
-        else if (data.collectionName == "levelsList") {
+        else if (data.collection == "levelsList") {
             loadLevelsList(function (result) {
                 socket.emit('levelList', result);
+            });
+        }
+        else if (data.collection == "player") {
+            console.log("inside else if");
+            loadplayer(function (result) {
+                socket.emit('player', result);
             });
         }
     });

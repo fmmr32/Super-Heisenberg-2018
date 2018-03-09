@@ -1,4 +1,6 @@
-﻿<html>
+﻿<script type="text/javascript" src="js/database.js"></script>
+
+<html>
     <head>
 
     </head>
