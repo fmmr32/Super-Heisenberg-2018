@@ -228,7 +228,7 @@ function placeTile()
 	
 	}
 	
-	if(elem === "Entity"){
+	if(elem === "Entities"){
 	
 	placeEntity();
 	
@@ -244,34 +244,74 @@ function placeTile()
 	
 	
 	function placeCreature(){
-		var creaure= {
 			
+	var taken = false;
+	var i;
+		var creat = {
 			id: selection,
 			posX:x,
 			posY:y,
-			moveset:move
+			moveset: move
+			}			
+	    //check to see if tile position is already in existance
+    for ( i = 0; i < map.creatures.length; i++) {
 	
-		}	
+        if (map.creatures[i].posX == x && map.creatures[i].posY == y){
+			
+			taken = true;
+			break;
+			} 
+		}
+		if(taken){
+			console.log("Overwriting position...");
+			map.creatures.splice(i,1)
+			map.creatures.push(creat);
+
+			
+            
+        }
+		else{
+				map.creatures.push(creat);
+				console.log("pushing");
+				
+			}
 		
 	
-	
-	
-	
 	}
+	
+	
 	function placeEntity(){
-		var ent= {
 			
+	var taken = false;
+	var i;
+		var ent = {
 			id: selection,
 			posX:x,
 			posY:y
+			}			
+	    //check to see if tile position is already in existance
+    for ( i = 0; i < map.entities.length; i++) {
+	
+        if (map.entities[i].posX == x && map.entities[i].posY == y){
 			
+			taken = true;
+			break;
+			} 
+		}
+		if(taken){
+			console.log("Overwriting position...");
+			map.entities.splice(i,1)
+			map.entities.push(ent);
 
-		}	
+			
+            
+        }
+		else{
+				map.entities.push(ent);
+				console.log("pushing");
+				
+			}
 		
-		map.entity.push(ent);
-	
-	
-	
 	
 	}
 	function placeContent(){
