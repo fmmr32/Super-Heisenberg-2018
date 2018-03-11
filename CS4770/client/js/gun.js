@@ -19,7 +19,7 @@ function loadWeapon(list,user, weaponMod) {
     return temp;
 }
 
-function deepCopy(c,user) {
+function deepCopy(c, user) {
     if (c instanceof Weapon) {
         var animation = [deepCopy(c.animation[0]), deepCopy(c.animation[1])];
         return new Weapon(c.damage, c.speed, c.cooldown, animation, c.barrel, c.bullets);

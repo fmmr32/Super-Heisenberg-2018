@@ -65,7 +65,7 @@ class Shop {
 
         this.items = items;
 
-        this.player = JSON.parse(player);
+        this.player = player;
         this.img = new Image();
         this.img.src = "../resources/TextBox.png";
 

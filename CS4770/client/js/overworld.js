@@ -168,7 +168,7 @@ directions:
 
 class OverWorld {
     constructor(player, file) {
-        this.user = JSON.parse(player);
+        this.user = player;
         this.file = file;
         this.onOverworld = true;
         this.paths = [];
@@ -209,7 +209,7 @@ class OverWorld {
     //loads the player
     loadPlayer(file) {
         for (var ani of JSON.parse(file)) {
-            if (ani.id == this.user.currentCharacter) {
+            if (ani.id ==this.user.currentCharacter) {
                 var options = ani;
                 options.world = this;
                 options.src = ani.src;
@@ -316,7 +316,7 @@ directions:
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
-        loadMap(name, JSON.stringify(this.user), function (m) {
+        loadMap(name, this.user, function (m) {
             loadJSONFile(function (response) {
                 m.loadCharacter(response);
             }

@@ -169,7 +169,7 @@
     //needs to be fetched from the db and put into a json like file
     function loadCurretUser() {
         loadJSONFile(function (response) {
-            loadGame(false, response);
+            loadGame(false, JSON.parse(response));
         }, "/client/resources/player.json")
     }
 
@@ -342,7 +342,7 @@
     }
 
 
-    //window.onload = loadCurretUser();
+    window.onload = loadCurretUser();
 
 </script>
 <body>

@@ -29,7 +29,7 @@ class Block {
 class Level {
     constructor(player, file) {
 
-        this.user = JSON.parse(player);
+        this.user = player;
         this.file = file;
         this.tiles = [[], []];
         this.entities = [];
