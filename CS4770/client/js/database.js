@@ -1,8 +1,8 @@
 ﻿//This loads things from the database
-var loadDB = function (type, callback) {
+var loadDB = function (name, callback) {
     console.log("inside loadDB");
     socket.emit('loadDB', {
-        collection: type
+        collection: name
     });
 
     socket.on(type, function (data) {
@@ -12,9 +12,9 @@ var loadDB = function (type, callback) {
     });
 }
 
-var writeDB = function (type, object) {
-    socket.emit('type', {
-        type: name,
+var writeDB = function (name, object) {
+    socket.emit('writeDB', {
+        collection: name,
         data: object
     });
 }

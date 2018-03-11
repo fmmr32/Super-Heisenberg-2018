@@ -55,40 +55,18 @@ var addUser = function(data,callback){
 
 /*__________________________________________Load game thingies_________________________________*/
 
-var loadLevel = function (data, callback) {
-    db.levels.find({ id: data.id }, function (err, result) {
-        callback(result);
-    });
-};
-
-var loadWeapons = function (data, callback) {
-    db.weapons.find({}, function (err, result) {
-        callback(result);
-    });
-};
-
-var loadCharacter = function (data, callback) {
-    db.character.find({}, function (err, result) {
-        callback(result);
-    });
-}
-
-var loadLevelsList = function (callback) {
-    db.levels.find({}, {name: 1, author: 1, date: 1}, function (err, result) {
-        callback(result);
-    });
-}
-
-var loadplayer = function (callback) {
-    db.player.find({}, function (err, result) {
+var loadDB = function (collection, callback) {
+    db.collection(collection).find({}, function (err, result) {
         callback(result);
     });
 }
 
 /*_____________________________ Write Game Thingies _____________________________*/
 
-var writeLevel = function (data) {
-    db.levels.update({ id: data.data.id }, { data });
+
+var writeDB = function (data) {
+	console.log(data);
+    db.collection(data.collection).insert(data.object);
 }
 
 /*_______________________________________________________________________________*/
@@ -99,38 +77,14 @@ io.sockets.on('connection', function (socket) {
     console.log('socket connection');
 
     socket.on('loadDB', function (data) {
-        if (data.collectionName == 'level') {
-            loadLevel(data.id, function (result) {
-                socket.emit('level', result)
-            });
-        }
-        else if (data.collection == "weapon") {
-            loadWeapons(data, function (result) {
-                socket.emit('weapons', result);
-            });
-        }
-        else if (data.collection == "character") {
-            loadCharacter(data, function (result) {
-                socket.emit('character', result);
-            });
-        }
-        else if (data.collection == "levelsList") {
-            loadLevelsList(function (result) {
-                socket.emit('levelList', result);
-            });
-        }
-        else if (data.collection == "player") {
-            console.log("inside else if");
-            loadplayer(function (result) {
-                socket.emit('player', result);
-            });
-        }
+		loadDB(data.collection, function (result) {
+			socket.emit(data.collection, result)
+		}
     });
 
     socket.on('writeDB', function (data) {
-        if (data.type == 'level') {
-            writeLevel(data);
-        }
+		console.log("inside writeDB");
+        writeDB(data);
     });
 
 
