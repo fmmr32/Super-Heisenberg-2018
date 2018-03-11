@@ -276,8 +276,11 @@
             }
         }
     }
+    function getOverWorld(newMap) {
+                overWorld = newMap;
+            }
 
-
+    var diag = [];
     function loadGame(reload, player) {
         //setting the divs correctly
         signDiv.style.display = 'none';
@@ -287,15 +290,15 @@
         }
 
         //loading the needed files
-
+        loadDialog(player);
 
         //loading the test map
-        loadMap("map1", player, function (m) {
+        loadOverworld(player, function (m) {
 
             loadJSONFile(function (response) {
-                m.loadCharacter(response);
+                m.loadPlayer(response);
             }
-                , "/client/resources/characters.json");
+                , "/client/resources/overWorldCharacters.json");
         });
 
        ;
@@ -303,7 +306,7 @@
     }
 
     var shop;
-
+    var overWorld;
     var interval = setInterval(update, 1000 / 60);
     var popUps = [];
 
@@ -350,7 +353,7 @@
     document.onkeyup = function (e) {
         e = e || window.event
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-        if (charCode && loaded) {
+        if (charCode && loaded && map != undefined) {
             map.getPlayer().doMove(conf[charCode], false);
         }
     };

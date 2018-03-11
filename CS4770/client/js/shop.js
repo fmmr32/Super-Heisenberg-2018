@@ -201,7 +201,6 @@ class Shop {
 
 function loadShop(player){
     var items = [];
-    while (items.length < 12) {
         for (var weapon of weapons.keys()) {
             var w = weapons.get(weapon);
             var options = {};
@@ -212,7 +211,6 @@ function loadShop(player){
             options.id = weapon;
 
             items.push(new Item(options));
-        }
     }
     var shop = new Shop(items, player);
     return shop

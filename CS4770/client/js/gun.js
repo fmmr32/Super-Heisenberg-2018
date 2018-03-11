@@ -21,8 +21,8 @@ function loadWeapon(list,user, weaponMod) {
 
 function deepCopy(c, user) {
     if (c instanceof Weapon) {
-        var animation = [deepCopy(c.animation[0]), deepCopy(c.animation[1])];
-        return new Weapon(c.damage, c.speed, c.cooldown, animation, c.barrel, c.bullets);
+        var animation = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
+        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets });
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
@@ -107,7 +107,6 @@ class Weapon {
         for (var obj of Object.keys(options)) {
             this[obj] = options[obj];
         }
-
     }
 
 
@@ -117,9 +116,9 @@ class Weapon {
         if (this.tick === 0) {
 
             if (character.getLastOffSet() < 0) {
-                this.animation[0].animating = true;
+                this.animations[0].animating = true;
             } else {
-                this.animation[1].animating = true;
+                this.animations[1].animating = true;
             }
 
             for (var bullet of this.bullets) {
@@ -163,7 +162,7 @@ class Weapon {
     }
     //clean this up
     drawGun(X, Y, flipped) {
-        this.animation[flipped].doAnimation(X, Y);
+        this.animations[flipped].doAnimation(X, Y);
     }
 
     lowerCD() {

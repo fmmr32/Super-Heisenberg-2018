@@ -37,6 +37,8 @@ class Level {
         this.popUps = [];
 
         this.loadLevel(file);
+
+        console.log(this);
     }
 
 
@@ -89,11 +91,13 @@ class Level {
                 options2.killcount = this.user.killcount;
                 options2.timeplayed = this.user.timeplayed;
                 options2.artifacts = this.user.artifacts;
+                options2.achievements = this.user.achievements;
 
                 this.entities.push(new Player(options2));
                 this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
                 this.player = response;
                 this.time = performance.now();
+                loaded = true;
                 break;
             }
         }
@@ -154,9 +158,6 @@ class Level {
 
         //loading the creatures
         this.loadCreature(any.creatures);
-
-
-
     }
     //takes in an arracy of basic interact values
     loadInteracts(interacts) {
@@ -398,8 +399,11 @@ class Level {
 
     exitMap(loot, completed) {
         var money = this.getPlayer().getMoney();
+        this.user.money += money;
         var kills = this.getPlayer().killcount;
+        this.user.killcount += kills;
         var timeplayed = this.getPlayer().timeplayed;
+        this.user.achievements = this.getPlayer().achievements;
         if (completed) {
             //add more...
             if (this.endDialog != -1) {

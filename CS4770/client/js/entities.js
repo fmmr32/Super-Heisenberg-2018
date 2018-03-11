@@ -846,7 +846,7 @@ class Player extends EntityCreature {
     constructor(options) {
         super(options);
         this.respawn = true;
-        this.achievements = [];
+        this.achievements = options.achievements;
         this.money = options.money;
         this.artifacts = options.artifacts;
         this.timeplayed = options.timeplayed;

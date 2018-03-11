@@ -79,7 +79,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('loadDB', function (data) {
 		loadDB(data.collection, function (result) {
 			socket.emit(data.collection, result)
-		}
+		})
     });
 
     socket.on('writeDB', function (data) {

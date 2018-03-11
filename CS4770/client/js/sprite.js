@@ -124,6 +124,4 @@ function changeCanvas(canvas) {
     sprites.forEach(function (key) {
         key.setCanvas(canvas);
     });
- 
-    loaded = true;
 }

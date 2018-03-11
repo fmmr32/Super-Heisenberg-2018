@@ -253,7 +253,6 @@ function loadDialog(player) {
 
             diag[any.id] = new Dialog(any.id, any.text, temp.size, imgBar, imgMain, imgSecond, player);
         }
-        loaded = true;
     }, "/client/resources/dialogs.json");
 }
 
