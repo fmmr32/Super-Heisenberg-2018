@@ -16,4 +16,7 @@
 /CS4770/4770 RGF.docx
 /docs/
 /.vs
-
+/CS4770/data/mongod.lock
+/CS4770/data/WiredTiger.lock
+/CS4770/data/WiredTiger.turtle
+/CS4770/data/WiredTiger.wt
