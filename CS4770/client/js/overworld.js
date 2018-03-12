@@ -181,11 +181,9 @@ class OverWorld {
     }
 
     makeCanvas() {
-
         canvas = create("canvas", "fg", 0, 0, this.width, this.height);
-
-
     }
+
     //loads the overworld
     loadOverWorld(file) {
         this.makeCanvas();
@@ -350,6 +348,10 @@ directions:
     toShop() {
         this.onOverworld = false;
         this.inShop = true;
+    }
+
+    loadCharacterSelect(overWorld, characters, player) {
+        this.characters = new CharacterSelect(overWorld, characters , player);
     }
 }
 

@@ -301,17 +301,20 @@ class Shop {
                     if (!this.canBuy(weapons.get(this.items[this.selected + this.offSet].id).price)) {
                         return;
                     } else {
+                        //buys the weapon for the player
                         if (!this.itemSelected) {
                             this.player.money -= weapons.get(this.items[this.selected + this.offSet].id).price;
                             this.player.weapons.push({ id: this.items[this.selected + this.offSet].id, damageMult: 1, speedMult: 1, impact: weapons.get(this.items[this.selected + this.offSet].id).impact });
                         } 
                     }
+                    //handles the item upgrades
                 } else if (this.itemSelected){
                     this.items[this.selected + this.offSet].handlePurchase(this.player);
                 }
                 this.itemSelected = true;
                 break;
             case "left":
+                //going back a menu
                 if (this.itemSelected) {
                     if (this.items[this.selected + this.offSet].impactSelected) {
                         this.items[this.selected + this.offSet].impactSelected = false;
@@ -347,4 +350,12 @@ function loadShop(player){
     }
     var shop = new Shop(items, player);
     return shop
+}
+
+class CharacterSelect {
+    constructor(overWorld, characters, player) {
+        this.player = player;
+        this.overWorldCharacter = overWorld;
+        this.otherCharacter = characters;
+    }
 }
