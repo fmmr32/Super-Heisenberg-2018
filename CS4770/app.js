@@ -61,12 +61,17 @@ var loadDB = function (collection, callback) {
     });
 }
 
+var loadDB = function (collection, id_object, callback) {
+    db.collection(collection).find({_id:id_object}, function (err, result) {
+        callback(result);
+    });
+}
+
 /*_____________________________ Write Game Thingies _____________________________*/
 
 
 var writeDB = function (data) {
-	console.log(data);
-    db.collection(data.collection).insert(data.object);
+    db.collection(data.collection).insert(data.data);
 }
 
 /*_______________________________________________________________________________*/
@@ -80,6 +85,12 @@ io.sockets.on('connection', function (socket) {
 		loadDB(data.collection, function (result) {
 			socket.emit(data.collection, result)
 		})
+    });
+
+    socket.on('loadDBbasedID', function (data) {
+        loadDB(data.collection, data.id, function (result) {
+            socket.emit(data.collection, result)
+        })
     });
 
     socket.on('writeDB', function (data) {
