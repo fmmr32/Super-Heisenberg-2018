@@ -297,6 +297,7 @@
 
             loadJSONFile(function (response) {
                 m.loadPlayer(response);
+                m.shop = loadShop(player)
             }
                 , "/client/resources/overWorldCharacters.json");
         });
@@ -305,16 +306,14 @@
 
     }
 
-    var shop;
     var overWorld;
     var interval = setInterval(update, 1000 / 60);
-    var popUps = [];
 
     function update() {
         if (loaded) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-            if (shop.inShop) {
-                shop.openShop();
+            if (overWorld.inShop) {
+                overWorld.shop.openShop();
             } else if (overWorld.onOverworld) {
                 overWorld.doTick();
             } else if (!map.doingDialog) {
@@ -334,8 +333,8 @@
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && loaded) {
-            if (shop.inShop) {
-                shop.navigate(conf[charCode]);
+            if (overWorld.inShop) {
+                overWorld.shop.navigate(conf[charCode]);
             } else if (overWorld.onOverworld) {
                 overWorld.getPlayer().doMove(conf[charCode]);
             } else if (!map.doingDialog) {

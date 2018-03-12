@@ -1,44 +1,135 @@
 ﻿class Item {
-    constructor(options) {
+    constructor(options, player) {
         for (var obj of Object.keys(options)) {
             this[obj] = options[obj];
         }
         this.width = 0;
         this.selected = 1;
+        this.impactSelected = false;
+        this.impactSelect = 0;
+        this.impacts = [];
+
+        for (var impacts of weapons.get(this.id).impactUpgrades) {
+            if (this.getWeapon(this.id, player) != null && this.getWeapon(this.id, player).availableImpact.indexOf(impacts) == -1) {
+                this.impacts.push(impacts);
+            }
+        }
+
+        this.ignored = ["width", "selected", "ignored", "impacts","id", "impactSelect", "impactSelected"];
     }
     //gui stuff for the item store
     drawItem(ctx, img, width, height, player) {
+        if (this.impactSelected) {
+            this.drawImpacts(ctx, img, width, height, player);
+        } else {
+            this.drawMain(ctx, img, width, height, player);
+        }
+    }
+    //draws the different kinds of impacts
+    drawImpacts(ctx, img, width, height, player) {
+        for (var impacts of this.impacts) {
+                this.width = Math.max(this.width, ctx.measureText(impacts).width + 10);
+        }
+        var offSet = 0;
+        for (var impacts of this.impacts) {
+                ctx.drawImage(img, 0, 0, img.width, img.height, width * 2, offSet * height, this.width, height);
+                var text = impacts;
+                ctx.fillText(text, width * 2 + (this.width - ctx.measureText(text).width) / 2, ((offSet) * height + height / 2));
+                offSet++;
+        }
+
+        ctx.fillText(this.getImpactMessage(this.impacts[this.impactSelect]) + ". ", 20, container.clientHeight / 2 + 150);
         
+        ctx.fillText(this.getMessage(this.getImpactValue(this.impacts[this.impactSelect]), player, true, this.impacts[this.impactSelect]), 20, container.clientHeight / 2 + 200);
+        ctx.fillText("<-", width * 2 + this.width + 5, ((this.impactSelect) * height + height / 2));
+    }
+
+    //change this later
+    getImpactMessage(impact) {
+        switch (impact) {
+            case "die":
+                return "your bullet will go away and do nothing upon hitting a block";
+            case "ricochet":
+                return "your bullet will try to ricochet when hitting a block";
+            case "explode":
+                return "your bullet will explode upon impact";
+        }
+    }
+
+    //change this later
+    getImpactValue(impact) {
+        switch (impact) {
+            case "die":
+                return 0;
+            case "ricochet":
+                return 200;
+            case "explode":
+                return 150;
+        }
+    }
+    getWeapon(id, player) {
+        for (var weapon of player.weapons) {
+            if (weapon.id == id) {
+                return weapon;
+            }
+        }
+        return null;
+    }
+    //draws the main item upgrade selection
+    drawMain(ctx, img, width, height, player) {
         for (var obj of Object.keys(this)) {
-            this.width = Math.max(this.width, canvas.getContext("2d").measureText(obj + ": " + this[obj]).width + 10);
+            this.width = Math.max(this.width, ctx.measureText(obj + ": " + this[obj]).width + 10);
         }
 
 
         var offSet = 0;
         for (var obj in this) {
-            if (obj != "selected" && obj != "width" && obj != "id") {
+            if (this.ignored.indexOf(obj) == -1) {
                 ctx.drawImage(img, 0, 0, img.width, img.height, width * 2, offSet * height, this.width, height);
-                var text = obj + ": " + this[obj];
+                var text = obj + ": ";
+                //correct value selection
+                if (obj == "damage") {
+                    text += (this[obj] * this.getWeapon(this.id, player).damageMult).toFixed(2);
+                } else if (obj == "speed") {
+                    text += (this[obj] * this.getWeapon(this.id, player).speedMult).toFixed(2);
+                } else {
+                    text += this[obj];
+                }
+                if (obj == "impact") { text = obj };
                 ctx.fillText(text, width * 2 + (this.width - ctx.measureText(text).width) / 2, ((offSet) * height + height / 2));
-                ctx.fillText("<-", width * 2 + this.width + 5, ((this.selected) * height + height / 2));
+                
                 offSet++;
             }
         }
-        ctx.fillText("Your " + Object.keys(this)[this.selected] + " is: " + this[Object.keys(this)[this.selected]], 20, container.clientHeight / 2 + 150);
+        ctx.fillText("<-", width * 2 + this.width + 5, ((this.selected) * height + height / 2));
         if (Object.keys(this)[this.selected] != "impact") {
-            var value = this[Object.keys(this)[this.selected]]
+            var value = this[Object.keys(this)[this.selected]] * (Object.keys(this)[this.selected] == "damage" ? this.getWeapon(this.id, player).damageMult : this.getWeapon(this.id, player).speedMult);
+            ctx.fillText("Your " + Object.keys(this)[this.selected] + " is: " + value.toFixed(2), 20, container.clientHeight / 2 + 150);
             ctx.fillText(this.getMessage(value, player), 20, container.clientHeight / 2 + 200);
+        } else {
+            ctx.fillText("For available impact upgrades press next.", 20, container.clientHeight / 2 + 150);
         }
 
     }
-    getMessage(value, player) {
-            if (this.canBuy(value*1.2*3, player)) {
-                return "You can upgrade this to " + value * 1.2 + " for " + value * 1.2 * 3 + " bitcoins";
+    //temp get message.. try and change 
+    getMessage(value, player, impact, type) {
+        if (!impact) {
+            console.log(value);
+            if (this.canBuy(Math.ceil(value * 1.2 * 3), player)) {
+                return "You can upgrade this to " + (value * 1.2).toFixed(2) + " for " + Math.ceil(value * 1.2 * 3) + " bitcoins";
             } else {
-                return "It seems you don't have enough to upgrade this, this upgrade costs " + value * 1.2*3 + " bitcoins.";
+                return "It seems you don't have enough to upgrade this, this upgrade costs " + Math.ceil(value * 1.2 * 3) + " bitcoins.";
             }
+        } else {
+            if (this.canBuy(Math.ceil(value * 1.2 * 3), player)) {
+                return "You can upgrade this to " + type + " for " + Math.ceil(value * 1.2 * 3) + " bitcoins";
+            } else {
+                return "It seems you don't have enough to upgrade this, this upgrade costs " + Math.ceil(value * 1.2 * 3) + " bitcoins.";
+            }
+        }
     }
 
+    //checks if a player can buy this..
     canBuy(value, player) {
         if (player.money >= value) {
             return true;
@@ -47,12 +138,47 @@
         }
     }
 
-
+    //sets the right selected item
     setSelectItem(d) {
-            if (this.selected + d >= Object.keys(this).length-3 || this.selected + d < 1) {
+        if (!this.impactSelected) {
+            if (this.selected + d >= Object.keys(this).length - (this.ignored.length) || this.selected + d < 1) {
                 return false;
             }
             this.selected += d;
+        } else {
+            if (this.impactSelect + d >= Object.keys(this.impacts).length || this.impactSelect + d < 0) {
+                return false;
+            }
+            this.impactSelect += d;
+        }
+    }
+
+    //handles weapon upgrade purchases
+    handlePurchase(player) {
+        if (Object.keys(this)[this.selected] == "impact") {
+            if (!this.impactSelected) {
+                this.impactSelected = true;
+            } else {
+                var o = 0;
+                var i = this.impacts[this.impactSelect];
+           
+                var value = this.getImpactValue(i);
+                this.impacts.splice(this.impacts.indexOf(i), 1);
+                this.getWeapon(this.id, player).availableImpact.push(i);
+            }
+        } else {
+            var value = Math.ceil(this[Object.keys(this)[this.selected]] * 1.2 * 3);
+            if (this.canBuy(value, player)) {
+                player.money -= value;
+                if (Object.keys(this)[this.selected] == "damage") {
+                    this.getWeapon(this.id, player).damageMult = (this.getWeapon(this.id, player).damageMult* 1.2).toFixed(2);
+                } else {
+                    this.getWeapon(this.id, player).speedMult = (this.getWeapon(this.id, player).speedMult * 1.2).toFixed(2);
+                }
+
+                
+            }
+        }
     }
 }
 
@@ -71,7 +197,6 @@ class Shop {
 
         this.offSet = 0;
         this.itemSelected = false;
-        this.inShop = false;
     }
 
     mainMenu(ctx) {
@@ -117,7 +242,7 @@ class Shop {
         }
         return false;
     }
-
+    //temp try and change
     getMessage(id) {
         if (this.hasWeapon(id)) {
             return "You can upgrade it by pressing next.";
@@ -149,7 +274,7 @@ class Shop {
                 this.selected = 0;
             }
         } else {
-            this.items[this.selected].setSelectItem(d);
+                this.items[this.selected + this.offSet].setSelectItem(d);
         }
     }
 
@@ -176,17 +301,25 @@ class Shop {
                     if (!this.canBuy(weapons.get(this.items[this.selected + this.offSet].id).price)) {
                         return;
                     } else {
-                        this.player.money -= weapons.get(this.items[this.selected + this.offSet].id).price;
-                        this.player.weapons.push({ id: this.items[this.selected + this.offSet].id, damageMult: 1, speedMult: 1, impact: "die" });
+                        if (!this.itemSelected) {
+                            this.player.money -= weapons.get(this.items[this.selected + this.offSet].id).price;
+                            this.player.weapons.push({ id: this.items[this.selected + this.offSet].id, damageMult: 1, speedMult: 1, impact: weapons.get(this.items[this.selected + this.offSet].id).impact });
+                        } 
                     }
+                } else if (this.itemSelected){
+                    this.items[this.selected + this.offSet].handlePurchase(this.player);
                 }
                 this.itemSelected = true;
                 break;
             case "left":
                 if (this.itemSelected) {
-                    this.itemSelected = false;
+                    if (this.items[this.selected + this.offSet].impactSelected) {
+                        this.items[this.selected + this.offSet].impactSelected = false;
+                    } else {
+                        this.itemSelected = false;
+                    }
                 } else {
-                    this.inShop = false;
+                    overWorld.inShop = false;
                     overWorld.onOverworld = true;
                 }
                 break;
@@ -210,7 +343,7 @@ function loadShop(player){
             options.impact = w.impact;
             options.id = weapon;
 
-            items.push(new Item(options));
+            items.push(new Item(options, player));
     }
     var shop = new Shop(items, player);
     return shop

@@ -10,13 +10,15 @@
         "id": 1,
         "damageMult": 1,
         "speedMult": 1,
-        "impact": "explode"
+        "equippedImpact": "explode",
+        "availableImpact": ["explode"]
       },
       {
         "id": 2,
         "damageMult": 1,
         "speedMult": 1,
-        "impact": "ricochet"
+        "equippedImpact": "ricochet",
+        "availableImpact": [ "ricochet" ]
       }
     ],
     "equipped": [ 1, 2 ],

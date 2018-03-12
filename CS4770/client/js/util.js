@@ -115,7 +115,7 @@ class PopUp {
                     offSetY += this.size;
                 }
             } else {
-                map.popUps.splice(popUps.indexOf(this), 1);
+                map.popUps.splice(map.popUps.indexOf(this), 1);
             }
         }
     }

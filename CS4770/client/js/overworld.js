@@ -171,6 +171,8 @@ class OverWorld {
         this.user = player;
         this.file = file;
         this.onOverworld = true;
+        this.inShop = false;
+        this.shop = loadShop(player);
         this.paths = [];
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
@@ -196,7 +198,6 @@ class OverWorld {
             this.img.src = any.src;
             this.portals = any.portals;
 
-            console.log(this.portals);
             this.paths[-1] = { id: -1, startX: 0, startY: 0, endX: 0, endY: 0 };
             for (var paths of any.paths) {
                 this.paths[paths.id] = paths;
@@ -260,6 +261,9 @@ class OverWorld {
         for (var path of this.paths) {
             if ((x == path.startX || x == path.endX) && (y == path.startY || y == path.endY)) {
                 var delta = this.getDelta(d, path);
+                if (delta[0] == 0 && delta[1] == 0) {
+                    continue;
+                }
                 if ((x + delta[0] == path.startX || x + delta[0] == path.endX) && (y + delta[1] == path.startY || y + delta[1] == path.endY)) {
                     return path;
                 }
@@ -336,14 +340,16 @@ directions:
                 this.toMap(portal.mapName);
                 break;
             case "store":
-                this.onOverworld = false;
-                shop.inShop = true;
+                this.toShop();
+                break;
+            case "house":
                 break;
         }
     }
     //handles the going to shop
     toShop() {
-
+        this.onOverworld = false;
+        this.inShop = true;
     }
 }
 

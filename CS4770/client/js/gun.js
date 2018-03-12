@@ -96,7 +96,7 @@ function loadWeapons(file) {
         options.bullets = bullets;
         options.impact = w.impact;
         options.price = w.price;
-
+        options.impactUpgrades = w.impactUpgrades
         weapons.set(w.id, new Weapon(options));
     }
 }

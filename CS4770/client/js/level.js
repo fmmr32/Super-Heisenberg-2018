@@ -38,7 +38,6 @@ class Level {
 
         this.loadLevel(file);
 
-        console.log(this);
     }
 
 
