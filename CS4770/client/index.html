@@ -60,6 +60,8 @@
 
     var offLinePlay = document.getElementById("skipSign");
 
+    var playerUsername = signDivUsername.value;
+
     //Test database button
     var testDatabase = document.getElementById("testdatabase");
 	
@@ -93,6 +95,11 @@
         loadLevelsListFunct();
     }
 
+    //Story mode initialization
+    storyMode.onclick = function () {
+        loadUserDatabase();
+    }
+
     //Test database
     testDatabase.onclick = function () {
         testDatabaseFunct();
@@ -119,7 +126,7 @@
 	
 	var playerobjecttest = 
 		  {
-			"_id": "3",
+			"_id": "b",
 			"playerName": "player1",
 			"currentCharacter": 667,
 			"achievements": [],
@@ -213,11 +220,17 @@
     //achievement array
     var ach = [];
 
+    function loadUserDatabase() {
+        loadDB('player', playerUsername, function (response) {
+            loadGame(false, response);
+        });
+    }
+
     //needs to be fetched from the db and put into a json like file
     function loadCurretUser() {
         loadJSONFile(function (response) {
             loadGame(false, JSON.parse(response));
-        }, "/client/resources/player.json")
+        }, "/client/resources/player.json");
     }
 
     function getMap(newMap) {
@@ -392,7 +405,7 @@
     }
 
 
-    window.onload = loadCurretUser();
+    //window.onload = loadCurretUser();
 
 </script>
 <body>

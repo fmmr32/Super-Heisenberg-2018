@@ -1,13 +1,21 @@
 ﻿//This loads things from the database
 var loadDB = function (name, callback) {
-    console.log("inside loadDB");
     socket.emit('loadDB', {
         collection: name
     });
 
     socket.on(type, function (data) {
-        newData = data[0];
-        console.log("inside socket.on " + newData.playerName);
+        callback(data);
+    });
+}
+
+var loadDB = function (name, id_object, callback) {
+    socket.emit('loadDBbasedID', {
+        collection: name,
+        id: id_object
+    });
+
+    socket.on(name, function (data) {
         callback(data);
     });
 }
