@@ -46,9 +46,9 @@ class PopUp {
         if (position == "top") {
             this.y = 0;
         } else if (position == "bottom") {
-            this.y = container.clientHeight;
+            this.y = canvas.height;
         } else {
-            this.y = container.clientHeight;
+            this.y = canvas.height;
         }
 
 
@@ -243,7 +243,9 @@ class Dialog {
 
 
 function loadDialog(player) {
+    var diag = [];
     loadJSONFile(function (response) {
+        
         for (var any of JSON.parse(response)) {
             var temp = new Dialog(any.id, any.text, 15);
 
@@ -253,7 +255,9 @@ function loadDialog(player) {
 
             diag[any.id] = new Dialog(any.id, any.text, temp.size, imgBar, imgMain, imgSecond, player);
         }
+        
     }, "/client/resources/dialogs.json");
+    return diag;
 }
 
 

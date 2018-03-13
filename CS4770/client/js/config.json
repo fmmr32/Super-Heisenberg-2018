@@ -8,5 +8,6 @@
   "up": 87,
   "secondary": 49,
   "main": 50,
-  "action": 69
+  "action": 69,
+  "quit": 81
 }

@@ -43,63 +43,53 @@ class Level {
 
 
     //temporary load character function
-    loadCharacter(response) {
-
-        var any = JSON.parse(response);
-
-        for (var chars of any) {
-            if (chars.Id == this.user.currentCharacter) {
-                if (this.getPlayer() != undefined) {
-                    return;
-                }
-
-
-
-                var options = {};
-                options.id = chars.Id;
-                options.name = chars.name;
-
-                options.image = {};
-                options.width = chars.width;
-                options.height = chars.height;
-                options.image.src = chars.source;
-                options.image.startX = chars.startX;
-                options.image.startY = chars.startY;
-                options.center = chars.centerPX;
-                options.offSet = chars.offSetPX;
-                options.context = this.container;
-
-                var options2 = {};
-
-                options2.sprite = [newSprite(options)];
-                options2.hp = chars.hp;
-                options2.jump = chars.jump;
-                options2.speed = chars.speed;
-                options2.height = options2.sprite.height;
-                options2.leftHand = [chars.leftHand, chars.leftHandLow];
-                options2.rightHand = [chars.rightHand, chars.rightHandLow];
-
-                options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
-
-
-                options2.level = this;
-                options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
-                options2.name = chars.name;
-
-                options2.money = this.user.money;
-                options2.killcount = this.user.killcount;
-                options2.timeplayed = this.user.timeplayed;
-                options2.artifacts = this.user.artifacts;
-                options2.achievements = this.user.achievements;
-
-                this.entities.push(new Player(options2));
-                this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
-                this.player = response;
-                this.time = performance.now();
-                loaded = true;
-                break;
-            }
+    loadCharacter(chars) {
+        if (this.getPlayer() != undefined) {
+            return;
         }
+
+        var options = {};
+        options.id = chars.Id;
+        options.name = chars.name;
+
+        options.image = {};
+        options.width = chars.width;
+        options.height = chars.height;
+        options.image.src = chars.source;
+        options.image.startX = chars.startX;
+        options.image.startY = chars.startY;
+        options.center = chars.centerPX;
+        options.offSet = chars.offSetPX;
+        options.context = this.container;
+
+        var options2 = {};
+
+        options2.sprite = [newSprite(options)];
+        options2.hp = chars.hp;
+        options2.jump = chars.jump;
+        options2.speed = chars.speed;
+        options2.height = options2.sprite.height;
+        options2.leftHand = [chars.leftHand, chars.leftHandLow];
+        options2.rightHand = [chars.rightHand, chars.rightHandLow];
+
+        options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
+
+
+        options2.level = this;
+        options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
+        options2.name = chars.name;
+
+        options2.money = this.user.money;
+        options2.killcount = this.user.killcount;
+        options2.timeplayed = this.user.timeplayed;
+        options2.artifacts = this.user.artifacts;
+        options2.achievements = this.user.achievements;
+
+        this.entities.push(new Player(options2));
+        this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
+        this.player = chars;
+        this.time = performance.now();
+        loaded = true;
     }
 
     loadLevel(file) {
@@ -112,7 +102,7 @@ class Level {
         this.startDialog = any.startDialog;
         this.endDialog = any.endDialog;
         this.doingDialog = this.startDialog != -1;
-        
+
 
         while (container.children.length != 0) {
             container.children[0].remove();

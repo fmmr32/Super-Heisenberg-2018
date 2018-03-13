@@ -40,6 +40,8 @@
 
 
 <script>
+    var sizeSettings = [720, 500];
+
 
     //codes for login
 
@@ -293,9 +295,6 @@
                 overWorld = newMap;
             }
 
-    var diag = [];
-    var overWorlds;
-    var inWorlds;
     function loadGame(reload, player) {
         //setting the divs correctly
         signDiv.style.display = 'none';
@@ -304,24 +303,17 @@
             loadNeeded(player);
         }
 
-        //loading the needed files
-        loadDialog(player);
-
         //loading the test map
         loadOverworld(player, function (m) {
 
             loadJSONFile(function (response) {
-                m.loadPlayer(response);
                 m.shop = loadShop(player);
                 loadJSONFile(function (r) {
-                    m.loadCharacterSelect(response, r, player);
+                    m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player);
                 }, "/client/resources/characters.json");
             }
                 , "/client/resources/overWorldCharacters.json");
         });
-
-       ;
-
     }
 
     var overWorld;
@@ -330,18 +322,17 @@
     function update() {
         if (loaded) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-            if (overWorld.inShop) {
-                overWorld.shop.openShop();
-            } else if (overWorld.onOverworld) {
-                overWorld.doTick();
-            } else if (!map.doingDialog) {
-                map.doTick();
-            } else if (map.doingDialog) {
-                if (diag[map.startDialog == -1 ? map.endDialog : map.startDialog].y != container.clientHeight) {
-                    diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.y = container.clientHeight - diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.image.height;
-                }
+            if (!overWorld.handleBuildings()) {
+                if (!map.doingDialog) {
+                    map.doTick();
+                } else if (map.doingDialog) {
+                    //this needs fixing
+                    if (overWorld.diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.y != canvas.height) {
+                        overWorld.diag[map.startDialog == -1 ? map.endDialog : map.startDialog].popUp.y = canvas.height - 300;
+                    }
 
-                diag[map.startDialog == -1 ? map.endDialog : map.startDialog].doDialog();
+                    overWorld.diag[map.startDialog == -1 ? map.endDialog : map.startDialog].doDialog();
+                }
             }
         }
     }
@@ -351,18 +342,14 @@
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode && loaded) {
-            if (overWorld.inShop) {
-                overWorld.shop.navigate(conf[charCode]);
-            } else if (overWorld.onOverworld) {
-                overWorld.getPlayer().doMove(conf[charCode]);
-            } else if (!map.doingDialog) {
-                map.getPlayer().doMove(conf[charCode], true);
-            } else if (map.doingDialog) {
-                if (conf[charCode] == "action") {
-                    diag[map.startDialog == -1 ? map.endDialog : map.startDialog].nextText();
+            if (!overWorld.handleKeys(conf[charCode])) {
+                if (!map.doingDialog) {
+                    map.getPlayer().doMove(conf[charCode], true);
+                } else if (map.doingDialog) {
+                    if (conf[charCode] == "action") {
+                        overWorld.diag[map.startDialog == -1 ? map.endDialog : map.startDialog].nextText();
+                    }
                 }
-            } else if (overWorld.onOverworld) {
-                overWorld.getPlayer().doMove(conf[charCode]);
             }
         }
     };
@@ -409,7 +396,7 @@
     }
 
 
-    //window.onload = loadCurretUser();
+    window.onload = loadCurretUser();
 
 </script>
 <body>

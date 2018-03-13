@@ -169,14 +169,17 @@ directions:
 class OverWorld {
     constructor(player, file) {
         this.user = player;
+        this.diag = loadDialog(player);
         this.file = file;
-        this.onOverworld = true;
+        this.onOverWorld = true;
         this.inShop = false;
+        this.inCharacterSelect = false;
         this.shop = loadShop(player);
         this.paths = [];
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
         this.loadOverWorld(file);
+        
 
     }
 
@@ -206,18 +209,13 @@ class OverWorld {
         }
     }
     //loads the player
-    loadPlayer(file) {
-        for (var ani of JSON.parse(file)) {
-            if (ani.id ==this.user.currentCharacter) {
-                var options = ani;
+    loadPlayer(player) {
+                var options = player;
                 options.world = this;
-                options.src = ani.src;
+                options.src = player.src;
                 this.player = new OverWorldPlayer(options);
                 loaded = true;
                 this.getPlayer().spawn(this.startX, this.startY);
-                break;
-            }
-        }
 
     }
 
@@ -238,6 +236,13 @@ class OverWorld {
         }
     }
     check() {
+        if (canvas.width != sizeSettings[0]) {
+            canvas.width = sizeSettings[0];
+        }
+        if (canvas.height != sizeSettings[1]) {
+            canvas.height = sizeSettings[1];
+        }
+
         if (this.width != container.clientWidth) {
             this.width = container.clientWidth;
         }
@@ -269,6 +274,35 @@ class OverWorld {
         }
         return -1;
     }
+
+    handleBuildings() {
+        if (this.inShop) {
+            this.shop.openShop();
+            return true;
+        } else if (this.inCharacterSelect) {
+            this.characters.openHouse();
+            return true;
+        } else if (this.onOverWorld) {
+            this.doTick();
+            return true;
+        }
+        return false;
+    }
+
+    handleKeys(type) {
+        if (this.inShop) {
+            this.shop.navigate(type);
+            return true;
+        } else if (this.inCharacterSelect) {
+            this.characters.navigate(type);
+            return true;
+        } else if (this.onOverWorld) {
+            this.getPlayer().doMove(type);
+            return true;
+        }
+        return false;
+    }
+
     /**
 directions:
 0: standing still facing down
@@ -314,22 +348,20 @@ directions:
 
     toMap(name) {
         //loading the map the player chose
-        this.onOverworld = false;
+        this.onOverWorld = false;
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
         loadMap(name, this.user, function (m) {
-            loadJSONFile(function (response) {
-                m.loadCharacter(response);
-            }
-                , "/client/resources/characters.json");
+            m.loadCharacter(overWorld.characters.getCharacter());
         });
     }
 
     //going back to the overworld
     toOverWorld() {
         this.makeCanvas();
-        this.onOverworld = true;
+        this.onOverWorld = true;
+        map = undefined;
     }
 
     handlePortal(portal) {
@@ -341,17 +373,23 @@ directions:
                 this.toShop();
                 break;
             case "house":
+                this.toCharacterSelect();
                 break;
         }
     }
     //handles the going to shop
     toShop() {
-        this.onOverworld = false;
+        this.onOverWorld = false;
         this.inShop = true;
+    }
+    toCharacterSelect() {
+        this.inCharacterSelect = true;
+        this.onOverWorld = false;
     }
 
     loadCharacterSelect(overWorld, characters, player) {
-        this.characters = new CharacterSelect(overWorld, characters , player);
+        this.characters = new CharacterSelect(overWorld, characters, player);
+        this.loadPlayer(this.characters.getOverWorldCharacter());
     }
 }
 

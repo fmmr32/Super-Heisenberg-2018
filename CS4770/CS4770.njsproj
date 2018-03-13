@@ -43,7 +43,7 @@
     <Compile Include="client\js\overworld.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="client\js\shop.js">
+    <Compile Include="client\js\playermods.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="client\js\sprite.js" />
@@ -54,9 +54,6 @@
     <Compile Include="routes\users.js" />
     <Content Include="client\index.html" />
     <Content Include="client\js\config.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\js\tempShop.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="client\resources\achievements.json">

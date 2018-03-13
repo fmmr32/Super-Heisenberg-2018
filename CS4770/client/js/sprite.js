@@ -65,7 +65,9 @@ SPRITE.prototype = {
                 width, //width of sprite
                 height //height of sprite
             );
-            map.setImage(context);
+            if (map != undefined) {
+                map.setImage(context);
+            }
         };
         img.src = image.src;
     }

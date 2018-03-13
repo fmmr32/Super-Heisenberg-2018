@@ -11,7 +11,7 @@
         "damageMult": 1,
         "speedMult": 1,
         "equippedImpact": "explode",
-        "availableImpact": ["explode"]
+        "availableImpact": ["explode", "die"]
       },
       {
         "id": 2,
