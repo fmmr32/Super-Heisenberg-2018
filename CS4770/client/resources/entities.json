@@ -4,7 +4,7 @@
     "name": "bullet",
     "source": "../resources/entities.png",
     "startX": 99,
-    "startY":58,
+    "startY": 58,
     "width": 12,
     "height": 14,
     "centerPX": 6,
@@ -86,6 +86,7 @@
       "rightHand": [ 10, -3 ],
       "jump": 0.5,
       "damage": 2
+      
     }
   },
   {
@@ -141,6 +142,142 @@
         "columns": 1,
         "startX": 126,
         "startY": 35
+      }
+    ]
+  },
+  {
+    "id": 992,
+    "name": "spike",
+    "source": "../resources/entities.png",
+    "startX": 0,
+    "startY": 139,
+    "width": 31,
+    "height": 18,
+    "centerPX": 16,
+    "offSetPX": 0
+  },
+  {
+    "id": 420,
+    "startX": 39,
+    "startY": 11,
+    "width": 70,
+    "height": 96,
+    "centerPX": 32,
+    "offSetPX": 3,
+    "name": "Evil Heisenberg",
+    "complex": {
+      "hp": 100,
+      "artifact": 1,
+      "speed": 4,
+      "jump": 0.5,
+      "leftHand": [ -6, 36 ],
+      "rightHand": [ 45, 36 ],
+      "leftHandLow": [ 13, 55 ],
+      "rightHandLow": [ 28, 55 ],
+      "moveSet": [
+        {
+          "type": "left",
+          "advanceAfter": 10,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+
+        {
+          "type": "jump",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+        {
+          "type": "fire",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0.2
+        },
+        {
+          "type": "right",
+          "advanceAfter": 12,
+          "delayAfter": 0,
+          "delayBefore": 0
+        }
+
+      ],
+      "weapon": [ 1 ],
+      "healthBar": true
+    },
+    "source": "../resources/stud69.png",
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 4
+      },
+      {
+        "startX": 0,
+        "startY": 192,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 4,
+        "frameRate": 5,
+        "columns": 4
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 192,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 70,
+        "startY": 96,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 140,
+        "startY": 96,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 70,
+        "startY": 288,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 140,
+        "startY": 288,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
       }
     ]
   }

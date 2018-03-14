@@ -200,6 +200,7 @@ class HealthBar {
 
 }
 
+
 class MoveSet {
     constructor(options) {
         this.moves = options;
@@ -328,6 +329,11 @@ class Entity {
 
 
 
+}
+class Artifact extends Entity {
+    constructor(options) {
+        super(options);
+    }
 }
 
 class EntityMovable extends Entity {
@@ -461,9 +467,15 @@ class EntityMovable extends Entity {
                         } else if (this instanceof Player) {
                             //doing with plates
                             if (collidingEntity instanceof EntityInteractable) {
-                                if (collidingEntity.type == "pressurePlate") {
+                                if (collidingEntity.type == "pressurePlate" || collidingEntity.type == "spike") {
                                     //do stuff with a plate
+                                    collidingEntity.flipState(this);
                                 }
+                            } else if (collidingEntity instanceof Artifact) {
+                                if (this.artifacts.indexOf(collidingEntity.id) == -1) {
+                                    this.artifacts.push(collidingEntity.id);
+                                }
+                                this.level.exitMap(true);
                             } else {
                                 //picking up a coin?
                                 this.money++;
@@ -559,16 +571,16 @@ class EntityInteractable extends Entity {
         super.spawn(x, y, +(this.state));
     }
 
-    flipState() {
+    flipState(actor) {
         if (this.state && !this.repeatable) {
             return;
         }
 
         this.state = !this.state;
-        this.doAction(this.state);
+        this.doAction(this.state, actor);
     }
 
-    doAction(state) {
+    doAction(state, actor) {
         //looping through all the actions
         for (var action of this.action) {
             //filter by type
@@ -607,6 +619,13 @@ class EntityInteractable extends Entity {
                         this.level.getBlock(action.x, action.y).deleteMeta(Object.keys(action.meta))
                     }
                     break;
+                case "damage":
+                    actor.doDamage(action.damage, this);
+                    break;
+                case "end":
+                    this.level.exitMap(true);
+                    break;
+                
             }
         }
     }
@@ -874,11 +893,20 @@ class Boss extends EntityCreature {
     constructor(options) {
         super(options);
 
-        this.loot = null //add the loot of the boss
+        this.loot = options.loot; //add the loot of the boss
     }
 
 
-    doRespawn() {
-        this.level.exitMap(loot);
+    doRespawn(source) {
+        console.log("this called");
+        var prop = {};
+        prop.id = this.loot;
+        prop.x = this.getX();
+        prop.y = this.getY() - this.getHeight();
+        this.level.loadArtifact(prop);
+
+        var e = new Event("bossKill", { id: this.sprite.id });
+        document.dispatchEvent(e);
+        super.doRespawn(source);
     }
 }
