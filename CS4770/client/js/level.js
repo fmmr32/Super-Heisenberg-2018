@@ -107,7 +107,7 @@ class Level {
         while (container.children.length != 0) {
             container.children[0].remove();
         }
-        canvas = create('canvas', 'fg', 0, 0, this.width, this.height);
+        canvas = create('canvas', 'fg', 0, 0, sizeSettings[0], sizeSettings[1]);
 
         var background = create('canvas', 'bg', 0, 0, this.width, this.height);
 
@@ -183,13 +183,14 @@ class Level {
         }
     }
 
-    checkEnd() {
-        for (var ent of this.entities) {
-            if (!(ent instanceof EntityInteractable) && !(ent instanceof Player)) {
-                return;
-            }
-        }
-        this.exitMap(null, true);
+    loadArtifact(artifact) {
+        var options = {};
+        options.x = artifact.x;
+        options.y = artifact.y;
+        options.level = this;
+        options.sprite = [getSprite(artifact.id)];
+        options.animation = Animation.loadAnimation(artifact.id);
+        this.entities.push(new Artifact(options));
     }
 
     //takes in an array of creature values, can be basic information as in id, x, y but can be more complex
@@ -236,8 +237,15 @@ class Level {
                 options.healthBar = { x: 125, y: 10, alignment: "h" };
             }
             options.animation = Animation.loadAnimation(id);
+            var creature;
+            if (id >= 400 && id < 600) {
+            options.loot = getSprite(id).complex.artifact;
+            creature = new Boss(options);
+            } else {
+            creature = new EntityCreature(options);
+            }
 
-            var creature = new EntityCreature(options);
+            
             this.entities.push(creature);
         }
     }
@@ -289,7 +297,6 @@ class Level {
                 }
 
             }
-            this.checkEnd();
         }
     }
 
@@ -386,7 +393,7 @@ class Level {
         this.loadCharacter(this.player);
     }
 
-    exitMap(loot, completed) {
+    exitMap(completed) {
         var money = this.getPlayer().getMoney();
         this.user.money += money;
         var kills = this.getPlayer().killcount;

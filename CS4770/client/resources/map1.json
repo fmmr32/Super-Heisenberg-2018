@@ -19,6 +19,11 @@
           "delayBefore": 0
         }
       ]
+    },
+    {
+      "Id": 420,
+      "X": 500,
+      "Y": 328
     }
   ],
   "entities": [
@@ -84,6 +89,18 @@
           "id": 997,
           "entType": "Entity",
           "amount": 1
+        }
+      ]
+    },
+    {
+      "Id": 992,
+      "X": 300,
+      "Y": 315,
+      "repeatable": true,
+      "action": [
+        {
+          "type": "damage",
+          "damage": 40
         }
       ]
     }

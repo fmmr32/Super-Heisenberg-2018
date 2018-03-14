@@ -1,69 +1,69 @@
 ﻿[
   {
     "src": "../resources/OverWorld.png",
-    "startX": 348,
-    "startY": 185,
+    "startX": 630,
+    "startY": 278,
     "portals": [
       {
         "type": "level",
         "mapName": "map1",
-        "X": 152,
-        "Y": 402
+        "X": 278,
+        "Y": 595
       },
       {
         "type": "store",
-        "X": 530,
-        "Y": 105
+        "X": 950,
+        "Y": 162
       },
       {
         "type": "house",
-        "X": 348,
-        "Y": 105
+        "X": 630,
+        "Y": 162
       }
     ],
     "paths": [
       {
         "id": 0,
-        "startX": 152,
-        "startY": 185,
-        "endX": 348,
-        "endY": 185,
+        "startX": 278,
+        "startY": 278,
+        "endX": 630,
+        "endY": 278,
         "startPointer": -1,
         "endPointer": -1
       },
       {
         "id": 1,
-        "startX": 348,
-        "startY": 185,
-        "endX": 530,
-        "endY": 185,
+        "startX": 630,
+        "startY": 278,
+        "endX": 950,
+        "endY": 278,
         "startPointer": -1,
         "endPointer": -1
       },
       {
         "id": 2,
-        "startX": 152,
-        "startY": 185,
-        "endX": 152,
-        "endY": 402,
+        "startX": 278,
+        "startY": 278,
+        "endX": 278,
+        "endY": 595,
         "startPointer": -1,
         "endPointer": -1
       },
       {
         "id": 3,
-        "startX": 530,
-        "startY": 105,
-        "endX": 530,
-        "endY": 185,
+        "startX": 950,
+        "startY": 162,
+        "endX": 950,
+        "endY": 278,
         "startPointer": -1,
         "endPointer": -1
       },
       {
         "id": 4,
-        "startX": 348,
-        "startY": 105,
-        "endX": 348,
-        "endY": 185,
+        "startX": 630,
+        "startY": 162,
+        "endX": 630,
+        "endY": 278,
         "startPointer": -1,
         "endPointer": -1
       }
