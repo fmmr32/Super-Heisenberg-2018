@@ -8,8 +8,9 @@
         this.impactSelected = false;
         this.impactSelect = 0;
         this.impacts = [];
-
+        console.log(player);
         for (var impacts of weapons.get(this.id).impactUpgrades) {
+            console.log(this.getWeapon(this.id, player));
             if (this.getWeapon(this.id, player) != null && this.getWeapon(this.id, player).availableImpact.indexOf(impacts) == -1) {
                 this.impacts.push(impacts);
             }

@@ -1,15 +1,17 @@
 ﻿//This loads things from the database
 var loadDB = function (name, callback) {
+    console.log("Inside first");
     socket.emit('loadDB', {
         collection: name
     });
 
-    socket.on(type, function (data) {
+    socket.on(name, function (data) {
         callback(data);
     });
 }
 
-var loadDB = function (name, id_object, callback) {
+var loadDBFromID = function (name, id_object, callback) {
+    console.log("inside second");
     socket.emit('loadDBbasedID', {
         collection: name,
         id: id_object
