@@ -56,13 +56,14 @@ var addUser = function(data,callback){
 /*__________________________________________Load game thingies_________________________________*/
 
 var loadDB = function (collection, callback) {
+    console.log(collection + "inside loadDB game thingies");
     db.collection(collection).find({}, function (err, result) {
         callback(result);
     });
 }
 
-var loadDB = function (collection, id_object, callback) {
-    db.collection(collection).find({_id:id_object}, function (err, result) {
+var loadDBFromID = function (collection, id_object, callback) {
+    db.collection(collection).find({id:id_object}, function (err, result) {
         callback(result);
     });
 }
@@ -71,7 +72,9 @@ var loadDB = function (collection, id_object, callback) {
 
 
 var writeDB = function (data) {
-    db.collection(data.collection).insert(data.data);
+    var object = data.data;
+    console.log(object.id);
+    db.collection(data.collection).update({ id: object.id }, object, { upsert: true });
 }
 
 /*_______________________________________________________________________________*/
@@ -82,13 +85,16 @@ io.sockets.on('connection', function (socket) {
     console.log('socket connection');
 
     socket.on('loadDB', function (data) {
-		loadDB(data.collection, function (result) {
+        loadDB(data.collection, function (result) {
+            console.log(result);
 			socket.emit(data.collection, result)
 		})
     });
 
     socket.on('loadDBbasedID', function (data) {
-        loadDB(data.collection, data.id, function (result) {
+        console.log(data.id);
+        loadDBFromID(data.collection, data.id, function (result) {
+            console.log(result);
             socket.emit(data.collection, result)
         })
     });
