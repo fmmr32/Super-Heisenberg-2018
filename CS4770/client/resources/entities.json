@@ -86,9 +86,10 @@
       "rightHand": [ 10, -3 ],
       "jump": 0.5,
       "damage": 2
-      
+
     }
   },
+
   {
     "id": 995,
     "name": "grenade",
@@ -157,6 +158,25 @@
     "offSetPX": 0
   },
   {
+    "id": 991,
+    "name": "JackalMask",
+    "source": "../resources/entities.png",
+    "startX": 0,
+    "startY": 139,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 8,
+        "columns": 2
+      }
+    ]
+
+  },
+  {
     "id": 420,
     "startX": 39,
     "startY": 11,
@@ -167,7 +187,7 @@
     "name": "Evil Heisenberg",
     "complex": {
       "hp": 100,
-      "artifact": 1,
+      "artifact": 991,
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],

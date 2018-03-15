@@ -91,18 +91,6 @@
           "amount": 1
         }
       ]
-    },
-    {
-      "Id": 992,
-      "X": 300,
-      "Y": 315,
-      "repeatable": true,
-      "action": [
-        {
-          "type": "damage",
-          "damage": 40
-        }
-      ]
     }
   ],
   "content": [
