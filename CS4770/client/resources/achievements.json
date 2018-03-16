@@ -27,5 +27,19 @@
       ]
     },
     "text": "YOU HAVE PULLED THE LEVER KRONK"
+  },
+  {
+    "id": 3,
+    "name": "Kill the shotgun knight",
+    "type": "bossKill",
+    "function": {
+      "arguments": "e",
+      "body": [
+        "console.log(e);",
+        "this.level.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();"
+      ]
+    },
+    "text": "You have killed the Shotgun Knight"
   }
 ]

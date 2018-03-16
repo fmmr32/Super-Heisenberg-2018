@@ -387,8 +387,8 @@ directions:
         this.onOverWorld = false;
     }
 
-    loadCharacterSelect(overWorld, characters, player) {
-        this.characters = new CharacterSelect(overWorld, characters, player);
+    loadCharacterSelect(overWorld, characters, player, texts) {
+        this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter());
     }
 }

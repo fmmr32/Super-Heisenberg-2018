@@ -177,6 +177,131 @@
 
   },
   {
+    "id": 401,
+    "startX": 0,
+    "startY": 0,
+    "width": 200,
+    "height": 160,
+    "centerPX": 100,
+    "offSetPX": 20,
+    "name": "Shotgun Knight",
+    "complex": {
+      "hp": 1000,
+      "artifact": 991,
+      "speed": 4,
+      "jump": 0.5,
+      "leftHand": [ -6, 36 ],
+      "rightHand": [ 45, 36 ],
+      "leftHandLow": [ 13, 55 ],
+      "rightHandLow": [ 28, 55 ],
+      "moveSet": [
+        {
+          "type": "left",
+          "advanceAfter": 10,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+
+        {
+          "type": "jump",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0
+        },
+        {
+          "type": "fire",
+          "advanceAfter": 1,
+          "delayAfter": 0,
+          "delayBefore": 0.2
+        },
+        {
+          "type": "right",
+          "advanceAfter": 11,
+          "delayAfter": 0,
+          "delayBefore": 0
+        }
+
+      ],
+      "weapon": [],
+      "healthBar": true
+    },
+    "source": "../resources/ShotgunKnight.png",
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 160,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 160,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 600,
+        "startY": 480,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 320,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 640,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 200,
+        "startY": 320,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
     "id": 420,
     "startX": 39,
     "startY": 11,

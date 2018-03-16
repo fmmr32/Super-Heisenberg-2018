@@ -56,6 +56,9 @@
     <Content Include="client\js\config.json">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="client\resources\Texts.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\achievements.json">
       <SubType>Code</SubType>
     </Content>
