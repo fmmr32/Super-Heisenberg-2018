@@ -41,7 +41,7 @@
 
         ctx.fillText(this.getImpactMessage(this.impacts[this.impactSelect]) + ". ", 20, container.clientHeight / 2 + 150);
 
-        ctx.fillText(this.getMessage(this.getImpactValue(this.impacts[this.impactSelect]), player, true, this.impacts[this.impactSelect]), 20, container.clientHeight / 2 + 200);
+        ctx.fillText(this.getMessage(this.getImpactValue(this.impacts[this.impactSelect], weapons.get(this.id).name), player, true, this.impacts[this.impactSelect]), 20, container.clientHeight / 2 + 200);
         ctx.fillText("<-", width * 2 + this.width + 5, ((this.impactSelect) * height + height / 2));
     }
 
@@ -49,18 +49,12 @@
     getImpactMessage(impact) {
         return this.texts.impacts[impact];
     }
+    //gets the costs of a impact
+    getImpactValue(impact, name) {
 
-    //change this later
-    getImpactValue(impact) {
-        switch (impact) {
-            case "die":
-                return 0;
-            case "ricochet":
-                return 200;
-            case "explode":
-                return 150;
-        }
+        return this.texts.weapons[impact][name];
     }
+
     getWeapon(id, player) {
         for (var weapon of player.weapons) {
             if (weapon.id == id) {
@@ -115,9 +109,9 @@
             }
         } else {
             if (this.canBuy(Math.ceil(value * 1.2 * 3), player)) {
-                return this.texts.shop.canBuy.impact.replace("%impact%", type).replace("%price%", Math.ceil(value * 1.2 * 3));
+                return this.texts.shop.canBuy.impact.replace("%impact%", type).replace("%price%", this.getImpactValue(type, weapons.get(this.id).name));
             } else {
-                return this.texts.shop.noBuy.impact.replace("%price%", Math.ceil(value * 1.2 * 3));;
+                return this.texts.shop.noBuy.impact.replace("%price%", this.getImpactValue(type, weapons.get(this.id).name));
             }
         }
     }
