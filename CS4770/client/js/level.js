@@ -429,7 +429,6 @@ function loadMap(name, player, callback) {
     loadJSONFile(function (response) {
         try {
             map = new Level(player, response);
-            getMap(map);
             callback(map);
         } catch (err) {
             loaded = false;

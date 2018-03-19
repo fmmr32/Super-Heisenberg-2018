@@ -118,56 +118,7 @@
 
     var canvas;
     var container = document.getElementById("gameDiv");
-
-    testDatabaseFunct = function () {
-        console.log("test database: before loadDB");
-        loadDB('player', function (data) {
-            console.log("test database");
-            console.log(data[0].id);
-        });
-    }
-	
-	var playerobjecttest = 
-        {
-            "id": "player1",
-            "currentCharacter": 667,
-            "achievements": [],
-            "unlockedCharacters": [667],
-            "money": 0,
-            "weapons": [
-                {
-                    "id": 1,
-                    "damageMult": 1,
-                    "speedMult": 1,
-                    "equippedImpact": "explode",
-                    "availableImpact": ["explode", "die"]
-                },
-                {
-                    "id": 2,
-                    "damageMult": 1,
-                    "speedMult": 1,
-                    "equippedImpact": "ricochet",
-                    "availableImpact": ["ricochet"]
-                }
-            ],
-            "equipped": [1, 2],
-            "artifacts": [],
-            "storyProgress": [],
-            "levelsMade": [],
-            "killcount": 0,
-            "timeplayed": 0
-        }
-
-	
-	
-	pushdatabasefunct = function () {
-		console.log("push to database before writeDB");
-		writeDB('player', playerobjecttest);
-	}
-	
-	
-
-
+  
     function create(type, id, left, top, width, height) {
         var elem = document.createElement(type);
         elem.id = id;
@@ -227,7 +178,7 @@
     function loadUserDatabase() {
         console.log("Inside loadUserDatabase " + playerUsername);
         loadDBFromID('player', playerUsername, function (response) {
-            console.log("Inside loaduserdatabase" + JSON.stringify(response[0]));
+            console.log("Inside loaduserdatabase " + JSON.stringify(response[0]));
             loadGame(false, response[0]);
         });
     }
@@ -235,16 +186,10 @@
     //needs to be fetched from the db and put into a json like file
     function loadCurretUser() {
         loadJSONFile(function (response) {
-            console.log("inside loadcurrentuser"+ response);
             loadGame(false, JSON.parse(response));
         }, "/client/resources/player.json");
     }
 
-    function getMap(newMap) {
-        map = newMap;
-        //get something for load
-        loadAchievements();
-    };
 
     function loadAchievements() {
         loadJSONFile(function (response) {
@@ -295,9 +240,6 @@
             }
         }
     }
-    function getOverWorld(newMap) {
-                overWorld = newMap;
-            }
 
     function loadGame(reload, player) {
         //setting the divs correctly
@@ -309,10 +251,10 @@
 
         //loading into the overworld
         loadOverworld(player, function (m) {
-
             loadJSONFile(function (response) {
                 loadJSONFile(function (r) {
                     loadJSONFile(function (t) {
+                        loadAchievements();
                         m.shop = loadShop(player, JSON.parse(t));
                         m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                     }, "/client/resources/values.json");
@@ -344,7 +286,7 @@
         }
     }
 
-
+    //keyboard handling
     document.onkeydown = function (e) {
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
