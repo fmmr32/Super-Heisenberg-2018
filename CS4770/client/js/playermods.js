@@ -1,5 +1,5 @@
 ﻿class Item {
-    constructor(options, player) {
+    constructor(options, player, texts) {
         for (var obj of Object.keys(options)) {
             this[obj] = options[obj];
         }
@@ -8,15 +8,15 @@
         this.impactSelected = false;
         this.impactSelect = 0;
         this.impacts = [];
-        console.log(player);
+        this.texts = texts;
+
         for (var impacts of weapons.get(this.id).impactUpgrades) {
-            console.log(this.getWeapon(this.id, player));
             if (this.getWeapon(this.id, player) != null && this.getWeapon(this.id, player).availableImpact.indexOf(impacts) == -1) {
                 this.impacts.push(impacts);
             }
         }
 
-        this.ignored = ["width", "selected", "ignored", "impacts", "id", "impactSelect", "impactSelected"];
+        this.ignored = ["texts","width", "selected", "ignored", "impacts", "id", "impactSelect", "impactSelected"];
     }
     //gui stuff for the item store
     drawItem(ctx, img, width, height, player) {
@@ -41,33 +41,20 @@
 
         ctx.fillText(this.getImpactMessage(this.impacts[this.impactSelect]) + ". ", 20, container.clientHeight / 2 + 150);
 
-        ctx.fillText(this.getMessage(this.getImpactValue(this.impacts[this.impactSelect]), player, true, this.impacts[this.impactSelect]), 20, container.clientHeight / 2 + 200);
+        ctx.fillText(this.getMessage(this.getImpactValue(this.impacts[this.impactSelect], weapons.get(this.id).name), player, true, this.impacts[this.impactSelect]), 20, container.clientHeight / 2 + 200);
         ctx.fillText("<-", width * 2 + this.width + 5, ((this.impactSelect) * height + height / 2));
     }
 
-    //change this later
+    //gets the impact message
     getImpactMessage(impact) {
-        switch (impact) {
-            case "die":
-                return "your bullet will go away and do nothing upon hitting a block";
-            case "ricochet":
-                return "your bullet will try to ricochet when hitting a block";
-            case "explode":
-                return "your bullet will explode upon impact";
-        }
+        return this.texts.impacts[impact];
+    }
+    //gets the costs of a impact
+    getImpactValue(impact, name) {
+
+        return this.texts.weapons[impact][name];
     }
 
-    //change this later
-    getImpactValue(impact) {
-        switch (impact) {
-            case "die":
-                return 0;
-            case "ricochet":
-                return 200;
-            case "explode":
-                return 150;
-        }
-    }
     getWeapon(id, player) {
         for (var weapon of player.weapons) {
             if (weapon.id == id) {
@@ -112,19 +99,19 @@
         }
 
     }
-    //temp get message.. try and change 
+    //gets the message
     getMessage(value, player, impact, type) {
         if (!impact) {
             if (this.canBuy(Math.ceil(value * 1.2 * 3), player)) {
-                return "You can upgrade this to " + (value * 1.2).toFixed(2) + " for " + Math.ceil(value * 1.2 * 3) + " bitcoins";
+                return this.texts.shop.canBuy.upgrade.replace("%value%", (value * 1.2).toFixed(2)).replace("%price%",Math.ceil(value * 1.2 * 3));
             } else {
-                return "It seems you don't have enough to upgrade this, this upgrade costs " + Math.ceil(value * 1.2 * 3) + " bitcoins.";
+                return this.texts.shop.noBuy.upgrade.replace("%price%", Math.ceil(value * 1.2 * 3));
             }
         } else {
             if (this.canBuy(Math.ceil(value * 1.2 * 3), player)) {
-                return "You can upgrade this to " + type + " for " + Math.ceil(value * 1.2 * 3) + " bitcoins";
+                return this.texts.shop.canBuy.impact.replace("%impact%", type).replace("%price%", this.getImpactValue(type, weapons.get(this.id).name));
             } else {
-                return "It seems you don't have enough to upgrade this, this upgrade costs " + Math.ceil(value * 1.2 * 3) + " bitcoins.";
+                return this.texts.shop.noBuy.impact.replace("%price%", this.getImpactValue(type, weapons.get(this.id).name));
             }
         }
     }
@@ -183,14 +170,14 @@
 }
 
 class Shop {
-    constructor(items, player) {
+    constructor(items, player, texts) {
 
         this.selected = 0;
         this.height = 30;
         this.width = 0;
 
         this.items = items;
-
+        this.texts = texts;
         this.player = player;
         this.img = new Image();
         this.img.src = "../resources/TextBox.png";
@@ -209,7 +196,6 @@ class Shop {
         var ctx = canvas.getContext("2d");
         ctx.font = "15px sans-serif";
         var drawn = 0;
-        // console.log(container.clientHeight)
         for (var i = this.offSet; i < this.items.length && drawn < 10; i++) {
 
 
@@ -221,7 +207,7 @@ class Shop {
             //draw for the menu stuff;
 
 
-            ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, 200);
+            ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
             ctx.fillText("This is the " + this.items[this.selected + this.offSet].name + ". " + this.getMessage(this.items[this.selected + this.offSet].id), 20, container.clientHeight / 2 + 100);
 
         }
@@ -242,15 +228,15 @@ class Shop {
         }
         return false;
     }
-    //temp try and change
+    //gets the correct message
     getMessage(id) {
         if (this.hasWeapon(id)) {
-            return "You can upgrade it by pressing next.";
+            return this.texts.shop.toUpgrade;;
         } else {
             if (this.canBuy(weapons.get(id).price)) {
-                return "You can buy it for " + weapons.get(id).price + " bitcoins.";
+                return this.texts.shop.canBuy.weapon.replace("%price%", weapons.get(id).price);
             } else {
-                return "It seems you don't have enough to buy it, this costs " + weapons.get(id).price + " bitcoins.";
+                return this.texts.shop.noBuy.weapon.replace("%price%", weapons.get(id).price);
             }
         }
 
@@ -280,7 +266,6 @@ class Shop {
 
     canBuy(price) {
         if (this.player.money >= price) {
-            //reduce the players money
             return true;
         } else {
             return false;
@@ -335,7 +320,7 @@ class Shop {
     }
 }
 //loads the shop
-function loadShop(player) {
+function loadShop(player, texts) {
     var items = [];
     for (var weapon of weapons.keys()) {
         var w = weapons.get(weapon);
@@ -346,16 +331,17 @@ function loadShop(player) {
         options.impact = w.impact;
         options.id = weapon;
 
-        items.push(new Item(options, player));
+        items.push(new Item(options, player, texts));
     }
-    return new Shop(items, player);
+    return new Shop(items, player, texts);
 }
 
 class CharacterSelect {
-    constructor(overWorld, characters, player) {
+    constructor(overWorld, characters, player, texts) {
         this.player = player;
         this.overWorldCharacter = overWorld;
         this.characters = characters;
+        this.texts = texts;
 
         this.img = new Image();
         this.img.src = "../resources/TextBox.png";
@@ -414,7 +400,7 @@ class CharacterSelect {
         }
         //indicating which one is selected and making the description
         ctx.fillText("V", canvas.width / 2 - this.width - this.width / 2 + this.width / 4 + (this.selected * (this.width + this.width / 4)), canvas.height / 2 - this.height - this.height / 2);
-        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, 200);
+        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
         wrapText(ctx, this.characters[this.selected].description, 20, container.clientHeight / 2 + 150, container.clientWidth - 40, 20);
     }
 
@@ -480,7 +466,7 @@ class CharacterSelect {
         ctx.fillText(text, this.width * 2 + (this.width - ctx.measureText(text).width) / 2, (offSet * this.height + this.height / 2));
         ctx.fillText("<-", this.width * 2 + this.width + 5, ((this.statSelected) * this.height + this.height / 2));
 
-        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, 200);
+        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
         if (this.statSelected == 5 && this.player.equipped.indexOf(this.player.weapons[this.selected].id) == -1) {
             ctx.fillText("By equipping this weapon it will replace the weapon equipped in slot 1.", 20, container.clientHeight / 2 + 150);
         }
@@ -503,20 +489,13 @@ class CharacterSelect {
         if (this.player.weapons[this.selected].equippedImpact == this.player.weapons[this.selected].availableImpact[this.statSelected - 1]) {
             ctx.fillText("You current have this impact equipped", 20, container.clientHeight / 2 + 100);
         }
-        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, 200);
+        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
         ctx.fillText(this.getImpactMessage(this.player.weapons[this.selected].availableImpact[this.statSelected - 1]), 20, container.clientHeight / 2 + 150);
 
     }
-    //change this later
+    //gets the impact message
     getImpactMessage(impact) {
-        switch (impact) {
-            case "die":
-                return "your bullet will go away and do nothing upon hitting a block";
-            case "ricochet":
-                return "your bullet will try to ricochet when hitting a block";
-            case "explode":
-                return "your bullet will explode upon impact";
-        }
+        return this.texts.impacts[impact];
     }
 
 

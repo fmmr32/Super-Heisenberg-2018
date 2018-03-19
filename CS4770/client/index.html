@@ -311,9 +311,12 @@
         loadOverworld(player, function (m) {
 
             loadJSONFile(function (response) {
-                m.shop = loadShop(player);
                 loadJSONFile(function (r) {
-                    m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player);
+                    loadJSONFile(function (t) {
+                        m.shop = loadShop(player, JSON.parse(t));
+                        m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
+                    }, "/client/resources/values.json");
+                    
                 }, "/client/resources/characters.json");
             }
                 , "/client/resources/overWorldCharacters.json");

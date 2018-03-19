@@ -749,7 +749,9 @@ class EntityCreature extends EntityMovable {
                     this.jumpDown = false;
                     break;
                 case "fire":
-                    this.currentWeapon.fireWeapon(this, this.level);
+                    if (this.currentWeapon != undefined) {
+                        this.currentWeapon.fireWeapon(this, this.level);
+                    }
                     break;
                 case "main":
                     if (this.weapons.length > 1) {
@@ -898,7 +900,6 @@ class Boss extends EntityCreature {
 
 
     doRespawn(source) {
-        console.log("this called");
         var prop = {};
         prop.id = this.loot;
         prop.x = this.getX();
