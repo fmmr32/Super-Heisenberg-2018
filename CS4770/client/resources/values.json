@@ -7,8 +7,8 @@
   "shop": {
     "toUpgrade": "You can upgrade it by pressing next.",
     "canBuy": {
-      "impact": "You can upgrade this to  %impact% for %price% bitcoins.",
       "upgrade": "You can upgrade this to %value% for %price% bitcoins.",
+      "impact": "You can upgrade this to  %impact% for %price% bitcoins.",
       "weapon": "You can buy this weapon for %price% bitcoins."
     },
     "noBuy": {

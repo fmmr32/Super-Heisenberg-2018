@@ -177,6 +177,63 @@
 
   },
   {
+    "id": 990,
+    "name": "Puzzle",
+    "source": "../resources/entities.png",
+    "startX": 187,
+    "startY": 129,
+    "width": 30,
+    "height": 28,
+    "centerPX": 15,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 9,
+        "frameRate": 8,
+        "columns": 3
+      }
+    ]
+
+  },
+  {
+    "id": 989,
+    "name": "Helmet",
+    "source": "../resources/entities.png",
+    "startX": 187,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 12,
+        "frameRate": 5,
+        "columns": 3
+      }
+    ]
+
+  },
+  {
+    "id": 988,
+    "name": "MilleniumRod",
+    "source": "../resources/entities.png",
+    "startX": 284,
+    "startY": 0,
+    "width": 32,
+    "height": 60,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 10,
+        "frameRate": 5,
+        "columns": 4
+      }
+    ]
+
+  },
+  {
     "id": 401,
     "startX": 0,
     "startY": 0,
@@ -312,7 +369,7 @@
     "name": "Evil Heisenberg",
     "complex": {
       "hp": 100,
-      "artifact": 991,
+      "artifact": 988,
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],

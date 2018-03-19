@@ -472,8 +472,8 @@ class EntityMovable extends Entity {
                                     collidingEntity.flipState(this);
                                 }
                             } else if (collidingEntity instanceof Artifact) {
-                                if (this.artifacts.indexOf(collidingEntity.id) == -1) {
-                                    this.artifacts.push(collidingEntity.id);
+                                if (this.artifacts.indexOf(collidingEntity.getSprite().id) == -1) {
+                                    this.artifacts.push(collidingEntity.getSprite().id);
                                 }
                                 this.level.exitMap(true);
                             } else {

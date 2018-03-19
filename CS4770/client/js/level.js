@@ -400,6 +400,7 @@ class Level {
         this.user.killcount += kills;
         var timeplayed = this.getPlayer().timeplayed;
         this.user.achievements = this.getPlayer().achievements;
+        this.user.artifacts = this.getPlayer().artifacts;
         if (completed) {
             //add more...
             if (this.endDialog != -1) {
@@ -428,7 +429,6 @@ function loadMap(name, player, callback) {
     loadJSONFile(function (response) {
         try {
             map = new Level(player, response);
-            getMap(map);
             callback(map);
         } catch (err) {
             loaded = false;

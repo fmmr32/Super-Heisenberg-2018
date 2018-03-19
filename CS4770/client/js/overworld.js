@@ -398,7 +398,6 @@ function loadOverworld(player, callback) {
     loadJSONFile(function (response) {
         try {
             overWorld = new OverWorld(player, response);
-            getOverWorld(overWorld);
             callback(overWorld);
         } catch (err) {
             loaded = false;
