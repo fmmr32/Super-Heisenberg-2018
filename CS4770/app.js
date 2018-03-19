@@ -95,7 +95,7 @@ io.sockets.on('connection', function (socket) {
         console.log(data.id);
         loadDBFromID(data.collection, data.id, function (result) {
             console.log(result);
-            socket.emit(data.collection, result)
+            socket.emit(data.collection, result[0])
         })
     });
 
