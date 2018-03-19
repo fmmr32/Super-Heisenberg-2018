@@ -553,6 +553,7 @@ class CharacterSelect {
             case "quit":
                 if (this.characterSelect) {
                     this.characterSelect = false;
+                    this.selected = 0;
                 } else if (this.armory) {
                     if (this.impactSelect) {
                         this.impactSelect = false;
@@ -561,6 +562,7 @@ class CharacterSelect {
                         this.weaponSelected = false;
                     }else {
                         this.armory = false;
+                        this.selected = 1;
                     }
                 } else {
                     overWorld.inCharacterSelect = false;
