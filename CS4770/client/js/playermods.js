@@ -343,6 +343,9 @@ class CharacterSelect {
         this.characters = characters;
         this.texts = texts;
 
+        this.background = new Image();
+        this.background.src = "../resources/lodgeBackground.png";
+
         this.img = new Image();
         this.img.src = "../resources/TextBox.png";
         this.width = 0;
@@ -359,10 +362,16 @@ class CharacterSelect {
 
     openHouse() {
         var ctx = canvas.getContext("2d");
-        ctx.font = "15px sans-serif";
+        ctx.drawImage(this.background, 0, 0);
+
         if (this.characterSelect) {
+            ctx.globalAlpha = 0.9;
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight / 2);
+            this.resetStyle(ctx);
             this.openCharacters(ctx);
         } else if (this.armory) {
+
             this.openArmory(ctx);
         } else {
             this.mainMenu(ctx);
@@ -380,8 +389,17 @@ class CharacterSelect {
             ctx.fillText(t, canvas.width / 2 + offSet + (this.width - ctx.measureText(t).width) / 2, canvas.height / 2 - this.height + this.height / 2);
             offSet += this.width * 2;
         }
-        ctx.fillText("V", canvas.width / 2 - this.width + (this.selected * this.width * 2), canvas.height / 2 - this.height - this.height / 2);
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = "white";
+        ctx.fillRect(canvas.width / 2 - this.width - this.width/2 + (this.selected * this.width * 2), canvas.height / 2 - this.height, this.width, this.height);
+        this.resetStyle(ctx);
     }
+    resetStyle(ctx) {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "black";
+        ctx.font = "15px sans-serif";
+    }
+
     //this is for selecting the characters
     openCharacters(ctx) {
         for (var char of this.characters) {
@@ -399,8 +417,10 @@ class CharacterSelect {
             }
         }
         //indicating which one is selected and making the description
-        ctx.fillText("V", canvas.width / 2 - this.width - this.width / 2 + this.width / 4 + (this.selected * (this.width + this.width / 4)), canvas.height / 2 - this.height - this.height / 2);
-        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = "white";
+        ctx.fillRect(canvas.width / 2 - this.width - this.width / 2 - this.width / 4 + (this.selected * (this.width + this.width/4)), canvas.height / 2 - this.height, this.width, this.height);
+        this.resetStyle(ctx);
         wrapText(ctx, this.characters[this.selected].description, 20, container.clientHeight / 2 + 150, container.clientWidth - 40, 20);
     }
 
@@ -420,9 +440,16 @@ class CharacterSelect {
 
             drawn++;
         }
-        if (!this.weaponSelected) {
-            ctx.fillText("<-", this.width + 5, ((this.selected) * this.height + this.height / 2));
-        } else {
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, this.selected * this.height, this.width, this.height);
+        this.resetStyle(ctx);
+        if (this.weaponSelected) {
+            ctx.globalAlpha = 0.6;
+            ctx.fillStyle = "white";
+            ctx.fillRect(this.width * 2, this.statSelected * this.height, this.width, this.height);
+            this.resetStyle(ctx);
+
             if (!this.impactSelect) {
                 this.openWeaponStats(ctx);
             } else {
@@ -466,13 +493,16 @@ class CharacterSelect {
         ctx.fillText(text, this.width * 2 + (this.width - ctx.measureText(text).width) / 2, (offSet * this.height + this.height / 2));
         ctx.fillText("<-", this.width * 2 + this.width + 5, ((this.statSelected) * this.height + this.height / 2));
 
-        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
         if (this.statSelected == 5 && this.player.equipped.indexOf(this.player.weapons[this.selected].id) == -1) {
             ctx.fillText("By equipping this weapon it will replace the weapon equipped in slot 1.", 20, container.clientHeight / 2 + 150);
         }
     }
     //for selecting which impact you want on a weapon
     openAvailableImpacts(ctx) {
+        ctx.globalAlpha = 0.9;
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight / 2);
+        this.resetStyle(ctx);
         for (var t of this.player.weapons[this.selected].availableImpact) {
             this.width = Math.max(this.width, ctx.measureText(t).width + 10);
         }
@@ -489,7 +519,6 @@ class CharacterSelect {
         if (this.player.weapons[this.selected].equippedImpact == this.player.weapons[this.selected].availableImpact[this.statSelected - 1]) {
             ctx.fillText("You current have this impact equipped", 20, container.clientHeight / 2 + 100);
         }
-        ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
         ctx.fillText(this.getImpactMessage(this.player.weapons[this.selected].availableImpact[this.statSelected - 1]), 20, container.clientHeight / 2 + 150);
 
     }
@@ -522,7 +551,6 @@ class CharacterSelect {
                 }
                 break;
             case "quit":
-                this.selected = 0;
                 if (this.characterSelect) {
                     this.characterSelect = false;
                 } else if (this.armory) {
