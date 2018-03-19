@@ -95,7 +95,7 @@
     }
 
     loadLevelsList.onclick = function () {
-        loadLevelsListFunct();
+        loadLevelsList();
     }
 
     //Story mode initialization
@@ -204,17 +204,23 @@
 
 
 
-    var loadLevelsListFunct = function () {
+    var loadLevelsList = function () {
         menuDiv.style.display = 'none';
-        /*
-        loadDB('levelsList', function (data) {
-            console.log(data);
-        });*/
+        
         var levelsList = document.getElementById('levelsList');
-        var levelRow = document.createElement("P");
-        var t = document.createTextNode("Desert      Brandon     March 1st, 2018");
-        levelRow.appendChild(t);
-        levelsList.appendChild(levelRow);
+        loadDB('level', function (data) {
+            levels[] = data;
+            for (var level of data) {
+                var levelName = level.name;
+                var author = level.user;
+                var dateCreated = level.dateCreated;
+
+                var levelRow = document.createElement("P");
+                var t = document.createTextNode(levelName + "   " + "  " + author + "  " + " " + dateCreated);
+                levelRow.appendChild(t);
+                levelsList.appendChild(levelRow);
+            }
+        });
     }
 
 
