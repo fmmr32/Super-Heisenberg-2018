@@ -4,8 +4,8 @@
             this[obj] = options[obj];
         }
         this.width = 0;
-        this.selected = 1;
         this.impactSelected = false;
+        this.select = 1;
         this.impactSelect = 0;
         this.impacts = [];
         this.texts = texts;
@@ -16,15 +16,22 @@
             }
         }
 
-        this.ignored = ["texts","width", "selected", "ignored", "impacts", "id", "impactSelect", "impactSelected"];
+        this.ignored = ["texts", "width", "select", "ignored", "impacts", "id", "impactSelect", "impactSelected"];
     }
     //gui stuff for the item store
     drawItem(ctx, img, width, height, player) {
+
+        this.drawMain(ctx, img, width, height, player);
+
         if (this.impactSelected) {
             this.drawImpacts(ctx, img, width, height, player);
-        } else {
-            this.drawMain(ctx, img, width, height, player);
         }
+          
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = "white";
+        ctx.fillRect(width * 2, this.select * height, this.width, height);
+        this.resetStyle(ctx);
+
     }
     //draws the different kinds of impacts
     drawImpacts(ctx, img, width, height, player) {
@@ -33,16 +40,20 @@
         }
         var offSet = 0;
         for (var impacts of this.impacts) {
-            ctx.drawImage(img, 0, 0, img.width, img.height, width * 2, offSet * height, this.width, height);
+            ctx.drawImage(img, 0, 0, img.width, img.height, width * 3 + this.width, offSet * height, this.width, height);
             var text = impacts;
-            ctx.fillText(text, width * 2 + (this.width - ctx.measureText(text).width) / 2, ((offSet) * height + height / 2));
+            ctx.fillText(text, width * 3 + this.width + (this.width - ctx.measureText(text).width) / 2, ((offSet) * height + height / 2));
             offSet++;
         }
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = "white";
+        ctx.fillRect(width * 3 + this.width, this.impactSelect * height, this.width, height);
+        this.resetStyle(ctx);
+
 
         ctx.fillText(this.getImpactMessage(this.impacts[this.impactSelect]) + ". ", 20, container.clientHeight / 2 + 150);
 
         ctx.fillText(this.getMessage(this.getImpactValue(this.impacts[this.impactSelect], weapons.get(this.id).name), player, true, this.impacts[this.impactSelect]), 20, container.clientHeight / 2 + 200);
-        ctx.fillText("<-", width * 2 + this.width + 5, ((this.impactSelect) * height + height / 2));
     }
 
     //gets the impact message
@@ -89,12 +100,12 @@
                 offSet++;
             }
         }
-        ctx.fillText("<-", width * 2 + this.width + 5, ((this.selected) * height + height / 2));
-        if (Object.keys(this)[this.selected] != "impact") {
-            var value = this[Object.keys(this)[this.selected]] * (Object.keys(this)[this.selected] == "damage" ? this.getWeapon(this.id, player).damageMult : this.getWeapon(this.id, player).speedMult);
-            ctx.fillText("Your " + Object.keys(this)[this.selected] + " is: " + value.toFixed(2), 20, container.clientHeight / 2 + 150);
+        //change this
+        if (Object.keys(this)[this.select] != "impact") {
+            var value = this[Object.keys(this)[this.select]] * (Object.keys(this)[this.select] == "damage" ? this.getWeapon(this.id, player).damageMult : this.getWeapon(this.id, player).speedMult);
+            ctx.fillText("Your " + Object.keys(this)[this.select] + " is: " + value.toFixed(2), 20, container.clientHeight / 2 + 150);
             ctx.fillText(this.getMessage(value, player), 20, container.clientHeight / 2 + 200);
-        } else {
+        } else if (!this.impactSelected){
             ctx.fillText("For available impact upgrades press next.", 20, container.clientHeight / 2 + 150);
         }
 
@@ -103,7 +114,7 @@
     getMessage(value, player, impact, type) {
         if (!impact) {
             if (this.canBuy(Math.ceil(value * 1.2 * 3), player)) {
-                return this.texts.shop.canBuy.upgrade.replace("%value%", (value * 1.2).toFixed(2)).replace("%price%",Math.ceil(value * 1.2 * 3));
+                return this.texts.shop.canBuy.upgrade.replace("%value%", (value * 1.2).toFixed(2)).replace("%price%", Math.ceil(value * 1.2 * 3));
             } else {
                 return this.texts.shop.noBuy.upgrade.replace("%price%", Math.ceil(value * 1.2 * 3));
             }
@@ -128,10 +139,10 @@
     //sets the right selected item
     setSelectItem(d) {
         if (!this.impactSelected) {
-            if (this.selected + d >= Object.keys(this).length - (this.ignored.length) || this.selected + d < 1) {
+            if (this.select + d >= Object.keys(this).length - (this.ignored.length) || this.select + d < 1) {
                 return false;
             }
-            this.selected += d;
+            this.select += d;
         } else {
             if (this.impactSelect + d >= Object.keys(this.impacts).length || this.impactSelect + d < 0) {
                 return false;
@@ -142,7 +153,7 @@
 
     //handles weapon upgrade purchases
     handlePurchase(player) {
-        if (Object.keys(this)[this.selected] == "impact") {
+        if (Object.keys(this)[this.select] == "impact") {
             if (!this.impactSelected) {
                 this.impactSelected = true;
             } else {
@@ -154,10 +165,10 @@
                 this.getWeapon(this.id, player).availableImpact.push(i);
             }
         } else {
-            var value = Math.ceil(this[Object.keys(this)[this.selected]] * 1.2 * 3);
+            var value = Math.ceil(this[Object.keys(this)[this.select]] * 1.2 * 3);
             if (this.canBuy(value, player)) {
                 player.money -= value;
-                if (Object.keys(this)[this.selected] == "damage") {
+                if (Object.keys(this)[this.select] == "damage") {
                     this.getWeapon(this.id, player).damageMult = (this.getWeapon(this.id, player).damageMult * 1.2).toFixed(2);
                 } else {
                     this.getWeapon(this.id, player).speedMult = (this.getWeapon(this.id, player).speedMult * 1.2).toFixed(2);
@@ -166,6 +177,11 @@
 
             }
         }
+    }
+    resetStyle(ctx) {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "black";
+        ctx.font = "15px sans-serif";
     }
 }
 
@@ -182,6 +198,9 @@ class Shop {
         this.img = new Image();
         this.img.src = "../resources/TextBox.png";
 
+        this.background = new Image();
+        this.background.src = "../resources/gunstoreBackground.png";
+
         this.offSet = 0;
         this.itemSelected = false;
     }
@@ -191,10 +210,22 @@ class Shop {
     }
 
 
+    resetStyle(ctx) {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "black";
+        ctx.font = "15px sans-serif";
+    }
+
     openShop() {
         this.checkWidth();
         var ctx = canvas.getContext("2d");
-        ctx.font = "15px sans-serif";
+        ctx.drawImage(this.background, 0, 0);
+
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2-50);
+        this.resetStyle(ctx);
+
         var drawn = 0;
         for (var i = this.offSet; i < this.items.length && drawn < 10; i++) {
 
@@ -206,16 +237,15 @@ class Shop {
             drawn++;
             //draw for the menu stuff;
 
-
-            ctx.strokeRect(0, container.clientHeight / 2 + 50, container.clientWidth, container.clientHeight/2);
             ctx.fillText("This is the " + this.items[this.selected + this.offSet].name + ". " + this.getMessage(this.items[this.selected + this.offSet].id), 20, container.clientHeight / 2 + 100);
 
         }
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, this.selected * this.height, this.width, this.height);
+        this.resetStyle(ctx);
 
-
-        if (!this.itemSelected) {
-            this.mainMenu(ctx);
-        } else {
+        if (this.itemSelected) {
             this.items[this.selected].drawItem(ctx, this.img, this.width, this.height, this.player);
         }
 
@@ -289,7 +319,7 @@ class Shop {
                         //buys the weapon for the player
                         if (!this.itemSelected) {
                             this.player.money -= weapons.get(this.items[this.selected + this.offSet].id).price;
-                            this.player.weapons.push({ id: this.items[this.selected + this.offSet].id, damageMult: 1, speedMult: 1, equippedImpact: weapons.get(this.items[this.selected + this.offSet].id).impact, availableImpact: weapons.get(this.items[this.selected + this.offSet].id).impactUpgrades});
+                            this.player.weapons.push({ id: this.items[this.selected + this.offSet].id, damageMult: 1, speedMult: 1, equippedImpact: weapons.get(this.items[this.selected + this.offSet].id).impact, availableImpact: weapons.get(this.items[this.selected + this.offSet].id).impactUpgrades });
                         }
                     }
                     //handles the item upgrades
@@ -305,6 +335,7 @@ class Shop {
                         this.items[this.selected + this.offSet].impactSelected = false;
                     } else {
                         this.itemSelected = false;
+                        this.items[this.selected + this.offSet].select = 1;
                     }
                 } else {
                     overWorld.inShop = false;
@@ -389,9 +420,9 @@ class CharacterSelect {
             ctx.fillText(t, canvas.width / 2 + offSet + (this.width - ctx.measureText(t).width) / 2, canvas.height / 2 - this.height + this.height / 2);
             offSet += this.width * 2;
         }
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = 0.6;
         ctx.fillStyle = "white";
-        ctx.fillRect(canvas.width / 2 - this.width - this.width/2 + (this.selected * this.width * 2), canvas.height / 2 - this.height, this.width, this.height);
+        ctx.fillRect(canvas.width / 2 - this.width - this.width / 2 + (this.selected * this.width * 2), canvas.height / 2 - this.height, this.width, this.height);
         this.resetStyle(ctx);
     }
     resetStyle(ctx) {
@@ -419,7 +450,7 @@ class CharacterSelect {
         //indicating which one is selected and making the description
         ctx.globalAlpha = 0.5;
         ctx.fillStyle = "white";
-        ctx.fillRect(canvas.width / 2 - this.width - this.width / 2 - this.width / 4 + (this.selected * (this.width + this.width/4)), canvas.height / 2 - this.height, this.width, this.height);
+        ctx.fillRect(canvas.width / 2 - this.width - this.width / 2 - this.width / 4 + (this.selected * (this.width + this.width / 4)), canvas.height / 2 - this.height, this.width, this.height);
         this.resetStyle(ctx);
         wrapText(ctx, this.characters[this.selected].description, 20, container.clientHeight / 2 + 150, container.clientWidth - 40, 20);
     }
@@ -440,21 +471,20 @@ class CharacterSelect {
 
             drawn++;
         }
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = 0.6;
         ctx.fillStyle = "white";
         ctx.fillRect(0, this.selected * this.height, this.width, this.height);
         this.resetStyle(ctx);
         if (this.weaponSelected) {
-            ctx.globalAlpha = 0.6;
-            ctx.fillStyle = "white";
-            ctx.fillRect(this.width * 2, this.statSelected * this.height, this.width, this.height);
-            this.resetStyle(ctx);
-
             if (!this.impactSelect) {
                 this.openWeaponStats(ctx);
             } else {
                 this.openAvailableImpacts(ctx);
             }
+            ctx.globalAlpha = 0.6;
+            ctx.fillStyle = "white";
+            ctx.fillRect(this.width * 2, this.statSelected * this.height, this.width, this.height);
+            this.resetStyle(ctx);
         }
     }
     //for selecting the stats, mostly just overlooking what you have
@@ -488,10 +518,9 @@ class CharacterSelect {
             ctx.fillText(text, this.width * 2 + (this.width - ctx.measureText(text).width) / 2, (offSet * this.height + this.height / 2));
             offSet++;
         }
-        var text = this.player.equipped.indexOf(this.player.weapons[this.selected].id) != -1 ? "Equipped in slot: " + (this.player.equipped.indexOf(this.player.weapons[this.selected].id) +1) : "Equip";
+        var text = this.player.equipped.indexOf(this.player.weapons[this.selected].id) != -1 ? "Equipped in slot: " + (this.player.equipped.indexOf(this.player.weapons[this.selected].id) + 1) : "Equip";
         ctx.drawImage(this.img, 0, 0, this.img.width, this.img.height, this.width * 2, offSet * this.height, this.width, this.height);
         ctx.fillText(text, this.width * 2 + (this.width - ctx.measureText(text).width) / 2, (offSet * this.height + this.height / 2));
-        ctx.fillText("<-", this.width * 2 + this.width + 5, ((this.statSelected) * this.height + this.height / 2));
 
         if (this.statSelected == 5 && this.player.equipped.indexOf(this.player.weapons[this.selected].id) == -1) {
             ctx.fillText("By equipping this weapon it will replace the weapon equipped in slot 1.", 20, container.clientHeight / 2 + 150);
@@ -560,7 +589,7 @@ class CharacterSelect {
                         this.statSelected = 4
                     } else if (this.weaponSelected) {
                         this.weaponSelected = false;
-                    }else {
+                    } else {
                         this.armory = false;
                         this.selected = 1;
                     }
