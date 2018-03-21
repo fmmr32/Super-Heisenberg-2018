@@ -2,10 +2,10 @@
 <HEAD>
 <STYLE>
 	body{
-	background-image: url(loginScreen.png);
+	background-image: url(resources/loginScreen.png);
 	background-repeat: no-repeat;
-    background-size: auto;
-    background-position: center; 
+    	background-size: auto;
+    	background-position: center; 
 	}
 
 	div {
@@ -53,25 +53,25 @@
 	}
 	
 	th, td {
-    padding: 5px;
-    text-align: left;
-    color: rgb(245,202,70);
-    font:bold;
+    	padding: 5px;
+    	text-align: left;
+    	color: rgb(245,202,70);
+    	font:bold;
 	}
 
 	tr:nth-child(even) {
-    background-color: #484848;
+    	background-color: #484848;
 	}
 
 	tr:nth-child(odd) {
-    background-color: #383838;
+    	background-color: #383838;
 	}
 	
 	th {
-    background-color: rgb(245,202,70);
-    font: bolder;
-    font-size: 24;
-    color: rgb(219,50,100);
+   	background-color: rgb(245,202,70);
+    	font: bolder;
+    	font-size: 24;
+    	color: rgb(219,50,100);
 	}
 
 	table#holder{
@@ -98,7 +98,7 @@
 
 
 
-	.container{
+	.menuContainer{
 		display: table;
 		height: 100%;
 		width: 100%;
@@ -118,7 +118,7 @@
     	background-color: #484848;
 	}
 
-	#main{
+	#mainMenu{
 		display: none;
 		vertical-align: middle;
 		padding-top: 100px;
@@ -321,417 +321,417 @@
 
 
 
-<div class=container>
+    <div class=menuContainer>
 
-	<div id="signDiv">
-        <p>Username:</p> 
-        <input id="signDiv-username" type="text"><br>
-        <p>Password:</p> 
-        <input id="signDiv-password" type+"password"><br>
-        <button id="signDiv-signIn">Sign in</button>
-        <button id="signDiv-signUp">Sign up</button> 
-        <button id="skipSign">Play Offline</button>
+        <div id="signDiv">
+            <p>Username:</p>
+            <input id="signDiv-username" type="text"><br>
+            <p>Password:</p>
+            <input id="signDiv-password" type+"password"><br>
+            <button id="signDiv-signIn">Sign in</button>
+            <button id="signDiv-signUp">Sign up</button>
+            <button id="skipSign">Play Offline</button>
+        </div>
+
+
+
+        <div id='mainMenu'>
+
+            <div id='top'>
+                <img src='resources/Play.png' id='Play' onclick='playOptions()' '></img>
+            </div>
+
+            <div id='other'>
+                <img src='resources/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
+            </div>
+
+            <div id='other'>
+                <img src='resources/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
+            </div>
+
+            <div id='bottom'>
+                <img src='resources/Options.png' id='Options' onclick='options()'></img>
+            </div>
+
+        </div>
+
+
+        <div id='playOptions'>
+
+            <div id='top'>
+                <img src='resources/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
+            </div>
+
+            <div id='other'>
+                <img src='resources/LoadGame.png' id='LoadGame'></img>
+            </div>
+
+            <div id='bottom'>
+                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+            </div>
+
+        </div>
+
+        <div id='levelEditorOptions'>
+
+            <div id='top'>
+                <img src='resources/NewLevel.png' id='NewLevel'></img>
+            </div>
+
+            <div id='other'>
+                <img src='resources/LoadLevel.png' id='LoadLevel'></img>
+            </div>
+
+            <div id='bottom'>
+                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+            </div>
+
+        </div>
+
+        <div id='levelBrowser'>
+
+            <table id='holder'>
+                <tr>
+                    <td>
+                        <table id='title'>
+                            <col width="395">
+                            <col width="200">
+                            <col width="200">
+                            <tr>
+                                <th><img src='resources/Title.png' id='left'></img></th>
+                                <th><img src='resources/Author.png' id='left'></img></th>
+                                <th><img src='resources/Created-On.png' id='left'></img></th>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id='scroll'>
+                            <table id='level'>
+                                <col width="400">
+                                <col width="200">
+                                <col width="200">
+                                <tbody>
+                                    <tr>
+                                        <td>Level 1</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 2</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 3</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 4</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 5</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 6</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 7</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 8</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 9</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 10</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 11</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 12</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 13</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 14</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 15</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 16</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 17</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 18</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 19</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level 20</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <div id='bottom'>
+                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+            </div>
+        </div>
+
+
+        <div id=settings>
+
+            <table id='gameSettings'>
+                <col width="600">
+                <col width="200">
+                <tr id="sliders">
+                    <td colspan="2"></td>
+
+                </tr>
+                <tr>
+                    <td>Jump</td>
+                    <td>Space</td>
+                </tr>
+            </table>
+
+
+            <br>
+            <img src='resources/Back.png' id='Back' onclick='back()'></img>
+        </div>
+        <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; " />
     </div>
 
-
-	<div id='main'>
-		
-		<div id='top'>
-			<img src='resources/Play.png' id='Play' onclick='playOptions()''></img>
-		</div>
-
-		<div id='other'>
-			<img src='resources/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
-		</div>
-	
-		<div id='other'>
-			<img src='resources/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
-		</div>
-	
-		<div id='bottom'>
-			<img src='resources/Options.png' id='Options' onclick='options()'></img>		
-		</div>
-	
-	</div>
-
-
-	<div id='playOptions'>
-	
-		<div id='top'>
-			<img src='resources/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
-		</div>
-		
-		<div id='other'>
-			<img src='resources/LoadGame.png' id='LoadGame'></img>
-		</div>
-	
-		<div id='bottom'>
-			<img src='resources/Back.png' id='Back' onclick='back()'></img>
-		</div>
-	
-	</div>	
-
-	<div id='levelEditorOptions'>
-	
-		<div id='top'>
-			<img src='resources/NewLevel.png' id='NewLevel'></img>
-		</div>
-	
-		<div id='other'>
-			<img src='resources/LoadLevel.png' id='LoadLevel'></img>
-		</div>
-	
-		<div id='bottom'>
-			<img src='resources/Back.png' id='Back' onclick='back()'></img>
-		</div>
-	
-	</div>	
-
-	<div id='levelBrowser'>
-
-		<table id='holder'>
-			<tr>
-				<td>
-					<table id='title'>
-						<col width="395">
-						<col width="200">
-						<col width="200">
-  						<tr>
-    						<th><img src='resources/Title.png' id='left'></img></th>
-    						<th><img src='resources/Author.png' id='left'></img></th> 
-    						<th><img src='resources/Created-On.png' id='left'></img></th>
-  						</tr>
-  					</table>
-  				</td>
-  			</tr>
-  			<tr>
-  				<td>
-  					<div id='scroll'>
-  						<table id='level'>
-  							<col width="400">
-							<col width="200">
-							<col width="200">
-							<tbody>
-				  			<tr>
-				    			<td>Level 1</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 2</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 3</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 4</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 5</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 6</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 7</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 8</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 9</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 10</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 11</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 12</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 13</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 14</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 15</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 16</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 17</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 18</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 19</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  			<tr>
-				    			<td>Level 20</td>
-				    			<td>The Wizard</td>
-				    			<td>March 5th</td>
-				  			</tr>
-				  		</tbody>
-				  		</table>
-				  	</div>
-				</td>
-			</tr>
-		</table>
-		<br>
-		<div id='bottom'>
-			<img src='resources/Back.png' id='Back' onclick='back()'></img>
-		</div>
-	</div>
-
-
-	<div id=settings>
-
-		<table id= 'gameSettings'>
-			<col width="600">
-			<col width="200">
-			<tr id="sliders">
-				<td colspan="2">
-				</td>		
-
-			</tr>
-			<tr>
-				<td>Jump</td>
-				<td>Space</td>
-			</tr>
-		</table>
-
-
-		<br>
-		<img src='resources/Back.png' id='Back' onclick='back()'></img>
-	</div>	
-</div>
-
 <div class=side>
-	
-	<div id='buttons'>
-		<img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
-		<img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
-		<img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
-	</div>
 
-	<hr noshade>
+    <div id='buttons'>
+        <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
+        <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
+        <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
+    </div>
 
-	<div id='tiles'>
-		<table id= 'select'>
-			<tbody>
-			<tr>
-				<td>a</td>
-				<td>b</td>
-				<td>c</td>
-			</tr>
-			<tr>
-				<td>d</td>
-				<td>e</td>
-				<td>f</td>
-			</tr>
-			<tr>
-				<td>g</td>
-				<td>h</td>
-				<td>i</td>
-			</tr>
-			<tr>
-				<td>a</td>
-				<td>b</td>
-				<td>c</td>
-			</tr>
-			<tr>
-				<td>d</td>
-				<td>e</td>
-				<td>f</td>
-			</tr>
-			<tr>
-				<td>g</td>
-				<td>h</td>
-				<td>i</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
+    <hr noshade>
 
-	<div id='creature'>
-		<table id= 'select'>
-			<tbody>
-			<tr>
-				<td>1</td>
-				<td>2</td>
-				<td>3</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-			</tr>
-			<tr>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>2</td>
-				<td>3</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-			</tr>
-			<tr>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
+    <div id='tiles'>
+        <table id='select'>
+            <tbody>
+                <tr>
+                    <td>a</td>
+                    <td>b</td>
+                    <td>c</td>
+                </tr>
+                <tr>
+                    <td>d</td>
+                    <td>e</td>
+                    <td>f</td>
+                </tr>
+                <tr>
+                    <td>g</td>
+                    <td>h</td>
+                    <td>i</td>
+                </tr>
+                <tr>
+                    <td>a</td>
+                    <td>b</td>
+                    <td>c</td>
+                </tr>
+                <tr>
+                    <td>d</td>
+                    <td>e</td>
+                    <td>f</td>
+                </tr>
+                <tr>
+                    <td>g</td>
+                    <td>h</td>
+                    <td>i</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-	<div id='entity'>
-		<table id= 'select'>
-			<tbody>
-			<tr>
-				<td>A</td>
-				<td>B</td>
-				<td>C</td>
-			</tr>
-			<tr>
-				<td>D</td>
-				<td>E</td>
-				<td>F</td>
-			</tr>
-			<tr>
-				<td>G</td>
-				<td>H</td>
-				<td>I</td>
-			</tr>
-			<tr>
-				<td>A</td>
-				<td>B</td>
-				<td>C</td>
-			</tr>
-			<tr>
-				<td>D</td>
-				<td>E</td>
-				<td>F</td>
-			</tr>
-			<tr>
-				<td>G</td>
-				<td>H</td>
-				<td>I</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
+    <div id='creature'>
+        <table id='select'>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-	<hr noshade>
+    <div id='entity'>
+        <table id='select'>
+            <tbody>
+                <tr>
+                    <td>A</td>
+                    <td>B</td>
+                    <td>C</td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td>E</td>
+                    <td>F</td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>H</td>
+                    <td>I</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>B</td>
+                    <td>C</td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td>E</td>
+                    <td>F</td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>H</td>
+                    <td>I</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-	<table id= 'inputs'>
-		<tr>
-			<td>
-				 <h5>Character Select:</h5>
-				 <select id="character" onchange="selectCharacter()">
-    				<option value="Heisenberg">Heisenberg</option>
-    				<option value="Jessie">Jessie</option>
-    				<option value="Hank">Hank</option>
-  				</select>
-			</td>
-		</tr>
+    <hr noshade>
 
-		<tr>
-			<td>
-				<h5>Background:</h5>
-				<select id="background" onchange="setBackground(this)">
-    				<option value="B1">B1</option>
-    				<option value="B2">B2</option>
-    				<option value="B3">B3</option>
-  				</select>
-  			</td>	
-		</tr>
+    <table id='inputs'>
+        <tr>
+            <td>
+                <h5>Character Select:</h5>
+                <select id="character" onchange="selectCharacter()">
+                    <option value="Heisenberg">Heisenberg</option>
+                    <option value="Jessie">Jessie</option>
+                    <option value="Hank">Hank</option>
+                </select>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
-				<h5>Map Width:</h5>
-				<input type="number" name="width" min="0" max="" onchange="setWidth(this.value)"> <!–– Set Max ––>
-			</td>
-		</tr>
+        <tr>
+            <td>
+                <h5>Background:</h5>
+                <select id="background" onchange="setBackground(this)">
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="B3">B3</option>
+                </select>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
-				<h5>Map Height:</h5>
-				<input type="number" name="height" min="0" max="" onchange="setHeight(this.value)"> <!–– Set Max ––>
-			</td>
-		</tr>
+        <tr>
+            <td>
+                <h5>Map Width:</h5>
+                <input type="number" name="width" min="0" max="" onchange="setWidth(this.value)"> <!–– Set Max ––>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
-				<h5>Spawn Point (X-Coordinate):</h5>
-				<input type="number" name="X" min="0" max="" onchange="setSpawnX(this.value)"> <!–– Set Max ––>
-				<br>
-			</td>
-		</tr>
+        <tr>
+            <td>
+                <h5>Map Height:</h5>
+                <input type="number" name="height" min="0" max="" onchange="setHeight(this.value)"> <!–– Set Max ––>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
-				<h5>Spawn Point (Y-Coordinate):</h5>
-				<input type="number" name="Y" min="0" max="" onchange="setSpawnY(this.value)"> <!–– Set Max ––>
-				<br>	
-			</td>
-		</tr>
+        <tr>
+            <td>
+                <h5>Spawn Point (X-Coordinate):</h5>
+                <input type="number" name="X" min="0" max="" onchange="setSpawnX(this.value)"> <!–– Set Max ––>
+                <br>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
-				<h5>Gravity:</h5>
-				<input type="number" name="gravity" min="0" max="20" onchange="setGravity(this.value)"> <!–– Set Max ––>
-			</td>
-		</tr>
+        <tr>
+            <td>
+                <h5>Spawn Point (Y-Coordinate):</h5>
+                <input type="number" name="Y" min="0" max="" onchange="setSpawnY(this.value)"> <!–– Set Max ––>
+                <br>
+            </td>
+        </tr>
 
-
-	</table>
+        <tr>
+            <td>
+                <h5>Gravity:</h5>
+                <input type="number" name="gravity" min="0" max="20" onchange="setGravity(this.value)"> <!–– Set Max ––>
+            </td>
+        </tr>
+    </table>
+    
 </div>
 
 
@@ -750,7 +750,7 @@
 
 
 <script type="text/javascript">
-
+    var sizeSettings = [1280, 720];
 	var socket = io();
     
     //login menu
@@ -764,13 +764,13 @@
     signDivSignIn.onclick = function () {
         socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
         document.getElementById("signDiv").style.display = "none";
-        document.getElementById("main").style.display = "table-cell";
+        document.getElementById("mainMenu").style.display = "table-cell";
     }
 
     signDivSignUp.onclick = function () {
         socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value });
         document.getElementById("signDiv").style.display = "none";
-        document.getElementById("main").style.display = "table-cell";
+        document.getElementById("mainMenu").style.display = "table-cell";
     }
 
     socket.on('signInResponse', function (data) {
@@ -796,7 +796,7 @@
 
 
 	function playOptions(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("playOptions").style.display = "table-cell";
 	}
 
@@ -805,17 +805,17 @@
 	}
 
 	function levelBrowser(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("levelBrowser").style.display = "table-cell";
 	}
 
 	function levelEditorOptions(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("levelEditorOptions").style.display = "table-cell";
 	}
 
 	function options(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("settings").style.display = "table-cell";
 	}
 
@@ -824,7 +824,7 @@
 		document.getElementById("levelEditorOptions").style.display = "none";
 		document.getElementById("levelBrowser").style.display = "none";
 		document.getElementById("settings").style.display = "none";
-		document.getElementById("main").style.display = "table-cell";	
+		document.getElementById("mainMenu").style.display = "table-cell";	
 	}
 
 	function tilesOptions(){
@@ -878,22 +878,22 @@
 
 
 
-	//loadLevelsList.onclick = function () {
+    //loadLevelsList.onclick = function () {
     //    loadLevelsListFunct();
     //}
     //Story mode initialization
     //storyMode.onclick = function () {
     //    loadUserDatabase();
     //}
-    //Test database
- //    testDatabase.onclick = function () {
- //        testDatabaseFunct();
- //    }
+    	//Test database
+ 	//    testDatabase.onclick = function () {
+ 	//        testDatabaseFunct();
+ 	//    }
 	
 	// pushtodatabase.onclick = function () {
 	// 	pushdatabasefunct();
 	// }
-    //game
+    	//game
 
     var canvas;
     var container = document.getElementById("gameDiv");
@@ -1104,14 +1104,6 @@
         seconds = (seconds < 10) ? "0" + seconds : seconds;
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
-
-
-
-
-
-
-
-
 
 </script>	
 

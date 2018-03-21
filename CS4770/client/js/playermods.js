@@ -102,10 +102,10 @@
         }
         if (Object.keys(this)[this.select] != "impact") {
             var value = this[Object.keys(this)[this.select]] * (Object.keys(this)[this.select] == "damage" ? this.getWeapon(this.id, player).damageMult : this.getWeapon(this.id, player).speedMult);
-            ctx.fillText(this.texts.currentValue.replace("%type%",Object.keys(this)[this.select]).replace("%value%",value.toFixed(2)), 20, container.clientHeight / 2 + 150);
+            ctx.fillText(this.texts.shop.currentValue.replace("%type%",Object.keys(this)[this.select]).replace("%value%",value.toFixed(2)), 20, container.clientHeight / 2 + 150);
             ctx.fillText(this.getMessage(value, player), 20, container.clientHeight / 2 + 200);
         } else if (!this.impactSelected){
-            ctx.fillText(this.texts.toImpactUpgrade, 20, container.clientHeight / 2 + 150);
+            ctx.fillText(this.texts.shop.toImpactUpgrade, 20, container.clientHeight / 2 + 150);
         }
 
     }
