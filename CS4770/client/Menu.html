@@ -4,8 +4,8 @@
 	body{
 	background-image: url(resources/loginScreen.png);
 	background-repeat: no-repeat;
-    background-size: auto;
-    background-position: center; 
+    	background-size: auto;
+    	background-position: center; 
 	}
 
 	div {
@@ -53,25 +53,25 @@
 	}
 	
 	th, td {
-    padding: 5px;
-    text-align: left;
-    color: rgb(245,202,70);
-    font:bold;
+    	padding: 5px;
+    	text-align: left;
+    	color: rgb(245,202,70);
+    	font:bold;
 	}
 
 	tr:nth-child(even) {
-    background-color: #484848;
+    	background-color: #484848;
 	}
 
 	tr:nth-child(odd) {
-    background-color: #383838;
+    	background-color: #383838;
 	}
 	
 	th {
-    background-color: rgb(245,202,70);
-    font: bolder;
-    font-size: 24;
-    color: rgb(219,50,100);
+   	background-color: rgb(245,202,70);
+    	font: bolder;
+    	font-size: 24;
+    	color: rgb(219,50,100);
 	}
 
 	table#holder{
@@ -98,7 +98,7 @@
 
 
 
-	.container{
+	.menuContainer{
 		display: table;
 		height: 100%;
 		width: 100%;
@@ -118,7 +118,7 @@
     	background-color: #484848;
 	}
 
-	#main{
+	#mainMenu{
 		display: none;
 		vertical-align: middle;
 		padding-top: 100px;
@@ -321,7 +321,7 @@
 
 
 
-<div class=container>
+<div class=menuContainer>
 
 	<div id="signDiv">
         <p>Username:</p> 
@@ -334,7 +334,7 @@
     </div>
 
 
-	<div id='main'>
+	<div id='mainMenu'>
 		
 		<div id='top'>
 			<img src='resources/Play.png' id='Play' onclick='playOptions()''></img>
@@ -729,8 +729,6 @@
 				<input type="number" name="gravity" min="0" max="20" onchange="setGravity(this.value)"> <!–– Set Max ––>
 			</td>
 		</tr>
-
-
 	</table>
 </div>
 
@@ -763,13 +761,13 @@
     signDivSignIn.onclick = function () {
         socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
         document.getElementById("signDiv").style.display = "none";
-        document.getElementById("main").style.display = "table-cell";
+        document.getElementById("mainMenu").style.display = "table-cell";
     }
 
     signDivSignUp.onclick = function () {
         socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value });
         document.getElementById("signDiv").style.display = "none";
-        document.getElementById("main").style.display = "table-cell";
+        document.getElementById("mainMenu").style.display = "table-cell";
     }
 
     socket.on('signInResponse', function (data) {
@@ -795,7 +793,7 @@
 
 
 	function playOptions(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("playOptions").style.display = "table-cell";
 	}
 
@@ -804,17 +802,17 @@
 	}
 
 	function levelBrowser(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("levelBrowser").style.display = "table-cell";
 	}
 
 	function levelEditorOptions(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("levelEditorOptions").style.display = "table-cell";
 	}
 
 	function options(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("settings").style.display = "table-cell";
 	}
 
@@ -823,7 +821,7 @@
 		document.getElementById("levelEditorOptions").style.display = "none";
 		document.getElementById("levelBrowser").style.display = "none";
 		document.getElementById("settings").style.display = "none";
-		document.getElementById("main").style.display = "table-cell";	
+		document.getElementById("mainMenu").style.display = "table-cell";	
 	}
 
 	function tilesOptions(){
@@ -877,22 +875,22 @@
 
 
 
-	//loadLevelsList.onclick = function () {
+    //loadLevelsList.onclick = function () {
     //    loadLevelsListFunct();
     //}
     //Story mode initialization
     //storyMode.onclick = function () {
     //    loadUserDatabase();
     //}
-    //Test database
- //    testDatabase.onclick = function () {
- //        testDatabaseFunct();
- //    }
+    	//Test database
+ 	//    testDatabase.onclick = function () {
+ 	//        testDatabaseFunct();
+ 	//    }
 	
 	// pushtodatabase.onclick = function () {
 	// 	pushdatabasefunct();
 	// }
-    //game
+    	//game
 
     var canvas;
     var container = document.getElementById("gameDiv");
@@ -1103,14 +1101,6 @@
         seconds = (seconds < 10) ? "0" + seconds : seconds;
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
-
-
-
-
-
-
-
-
 
 </script>	
 
