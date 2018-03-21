@@ -443,6 +443,8 @@ function loadTiles() {
         }
         //adding a new cell at the index of the column
         var cell = row.insertCell(column);
+        cell.onclick = function () {//insert whatever function handled the tiles selection here}
+        }
         //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
         //this should all work
         var img = document.createElement("img");
