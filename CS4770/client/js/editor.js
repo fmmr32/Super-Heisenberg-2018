@@ -118,8 +118,8 @@ var elem = "Content";
 
 document.addEventListener("mousemove", onMouseMove, false);
 img.src = 'tileset.png';
-	
 
+    
 		
 
 function setup()
@@ -129,11 +129,7 @@ function setup()
 	
 }		
 		
-  ////for Kennedy
-    //loadJSONFile(function (response) {
-    //    loadSprites(response, canvas);
-    //}, "../client/resources/tiles.json");
-
+ 
 		
 function StartEditor()
 {
@@ -429,5 +425,35 @@ function placeTile()
 };
 
 }
-	
+//so this is going to dynamically add the tiles to the table
+function loadTiles() {
+    //this is the table we are using
+    var table = document.getElementById("tiles").children[0];
+    var column = 0;
+    var row;
+    for (var id of sprites) {
+        var sprite = id[1];
+        //just making sure we are only doing the tiles
+        if (sprite.id > 400) {
+            break;
+        }
+        //adding a new row
+        if (column == 0) {
+            row = table.insertRow(0);
+        }
+        //adding a new cell at the index of the column
+        var cell = row.insertCell(column);
+        //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
+        //this should all work
+        var img = document.createElement("img");
+        img.setAttribute("src", sprite.image.src);
+        img.setAttribute("id", sprite.id);
+        img.setAttribute("height", "32px");
+        img.setAttribute("width", "36px");
+        console.log(sprite.id);
+        cell.appendChild(img);
+        column++;
+        if (column == 3) { column = 0; }
+    }
+}
 	

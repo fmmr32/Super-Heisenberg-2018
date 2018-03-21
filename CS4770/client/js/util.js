@@ -12,7 +12,6 @@
         body += "}";
         //replacacing the value for a function
         this.function = new Function(this.function.arguments, body);
-        console.log(this);
         this.image;
     }
     //making a popup
