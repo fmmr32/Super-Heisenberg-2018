@@ -118,7 +118,7 @@
     	background-color: #484848;
 	}
 
-	#main{
+	#mainMenu{
 		display: none;
 		vertical-align: middle;
 		padding-top: 100px;
@@ -334,7 +334,7 @@
     </div>
 
 
-	<div id='main'>
+	<div id='mainMenu'>
 		
 		<div id='top'>
 			<img src='resources/Play.png' id='Play' onclick='playOptions()''></img>
@@ -763,13 +763,13 @@
     signDivSignIn.onclick = function () {
         socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
         document.getElementById("signDiv").style.display = "none";
-        document.getElementById("main").style.display = "table-cell";
+        document.getElementById("mainMenu").style.display = "table-cell";
     }
 
     signDivSignUp.onclick = function () {
         socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value });
         document.getElementById("signDiv").style.display = "none";
-        document.getElementById("main").style.display = "table-cell";
+        document.getElementById("mainMenu").style.display = "table-cell";
     }
 
     socket.on('signInResponse', function (data) {
@@ -795,7 +795,7 @@
 
 
 	function playOptions(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("playOptions").style.display = "table-cell";
 	}
 
@@ -804,17 +804,17 @@
 	}
 
 	function levelBrowser(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("levelBrowser").style.display = "table-cell";
 	}
 
 	function levelEditorOptions(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("levelEditorOptions").style.display = "table-cell";
 	}
 
 	function options(){
-		document.getElementById("main").style.display = "none";
+		document.getElementById("mainMenu").style.display = "none";
 		document.getElementById("settings").style.display = "table-cell";
 	}
 
@@ -823,7 +823,7 @@
 		document.getElementById("levelEditorOptions").style.display = "none";
 		document.getElementById("levelBrowser").style.display = "none";
 		document.getElementById("settings").style.display = "none";
-		document.getElementById("main").style.display = "table-cell";	
+		document.getElementById("mainMenu").style.display = "table-cell";	
 	}
 
 	function tilesOptions(){
