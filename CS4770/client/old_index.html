@@ -137,7 +137,7 @@
         return elem;
     }
 
-    var neededFiles = ["tiles.json", "entities.json", "config.json", "weapons.json"];
+    var neededFiles = ["tiles.json", "entities.json", "weapons.json"];
 
 
 
@@ -153,7 +153,9 @@
 
     }
     var conf;
-
+    loadJSONFile(function (response) {
+        conf = CONFIG(response);
+    }, "../js/config.json");
 
 
     var loadLevelsListFunct = function () {
@@ -228,13 +230,7 @@
     function loadNeeded(player) {
         for (var x of neededFiles) {
             var resource = "/client/resources/";
-            if (x == "config.json") {
-                resource = "/client/js/";
-                conf =
-                    loadJSONFile(function (response) {
-                        conf = CONFIG(response);
-                    }, resource + x);
-            } else if (x == "weapons.json") {
+          if (x == "weapons.json") {
                 loadJSONFile(function (response) {
                     loadWeapons(response);
                 }, resource + x);
