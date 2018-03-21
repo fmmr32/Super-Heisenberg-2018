@@ -100,13 +100,12 @@
                 offSet++;
             }
         }
-        //change this
         if (Object.keys(this)[this.select] != "impact") {
             var value = this[Object.keys(this)[this.select]] * (Object.keys(this)[this.select] == "damage" ? this.getWeapon(this.id, player).damageMult : this.getWeapon(this.id, player).speedMult);
-            ctx.fillText("Your " + Object.keys(this)[this.select] + " is: " + value.toFixed(2), 20, container.clientHeight / 2 + 150);
+            ctx.fillText(this.texts.currentValue.replace("%type%",Object.keys(this)[this.select]).replace("%value%",value.toFixed(2)), 20, container.clientHeight / 2 + 150);
             ctx.fillText(this.getMessage(value, player), 20, container.clientHeight / 2 + 200);
         } else if (!this.impactSelected){
-            ctx.fillText("For available impact upgrades press next.", 20, container.clientHeight / 2 + 150);
+            ctx.fillText(this.texts.toImpactUpgrade, 20, container.clientHeight / 2 + 150);
         }
 
     }
@@ -340,6 +339,7 @@ class Shop {
                 } else {
                     overWorld.inShop = false;
                     overWorld.onOverWorld = true;
+                    overWorld.music.play();
                 }
                 break;
         }
@@ -443,7 +443,7 @@ class CharacterSelect {
             ctx.fillText(char.name, canvas.width / 2 + offSet + (this.width - ctx.measureText(char.name).width) / 2, canvas.height / 2 - this.height + this.height / 2);
             offSet += this.width + this.width / 4;
             if (this.player.currentCharacter == char.Id && this.characters[this.selected].Id == char.Id) {
-                ctx.fillText("Currently selected to play as.", 20, canvas.height / 2 + 100);
+                ctx.fillText(this.texts.selectedCharacter, 20, canvas.height / 2 + 100);
 
             }
         }
@@ -523,7 +523,7 @@ class CharacterSelect {
         ctx.fillText(text, this.width * 2 + (this.width - ctx.measureText(text).width) / 2, (offSet * this.height + this.height / 2));
 
         if (this.statSelected == 5 && this.player.equipped.indexOf(this.player.weapons[this.selected].id) == -1) {
-            ctx.fillText("By equipping this weapon it will replace the weapon equipped in slot 1.", 20, container.clientHeight / 2 + 150);
+            ctx.fillText(this.texts.weaponEquip, 20, container.clientHeight / 2 + 150);
         }
     }
     //for selecting which impact you want on a weapon
@@ -544,9 +544,8 @@ class CharacterSelect {
             ctx.fillText(t, this.width * 2 + (this.width - ctx.measureText(t).width) / 2, (offSet * this.height + this.height / 2));
 
         }
-        ctx.fillText("<-", this.width * 2 + this.width + 5, ((this.statSelected) * this.height + this.height / 2));
         if (this.player.weapons[this.selected].equippedImpact == this.player.weapons[this.selected].availableImpact[this.statSelected - 1]) {
-            ctx.fillText("You current have this impact equipped", 20, container.clientHeight / 2 + 100);
+            ctx.fillText(this.texts.impactEquip, 20, container.clientHeight / 2 + 100);
         }
         ctx.fillText(this.getImpactMessage(this.player.weapons[this.selected].availableImpact[this.statSelected - 1]), 20, container.clientHeight / 2 + 150);
 
@@ -596,6 +595,7 @@ class CharacterSelect {
                 } else {
                     overWorld.inCharacterSelect = false;
                     overWorld.onOverWorld = true;
+                    overWorld.music.play();
                 }
                 break;
             case "action":

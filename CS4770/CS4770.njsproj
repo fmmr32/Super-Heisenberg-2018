@@ -85,7 +85,6 @@
     <Content Include="client\resources\temp\stone.png" />
     <Content Include="client\resources\temp\tiles.png" />
     <Content Include="client\resources\tiles.json" />
-    <Content Include="client\resources\tiles.png" />
     <Content Include="client\resources\weapons.png" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />

@@ -5,14 +5,14 @@
             this[any] = file[any];
         }
         //making the body for the funtion
-        var body = "if(this.level.getPlayer() != undefined && this.level.getPlayer().hasAchievement(this.id)){";
+        var body = "if(map.getPlayer() != undefined && map.getPlayer().hasAchievement(this.id)){";
         for (var b of this.function.body) {
             body += b;
         }
         body += "}";
         //replacacing the value for a function
         this.function = new Function(this.function.arguments, body);
-
+        console.log(this);
         this.image;
     }
     //making a popup
@@ -24,7 +24,7 @@
         var duration = 2;
         var position = "top";
         var size = 15;
-        this.level.popUps.push(new PopUp(image, text, duration, position, size));
+        map.popUps.push(new PopUp(image, text, duration, position, size));
     }
 
 }
@@ -286,3 +286,6 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeigth) {
     }
     return rows;
 }
+
+
+

@@ -178,9 +178,14 @@ class OverWorld {
         this.paths = [];
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
-        this.loadOverWorld(file);
-        
 
+        this.music = new Audio("../resources/temp/sounds/005_1.wav");
+        this.music.stop = function () { this.pause(), this.currentTime = 0; };
+        this.music.loop = true;
+
+        this.loadOverWorld(file);
+
+        this.music.play();
     }
 
     makeCanvas() {
@@ -349,6 +354,7 @@ directions:
     toMap(name) {
         //loading the map the player chose
         this.onOverWorld = false;
+        this.music.stop();
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
@@ -361,6 +367,8 @@ directions:
     toOverWorld() {
         this.makeCanvas();
         this.onOverWorld = true;
+        console.log("called");
+        this.music.play();
         map = undefined;
     }
 
@@ -379,10 +387,12 @@ directions:
     }
     //handles the going to shop
     toShop() {
+        this.music.stop();
         this.onOverWorld = false;
         this.inShop = true;
     }
     toCharacterSelect() {
+        this.music.stop();
         this.inCharacterSelect = true;
         this.onOverWorld = false;
     }
