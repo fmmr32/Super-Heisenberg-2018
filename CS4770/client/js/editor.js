@@ -443,17 +443,17 @@ function loadTiles() {
         }
         //adding a new cell at the index of the column
         var cell = row.insertCell(column);
+        cell.setAttribute("id", sprite.id);
         cell.onclick = function () {//insert whatever function handled the tiles selection here}
+            console.log(this.id);
         }
         //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
         //this should all work
-        var img = document.createElement("img");
-        img.setAttribute("src", sprite.image.src);
-        img.setAttribute("id", sprite.id);
-        img.setAttribute("height", "32px");
-        img.setAttribute("width", "36px");
-        console.log(sprite.id);
-        cell.appendChild(img);
+        var smallC = document.createElement("canvas");
+        smallC.width = sprite.width;
+        smallC.height = sprite.height;
+        sprite.drawBackground(0, 0, smallC);
+        cell.appendChild(smallC);
         column++;
         if (column == 3) { column = 0; }
     }
