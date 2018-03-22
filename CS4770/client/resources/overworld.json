@@ -19,6 +19,11 @@
         "type": "house",
         "X": 630,
         "Y": 162
+      },
+      {
+        "type": "museum",
+        "X": 278,
+        "Y": 178
       }
     ],
     "paths": [
@@ -63,6 +68,15 @@
         "startX": 630,
         "startY": 162,
         "endX": 630,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 5,
+        "startX": 278,
+        "startY": 178,
+        "endX": 278,
         "endY": 278,
         "startPointer": -1,
         "endPointer": -1

@@ -161,6 +161,9 @@ directions:
                         this.world.handlePortal(portal);
                     }
                     break;
+                case "quit":
+                    //open exit menu
+                    break;
             }
         }
     }
@@ -174,7 +177,11 @@ class OverWorld {
         this.onOverWorld = true;
         this.inShop = false;
         this.inCharacterSelect = false;
+        this.inMuseum = false;
+
         this.shop = loadShop(player);
+        
+
         this.paths = [];
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
@@ -290,11 +297,14 @@ class OverWorld {
         } else if (this.onOverWorld) {
             this.doTick();
             return true;
+        } else if (this.inMuseum) {
+            this.museum.doTick();
+            return true;
         }
         return false;
     }
 
-    handleKeys(type) {
+    handleKeys(type, isDown) {
         if (this.inShop) {
             this.shop.navigate(type);
             return true;
@@ -303,6 +313,9 @@ class OverWorld {
             return true;
         } else if (this.onOverWorld) {
             this.getPlayer().doMove(type);
+            return true;
+        } else if (this.inMuseum) {
+            this.museum.getPlayer().doMove(type, isDown);
             return true;
         }
         return false;
@@ -383,6 +396,9 @@ directions:
             case "house":
                 this.toCharacterSelect();
                 break;
+            case "museum":
+                this.toMuseum();
+                break;
         }
     }
     //handles the going to shop
@@ -400,6 +416,14 @@ directions:
     loadCharacterSelect(overWorld, characters, player, texts) {
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter());
+        this.museum = new Museum(player, this.characters.getCharacter());
+    }
+
+    toMuseum() {
+        this.museum.loadArtifacts();
+        this.onOverWorld = false;
+        this.inMuseum = true;
+        this.music.stop();
     }
 }
 

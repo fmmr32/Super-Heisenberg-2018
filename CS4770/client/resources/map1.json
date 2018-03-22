@@ -3,6 +3,7 @@
   "width": 650,
   "height": 500,
   "startDialog": 2,
+  "background": "../resources/museum.png",
   "endDialog":1, 
   "spawnX": 150,
   "spawnY": 10,

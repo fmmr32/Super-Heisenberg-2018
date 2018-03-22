@@ -1056,7 +1056,7 @@
             e = e || window.event;
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
             if (charCode && loaded) {
-                if (!overWorld.handleKeys(conf[charCode])) {
+                if (!overWorld.handleKeys(conf[charCode], true)) {
                     if (!map.doingDialog) {
                         map.getPlayer().doMove(conf[charCode], true);
                     } else if (map.doingDialog) {
@@ -1073,8 +1073,12 @@
         document.onkeyup = function (e) {
             e = e || window.event
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-            if (charCode && loaded && map != undefined) {
-                map.getPlayer().doMove(conf[charCode], false);
+            if (charCode && loaded) {
+                if (map != undefined) {
+                    map.getPlayer().doMove(conf[charCode], false);
+                } else if (overWorld.inMuseum) {
+                    overWorld.handleKeys(conf[charCode], false);
+                }
             }
         };
 
@@ -1106,6 +1110,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
 
+        window.onload = loadCurretUser();
     </script>
 
 

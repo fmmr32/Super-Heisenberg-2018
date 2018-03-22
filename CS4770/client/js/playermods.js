@@ -327,7 +327,7 @@ class Shop {
                 }
                 this.itemSelected = true;
                 break;
-            case "quit":
+            case "back":
                 //going back a menu
                 if (this.itemSelected) {
                     if (this.items[this.selected + this.offSet].impactSelected) {
@@ -341,6 +341,9 @@ class Shop {
                     overWorld.onOverWorld = true;
                     overWorld.music.play();
                 }
+                break;
+            case "quit":
+                //open quit menu
                 break;
         }
     }
@@ -555,7 +558,7 @@ class CharacterSelect {
         return this.texts.impacts[impact];
     }
 
-
+    //navigates the menu in the character selection
     navigate(type) {
         switch (type) {
             case "up":
@@ -578,7 +581,7 @@ class CharacterSelect {
                     this.setDirection(1);
                 }
                 break;
-            case "quit":
+            case "back":
                 if (this.characterSelect) {
                     this.characterSelect = false;
                     this.selected = 0;
@@ -629,6 +632,9 @@ class CharacterSelect {
                     }
                     this.selected = 0;
                 }
+                break;
+            case "quit":
+                //open exit menu
                 break;
         }
     }
