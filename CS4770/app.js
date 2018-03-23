@@ -9,8 +9,10 @@ var app = express();
 var serv = require('http').Server(app);
 
 app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/client/js'));
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/client/index.html');
+    console.log('/client/js/editor.html');
+    res.sendFile(__dirname + '/client/js/editor.html');
 });
 
 
