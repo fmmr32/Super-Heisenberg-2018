@@ -52,7 +52,7 @@
     </Compile>
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
-    <Content Include="client\index.html" />
+    <Content Include="client\index2.html" />
     <Content Include="client\js\config.json">
       <SubType>Code</SubType>
     </Content>
