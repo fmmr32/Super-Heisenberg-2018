@@ -367,15 +367,9 @@ class ExitMenu {
                         this.world.inExitMenu = false;
                         break;
                     case "Exit":
-                        return;
-                        //this is a bit bugged
                         //go back to the main menu
                         loaded = false;
-                        this.world.onOverWorld = false;
-                        this.world.inExitMenu = false;
-                        overWorld = null;
-                        canvas.remove();
-                        canvas = null;
+                        overWorld.inExitMenu = false;
                         back();
                         break;
          
