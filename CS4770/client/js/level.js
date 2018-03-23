@@ -25,8 +25,9 @@ class Block {
 }
 
 class Level {
-    constructor(player, file) {
+    constructor(player, file, world) {
 
+        this.world = world;
         this.user = player;
         this.file = file;
         this.tiles = [[], []];
@@ -446,10 +447,10 @@ class Level {
 }
 
 
-function loadMap(name, player, callback) {
+function loadMap(name, player, callback, world) {
     loadJSONFile(function (response) {
         try {
-            map = new Level(player, response);
+            map = new Level(player, response, world);
             callback(map);
         } catch (err) {
             loaded = false;
@@ -465,8 +466,8 @@ function loadMap(name, player, callback) {
 
 
 class Museum extends Level {
-    constructor(player, character) {
-        super(player);
+    constructor(player, character, world) {
+        super(player,null, world);
         super.width = sizeSettings[0]*2;
         super.height = sizeSettings[1];
         super.spawnX = 50;

@@ -163,6 +163,7 @@ directions:
                     break;
                 case "quit":
                     //open exit menu
+                    this.world.inExitMenu = true;
                     break;
             }
         }
@@ -175,12 +176,15 @@ class OverWorld {
         this.diag = loadDialog(player);
         this.ach = loadAchievements();
         this.file = file;
+
         this.onOverWorld = true;
         this.inShop = false;
         this.inCharacterSelect = false;
         this.inMuseum = false;
+        this.inExitMenu = false;
 
         this.shop = loadShop(player);
+        this.exit = new ExitMenu(this);
 
 
         this.paths = [];
@@ -297,6 +301,7 @@ class OverWorld {
             return true;
         } else if (this.onOverWorld) {
             this.doTick();
+
             return true;
         } else if (this.inMuseum) {
             this.museum.doTick();
@@ -312,7 +317,7 @@ class OverWorld {
         } else if (this.inCharacterSelect) {
             this.characters.navigate(type);
             return true;
-        } else if (this.onOverWorld) {
+        }  else if (this.onOverWorld) {
             this.getPlayer().doMove(type);
             return true;
         } else if (this.inMuseum) {
@@ -374,7 +379,7 @@ directions:
         canvas.remove();
         loadMap(name, this.user, function (m) {
             m.loadCharacter(overWorld.characters.getCharacter());
-        });
+        }, this);
     }
 
     //going back to the overworld
@@ -417,7 +422,7 @@ directions:
     loadCharacterSelect(overWorld, characters, player, texts) {
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter());
-        this.museum = new Museum(player, this.characters.getCharacter());
+        this.museum = new Museum(player, this.characters.getCharacter(), this);
     }
 
     toMuseum() {
@@ -426,7 +431,7 @@ directions:
         this.inMuseum = true;
         this.music.stop();
     }
-    
+
 }
 
 

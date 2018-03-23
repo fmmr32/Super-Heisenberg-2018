@@ -791,6 +791,7 @@ class EntityCreature extends EntityMovable {
                     break;
                 case "quit":
                     //open exit menu
+                    this.level.world.inExitMenu = true;
                     break;
                 case "back":
                     if (this.level instanceof Museum) {

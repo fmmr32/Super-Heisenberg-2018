@@ -759,6 +759,7 @@
         var signDivSignIn = document.getElementById('signDiv-signIn');
         var signDivSignUp = document.getElementById('signDiv-signUp');
         var signDivPassword = document.getElementById('signDiv-password');
+        var menuDiv = document.getElementById("mainMenu");
         var offLinePlay = document.getElementById("skipSign");
 
         signDivSignIn.onclick = function () {
@@ -966,14 +967,9 @@
 
         var loadMenu = function () {
             signDiv.style.display = 'none';
-            gameDiv.style.display = '';
-            menuDiv.style.display = 'block';
+            gameDiv.style.display = 'none';
+            menuDiv.style.display = 'table-cell';
         }
-
-        ////for Kennedy
-        //loadJSONFile(function (response) {
-        //    loadSprites(response, canvas);
-        //}, "../client/resources/tiles.json");
 
         function loadNeeded(player) {
             for (var x of neededFiles) {
@@ -1030,6 +1026,9 @@
                         overWorld.diag[map.startDialog == -1 ? map.endDialog : map.startDialog].doDialog();
                     }
                 }
+                if (overWorld.inExitMenu) {
+                    overWorld.exit.menu();
+                }
             }
         }
 
@@ -1038,6 +1037,11 @@
             e = e || window.event;
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
             if (charCode && loaded) {
+                if (overWorld.inExitMenu) {
+                    overWorld.exit.navigate(conf[charCode]);
+                    return true;
+                }
+
                 if (!overWorld.handleKeys(conf[charCode], true)) {
                     if (!map.doingDialog) {
                         map.getPlayer().doMove(conf[charCode], true);

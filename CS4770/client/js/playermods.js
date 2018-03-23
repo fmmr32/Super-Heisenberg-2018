@@ -344,6 +344,7 @@ class Shop {
                 break;
             case "quit":
                 //open quit menu
+                overWorld.inExitMenu = true;
                 break;
         }
     }
@@ -635,6 +636,7 @@ class CharacterSelect {
                 break;
             case "quit":
                 //open exit menu
+                overWorld.inExitMenu = true;
                 break;
         }
     }
