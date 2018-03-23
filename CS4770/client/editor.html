@@ -1,0 +1,376 @@
+<HTML>
+<script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type="text/javascript" src="js/editor.js"></script>
+<script type="text/javascript" src="js/sprite.js"></script>
+<script>
+    var socket = io();
+
+    function loadJSONFile(callback, file) {
+        socket.emit('loadJSON', {
+            fileName: file
+        });
+        socket.on(file, function (data) {
+            callback(data.toString());
+        });
+    }
+
+    //for Kennedy
+    loadJSONFile(function (response) {
+        loadSprites(response, canvas);
+        loadTiles();
+    }, "/client/resources/tiles.json");
+
+
+</script>
+<HEAD>
+    <STYLE>
+
+        div {
+        }
+
+        table {
+            margin-left: 140px;
+            color: white;
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 36px;
+            height: 36px;
+        }
+
+        table#select tr:nth-child(even) {
+            background-color: #585858;
+        }
+
+        table#select tr:nth-child(odd) {
+            background-color: #484848;
+        }
+
+        table#select tbody td:hover {
+            background: black;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        table#inputs {
+            margin-left: 25px;
+            width: 350px;
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+
+            table#inputs td {
+                padding-left: 5px;
+            }
+
+        h5 {
+            float: left;
+        }
+
+        input, select {
+            margin-top: 25px;
+            margin-right: 5px;
+            float: right;
+        }
+
+        input, textarea {
+            width: 25%;
+            display: inline
+        }
+
+        .container {
+            display: table;
+            float: right;
+            height: 720px;
+            width: 100px;
+            border: 3px solid black;
+            border-collapse: collapse;
+            background-color: #484848;
+            margin-top: 25px;
+            margin-left: 720px;
+        }
+
+        #selectCreature {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        #selectTiles {
+            padding-left: 6px;
+        }
+
+        #buttons {
+            padding-top: 10px;
+            display: inline-flex;
+        }
+
+        #selectEntity:hover, #selectTiles:hover, #selectCreature:hover {
+            overflow: hidden;
+            transform: scale(1.1,1.1);
+            -webkit-transition-duration: 1s;
+            -moz-transition-duration: 1s;
+            -o-transition-duration: 1s;
+            transition-duration: 1s;
+            z-index: 5;
+        }
+
+        #tiles {
+            display: inline-block;
+            overflow-y: scroll;
+            height: 110px;
+            margin-top: 10px;
+        }
+
+        #creature {
+            display: none;
+            overflow-y: scroll;
+            height: 110px;
+            margin-top: 10px;
+        }
+
+        #entity {
+            display: none;
+            overflow-y: scroll;
+            height: 110px;
+            margin-top: 10px;
+        }
+    </STYLE>
+
+</HEAD>
+
+<body onload="Editor()">
+    <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll; ">
+        <canvas id="canvas" width="1080px" height="720px" style="background: #fff;  magrin:20px;" oncontextmenu="return false;"></canvas>
+    </div>
+    <div class=container>
+
+        <div id='buttons'>
+            <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
+            <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
+            <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
+        </div>
+
+
+
+
+
+
+
+        <hr noshade>
+
+        <div id='tiles'>
+            <table id='select'>
+                <tbody>
+                    <!--<tr>
+                        <td><button id="button1" value="1" onclick="selectTile()"> a</button></td>
+                        <td>b</td>
+                        <td>c</td>
+                    </tr>
+                    <tr>
+                        <td>d</td>
+                        <td>e</td>
+                        <td>f</td>
+                    </tr>
+                    <tr>
+                        <td>g</td>
+                        <td>h</td>
+                        <td>i</td>
+                    </tr>
+                    <tr>
+                        <td id='1'>img</td>
+                        <td>b</td>
+                        <td>c</td>
+                    </tr>
+                    <tr>
+                        <td>d</td>
+                        <td>e</td>
+                        <td>f</td>
+                    </tr>
+                    <tr>
+                        <td>g</td>
+                        <td>h</td>
+                        <td>i</td>
+                    </tr>-->
+                </tbody>
+            </table>
+        </div>
+
+        <div id='creature'>
+            <table id='select'>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='entity'>
+            <table id='select'>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>B</td>
+                        <td>C</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>E</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td>G</td>
+                        <td>H</td>
+                        <td>I</td>
+                    </tr>
+                    <tr>
+                        <td>A</td>
+                        <td>B</td>
+                        <td>C</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>E</td>
+                        <td>F</td>
+                    </tr>
+                    <tr>
+                        <td>G</td>
+                        <td>H</td>
+                        <td>I</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr noshade>
+
+        <table id='inputs'>
+            <tr>
+                <td>
+                    <h5>Character Select:</h5>
+                    <select id="character" onchange="selectCharacter()">
+                        <option value="Heisenberg">Heisenberg</option>
+                        <option value="Jessie">Jessie</option>
+                        <option value="Hank">Hank</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Block Select:</h5>
+                    <select id="gameElement">
+                        <option Value="Creature">Creature</option>
+                        <option Value="Entities">Entities</option>
+                        <option Value="Content">Content</option>
+                    </select>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td>
+                    <h5>Background:</h5>
+                    <select id="background" onchange="setBackground(this)">
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="B3">B3</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Map Width:</h5>
+                    <input id="mapW" type="number" name="width" min="0" max=""> <!–– Set Max ––>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Map Height:</h5>
+                    <input id="mapH" type="number" name="height" min="0" max=""> <!–– Set Max ––>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Spawn Point (X-Coordinate):</h5>
+                    <input type="number" name="X" min="0" max=""> <!–– Set Max ––>
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Spawn Point (Y-Coordinate):</h5>
+                    <input type="number" name="Y" min="0" max=""> <!–– Set Max ––>
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Gravity:</h5>
+                    <input type="range" name="points" min="0" max="5" oninput="setBackground(this.value)" ">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Moveset:</h5>
+                    <input type="number" name="move" min="0" max=""> <!–– Set Max ––>
+                    <br>
+                </td>
+            </tr>
+
+
+        </table>
+        <input type="button" name="Load" value="Load" onclick="loadLevel()">
+        <input type="button" name="Save" value="Save" onclick="saveLevel()">
+    </div>
+
+
+
+
+
+
+   
+</body>
+</HTML>
+

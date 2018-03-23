@@ -493,6 +493,8 @@ class EntityMovable extends Entity {
 
     //handles the gravity
     doGravity() {
+        if (this.float) { return };
+
         var x = this.getX() + this.getSprite().getCenter();
         //checks if a enitty is in the air then setting the last offset, this allows the player to stand on the edge
         if (this.level.getBlock(x, this.getY()).Id == 0) {
@@ -787,6 +789,15 @@ class EntityCreature extends EntityMovable {
                         this.currentWeapon.setAngle();
                     }
                     break;
+                case "quit":
+                    //open exit menu
+                    this.level.world.inExitMenu = true;
+                    break;
+                case "back":
+                    if (this.level instanceof Museum) {
+                        this.level.toOverWorld();
+                    }
+                    break;
 
             }
             var overRide = false;
@@ -843,12 +854,13 @@ class EntityCreature extends EntityMovable {
                 //check for Out of bounds
                 switch (this.level.isOOB(this.getX(), this.getY())) {
                     case 1:
-                        this.setX(container.clientWidth + this.getSprite().getCenter() * 2);
+                        this.setX(container.clientWidth - this.getSprite().getCenter() * 2);
                         break;
                     case 2:
                         this.setX(0);
                         break;
                     case 3:
+                        if (this.godlike) { break;}
                         this.doRespawn();
                         break;
                 }

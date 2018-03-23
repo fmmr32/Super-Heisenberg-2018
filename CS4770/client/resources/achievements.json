@@ -7,8 +7,8 @@
     "function": {
       "arguments": "",
       "body": [
-        "if (this.level.getPlayer().killcount >= this.maxKills) {",
-        "this.level.getPlayer().awardAchievement(this.id);",
+        "if (map.getPlayer().killcount >= this.maxKills) {",
+        "map.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();",
         "}"
       ]
@@ -22,7 +22,7 @@
     "function": {
       "arguments": "",
       "body": [
-        "this.level.getPlayer().awardAchievement(this.id);",
+        "map.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();"
       ]
     },
@@ -36,7 +36,7 @@
       "arguments": "e",
       "body": [
         "console.log(e);",
-        "this.level.getPlayer().awardAchievement(this.id);",
+        "map.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();"
       ]
     },

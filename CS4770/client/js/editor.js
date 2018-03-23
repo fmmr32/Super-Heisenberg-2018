@@ -30,7 +30,7 @@ function Editor(){
 	setup();
 //*****Sidebar********************************************************************
 
-	function tilesOptions(){
+	document.getElementById("selectTiles").onclick = function(){
 		elem = "Content";
 		console.log("content");
 		document.getElementById("creature").style.display = "none";
@@ -39,7 +39,7 @@ function Editor(){
 		
 	}
 
-	function creatureOptions(){
+	document.getElementById("selectCreature").onclick = function(){
 		elem = "Creature";
 		document.getElementById("entity").style.display = "none";
 		document.getElementById("tiles").style.display = "none";
@@ -47,21 +47,23 @@ function Editor(){
 
 	}
 
-	function entityOptions(){
+	document.getElementById("selectEntity").onclick = function(){
 		elem = "Entities";
 		document.getElementById("creature").style.display = "none";
 		document.getElementById("tiles").style.display = "none";
 		document.getElementById("entity").style.display = "inline-block";
 	}
 
-	function selectCharacter(){
-		var chara = document.getElementById("character");
+	document.getElementById("character").onchange = function(){
+		var chara = document.getElementById("character").text;
 		map.character = chara;
 	}
 
-	function setBackground(){
-		var background = document.getElementById("background"); 
-		map.backround = backround;
+	document.getElementById("background").onchange = function(){
+		var background = document.getElementById("background");
+		var b = background.options[background.selectedIndex].value;
+		map.background = b;
+		console.log(map);
 	}
 
 
@@ -81,21 +83,25 @@ function Editor(){
 		drawBoard();
 	}
 
-	function setSpawnX(valueX){
-		map.spawnX = valueX;
+	document.getElementsByName("X").onchange = function(){
+		var ycoord = document.getElementById("Y").value;
+		map.spawnY = ycoord;
+	}
+	
+	document.getElementsByName("Y").onchange = function(){
+		var xcoord = document.getElementById("X").value;
+		map.spawnX = xcoord;
+		console.log("changing y spawn");
+	}
+	
+	document.getElementsByName("save").onclick = function(){
+		
+	}
+	
+	document.getElementsByName("load").onclick = function(){
+		
 	}
 
-	function setSpawnY(){
-		map.spawnY = valueY;
-	}
-	
-	function saveLevel(){
-		
-	}
-	
-	function loadLevel(){
-		
-	}
 
 	
 //*******Editor*************************************************************************************
@@ -111,9 +117,9 @@ var img = new Image();
 var elem = "Content";
 
 document.addEventListener("mousemove", onMouseMove, false);
-img.src = 'gameTile.png';
-	
+img.src = 'tileset.png';
 
+    
 		
 
 function setup()
@@ -122,6 +128,8 @@ function setup()
 	drawBoard();
 	
 }		
+		
+ 
 		
 function StartEditor()
 {
@@ -274,14 +282,17 @@ function placeTile()
 	var scrollY = scrollPos.scrollTop;
     var x = Math.floor((event.clientX + scrollX)/cw)*cw; 
     var y = Math.floor((event.clientY + scrollY)/ch)*ch;
-	var imageSel = new Image();
-	var g = document.getElementById("gameElement");
-	var elem = g.options[g.selectedIndex].text;
+	//var imageSel = new Image();
+	//var g = document.getElementById("gameElement");
+	//var elem = g.options[g.selectedIndex].text;
 	//imageSel = tileC.getImageData(64,64,cw,ch);
-	//context.drawImage(imageSel, x, y,32,32);
+	//context.drawImage(img,0,0,32,36,x,y,32,36);
+	//context.drawImage(img,32,0,32,36,x,y,32,36);
+	context.drawImage(img,64,0,32,36,x,y,32,36);
+	//context.drawImage(img,96,0,32,36,x,y,32,36);
 	//tileC.drawImage(img, 0, 0);
 	//removeTile();
-	context.fillRect(x,y,cw,ch);
+	//context.fillRect(x,y,cw,ch);
 	
 	if(elem === "Creature"){
 	
@@ -414,5 +425,37 @@ function placeTile()
 };
 
 }
-	
+//so this is going to dynamically add the tiles to the table
+function loadTiles() {
+    //this is the table we are using
+    var table = document.getElementById("tiles").children[0];
+    var column = 0;
+    var row;
+    for (var id of sprites) {
+        var sprite = id[1];
+        //just making sure we are only doing the tiles
+        if (sprite.id > 400) {
+            break;
+        }
+        //adding a new row
+        if (column == 0) {
+            row = table.insertRow(0);
+        }
+        //adding a new cell at the index of the column
+        var cell = row.insertCell(column);
+        cell.setAttribute("id", sprite.id);
+        cell.onclick = function () {//insert whatever function handled the tiles selection here}
+            console.log(this.id);
+        }
+        //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
+        //this should all work
+        var smallC = document.createElement("canvas");
+        smallC.width = sprite.width;
+        smallC.height = sprite.height;
+        sprite.drawBackground(0, 0, smallC);
+        cell.appendChild(smallC);
+        column++;
+        if (column == 3) { column = 0; }
+    }
+}
 	

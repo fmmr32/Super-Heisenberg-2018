@@ -1,6 +1,4 @@
 ﻿
-
-
 class Block {
     constructor(id, x, y) {
         this.Id = id;
@@ -27,8 +25,9 @@ class Block {
 }
 
 class Level {
-    constructor(player, file) {
+    constructor(player, file, world) {
 
+        this.world = world;
         this.user = player;
         this.file = file;
         this.tiles = [[], []];
@@ -36,7 +35,9 @@ class Level {
         this.gravity = 0;
         this.popUps = [];
 
-        this.loadLevel(file);
+        if (file != undefined) {
+            this.loadLevel(file);
+        }
 
     }
 
@@ -102,7 +103,8 @@ class Level {
         this.startDialog = any.startDialog;
         this.endDialog = any.endDialog;
         this.doingDialog = this.startDialog != -1;
-
+        this.background = new Image();
+        this.background.src = any.background;
 
         while (container.children.length != 0) {
             container.children[0].remove();
@@ -239,13 +241,13 @@ class Level {
             options.animation = Animation.loadAnimation(id);
             var creature;
             if (id >= 400 && id < 600) {
-            options.loot = getSprite(id).complex.artifact;
-            creature = new Boss(options);
+                options.loot = getSprite(id).complex.artifact;
+                creature = new Boss(options);
             } else {
-            creature = new EntityCreature(options);
+                creature = new EntityCreature(options);
             }
 
-            
+
             this.entities.push(creature);
         }
     }
@@ -363,7 +365,6 @@ class Level {
 
     //redraws the canvas with the player centered
     drawMap() {
-
         if (this.getPlayer() != undefined && this.image != undefined) {
             var width = container.clientWidth / 2;
 
@@ -377,7 +378,7 @@ class Level {
             this.offSetX = Math.max(this.offSetX, space);
             var context = canvas.getContext("2d");
 
-
+            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, this.offSetX, 0, this.background.width, this.background.height);
             context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, 0, this.width, this.height);
         }
     }
@@ -412,6 +413,27 @@ class Level {
         }
 
     }
+    resizeImage(image, canvas, t, target) {
+        if ((image.width < canvas.width || image.width < this.width) && t < 50) {
+            //create temp canvas that is twice the size of the current image
+            var c = document.createElement("canvas");
+            c.width = image.width * 2;
+            c.height = image.height;
+            var ctx = c.getContext("2d");
+            //drawing the image
+            ctx.drawImage(image, 0, 0);
+            ctx.drawImage(image, image.width, 0);
+            image = new Image();
+            image.src = c.toDataURL("image/png");
+            var obj = this;
+            image.onload = function () {
+                //recursive step
+                obj.resizeImage(this, canvas, t++, target);
+                obj[target] = this;
+            };
+        }
+    }
+
 
     toOverWorld() {
         this.doingDialog = false;
@@ -425,10 +447,10 @@ class Level {
 }
 
 
-function loadMap(name, player, callback) {
+function loadMap(name, player, callback, world) {
     loadJSONFile(function (response) {
         try {
-            map = new Level(player, response);
+            map = new Level(player, response, world);
             callback(map);
         } catch (err) {
             loaded = false;
@@ -440,6 +462,62 @@ function loadMap(name, player, callback) {
         }
     }, "/client/resources/" + name + ".json");
 
+}
+
+
+class Museum extends Level {
+    constructor(player, character, world) {
+        super(player,null, world);
+        super.width = sizeSettings[0]*2;
+        super.height = sizeSettings[1];
+        super.spawnX = 50;
+        super.spawnY = 550;
+        super.loadCharacter(character);
+        super.getPlayer().float = true;
+        super.getPlayer().jump = 0;
+        super.getPlayer().currentWeapon = null;
+        super.getPlayer().weapons = [];
+        super.getPlayer().healthBar = null;
+
+
+        super.image = new Image();
+        super.background = new Image();
+
+
+        var temp = new Image();
+        temp.src = "../resources/museum.png";
+        var m = this;
+
+        temp.onload = function () {
+            m.resizeImage(this, canvas, 0,"background");
+
+        }
+        this.loadArtifacts();
+
+    }
+    loadArtifacts() {
+        var x = 210;
+        var y = 410;
+        for (var id of this.user.artifacts) {
+            var options = {};
+            options.x = x;
+            options.y = y - getSprite(id).height;
+            options.id = id;
+            this.loadArtifact(options);
+            x += 300;
+        }
+    }
+
+
+    doTick() {
+        super.doTick();
+    }
+
+    toOverWorld() {
+        overWorld.inMuseum = false;
+        overWorld.onOverWorld = true;
+        overWorld.music.play();
+    }
 }
 
 

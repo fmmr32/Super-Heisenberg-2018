@@ -44,7 +44,7 @@ SPRITE.prototype = {
             height //height of sprite
         );
     },
-    drawBackground: function (desX, desY, canvas) {
+    drawBackground: function (desX, desY, canvas){
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;

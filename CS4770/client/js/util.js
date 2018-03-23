@@ -5,14 +5,13 @@
             this[any] = file[any];
         }
         //making the body for the funtion
-        var body = "if(this.level.getPlayer() != undefined && this.level.getPlayer().hasAchievement(this.id)){";
+        var body = "if(map.getPlayer() != undefined && map.getPlayer().hasAchievement(this.id)){";
         for (var b of this.function.body) {
             body += b;
         }
         body += "}";
         //replacacing the value for a function
         this.function = new Function(this.function.arguments, body);
-
         this.image;
     }
     //making a popup
@@ -24,9 +23,29 @@
         var duration = 2;
         var position = "top";
         var size = 15;
-        this.level.popUps.push(new PopUp(image, text, duration, position, size));
+        map.popUps.push(new PopUp(image, text, duration, position, size));
     }
 
+}
+
+function loadAchievements() {
+    var ach = [];
+    loadJSONFile(function (response) {
+        for (var ac of JSON.parse(response)) {
+            var a = new Achievement(ac, map);
+            document.addEventListener(a.type, function (e) {
+                for (var a of ach[e.type]) {
+                    a.function();
+                }
+            });
+            if (ach[a.type] == undefined) {
+                ach[a.type] = [];
+            }
+            ach[a.type].push(a);
+        }
+    }, "/client/resources/achievements.json");
+
+    return ach;
 }
 
 
@@ -137,7 +156,7 @@ class PopUp {
                 map.doingDialog = false;
             } else {
                 //go to overworld
-                map.toOverWorld();                
+                map.toOverWorld();
             }
         }
     }
@@ -245,7 +264,7 @@ class Dialog {
 function loadDialog(player) {
     var diag = [];
     loadJSONFile(function (response) {
-        
+
         for (var any of JSON.parse(response)) {
             var temp = new Dialog(any.id, any.text, 15);
 
@@ -255,7 +274,7 @@ function loadDialog(player) {
 
             diag[any.id] = new Dialog(any.id, any.text, temp.size, imgBar, imgMain, imgSecond, player);
         }
-        
+
     }, "/client/resources/dialogs.json");
     return diag;
 }
@@ -285,4 +304,88 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeigth) {
         console.log(err);
     }
     return rows;
+}
+
+
+class ExitMenu {
+    constructor(world) {
+        this.image = new Image();
+        this.image.src = "../resources/TextBox.png";
+
+        this.select = 0;
+        this.options = ["Resume", "Exit"];
+        this.width = 100;
+        this.height = 30;
+
+        this.world = world;
+
+    }
+    resetStyle(ctx) {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "black";
+        ctx.font = "15px sans-serif";
+    }
+
+    menu() {
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "black";
+        ctx.font = "15px sans-serif";
+        for (var o of this.options) {
+            this.width = Math.max(this.width, ctx.measureText(o).width + 10);
+        }
+
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, container.clientWidth, container.clientHeight);
+        this.resetStyle(ctx);
+
+        var offSet = 0;
+        for (var o of this.options) {
+            ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height, container.clientWidth / 2 - this.width / 2, container.clientHeight / 2 - this.height * 3 + this.height * offSet, this.width, this.height);
+            ctx.fillText(o, container.clientWidth / 2 - ctx.measureText(o).width/2, container.clientHeight / 2 - this.height * 2 - 15 + this.height * offSet);
+            offSet+=2;
+        }
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = "white";
+        ctx.fillRect(container.clientWidth / 2 - this.width / 2, container.clientHeight / 2 - this.height * 3 + this.height * this.select*2, this.width, this.height);
+        this.resetStyle(ctx);
+    }
+
+
+
+    navigate(type) {
+        switch (type) {
+            case "up":
+                this.setSelect(-1);
+                break;
+            case "down":
+                this.setSelect(1);
+                break;
+            case "action":
+                switch (this.options[this.select]) {
+                    case "Resume":
+                        this.world.inExitMenu = false;
+                        break;
+                    case "Exit":
+                        //go back to the main menu
+                        loaded = false;
+                        overWorld.inExitMenu = false;
+                        back();
+                        break;
+         
+                }
+                break;
+            case "quit":
+                this.world.inExitMenu = false;
+                break;
+        }
+    }
+
+    setSelect(d) {
+        if (this.select + d > 1 || this.select + d < 0) {
+            return
+        }
+        this.select += d;
+    }
+
 }

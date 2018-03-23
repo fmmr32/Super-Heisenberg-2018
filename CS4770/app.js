@@ -15,6 +15,10 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/client/js/editor.html');
 });
 
+app.get('/editor', function (req, res) {
+    res.sendFile(__dirname + '/client/editor.html');
+});
+
 
 
 serv.listen(3000);

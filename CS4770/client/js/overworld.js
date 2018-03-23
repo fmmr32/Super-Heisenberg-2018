@@ -161,6 +161,10 @@ directions:
                         this.world.handlePortal(portal);
                     }
                     break;
+                case "quit":
+                    //open exit menu
+                    this.world.inExitMenu = true;
+                    break;
             }
         }
     }
@@ -170,17 +174,30 @@ class OverWorld {
     constructor(player, file) {
         this.user = player;
         this.diag = loadDialog(player);
+        this.ach = loadAchievements();
         this.file = file;
+
         this.onOverWorld = true;
         this.inShop = false;
         this.inCharacterSelect = false;
+        this.inMuseum = false;
+        this.inExitMenu = false;
+
         this.shop = loadShop(player);
+        this.exit = new ExitMenu(this);
+
+
         this.paths = [];
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
-        this.loadOverWorld(file);
-        
 
+        this.music = new Audio("../resources/temp/sounds/005_1.wav");
+        this.music.stop = function () { this.pause(), this.currentTime = 0; };
+        this.music.loop = true;
+
+        this.loadOverWorld(file);
+
+        this.music.play();
     }
 
     makeCanvas() {
@@ -210,12 +227,12 @@ class OverWorld {
     }
     //loads the player
     loadPlayer(player) {
-                var options = player;
-                options.world = this;
-                options.src = player.src;
-                this.player = new OverWorldPlayer(options);
-                loaded = true;
-                this.getPlayer().spawn(this.startX, this.startY);
+        var options = player;
+        options.world = this;
+        options.src = player.src;
+        this.player = new OverWorldPlayer(options);
+        loaded = true;
+        this.getPlayer().spawn(this.startX, this.startY);
 
     }
 
@@ -284,20 +301,27 @@ class OverWorld {
             return true;
         } else if (this.onOverWorld) {
             this.doTick();
+
+            return true;
+        } else if (this.inMuseum) {
+            this.museum.doTick();
             return true;
         }
         return false;
     }
 
-    handleKeys(type) {
+    handleKeys(type, isDown) {
         if (this.inShop) {
             this.shop.navigate(type);
             return true;
         } else if (this.inCharacterSelect) {
             this.characters.navigate(type);
             return true;
-        } else if (this.onOverWorld) {
+        }  else if (this.onOverWorld) {
             this.getPlayer().doMove(type);
+            return true;
+        } else if (this.inMuseum) {
+            this.museum.getPlayer().doMove(type, isDown);
             return true;
         }
         return false;
@@ -349,18 +373,21 @@ directions:
     toMap(name) {
         //loading the map the player chose
         this.onOverWorld = false;
+        this.music.stop();
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
         loadMap(name, this.user, function (m) {
             m.loadCharacter(overWorld.characters.getCharacter());
-        });
+        }, this);
     }
 
     //going back to the overworld
     toOverWorld() {
         this.makeCanvas();
         this.onOverWorld = true;
+        console.log("called");
+        this.music.play();
         map = undefined;
     }
 
@@ -375,14 +402,19 @@ directions:
             case "house":
                 this.toCharacterSelect();
                 break;
+            case "museum":
+                this.toMuseum();
+                break;
         }
     }
     //handles the going to shop
     toShop() {
+        this.music.stop();
         this.onOverWorld = false;
         this.inShop = true;
     }
     toCharacterSelect() {
+        this.music.stop();
         this.inCharacterSelect = true;
         this.onOverWorld = false;
     }
@@ -390,7 +422,16 @@ directions:
     loadCharacterSelect(overWorld, characters, player, texts) {
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter());
+        this.museum = new Museum(player, this.characters.getCharacter(), this);
     }
+
+    toMuseum() {
+        this.museum.loadArtifacts();
+        this.onOverWorld = false;
+        this.inMuseum = true;
+        this.music.stop();
+    }
+
 }
 
 
