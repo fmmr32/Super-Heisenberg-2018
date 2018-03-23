@@ -413,7 +413,6 @@ class Level {
 
     }
     resizeImage(image, canvas, t, target) {
-        var t = 0;
         if ((image.width < canvas.width || image.width < this.width) && t < 50) {
             //create temp canvas that is twice the size of the current image
             var c = document.createElement("canvas");

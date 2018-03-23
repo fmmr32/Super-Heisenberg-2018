@@ -173,6 +173,7 @@ class OverWorld {
     constructor(player, file) {
         this.user = player;
         this.diag = loadDialog(player);
+        this.ach = loadAchievements();
         this.file = file;
         this.onOverWorld = true;
         this.inShop = false;
@@ -180,7 +181,7 @@ class OverWorld {
         this.inMuseum = false;
 
         this.shop = loadShop(player);
-        
+
 
         this.paths = [];
         this.width = container.clientWidth;
@@ -222,12 +223,12 @@ class OverWorld {
     }
     //loads the player
     loadPlayer(player) {
-                var options = player;
-                options.world = this;
-                options.src = player.src;
-                this.player = new OverWorldPlayer(options);
-                loaded = true;
-                this.getPlayer().spawn(this.startX, this.startY);
+        var options = player;
+        options.world = this;
+        options.src = player.src;
+        this.player = new OverWorldPlayer(options);
+        loaded = true;
+        this.getPlayer().spawn(this.startX, this.startY);
 
     }
 
@@ -425,6 +426,7 @@ directions:
         this.inMuseum = true;
         this.music.stop();
     }
+    
 }
 
 

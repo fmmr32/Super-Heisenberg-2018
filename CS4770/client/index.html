@@ -948,7 +948,6 @@
 
         var map;
         //achievement array
-        var ach = [];
         function loadUserDatabase() {
             console.log("Inside loadUserDatabase " + playerUsername);
             loadDBFromID('player', playerUsername, function (response) {
@@ -963,23 +962,7 @@
                 loadGame(false, JSON.parse(response));
             }, "/client/resources/player.json");
         }
-
-        function loadAchievements() {
-            loadJSONFile(function (response) {
-                for (var ac of JSON.parse(response)) {
-                    var a = new Achievement(ac, map);
-                    document.addEventListener(a.type, function (e) {
-                        for (var a of ach[e.type]) {
-                            a.function();
-                        }
-                    });
-                    if (ach[a.type] == undefined) {
-                        ach[a.type] = [];
-                    }
-                    ach[a.type].push(a);
-                }
-            }, "/client/resources/achievements.json");
-        }
+        
 
         var loadMenu = function () {
             signDiv.style.display = 'none';
@@ -1020,7 +1003,6 @@
                 loadJSONFile(function (response) {
                     loadJSONFile(function (r) {
                         loadJSONFile(function (t) {
-                            loadAchievements();
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                         }, "/client/resources/values.json");

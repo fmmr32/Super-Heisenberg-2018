@@ -28,6 +28,26 @@
 
 }
 
+function loadAchievements() {
+    var ach = [];
+    loadJSONFile(function (response) {
+        for (var ac of JSON.parse(response)) {
+            var a = new Achievement(ac, map);
+            document.addEventListener(a.type, function (e) {
+                for (var a of ach[e.type]) {
+                    a.function();
+                }
+            });
+            if (ach[a.type] == undefined) {
+                ach[a.type] = [];
+            }
+            ach[a.type].push(a);
+        }
+    }, "/client/resources/achievements.json");
+
+    return ach;
+}
+
 
 class PopUp {
     constructor(image, text, duration, position, size, maxHeight) {

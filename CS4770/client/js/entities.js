@@ -792,6 +792,11 @@ class EntityCreature extends EntityMovable {
                 case "quit":
                     //open exit menu
                     break;
+                case "back":
+                    if (this.level instanceof Museum) {
+                        this.level.toOverWorld();
+                    }
+                    break;
 
             }
             var overRide = false;
