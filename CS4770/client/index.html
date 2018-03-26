@@ -120,7 +120,7 @@
         }
 
         #mainMenu {
-            display: none;
+            display: table-cell;
             vertical-align: middle;
             padding-top: 100px;
         }
@@ -325,7 +325,7 @@
 
     <div class=menuContainer>
 
-        <div id="signDiv">
+        <div id="signDiv" style="display:none">
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
@@ -377,7 +377,7 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/NewLevel.png' id='NewLevel'></img>
+                <img src='resources/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
             </div>
 
             <div id='other'>
@@ -545,196 +545,111 @@
             <br>
             <img src='resources/Back.png' id='Back' onclick='back()'></img>
         </div>
-        <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; " />
+
+        <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: 0px;right: 0; left: 0px; bottom: 0;overflow:hidden; "></div>
+        <div id="editor" style="display:none">
+            <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll;   margin:20px; float:left">
+                <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
+            </div>
+            <div id="side" class=editor style="margin:20px; width:auto; float:right">
+                <div id='buttons' style="margin:5px">
+                    <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
+                    <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
+                    <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
+                </div>
+
+
+
+
+
+
+
+                <hr noshade>
+
+                <div id='tiles'>
+                    <table id='select'>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id='creature'>
+                    <table id='select'>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id='entity'>
+                    <table id='select'>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <hr noshade>
+
+                <table id='inputs'>
+                    <tr>
+                        <td>
+                            <h5>Background:</h5>
+                            <select id="background" onchange="setBackground(this)">
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
+                                <option value="B3">B3</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Map Width:</h5>
+                            <input id="mapW" type="number" name="width" min="0" max=""> <!–– Set Max ––>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Map Height:</h5>
+                            <input id="mapH" type="number" name="height" min="0" max=""> <!–– Set Max ––>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Spawn Point (X-Coordinate):</h5>
+                            <input type="number" name="X" min="0" max=""> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Spawn Point (Y-Coordinate):</h5>
+                            <input type="number" name="Y" min="0" max=""> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Gravity:</h5>
+                            <input type="range" name="points" min="0" max="5" oninput="setBackground(this.value)" ">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Moveset:</h5>
+                            <input type="number" name="move" min="0" max=""> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
+
+                </table>
+                <input type="button" name="Load" value="Load" onclick="loadLevel()">
+                <input type="button" name="Save" value="Save" onclick="saveLevel()">
+            </div>
+        </div>
     </div>
-
-    <div class=side>
-
-        <div id='buttons'>
-            <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
-            <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
-            <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
-        </div>
-
-        <hr noshade>
-
-        <div id='tiles'>
-            <table id='select'>
-                <tbody>
-                    <tr>
-                        <td>a</td>
-                        <td>b</td>
-                        <td>c</td>
-                    </tr>
-                    <tr>
-                        <td>d</td>
-                        <td>e</td>
-                        <td>f</td>
-                    </tr>
-                    <tr>
-                        <td>g</td>
-                        <td>h</td>
-                        <td>i</td>
-                    </tr>
-                    <tr>
-                        <td>a</td>
-                        <td>b</td>
-                        <td>c</td>
-                    </tr>
-                    <tr>
-                        <td>d</td>
-                        <td>e</td>
-                        <td>f</td>
-                    </tr>
-                    <tr>
-                        <td>g</td>
-                        <td>h</td>
-                        <td>i</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id='creature'>
-            <table id='select'>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id='entity'>
-            <table id='select'>
-                <tbody>
-                    <tr>
-                        <td>A</td>
-                        <td>B</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>E</td>
-                        <td>F</td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>H</td>
-                        <td>I</td>
-                    </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>B</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>E</td>
-                        <td>F</td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>H</td>
-                        <td>I</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <hr noshade>
-
-        <table id='inputs'>
-            <tr>
-                <td>
-                    <h5>Character Select:</h5>
-                    <select id="character" onchange="selectCharacter()">
-                        <option value="Heisenberg">Heisenberg</option>
-                        <option value="Jessie">Jessie</option>
-                        <option value="Hank">Hank</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Background:</h5>
-                    <select id="background" onchange="setBackground(this)">
-                        <option value="B1">B1</option>
-                        <option value="B2">B2</option>
-                        <option value="B3">B3</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Map Width:</h5>
-                    <input type="number" name="width" min="0" max="" onchange="setWidth(this.value)"> <!–– Set Max ––>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Map Height:</h5>
-                    <input type="number" name="height" min="0" max="" onchange="setHeight(this.value)"> <!–– Set Max ––>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Spawn Point (X-Coordinate):</h5>
-                    <input type="number" name="X" min="0" max="" onchange="setSpawnX(this.value)"> <!–– Set Max ––>
-                    <br>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Spawn Point (Y-Coordinate):</h5>
-                    <input type="number" name="Y" min="0" max="" onchange="setSpawnY(this.value)"> <!–– Set Max ––>
-                    <br>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Gravity:</h5>
-                    <input type="number" name="gravity" min="0" max="20" onchange="setGravity(this.value)"> <!–– Set Max ––>
-                </td>
-            </tr>
-        </table>
-
-    </div>
-
-
 
     <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
@@ -746,6 +661,7 @@
     <script type="text/javascript" src="js/overworld.js"></script>
     <script type="text/javascript" src="js/playermods.js"></script>
     <script type="text/javascript" src="js/database.js"></script>
+    <script type="text/javascript" src="js/editor.js"></script>
 
 
 
@@ -855,6 +771,13 @@
             document.getElementById("entity").style.display = "inline-block";
         }
 
+        function newLevel() {
+            document.getElementById("levelEditorOptions").style.display = "none";
+            document.getElementById("editor").style.display = "table-cell";
+            var canvas = document.getElementById("canvas")
+            elemt = new Editor(canvas);
+        }
+
         function selectCharacter() {
             var char = document.getElementById("character");
         }
@@ -867,9 +790,9 @@
 
         }
 
-    loadLevelsList.onclick = function () {
-        loadLevelsList();
-    }
+        //loadLevelsList.onclick = function () {
+        //    loadLevelsList();
+        //}
         function setHeight(h) {
 
         }
@@ -944,25 +867,25 @@
             conf = CONFIG(response);
         }, "/client/js/config.json");
 
-    var loadLevelsList = function () {
-        menuDiv.style.display = 'none';
-        /*
-        var levelsList = document.getElementById('levelsList');
-        loadDB('level', function (data) {
-            levels[] = data;
-            for (var level of data) {
-                var levelName = level.name;
-                var author = level.user;
-                var dateCreated = level.dateCreated;
+        var loadLevelsList = function () {
+            menuDiv.style.display = 'none';
+            /*
+            var levelsList = document.getElementById('levelsList');
+            loadDB('level', function (data) {
+                levels[] = data;
+                for (var level of data) {
+                    var levelName = level.name;
+                    var author = level.user;
+                    var dateCreated = level.dateCreated;
 
-                var levelRow = document.createElement("P");
-                var t = document.createTextNode(levelName + "   " + "  " + author + "  " + " " + dateCreated);
-                levelRow.appendChild(t);
-                levelsList.appendChild(levelRow);
-            }
-        });*/
-    }
-
+                    var levelRow = document.createElement("P");
+                    var t = document.createTextNode(levelName + "   " + "  " + author + "  " + " " + dateCreated);
+                    levelRow.appendChild(t);
+                    levelsList.appendChild(levelRow);
+                }
+            });*/
+        }
+        var elemt;
         var map;
         //achievement array
         function loadUserDatabase() {
@@ -979,7 +902,7 @@
                 loadGame(false, JSON.parse(response));
             }, "/client/resources/player.json");
         }
-        
+
 
         var loadMenu = function () {
             signDiv.style.display = 'none';
@@ -987,7 +910,7 @@
             menuDiv.style.display = 'table-cell';
         }
 
-        function loadNeeded(player) {
+        function loadNeeded() {
             for (var x of neededFiles) {
                 var resource = "/client/resources/";
                 if (x == "weapons.json") {
@@ -1008,7 +931,7 @@
             signDiv.style.display = 'none';
             gameDiv.style.display = '';
             if (!reload) {
-                loadNeeded(player);
+                loadNeeded();
             }
             //loading into the overworld
             loadOverworld(player, function (m) {
@@ -1111,8 +1034,8 @@
             seconds = (seconds < 10) ? "0" + seconds : seconds;
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
-
-      //  window.onload = loadCurretUser();
+        window.onload = loadNeeded();
+                              //  window.onload = loadCurretUser();
     </script>
 
 

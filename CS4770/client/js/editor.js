@@ -84,6 +84,7 @@ class Editor {
         }, false);
 
         this.setup();
+        console.log(this);
     }
 
 
@@ -107,8 +108,10 @@ class Editor {
     }
 
     setUpDocument() {
+        var editor = this;
+
         document.getElementById("selectTiles").onclick = function () {
-            elem = "Content";
+            editor.elem = "Content";
             console.log("content");
             document.getElementById("creature").style.display = "none";
             document.getElementById("entity").style.display = "none";
@@ -117,7 +120,7 @@ class Editor {
         }
 
         document.getElementById("selectCreature").onclick = function () {
-            elem = "Creature";
+            editor.elem = "Creature";
             document.getElementById("entity").style.display = "none";
             document.getElementById("tiles").style.display = "none";
             document.getElementById("creature").style.display = "inline-block";
@@ -125,7 +128,7 @@ class Editor {
         }
 
         document.getElementById("selectEntity").onclick = function () {
-            elem = "Entities";
+            editor.elem = "Entities";
             document.getElementById("creature").style.display = "none";
             document.getElementById("tiles").style.display = "none";
             document.getElementById("entity").style.display = "inline-block";
@@ -135,35 +138,35 @@ class Editor {
         document.getElementById("background").onchange = function () {
             var background = document.getElementById("background");
             var b = background.options[background.selectedIndex].value;
-            map.background = b;
+            editor.map.background = b;
             console.log(map);
         }
 
 
         document.getElementById("mapW").onchange = function () {
             var w = document.getElementById("mapW").value;
-            bw = w;
-            canvas.width = w;
+            editor.bw = w;
+            editor.canvas.width = w;
             console.log("Changing Width...");
-            drawBoard();
+            editor.drawBoard();
         }
 
         document.getElementById("mapH").onchange = function () {
             var h = document.getElementById("mapH").value;
-            bh = h;
-            canvas.height = h;
+            editor.bh = h;
+            editor.canvas.height = h;
             console.log("Changing Height...");
-            drawBoard();
+            editor.drawBoard();
         }
 
         document.getElementsByName("X").onchange = function () {
             var ycoord = document.getElementById("Y").value;
-            map.spawnY = ycoord;
+            editor.map.spawnY = ycoord;
         }
 
         document.getElementsByName("Y").onchange = function () {
             var xcoord = document.getElementById("X").value;
-            map.spawnX = xcoord;
+            editor.map.spawnX = xcoord;
             console.log("changing y spawn");
         }
 
@@ -181,6 +184,8 @@ class Editor {
         this.drawBoard();
         this.setUpDocument();
         this.loadTiles(this);
+        this.loadCreatures(this);
+        this.loadEntities(this);
     }
 
 
@@ -214,15 +219,15 @@ class Editor {
         }
     }
 
-   
+
     removeTile() {
         var context = this.canvas.getContext("2d");
 
         var scrollPos = document.getElementById("gameDiv");
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
-        var x = Math.floor((event.clientX + scrollX-this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + scrollY-this.cw) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + scrollX - this.cw) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + scrollY - this.cw) / this.ch) * this.ch;
         var k;
         var type = null;
 
@@ -268,30 +273,30 @@ class Editor {
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
 
-        var x = Math.floor((event.clientX + scrollX-this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + scrollY-this.ch) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + scrollX - this.cw) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + scrollY - this.ch) / this.ch) * this.ch;
 
-        getSprite(this.selection).drawBackground(x, y, this.canvas);
+        getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
 
         switch (this.elem) {
             case "Creature":
-                this.placeCreature(x,y);
+                this.placeCreature(x, y);
                 break;
             case "Entities":
-                this.placeEntity(x,y);
+                this.placeEntity(x, y);
                 break;
             case "Content":
-                this.placeContent(x,y);
+                this.placeContent(x, y);
                 break;
         }
     }
 
-    placeCreature(x,y) {
+    placeCreature(x, y) {
 
         var taken = false;
         var i;
         var creat = {
-            id: selection,
+            id: this.selection,
             posX: x,
             posY: y,
             moveset: move
@@ -322,12 +327,12 @@ class Editor {
     }
 
 
-    placeEntity(x,y) {
+    placeEntity(x, y) {
 
         var taken = false;
         var i;
         var ent = {
-            id: selection,
+            id: this.selection,
             posX: x,
             posY: y
         }
@@ -356,7 +361,7 @@ class Editor {
 
     }
 
-    placeContent(x,y) {
+    placeContent(x, y) {
 
         var taken = false;
         var i;
@@ -383,7 +388,7 @@ class Editor {
 
         }
         else {
-           this.map.content.push(cont);
+            this.map.content.push(cont);
             console.log("pushing");
 
         }
@@ -401,7 +406,76 @@ class Editor {
             var sprite = id[1];
             //just making sure we are only doing the tiles
             if (sprite.id > 400) {
-                break;
+                continue;
+            }
+            //adding a new row
+            if (column == 0) {
+                row = table.insertRow(0);
+            }
+            //adding a new cell at the index of the column
+            var cell = row.insertCell(column);
+            cell.setAttribute("id", sprite.id);
+            cell.onclick = function () {//insert whatever function handled the tiles selection here}
+                editor.selection = parseInt(this.id);
+            }
+            //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
+            //this should all work
+            var smallC = document.createElement("canvas");
+            smallC.width = sprite.width;
+            smallC.height = sprite.height;
+            sprite.drawBackground(0, 0, smallC);
+            cell.appendChild(smallC);
+            column++;
+            if (column == 3) { column = 0; }
+        }
+    }
+    //so this is going to dynamically add the tiles to the table
+    loadCreatures(editor) {
+        console.log(sprites);
+        //this is the table we are using
+        var table = document.getElementById("creature").children[0];
+        var column = 0;
+        var row;
+        for (var id of sprites) {
+            var sprite = id[1];
+            console.log(sprite.id);
+            //just making sure we are only doing the tiles
+            if (sprite.id < 400 || sprite.id> 666) {
+                continue;
+            }
+            //adding a new row
+            if (column == 0) {
+                row = table.insertRow(0);
+            }
+            //adding a new cell at the index of the column
+            var cell = row.insertCell(column);
+            cell.setAttribute("id", sprite.id);
+            cell.onclick = function () {//insert whatever function handled the tiles selection here}
+                editor.selection = parseInt(this.id);
+            }
+            //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
+            //this should all work
+            var smallC = document.createElement("canvas");
+            smallC.width = sprite.width;
+            smallC.height = sprite.height;
+            sprite.drawBackground(0, 0, smallC);
+            cell.appendChild(smallC);
+            column++;
+            if (column == 3) { column = 0; }
+        }
+    }
+
+    //so this is going to dynamically add the tiles to the table
+    loadEntities(editor) {
+        //this is the table we are using
+        var table = document.getElementById("entity").children[0];
+        var column = 0;
+        var row;
+        for (var id of sprites) {
+            var sprite = id[1];
+            //just making sure we are only doing the tiles
+            if (sprite.id < 669 || sprite.id > 997) {
+                continue;
             }
             //adding a new row
             if (column == 0) {

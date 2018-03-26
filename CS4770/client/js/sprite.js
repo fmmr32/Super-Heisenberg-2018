@@ -44,7 +44,7 @@ SPRITE.prototype = {
             height //height of sprite
         );
     },
-    drawBackground: function (desX, desY, canvas){
+    drawBackground: function (desX, desY, canvas, oW, oH){
         //all the values that the sprite holds
         var img = new Image();
         var width = this.width;
@@ -62,8 +62,8 @@ SPRITE.prototype = {
                 height, //height of the sprite
                 desX, //destination x of the sprite on the canvas
                 desY, //destination of y of the sprite on the canvas
-                width, //width of sprite
-                height //height of sprite
+                oW != undefined ? oW : width, //width of sprite
+                oH != undefined ? oH : width //height of sprite
             );
             try {
                 map.setImage(context);
