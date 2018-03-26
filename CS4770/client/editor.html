@@ -1,27 +1,5 @@
 <HTML>
-<script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
-<script type="text/javascript" src="js/editor.js"></script>
-<script type="text/javascript" src="js/sprite.js"></script>
-<script>
-    var socket = io();
 
-    function loadJSONFile(callback, file) {
-        socket.emit('loadJSON', {
-            fileName: file
-        });
-        socket.on(file, function (data) {
-            callback(data.toString());
-        });
-    }
-
-    //for Kennedy
-    loadJSONFile(function (response) {
-        loadSprites(response, canvas);
-        loadTiles();
-    }, "/client/resources/tiles.json");
-
-
-</script>
 <HEAD>
     <STYLE>
 
@@ -145,13 +123,13 @@
 
 </HEAD>
 
-<body onload="Editor()">
-    <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll; ">
-        <canvas id="canvas" width="1080px" height="720px" style="background: #fff;  magrin:20px;" oncontextmenu="return false;"></canvas>
+<body>
+    <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll;   margin:20px; float:left">
+        <canvas id="canvas" width="720px" height="480px" style="background: #fff;" oncontextmenu="return false;"></canvas>
     </div>
-    <div class=container>
+    <div class=container style="margin:20px; width:auto">
 
-        <div id='buttons'>
+        <div id='buttons' style="margin:5px">
             <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
             <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
             <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
@@ -167,142 +145,25 @@
 
         <div id='tiles'>
             <table id='select'>
-                <tbody>
-                    <!--<tr>
-                        <td><button id="button1" value="1" onclick="selectTile()"> a</button></td>
-                        <td>b</td>
-                        <td>c</td>
-                    </tr>
-                    <tr>
-                        <td>d</td>
-                        <td>e</td>
-                        <td>f</td>
-                    </tr>
-                    <tr>
-                        <td>g</td>
-                        <td>h</td>
-                        <td>i</td>
-                    </tr>
-                    <tr>
-                        <td id='1'>img</td>
-                        <td>b</td>
-                        <td>c</td>
-                    </tr>
-                    <tr>
-                        <td>d</td>
-                        <td>e</td>
-                        <td>f</td>
-                    </tr>
-                    <tr>
-                        <td>g</td>
-                        <td>h</td>
-                        <td>i</td>
-                    </tr>-->
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
         <div id='creature'>
             <table id='select'>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
         <div id='entity'>
             <table id='select'>
-                <tbody>
-                    <tr>
-                        <td>A</td>
-                        <td>B</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>E</td>
-                        <td>F</td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>H</td>
-                        <td>I</td>
-                    </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>B</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>E</td>
-                        <td>F</td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>H</td>
-                        <td>I</td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
         <hr noshade>
 
         <table id='inputs'>
-            <tr>
-                <td>
-                    <h5>Character Select:</h5>
-                    <select id="character" onchange="selectCharacter()">
-                        <option value="Heisenberg">Heisenberg</option>
-                        <option value="Jessie">Jessie</option>
-                        <option value="Hank">Hank</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Block Select:</h5>
-                    <select id="gameElement">
-                        <option Value="Creature">Creature</option>
-                        <option Value="Entities">Entities</option>
-                        <option Value="Content">Content</option>
-                    </select>
-                </td>
-            </tr>
-
-
-
             <tr>
                 <td>
                     <h5>Background:</h5>
@@ -365,12 +226,34 @@
         <input type="button" name="Save" value="Save" onclick="saveLevel()">
     </div>
 
+    <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script type="text/javascript" src="js/editor.js"></script>
+    <script type="text/javascript" src="js/sprite.js"></script>
+    <script>
+        var socket = io();
+        var elent;
+        function loadJSONFile(callback, file) {
+            socket.emit('loadJSON', {
+                fileName: file
+            });
+            socket.on(file, function (data) {
+                callback(data.toString());
+            });
+        }
+
+        //for Kennedy
+        loadJSONFile(function (response) {
+            loadSprites(response, canvas);
+            elent = new Editor(document.getElementById("canvas"));
+        }, "/client/resources/tiles.json");
+
+
+    </script>
 
 
 
 
 
-   
 </body>
 </HTML>
 

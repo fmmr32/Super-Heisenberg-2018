@@ -854,10 +854,12 @@ class EntityCreature extends EntityMovable {
                 //check for Out of bounds
                 switch (this.level.isOOB(this.getX(), this.getY())) {
                     case 1:
-                        this.setX(container.clientWidth - this.getSprite().getCenter() * 2);
+                        this.setX(this.getX() - this.getHSpeed());
+                        this.setHSpeed(0);
                         break;
                     case 2:
-                        this.setX(0);
+                        this.setX(this.getX() - this.getHSpeed());
+                        this.setHSpeed(0);
                         break;
                     case 3:
                         if (this.godlike) { break;}

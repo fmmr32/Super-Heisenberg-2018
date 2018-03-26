@@ -18,7 +18,7 @@ function setConf(button) {
     var settingsTable = document.getElementById("gameSettings");
     settingsTable.removeChild(settingsTable.children[0]);
     settingsTable.appendChild(document.createElement("tbody"));
-    //addding the buttons to the table
+    //adding the buttons to the table
     for (var b of Object.keys(button)) {
         var row = settingsTable.insertRow(0);
         var cell1 = row.insertCell(0);
