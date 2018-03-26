@@ -22,7 +22,7 @@ function loadWeapon(list,user, weaponMod) {
 function deepCopy(c, user) {
     if (c instanceof Weapon) {
         var animation = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
-        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets });
+        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets, sound:c.sound});
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
@@ -96,6 +96,7 @@ function loadWeapons(file) {
         options.bullets = bullets;
         options.impact = w.impact;
         options.price = w.price;
+        options.sound = new SoundManager(w.sound, "game");
         options.impactUpgrades = w.impactUpgrades
         weapons.set(w.id, new Weapon(options));
     }
@@ -114,7 +115,7 @@ class Weapon {
     fireWeapon(character, level) {
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
         if (this.tick === 0) {
-
+            this.sound.play();
             if (character.getLastOffSet() < 0) {
                 this.animations[0].animating = true;
             } else {
@@ -300,7 +301,6 @@ class Grenade extends Bullet {
     constructor(angle, alive, options, id, owner) {
         super(angle, alive, options, owner);
         this.id = id;
-
         var img = new Image();
         img.src = getSprite(id).image.src;
         img.width = getSprite(id).width;
@@ -334,11 +334,12 @@ class Grenade extends Bullet {
         options.x = this.getX();
         options.y = this.getY() - this.getHeight();
         options.sprite = new Array(1).fill(this.getSprite());
+        getSprite(this.id).sound.play();
+
         options.level = this.level;
         this.animation[0].animating = true;
         this.animation[0].despawn = true;
         options.animation = this.animation;
-
         this.level.entities.push(new Entity(options));
 
         var xOff = -(this.factor - 1) * this.animation.width / 2;

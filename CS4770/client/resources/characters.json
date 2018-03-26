@@ -1,8 +1,8 @@
 [
   {
     "Id": 667,
-    "startX": 39,
-    "startY": 11,
+    "startX": 401,
+    "startY": 0,
     "width": 70,
     "height": 96,
     "centerPX": 32,
@@ -16,10 +16,10 @@
     "rightHand": [ 45, 36 ],
     "leftHandLow": [ 13, 55 ],
     "rightHandLow": [ 28, 55 ],
-    "source": "../resources/stud69.png",
+    "source": "../resources/characters.png",
     "animation": [
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
@@ -28,16 +28,16 @@
         "columns": 4
       },
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
-        "frames": 4,
+        "frames": 5,
         "frameRate": 5,
         "columns": 4
       },
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
@@ -46,7 +46,7 @@
         "columns": 1
       },
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
@@ -55,7 +55,7 @@
         "columns": 1
       },
       {
-        "startX": 70,
+        "startX": 471,
         "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
@@ -64,7 +64,7 @@
         "columns": 1
       },
       {
-        "startX": 140,
+        "startX": 541,
         "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
@@ -73,7 +73,7 @@
         "columns": 1
       },
       {
-        "startX": 70,
+        "startX": 471,
         "startY": 288,
         "offSetX": 0,
         "offSetY": 0,
@@ -82,7 +82,7 @@
         "columns": 1
       },
       {
-        "startX": 140,
+        "startX": 541,
         "startY": 288,
         "offSetX": 0,
         "offSetY": 0,
@@ -94,8 +94,8 @@
   },
   {
     "Id": 668,
-    "startX": 39,
-    "startY": 11,
+    "startX": 0,
+    "startY": 0,
     "width": 70,
     "height": 96,
     "centerPX": 32,
@@ -109,7 +109,7 @@
     "rightHand": [ 45, 36 ],
     "leftHandLow": [ 13, 55 ],
     "rightHandLow": [ 28, 55 ],
-    "source": "../resources/stud69.png",
+    "source": "../resources/characters.png",
     "animation": [
       {
         "startX": 0,
@@ -187,10 +187,10 @@
   },
   {
     "Id": 669,
-    "startX": 39,
+    "startX": 0,
     "startY": 11,
-    "width": 70,
-    "height": 96,
+    "width": 100,
+    "height": 100,
     "centerPX": 32,
     "offSetPX": 3,
     "name": "Jesse",
@@ -198,11 +198,11 @@
     "hp": 100,
     "speed": 4,
     "jump": 0.5,
-    "leftHand": [ -6, 36 ],
-    "rightHand": [ 45, 36 ],
-    "leftHandLow": [ 13, 55 ],
-    "rightHandLow": [ 28, 55 ],
-    "source": "../resources/stud69.png",
+    "leftHand": [ 15, 42 ],
+    "rightHand": [ 45, 42 ],
+    "leftHandLow": [ 28, 60 ],
+    "rightHandLow": [ 40, 60 ],
+    "source": "../resources/characters.png",
     "animation": [
       {
         "startX": 0,
@@ -215,10 +215,10 @@
       },
       {
         "startX": 0,
-        "startY": 192,
+        "startY": 200,
         "offSetX": 0,
         "offSetY": 0,
-        "frames": 4,
+        "frames": 5,
         "frameRate": 5,
         "columns": 4
       },
@@ -233,7 +233,7 @@
       },
       {
         "startX": 0,
-        "startY": 192,
+        "startY": 200,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -241,8 +241,8 @@
         "columns": 1
       },
       {
-        "startX": 70,
-        "startY": 96,
+        "startX": 100,
+        "startY": 100,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -250,8 +250,8 @@
         "columns": 1
       },
       {
-        "startX": 140,
-        "startY": 96,
+        "startX": 200,
+        "startY": 100,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -259,8 +259,8 @@
         "columns": 1
       },
       {
-        "startX": 70,
-        "startY": 288,
+        "startX": 100,
+        "startY": 300,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -268,8 +268,8 @@
         "columns": 1
       },
       {
-        "startX": 140,
-        "startY": 288,
+        "startX": 200,
+        "startY": 300,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,

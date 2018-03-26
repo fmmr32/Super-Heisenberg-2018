@@ -395,3 +395,39 @@ class ExitMenu {
     }
 
 }
+
+class SoundManager {
+    constructor(sound, type) {
+        this.sound = new Audio(sound);
+        var v = 100;
+        switch (type) {
+            case "music":
+                //get this value from the music volume settings
+                this.sound.volume = v / 100;
+                this.setLoop(true);
+                break;
+            case "game":
+                //get this value from the game volume settings
+                this.sound.volume = v/100;
+                break;
+        }
+
+    }
+
+    setVolume(volume) {
+        this.sound.volume = volume / 100;
+    }
+
+    setLoop(loop) {
+        this.sound.loop = loop;
+    }
+
+    play() {
+        this.sound.play();
+    }
+
+    stop() {
+        this.sound.pause();
+        this.sound.currentTime = 0;
+    }
+}

@@ -60,6 +60,7 @@
     "startY": 0,
     "width": 18,
     "height": 16,
+    "sound": "../resources/gun_sound.wav",
     "centerPX": 9,
     "offSetPX": 0,
     "animation": [
@@ -244,7 +245,7 @@
     "name": "Shotgun Knight",
     "complex": {
       "hp": 1000,
-      "artifact": 991,
+      "artifact": 992,
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
@@ -369,7 +370,7 @@
     "name": "Evil Heisenberg",
     "complex": {
       "hp": 100,
-      "artifact": 988,
+      "artifact": 989,
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
@@ -407,10 +408,10 @@
       "weapon": [ 1 ],
       "healthBar": true
     },
-    "source": "../resources/stud69.png",
+    "source": "../resources/characters.png",
     "animation": [
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
@@ -419,16 +420,16 @@
         "columns": 4
       },
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
-        "frames": 4,
+        "frames": 5,
         "frameRate": 5,
         "columns": 4
       },
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
@@ -437,7 +438,7 @@
         "columns": 1
       },
       {
-        "startX": 0,
+        "startX": 401,
         "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
@@ -446,7 +447,7 @@
         "columns": 1
       },
       {
-        "startX": 70,
+        "startX": 471,
         "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
@@ -455,7 +456,7 @@
         "columns": 1
       },
       {
-        "startX": 140,
+        "startX": 541,
         "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
@@ -464,7 +465,7 @@
         "columns": 1
       },
       {
-        "startX": 70,
+        "startX": 471,
         "startY": 288,
         "offSetX": 0,
         "offSetY": 0,
@@ -473,7 +474,7 @@
         "columns": 1
       },
       {
-        "startX": 140,
+        "startX": 541,
         "startY": 288,
         "offSetX": 0,
         "offSetY": 0,

@@ -178,6 +178,7 @@ class OverWorld {
         this.file = file;
 
         this.onOverWorld = true;
+
         this.inShop = false;
         this.inCharacterSelect = false;
         this.inMuseum = false;
@@ -191,9 +192,7 @@ class OverWorld {
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
 
-        this.music = new Audio("../resources/temp/sounds/005_1.wav");
-        this.music.stop = function () { this.pause(), this.currentTime = 0; };
-        this.music.loop = true;
+        this.music = new SoundManager("../resources/temp/sounds/005_1.wav", "music");
 
         this.loadOverWorld(file);
 
@@ -226,13 +225,14 @@ class OverWorld {
         }
     }
     //loads the player
-    loadPlayer(player) {
+    loadPlayer(player, reload) {
         var options = player;
         options.world = this;
         options.src = player.src;
         this.player = new OverWorldPlayer(options);
         loaded = true;
-        this.getPlayer().spawn(this.startX, this.startY);
+
+        this.getPlayer().spawn(reload ? this.getPlayer().getX(): this.startX, reload ? this.getPlayer.getY() : this.startY);
 
     }
 
@@ -421,7 +421,7 @@ directions:
 
     loadCharacterSelect(overWorld, characters, player, texts) {
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
-        this.loadPlayer(this.characters.getOverWorldCharacter());
+        this.loadPlayer(this.characters.getOverWorldCharacter(), false);
         this.museum = new Museum(player, this.characters.getCharacter(), this);
     }
 

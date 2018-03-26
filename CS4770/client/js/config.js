@@ -20,7 +20,7 @@ function setConf(button) {
     settingsTable.appendChild(document.createElement("tbody"));
     //adding the buttons to the table
     for (var b of Object.keys(button)) {
-        var row = settingsTable.insertRow(0);
+        var row = settingsTable.insertRow(settingsTable.rows.length);
         var cell1 = row.insertCell(0);
         row.onclick = function () { isChanging = true; changer[0] = this.cells[1].innerHTML; };
         var cell2 = row.insertCell(1);

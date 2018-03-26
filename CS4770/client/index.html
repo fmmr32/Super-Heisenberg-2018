@@ -546,7 +546,7 @@
             <img src='resources/Back.png' id='Back' onclick='back()'></img>
         </div>
 
-        <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: 0px;right: 0; left: 0px; bottom: 0;overflow:hidden; "></div>
+        <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
         <div id="editor" style="display:none">
             <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll;   margin:20px; float:left">
                 <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
@@ -928,8 +928,6 @@
 
         function loadGame(reload, player) {
             //setting the divs correctly
-            signDiv.style.display = 'none';
-            gameDiv.style.display = '';
             if (!reload) {
                 loadNeeded();
             }

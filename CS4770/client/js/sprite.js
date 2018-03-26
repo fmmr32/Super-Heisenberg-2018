@@ -120,6 +120,10 @@ function loadSprites(json, container, tile) {
                 options.meta[Object.keys(m)] = Object.values(m);
             }
         }
+        if (tile.sound != undefined) {
+            options.sound = new SoundManager(tile.sound, "game");
+        }
+
 
         newSprite(options);
     }
