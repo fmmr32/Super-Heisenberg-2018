@@ -606,7 +606,7 @@ class CharacterSelect {
             case "action":
                 if (this.characterSelect) {
                     this.player.currentCharacter = this.characters[this.selected].Id;
-                    world.loadPlayer(this.getOverWorldCharacter(),true);
+                    overWorld.loadPlayer(this.getOverWorldCharacter(), true);
                 } else if (this.armory) {
                     if (this.weaponSelected) {
                         //check for impact/equipping

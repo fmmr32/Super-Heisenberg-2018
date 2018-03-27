@@ -375,8 +375,8 @@
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
       "rightHand": [ 45, 36 ],
-      "leftHandLow": [ 13, 55 ],
-      "rightHandLow": [ 28, 55 ],
+      "leftHandLow": [ 13, 60 ],
+      "rightHandLow": [ 28, 60 ],
       "moveSet": [
         {
           "type": "left",
@@ -411,7 +411,7 @@
     "source": "../resources/characters.png",
     "animation": [
       {
-        "startX": 401,
+        "startX": 0,
         "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
@@ -420,7 +420,7 @@
         "columns": 4
       },
       {
-        "startX": 401,
+        "startX": 0,
         "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
@@ -429,7 +429,7 @@
         "columns": 4
       },
       {
-        "startX": 401,
+        "startX": 0,
         "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
@@ -438,7 +438,7 @@
         "columns": 1
       },
       {
-        "startX": 401,
+        "startX": 0,
         "startY": 192,
         "offSetX": 0,
         "offSetY": 0,
@@ -447,7 +447,7 @@
         "columns": 1
       },
       {
-        "startX": 471,
+        "startX": 70,
         "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
@@ -456,7 +456,7 @@
         "columns": 1
       },
       {
-        "startX": 541,
+        "startX": 140,
         "startY": 96,
         "offSetX": 0,
         "offSetY": 0,
@@ -465,7 +465,7 @@
         "columns": 1
       },
       {
-        "startX": 471,
+        "startX": 70,
         "startY": 288,
         "offSetX": 0,
         "offSetY": 0,
@@ -474,7 +474,7 @@
         "columns": 1
       },
       {
-        "startX": 541,
+        "startX": 140,
         "startY": 288,
         "offSetX": 0,
         "offSetY": 0,

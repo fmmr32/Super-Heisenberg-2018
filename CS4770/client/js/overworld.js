@@ -229,10 +229,11 @@ class OverWorld {
         var options = player;
         options.world = this;
         options.src = player.src;
+        var x = reload ? this.getPlayer().getX() : this.startX;
+        var y = reload ? this.getPlayer().getY() : this.startY;
         this.player = new OverWorldPlayer(options);
         loaded = true;
-
-        this.getPlayer().spawn(reload ? this.getPlayer().getX(): this.startX, reload ? this.getPlayer.getY() : this.startY);
+        this.getPlayer().spawn(x, y);
 
     }
 
@@ -317,7 +318,7 @@ class OverWorld {
         } else if (this.inCharacterSelect) {
             this.characters.navigate(type);
             return true;
-        }  else if (this.onOverWorld) {
+        } else if (this.onOverWorld) {
             this.getPlayer().doMove(type);
             return true;
         } else if (this.inMuseum) {

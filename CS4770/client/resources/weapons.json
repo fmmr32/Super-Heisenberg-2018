@@ -145,9 +145,9 @@
     "name": "launcher",
     "id": 4,
     "columns": 3,
-    "width": 32,
-    "price": 300,
-    "height": 32,
+    "width": 69,
+    "price": 400,
+    "height": 13,
     "damage": 10,
     "sound": "../resources/gun_sound.wav",
     "speed": 4,
@@ -162,20 +162,20 @@
     "gravity": false,
     "animation": [
       {
-        "startX": 196,
-        "startY": 129,
-        "barrelX": 16,
-        "barrelY": 1,
-        "offSetX": 0,
-        "offSetY": 0
+        "startX": 0,
+        "startY": 392,
+        "barrelX": 68,
+        "barrelY": 0,
+        "offSetX": -40,
+        "offSetY": 2
       },
       {
-        "startX": 196,
-        "startY": 226,
-        "barrelX": -29,
-        "barrelY": 1,
+        "startX": 0,
+        "startY": 432,
+        "barrelX": 0,
+        "barrelY": 0,
         "offSetX": 0,
-        "offSetY": 0
+        "offSetY": 2
       }
     ],
     "grenades": [
