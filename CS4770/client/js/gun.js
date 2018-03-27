@@ -351,9 +351,12 @@ class Grenade extends Bullet {
         var yMin = Math.min(this.getY() - this.getHeight() + this.animation.width * this.animation.factor, this.getY() - this.getHeight() + yOff);
         var yMax = Math.max(this.getY() - this.getHeight() + this.animation.width * this.animation.factor, this.getY() - this.getHeight() + yOff);
 
+        console.log(xMin, xMax, yMin, yMax, this);
+
         for (var x = xMin; x < xMax; x++) {
             for (var y = yMin; y < yMax; y++) {
                 var ent = this.level.getEntity(x, y);
+                console.log(ent);
                 if (ent != null && ent instanceof EntityCreature && ent != this.getOwner() && this.damaged.indexOf(ent) == -1) {
                     ent.doDamage(this.getDamage());
                     this.damaged.push(ent);

@@ -701,8 +701,12 @@ class CharacterSelect {
 
     //gets the right character for playing the level
     getCharacter() {
-        for (var ch of this.characters) {
-            if (ch.Id == this.player.currentCharacter) {
+       return CharacterSelect.getCharacter(this.characters, this.player);
+    }
+
+    static getCharacter(file, player) {
+        for (var ch of file) {
+            if (ch.Id == player.currentCharacter) {
                 return ch;
             }
         }

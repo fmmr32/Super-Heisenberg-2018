@@ -399,6 +399,8 @@ class ExitMenu {
 class SoundManager {
     constructor(sound, type) {
         this.sound = new Audio(sound);
+        this.sound.preload = 'auto';
+        this.players = [];
         var v = 100;
         switch (type) {
             case "music":
@@ -423,11 +425,22 @@ class SoundManager {
     }
 
     play() {
-        this.sound.play();
+        var temp = this.sound.cloneNode();
+        temp.play();
+        var obj = this;
+        if (!this.sound.loop) {
+            temp.addEventListener("ended", function () {
+                obj.players.splice(obj.players.indexOf(temp), 1);
+            })
+        }
+
+        this.players.push(temp);
     }
 
     stop() {
-        this.sound.pause();
-        this.sound.currentTime = 0;
+        for (var t of this.players) {
+            t.pause();
+            t.currentTime = 0;
+        }
     }
 }
