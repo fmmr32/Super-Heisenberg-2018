@@ -365,17 +365,20 @@ class ExitMenu {
                 switch (this.options[this.select]) {
                     case "Resume":
                         this.world.inExitMenu = false;
+                        this.select = 0;
                         break;
                     case "Exit":
                         //go back to the main menu
                         loaded = false;
-                        overWorld.onOverWorld = true;
-                        overWorld.inShop = false;
-                        overWorld.inCharacterSelect = false;
-                        overWorld.inMuseum = false;
-                        overWorld.inExitMenu = false;
-                        overWorld.getPlayer().setX(overWorld.startX)
-                        overWorld.getPlayer().setY(overWorld.startY);
+                        this.world.onOverWorld = true;
+                        this.world.inShop = false;
+                        this.world.inCharacterSelect = false;
+                        this.world.inMuseum = false;
+                        this.world.inExitMenu = false;
+                        this.world.getPlayer().setX(overWorld.startX)
+                        this.world.getPlayer().setY(overWorld.startY);
+                        this.world.music.stop();
+                        this.select = 0;
                         back();
                         break;
 
@@ -410,7 +413,7 @@ class SoundManager {
                 break;
             case "game":
                 //get this value from the game volume settings
-                this.sound.volume = v/100;
+                this.sound.volume = v / 100;
                 break;
         }
 

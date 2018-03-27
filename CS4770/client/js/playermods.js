@@ -250,13 +250,17 @@ class Shop {
 
     }
     hasWeapon(id) {
-        for (var weapon of this.player.weapons) {
+        return Shop.hasWeapon(this.player, id);
+    }
+    static hasWeapon(player, id) {
+        for (var weapon of player.weapons) {
             if (weapon.id == id) {
                 return true;
             }
         }
         return false;
     }
+
     //gets the correct message
     getMessage(id) {
         if (this.hasWeapon(id)) {
@@ -359,6 +363,10 @@ function loadShop(player, texts) {
     var items = [];
     for (var weapon of weapons.keys()) {
         var w = weapons.get(weapon);
+        if (w.hidden && !Shop.hasWeapon(player, w.id)) {
+            continue;
+        }
+
         var options = {};
         options.name = w.name;
         options.damage = w.damage;
