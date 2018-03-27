@@ -414,104 +414,9 @@
                                 <col width="400">
                                 <col width="200">
                                 <col width="200">
-                                <tbody>
+                                <tbody id="levelTable">
                                     <tr>
                                         <td>Level 1</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 2</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 3</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 4</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 5</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 6</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 7</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 8</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 9</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 10</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 11</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 12</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 13</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 14</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 15</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 16</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 17</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 18</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 19</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 20</td>
                                         <td>The Wizard</td>
                                         <td>March 5th</td>
                                     </tr>
@@ -816,6 +721,7 @@
         function levelBrowser() {
             document.getElementById("mainMenu").style.display = "none";
             document.getElementById("levelBrowser").style.display = "table-cell";
+            loadLevelsList();
         }
 
         function levelEditorOptions() {
@@ -867,9 +773,10 @@
 
         }
 
-    loadLevelsList.onclick = function () {
-        loadLevelsList();
-    }
+        /*loadLevelsList.onclick = function () {
+            loadLevelsList();
+        }*/
+
         function setHeight(h) {
 
         }
@@ -890,9 +797,7 @@
 
 
 
-        //loadLevelsList.onclick = function () {
-        //    loadLevelsListFunct();
-        //}
+       
         //Story mode initialization
         //storyMode.onclick = function () {
         //    loadUserDatabase();
@@ -944,24 +849,63 @@
             conf = CONFIG(response);
         }, "/client/js/config.json");
 
-    var loadLevelsList = function () {
-        menuDiv.style.display = 'none';
-        /*
-        var levelsList = document.getElementById('levelsList');
-        loadDB('level', function (data) {
-            levels[] = data;
-            for (var level of data) {
-                var levelName = level.name;
-                var author = level.user;
-                var dateCreated = level.dateCreated;
+        var listLoaded = false;
 
-                var levelRow = document.createElement("P");
-                var t = document.createTextNode(levelName + "   " + "  " + author + "  " + " " + dateCreated);
-                levelRow.appendChild(t);
-                levelsList.appendChild(levelRow);
+        var loadLevelsList = function () {
+            if (!listLoaded) {
+                listLoaded = true;
+                var levelsTable = document.getElementById('levelTable');
+                loadDB('level', function (data) {
+                    var levels;
+                    if (data.constructor === Array) {
+                        var levels = data;
+                    }
+                    else {
+                        levels = [data];
+                    }
+
+                    for (var level of levels) {
+                        var levelName = level.levelName;
+                        var author = level.user;
+                        var dateCreated = level.dateCreated;
+
+                        var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+
+
+
+                        var levelNameCell = levelRow.insertCell(0);
+                        levelNameCell.innerHTML = levelName;
+
+                        var authorCell = levelRow.insertCell(1);
+                        authorCell.innerHTML = author;
+
+                        var dateCreatedCell = levelRow.insertCell(2);
+                        dateCreatedCell.innerHTML = dateCreated;
+
+                        var player = "";
+                        loadNeeded(player);
+                        levelRow.onclick = function (level) {
+                            loadDBFromID("level", level._id, function (response) {
+
+                               // var level1 = new Level(null, JSON.stringify(response), null);
+                                //level1.loadLevel(JSON.stringify(response));
+                                loadJSONFile(function (response) {
+
+                                });
+                                
+                                loadMap("map1", null, function (m) {
+                                    loadJSONFile(function (response) {
+                                        m.loadCharacter(response);
+                                    }, "/client/resources/characters.json");
+                                }, null);
+
+                            })
+                        }
+                    }
+                });
+                }
             }
-        });*/
-    }
+        
 
         var map;
         //achievement array
