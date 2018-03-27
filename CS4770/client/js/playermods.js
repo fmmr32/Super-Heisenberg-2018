@@ -583,6 +583,7 @@ class CharacterSelect {
                 }
                 break;
             case "back":
+                //going back to the right place
                 if (this.characterSelect) {
                     this.characterSelect = false;
                     this.selected = 0;
@@ -605,6 +606,7 @@ class CharacterSelect {
             case "action":
                 if (this.characterSelect) {
                     this.player.currentCharacter = this.characters[this.selected].Id;
+                    overWorld.loadPlayer(this.getOverWorldCharacter(), true);
                 } else if (this.armory) {
                     if (this.weaponSelected) {
                         //check for impact/equipping
@@ -640,7 +642,7 @@ class CharacterSelect {
                 break;
         }
     }
-
+    //sets the selected item
     setDirection(d, stat) {
         var limit = 1;
         var min = 0;
@@ -699,8 +701,12 @@ class CharacterSelect {
 
     //gets the right character for playing the level
     getCharacter() {
-        for (var ch of this.characters) {
-            if (ch.Id == this.player.currentCharacter) {
+       return CharacterSelect.getCharacter(this.characters, this.player);
+    }
+
+    static getCharacter(file, player) {
+        for (var ch of file) {
+            if (ch.Id == player.currentCharacter) {
                 return ch;
             }
         }

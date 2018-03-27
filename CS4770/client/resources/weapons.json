@@ -9,6 +9,7 @@
     "damage": 100,
     "speed": 5,
     "impact": "die",
+    "sound": "../resources/gun_sound.wav",
     "frames": 8,
     "frameRate": 24,
     "cooldown": 15,
@@ -49,6 +50,7 @@
     "width": 65,
     "factor": 1,
     "price": 150,
+    "sound": "../resources/gun_sound.wav",
     "height": 65,
     "damage": 10,
     "impact": "die",
@@ -103,14 +105,15 @@
     "height": 32,
     "damage": 30,
     "factor": 5,
+    "sound": "../resources/gun_sound.wav",
     "speed": 5,
     "frames": 10,
     "frameRate": 25,
     "impact": "ricochet",
     "impactUpgrades": [ "ricochet", "explode" ],
     "cooldown": 30,
-    "bulletSprite": 995,
-    "bulletSpriteFlip": 995,
+    "bulletSprite": 996,
+    "bulletSpriteFlip": 996,
     "gravity": true,
     "animation": [
       {
@@ -132,7 +135,7 @@
     ],
     "grenades": [
       {
-        "id": 994,
+        "id": 995,
         "angle": 15,
         "alive": 120
       }
@@ -142,41 +145,42 @@
     "name": "launcher",
     "id": 4,
     "columns": 3,
-    "width": 32,
-    "price": 300,
-    "height": 32,
+    "width": 69,
+    "price": 400,
+    "height": 13,
     "damage": 10,
+    "sound": "../resources/gun_sound.wav",
     "speed": 4,
     "frames": 8,
     "factor": 9,
     "frameRate": 24,
     "impact": "explode",
-    "impactUpgrades": ["ricochet", "explode" ],
+    "impactUpgrades": [ "ricochet", "explode" ],
     "cooldown": 15,
-    "bulletSprite": 995,
-    "bulletSpriteFlip": 995,
+    "bulletSprite": 996,
+    "bulletSpriteFlip": 996,
     "gravity": false,
     "animation": [
       {
-        "startX": 196,
-        "startY": 129,
-        "barrelX": 16,
-        "barrelY": 1,
-        "offSetX": 0,
-        "offSetY": 0
+        "startX": 0,
+        "startY": 392,
+        "barrelX": 68,
+        "barrelY": 0,
+        "offSetX": -40,
+        "offSetY": 2
       },
       {
-        "startX": 196,
-        "startY": 226,
-        "barrelX": -29,
-        "barrelY": 1,
+        "startX": 0,
+        "startY": 432,
+        "barrelX": 0,
+        "barrelY": 0,
         "offSetX": 0,
-        "offSetY": 0
+        "offSetY": 2
       }
     ],
     "grenades": [
       {
-        "id": 994,
+        "id": 995,
         "angle": 0,
         "alive": 60
       }

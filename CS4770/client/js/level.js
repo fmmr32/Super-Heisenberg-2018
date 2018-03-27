@@ -74,7 +74,6 @@ class Level {
         options2.height = options2.sprite.height;
         options2.leftHand = [chars.leftHand, chars.leftHandLow];
         options2.rightHand = [chars.rightHand, chars.rightHandLow];
-
         options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
 
 
@@ -107,12 +106,14 @@ class Level {
         this.doingDialog = this.startDialog != -1;
         this.background = new Image();
         this.background.src = any.background;
+        
+
 
         while (container.children.length != 0) {
             container.children[0].remove();
         }
         canvas = create('canvas', 'fg', 0, 0, sizeSettings[0], sizeSettings[1]);
-
+        this.resizeImage(this.background, canvas, 0, "background");
         var background = create('canvas', 'bg', 0, 0, this.width, this.height);
 
         this.container = canvas;

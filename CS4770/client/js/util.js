@@ -342,12 +342,12 @@ class ExitMenu {
         var offSet = 0;
         for (var o of this.options) {
             ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height, container.clientWidth / 2 - this.width / 2, container.clientHeight / 2 - this.height * 3 + this.height * offSet, this.width, this.height);
-            ctx.fillText(o, container.clientWidth / 2 - ctx.measureText(o).width/2, container.clientHeight / 2 - this.height * 2 - 15 + this.height * offSet);
-            offSet+=2;
+            ctx.fillText(o, container.clientWidth / 2 - ctx.measureText(o).width / 2, container.clientHeight / 2 - this.height * 2 - 15 + this.height * offSet);
+            offSet += 2;
         }
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = "white";
-        ctx.fillRect(container.clientWidth / 2 - this.width / 2, container.clientHeight / 2 - this.height * 3 + this.height * this.select*2, this.width, this.height);
+        ctx.fillRect(container.clientWidth / 2 - this.width / 2, container.clientHeight / 2 - this.height * 3 + this.height * this.select * 2, this.width, this.height);
         this.resetStyle(ctx);
     }
 
@@ -369,10 +369,16 @@ class ExitMenu {
                     case "Exit":
                         //go back to the main menu
                         loaded = false;
+                        overWorld.onOverWorld = true;
+                        overWorld.inShop = false;
+                        overWorld.inCharacterSelect = false;
+                        overWorld.inMuseum = false;
                         overWorld.inExitMenu = false;
+                        overWorld.getPlayer().setX(overWorld.startX)
+                        overWorld.getPlayer().setY(overWorld.startY);
                         back();
                         break;
-         
+
                 }
                 break;
             case "quit":
@@ -388,4 +394,53 @@ class ExitMenu {
         this.select += d;
     }
 
+}
+
+class SoundManager {
+    constructor(sound, type) {
+        this.sound = new Audio(sound);
+        this.sound.preload = 'auto';
+        this.players = [];
+        var v = 100;
+        switch (type) {
+            case "music":
+                //get this value from the music volume settings
+                this.sound.volume = v / 100;
+                this.setLoop(true);
+                break;
+            case "game":
+                //get this value from the game volume settings
+                this.sound.volume = v/100;
+                break;
+        }
+
+    }
+
+    setVolume(volume) {
+        this.sound.volume = volume / 100;
+    }
+
+    setLoop(loop) {
+        this.sound.loop = loop;
+    }
+
+    play() {
+        var temp = this.sound.cloneNode();
+        temp.play();
+        var obj = this;
+        if (!this.sound.loop) {
+            temp.addEventListener("ended", function () {
+                obj.players.splice(obj.players.indexOf(temp), 1);
+            })
+        }
+
+        this.players.push(temp);
+    }
+
+    stop() {
+        for (var t of this.players) {
+            t.pause();
+            t.currentTime = 0;
+        }
+    }
 }
