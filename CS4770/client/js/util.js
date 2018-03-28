@@ -139,12 +139,12 @@ class PopUp {
         }
     }
 
-    doDialog() {
+    doDialog(img) {
         if (this.index < this.text.length) {
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height, this.x - this.image.width / 4, this.y - this.size, this.image.width, this.image.height);
+            ctx.drawImage(img, 0, 0, img.width, img.height, this.x - img.width / 4, this.y - this.size, img.width, img.height);
             ctx.font = this.size + "px sans-serif";
-            this.r = Math.max(this.r, wrapText(ctx, this.text[this.index], this.x + 5, this.y + 25, this.maxWidth, this.size));
+            this.r = Math.max(this.r, wrapText(ctx, this.text[this.index].replace("%player%", overWorld.characters.getCharacter().name).replace("%main%","").replace("%second%",""), this.x + 5, this.y + 25, this.maxWidth, this.size));
             ctx.font = '10px sans-serif';
         } else {
             //destroy and go into level..
@@ -171,71 +171,101 @@ class PopUp {
 }
 
 class Dialog {
-    constructor(id, text, size, bar, main, second, player) {
+    constructor(id, text, size, player, bar, img, main,second, info) {
+
+        this.img = img;
+        this.bar = bar;
         this.main = main;
-        this.secondary = second;
+        this.second = second;
+        this.info = info;
+        this.text = text;
+
         this.r = 1;
         this.maxWidth = container.clientWidth / 2;
         this.size = size;
         this.player = player;
         this.id = id;
 
-        var tempc = create('canvas', 'diag', 0, 0, container.clientWidth, container.clientHeight);
-        for (var t of text) {
-            this.r = Math.max(this.r, wrapText(tempc.getContext("2d"), t, 0, 0, this.maxWidth, 15));
-        }
-        this.maxHeight = this.size * (this.r + 1) + 20;
+        
+        this.images = [];
+        this.loadImages();
 
-        tempc.getContext("2d").clearRect(0, 0, container.clientWidth, container.clientHeight);
-        tempc.remove();
 
-        if (main != undefined) {
-            tempc = create('canvas', 'diag', 0, 0, container.clientWidth, container.clientHeight);
+        //var tempc = create('canvas', 'diag', 0, 0, container.clientWidth, container.clientHeight);
+        //for (var t of text) {
+        //    this.r = Math.max(this.r, wrapText(tempc.getContext("2d"), t, 0, 0, this.maxWidth, 15));
+        //}
+        //this.maxHeight = this.size * (this.r + 1) + 20;
 
-            this.image = new Image();
-            this.image.src = tempc.toDataURL("image/png");
-            this.popUp = new PopUp(this.image, text, 0, "b", this.size, this.maxHeight);
-            this.popUp.index = 0;
+        //tempc.getContext("2d").clearRect(0, 0, container.clientWidth, container.clientHeight);
+        //tempc.remove();
 
-            var popUp = this.popUp;
-            var image = this.image;
-            var size = this.size;
-            var r = this.r;
-            bar.onload = function () {
-                tempc.getContext("2d").drawImage(bar, 0, 0, bar.width, bar.height, bar.posX, ((this.y + this.height) - (main.y + main.height)) / 2, bar.maxWidth, bar.maxHeight);
-                image = new Image();
-                image.src = tempc.toDataURL("image/png");
-                popUp.image = image;
+        //if (main != undefined) {
+        //    tempc = create('canvas', 'diag', 0, 0, container.clientWidth, container.clientHeight);
 
-                if (main.complete && second.complete) {
-                    tempc.remove();
-                }
+        //    this.image = new Image();
+        //    this.image.src = tempc.toDataURL("image/png");
+        //    this.popUp = new PopUp(this.image, text, 0, "b", this.size, this.maxHeight);
+        //    this.popUp.index = 0;
 
-            }
-            main.onload = function () {
-                tempc.getContext("2d").drawImage(main, 0, 0, main.width, main.height, bar.posX - main.width / 2 - 20, 0, main.width, main.height);
-                image = new Image();
-                image.src = tempc.toDataURL("image/png");
-                popUp.image = image;
+        //    var popUp = this.popUp;
+        //    var image = this.image;
+        //    var size = this.size;
+        //    var r = this.r;
+        //    bar.onload = function () {
+        //        tempc.getContext("2d").drawImage(bar, 0, 0, bar.width, bar.height, bar.posX, ((this.y + this.height) - (main.y + main.height)) / 2, bar.maxWidth, bar.maxHeight);
+        //        image = new Image();
+        //        image.src = tempc.toDataURL("image/png");
+        //        popUp.image = image;
 
-                if (bar.complete && second.complete) {
-                    tempc.remove();
-                }
-            }
-            second.onload = function () {
-                tempc.getContext("2d").drawImage(second, 0, 0, second.width, second.height, bar.posX + bar.maxWidth - second.width / 2 + 20, 0, second.width, second.height);
-                image = new Image();
-                image.src = tempc.toDataURL("image/png");
-                popUp.image = image;
+        //        if (main.complete && second.complete) {
+        //            tempc.remove();
+        //        }
 
-                if (main.complete && bar.complete) {
-                    tempc.remove();
-                }
-            }
+        //    }
+        //    main.onload = function () {
+        //        tempc.getContext("2d").drawImage(main, 0, 0, main.width, main.height, bar.posX - main.width / 2 - 20, 0, main.width, main.height);
+        //        image = new Image();
+        //        image.src = tempc.toDataURL("image/png");
+        //        popUp.image = image;
 
-        }
+        //        if (bar.complete && second.complete) {
+        //            tempc.remove();
+        //        }
+        //    }
+        //    second.onload = function () {
+        //        tempc.getContext("2d").drawImage(second, 0, 0, second.width, second.height, bar.posX + bar.maxWidth - second.width / 2 + 20, 0, second.width, second.height);
+        //        image = new Image();
+        //        image.src = tempc.toDataURL("image/png");
+        //        popUp.image = image;
+
+        //        if (main.complete && bar.complete) {
+        //            tempc.remove();
+        //        }
+        //    }
+
+        //}
+    }
+    loadImages() {
+        this.images = Dialog.loadImage(this.text, this.main, this.second, this.info);
     }
 
+    static loadImages(text, main, second, info) {
+        var images = [];
+        main = main == -1 ? overWorld.characters.getCharacter().id : main;
+        second = second == -1 ? overWorld.characters.getCharacter().id : second;
+
+        for (var t of text) {
+            var i;
+            if (t.includes("%second%")) {
+                //do stuff for the second character
+                
+            } else {
+               
+            }
+        }
+        return images;
+    }
 
 
     nextText() {
@@ -245,7 +275,10 @@ class Dialog {
     }
 
     doDialog() {
-        this.popUp.doDialog(this.player);
+        
+
+
+        this.popUp.doDialog();
     }
 
     static loadImage(name, options) {
@@ -263,16 +296,25 @@ class Dialog {
 
 function loadDialog(player) {
     var diag = [];
+    
     loadJSONFile(function (response) {
+        var r = JSON.parse(response);
+        var info = [];
+        var img = new Image();
+        img.src = "../resources/dialogs.png";
 
-        for (var any of JSON.parse(response)) {
+        for (var char of r.characters) {
+            info[char.id] = char;
+        }
+
+
+
+        for (var any of JSON.parse(response).story) {
             var temp = new Dialog(any.id, any.text, 15);
 
             var imgBar = Dialog.loadImage("TextBox", { maxWidth: temp.maxWidth, maxHeight: temp.maxHeight, posX: ((container.clientWidth - temp.maxWidth) / 2) });
-            var imgMain = Dialog.loadImage(any.main);
-            var imgSecond = Dialog.loadImage(any.second);
 
-            diag[any.id] = new Dialog(any.id, any.text, temp.size, imgBar, imgMain, imgSecond, player);
+            diag[any.id] = new Dialog(any.id, any.text, temp.size, player,imgBar, img, any.main,any.second, info);
         }
 
     }, "/client/resources/dialogs.json");
