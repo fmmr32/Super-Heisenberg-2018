@@ -23,7 +23,7 @@
       {
         "startX": 196,
         "startY": 176,
-        "barrelX": 16,
+        "barrelX": 30,
         "barrelY": 1,
         "offSetX": 0,
         "offSetY": 0
@@ -31,7 +31,7 @@
       {
         "startX": 196,
         "startY": 273,
-        "barrelX": -29,
+        "barrelX": -10,
         "barrelY": 1,
         "offSetX": 0,
         "offSetY": 0
@@ -68,17 +68,17 @@
       {
         "startX": 0,
         "startY": 47,
-        "barrelX": 16,
+        "barrelX": 40,
         "barrelY": 1,
-        "offSetX": -5,
+        "offSetX": -25,
         "offSetY": -20
       },
       {
         "startX": 0,
         "startY": 243,
-        "barrelX": -29,
+        "barrelX": -20,
         "barrelY": 1,
-        "offSetX": -30,
+        "offSetX": -10,
         "offSetY": -20
       }
     ],
@@ -123,7 +123,7 @@
         "startX": 196,
         "startY": 47,
         "barrelX": 0,
-        "barrelY": 0,
+        "barrelY": 10,
         "offSetX": 0,
         "offSetY": 0
       },
@@ -168,7 +168,7 @@
       {
         "startX": 0,
         "startY": 439,
-        "barrelX": 68,
+        "barrelX": 40,
         "barrelY": 0,
         "offSetX": -40,
         "offSetY": 2
@@ -176,7 +176,7 @@
       {
         "startX": 0,
         "startY": 479,
-        "barrelX": 0,
+        "barrelX": -30,
         "barrelY": 0,
         "offSetX": 0,
         "offSetY": 2
