@@ -1,4 +1,8 @@
 {
+  "id":  "12345",
+  "user": "bbf522",
+  "dateCreated": "03/26/18",
+  "name": "test",
   "gravity": 9.81,
   "width": 650,
   "height": 500,

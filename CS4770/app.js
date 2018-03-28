@@ -1,5 +1,5 @@
 ﻿var mongojs = require('mongojs');
-var db = mongojs('localhost:27017/CS4770GAME', ['account', 'player','progress','levels','entity','character','weapons','tiles','achievements']);
+var db = mongojs('localhost:27017/CS4770', ['account', 'player','progress','levels','entity','character','weapons','tiles','achievements']);
 
 
 
@@ -100,7 +100,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('loadDBbasedID', function (data) {
         console.log(data.id);
         loadDBFromID(data.collection, data.id, function (result) {
-            console.log(result);
+            console.log("inside loaddbfromID" + result + "Inside loadDBFromID app.js");
             socket.emit(data.collection, result[0])
         })
     });

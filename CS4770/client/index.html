@@ -1,331 +1,13 @@
 <HTML>
 <HEAD>
-    <STYLE>
-        body {
-            background-image: url(resources/loginScreen.png);
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: center;
-        }
-
-        div {
-        }
-
-        p {
-            display: inline;
-        }
-
-        img {
-            display: block;
-            margin: 0 auto;
-            overflow: hidden;
-            z-index: 5;
-        }
-
-        #left {
-            margin: 0;
-        }
-
-        img:hover {
-            overflow: hidden;
-            transform: scale(1.1,1.1);
-            -webkit-transition-duration: 1s;
-            -moz-transition-duration: 1s;
-            -o-transition-duration: 1s;
-            transition-duration: 1s;
-            z-index: 5;
-        }
-
-        table#title {
-            width: 775px;
-            margin: 0 auto;
-        }
-
-        table#gameSettings {
-            width: 775px;
-            margin: 0 auto;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 5px;
-            text-align: left;
-            color: rgb(245,202,70);
-            font: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #484848;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #383838;
-        }
-
-        th {
-            background-color: rgb(245,202,70);
-            font: bolder;
-            font-size: 24;
-            color: rgb(219,50,100);
-        }
-
-        table#holder {
-            width: 800px;
-            margin: 0 auto;
-        }
-
-            table#holder th, td {
-                border: 0px;
-            }
-
-        table#level {
-            width: 775px;
-            margin: 0 auto;
-        }
-
-            table#level th, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-
-        tbody tr:hover {
-            background: black;
-        }
-
-
-
-
-        .menuContainer {
-            display: table;
-            height: 100%;
-            width: 100%;
-            padding: 0;
-            margin: 0;
-            position: absolute;
-        }
-
-        .side {
-            display: none;
-            float: right;
-            margin-top: 10px;
-            height: 720px;
-            width: 410px;
-            border: 3px solid black;
-            border-collapse: collapse;
-            background-color: #484848;
-        }
-
-        #mainMenu {
-            display: table-cell;
-            vertical-align: middle;
-            padding-top: 100px;
-        }
-
-        #playOptions {
-            display: none;
-            vertical-align: middle;
-        }
-
-        #levelEditorOptions {
-            display: none;
-            vertical-align: middle;
-        }
-
-        #levelBrowser {
-            display: none;
-            vertical-align: middle;
-        }
-
-        #settings {
-            display: none;
-            vertical-align: middle;
-        }
-
-        #top {
-            padding-bottom: 50px;
-        }
-
-        #other {
-            padding-bottom: 50px;
-        }
-
-        #scroll {
-            overflow-y: scroll;
-            height: 200px;
-        }
-
-        #bottom {
-        }
-
-        #Play {
-        }
-
-        #BrowseLevels {
-        }
-
-        #LevelEditor {
-        }
-
-        #Options {
-        }
-
-        #NewGame {
-        }
-
-        #LoadGame {
-        }
-
-        #NewLevel {
-        }
-
-        #LoadLevel {
-        }
-
-        table#select, table#inputs {
-            margin-left: 100px;
-            border: 2px solid black;
-            border-collapse: collapse;
-        }
-
-            table#select th, td {
-                border: 2px solid black;
-                border-collapse: collapse;
-                color: white;
-                width: 50px;
-                height: 50px;
-            }
-
-            table#select tr:nth-child(even) {
-                background-color: #585858;
-            }
-
-            table#select tr:nth-child(odd) {
-                background-color: #484848;
-            }
-
-            table#select tbody td:hover {
-                background: black;
-            }
-
-
-        table#inputs {
-            margin-left: 25px;
-            width: 350px;
-            border: 2px solid black;
-            border-collapse: collapse;
-        }
-
-            table#inputs td {
-                padding-left: 5px;
-            }
-
-            table#inputs tr {
-                background-color: #484848;
-                border: hidden;
-            }
-
-        h5 {
-            float: left;
-        }
-
-        #inputs input, select {
-            margin-top: 25px;
-            margin-right: 5px;
-            float: right;
-        }
-
-        input, textarea {
-            width: 25%;
-            display: inline
-        }
-
-
-        #selectCreature {
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        #selectTiles {
-            padding-left: 6px;
-        }
-
-        #buttons {
-            padding-top: 10px;
-            display: inline-flex;
-        }
-
-        #selectEntity:hover, #selectTiles:hover, #selectCreature:hover {
-            overflow: hidden;
-            transform: scale(1.1,1.1);
-            -webkit-transition-duration: 1s;
-            -moz-transition-duration: 1s;
-            -o-transition-duration: 1s;
-            transition-duration: 1s;
-            z-index: 5;
-        }
-
-        #tiles {
-            display: inline-block;
-            overflow-y: scroll;
-            height: 152px;
-            margin-top: 10px;
-        }
-
-        #creature {
-            display: none;
-            overflow-y: scroll;
-            height: 152px;
-            margin-top: 10px;
-        }
-
-        #entity {
-            display: none;
-            overflow-y: scroll;
-            height: 152px;
-            margin-top: 10px;
-        }
-
-        #signDiv {
-            font-size: 20;
-            width: 300px;
-            height: 100px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -100;
-            margin-left: -175;
-            border: 2px solid black;
-            border-collapse: collapse;
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-top: 20px;
-            background-color: #484848;
-            color: rgb(245,202,70);
-        }
-
-            #signDiv input {
-                float: right;
-                width: 150px;
-            }
-
-            #signDiv button {
-                margin-top: 20px;
-                margin-left: 22px;
-            }
-    </STYLE>
+    <style stype ="text/css" src="index.css"></style>
 </HEAD>
 
 <BODY>
 
-
-
     <div class=menuContainer>
 
-        <div id="signDiv" style="display:none">
+        <div id="signDiv" style="display:table-cell">
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
@@ -340,7 +22,7 @@
         <div id='mainMenu'>
 
             <div id='top'>
-                <img src='resources/Play.png' id='Play' onclick='playOptions()' '></img>
+                <img src='resources/Play.png' id='Play' onclick='playOptions()'>
             </div>
 
             <div id='other'>
@@ -414,104 +96,9 @@
                                 <col width="400">
                                 <col width="200">
                                 <col width="200">
-                                <tbody>
+                                <tbody id="levelTable">
                                     <tr>
                                         <td>Level 1</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 2</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 3</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 4</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 5</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 6</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 7</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 8</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 9</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 10</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 11</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 12</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 13</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 14</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 15</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 16</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 17</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 18</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 19</td>
-                                        <td>The Wizard</td>
-                                        <td>March 5th</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Level 20</td>
                                         <td>The Wizard</td>
                                         <td>March 5th</td>
                                     </tr>
@@ -660,59 +247,19 @@
     <script type="text/javascript" src="js/util.js"></script>
     <script type="text/javascript" src="js/overworld.js"></script>
     <script type="text/javascript" src="js/playermods.js"></script>
-    <script type="text/javascript" src="js/database.js"></script>
+    <script type="text/javascript" src="js/server.js"></script>
     <script type="text/javascript" src="js/editor.js"></script>
 
 
 
     <script type="text/javascript">
         var sizeSettings = [1280, 720];
-        var socket = io();
-
-        //login menu
-        var signDiv = document.getElementById('signDiv');
-        var signDivUsername = document.getElementById('signDiv-username');
-        var signDivSignIn = document.getElementById('signDiv-signIn');
-        var signDivSignUp = document.getElementById('signDiv-signUp');
-        var signDivPassword = document.getElementById('signDiv-password');
-        var menuDiv = document.getElementById("mainMenu");
-        var offLinePlay = document.getElementById("skipSign");
-
-        signDivSignIn.onclick = function () {
-            socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
-            document.getElementById("signDiv").style.display = "none";
-            document.getElementById("mainMenu").style.display = "table-cell";
-        }
-
-        signDivSignUp.onclick = function () {
-            socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value });
-            document.getElementById("signDiv").style.display = "none";
-            document.getElementById("mainMenu").style.display = "table-cell";
-        }
-
-        socket.on('signInResponse', function (data) {
-            if (data.success) {
-                playerUsername = signDivUsername.value;
-                console.log(playerUsername);
-                loadMenu();
-            } else
-                alert("Sign in unsuccessul.");
-        });
-
-        socket.on('signUpResponse', function (data) {
-            if (data.success) {
-                alert("Sign up successul.");
-            } else
-                alert("Sign up unsuccessul.");
-        });
+         
 
         offLinePlay.onclick = function () {
             document.getElementById("signDiv").style.display = "none";
             loadCurretUser();
         }
-
-
-
 
         function playOptions() {
             document.getElementById("mainMenu").style.display = "none";
@@ -733,6 +280,7 @@
         function levelBrowser() {
             document.getElementById("mainMenu").style.display = "none";
             document.getElementById("levelBrowser").style.display = "table-cell";
+            loadLevelsList();
         }
 
         function levelEditorOptions() {
@@ -779,6 +327,11 @@
             elemt = new Editor(canvas);
         }
 
+        function toLevel() {
+            document.getElementById("levelBrowser").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+        }
+
         function selectCharacter() {
             var char = document.getElementById("character");
         }
@@ -791,9 +344,10 @@
 
         }
 
-        //loadLevelsList.onclick = function () {
-        //    loadLevelsList();
-        //}
+        /*loadLevelsList.onclick = function () {
+            loadLevelsList();
+        }*/
+
         function setHeight(h) {
 
         }
@@ -810,13 +364,7 @@
         function setGravity(g) {
 
         }
-
-
-
-
-        //loadLevelsList.onclick = function () {
-        //    loadLevelsListFunct();
-        //}
+       
         //Story mode initialization
         //storyMode.onclick = function () {
         //    loadUserDatabase();
@@ -854,39 +402,65 @@
         var neededFiles = ["tiles.json", "entities.json", "weapons.json"];
         var loaded = false;
 
-        function loadJSONFile(callback, file) {
-            socket.emit('loadJSON', {
-                fileName: file
-            });
-            socket.on(file, function (data) {
-                callback(data.toString());
-            });
-        }
+        
 
         var conf;
         loadJSONFile(function (response) {
             conf = CONFIG(response);
         }, "/client/js/config.json");
 
-        var loadLevelsList = function () {
-            menuDiv.style.display = 'none';
-            /*
-            var levelsList = document.getElementById('levelsList');
-            loadDB('level', function (data) {
-                levels[] = data;
-                for (var level of data) {
-                    var levelName = level.name;
-                    var author = level.user;
-                    var dateCreated = level.dateCreated;
+        var listLoaded = false;
 
-                    var levelRow = document.createElement("P");
-                    var t = document.createTextNode(levelName + "   " + "  " + author + "  " + " " + dateCreated);
-                    levelRow.appendChild(t);
-                    levelsList.appendChild(levelRow);
+        var loadLevelsList = function () {
+            if (!listLoaded) {
+                listLoaded = true;
+                var levelsTable = document.getElementById('levelTable');
+                loadDB('level', function (data) {
+                    console.log(data, data === Array)
+                    var levels = data;
+                    if (data == null) {
+                        return;
+                    }
+
+                    if (data.constructor === Array) {
+                        levels = data;
+                    }
+                    else {
+                        levels = [data];
+                    }
+                    
+                    for (var level of levels) {
+                        var levelName = level.levelName;
+                        var author = level.user;
+                        var dateCreated = level.dateCreated;
+
+                        var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                        levelRow.setAttribute("id", level.id);
+
+
+                        var levelNameCell = levelRow.insertCell(0);
+                        levelNameCell.innerHTML = levelName;
+
+                        var authorCell = levelRow.insertCell(1);
+                        authorCell.innerHTML = author;
+
+                        var dateCreatedCell = levelRow.insertCell(2);
+                        dateCreatedCell.innerHTML = dateCreated;
+
+                        
+                        levelRow.onclick = function () {
+                            console.log(this.getAttribute("id"))
+                            loadDBFromID("level", this.getAttribute("id"), function (response) {
+                                toLevel();
+                                overWorld.toMapFromDB(response);
+                            });
+                        }
+                    }
+                });
                 }
-            });*/
-        }
-        var elemt;
+            }
+        
+
         var map;
         //achievement array
         function loadUserDatabase() {
@@ -961,6 +535,8 @@
             if (loaded) {
                 canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
                 if (!overWorld.handleBuildings()) {
+                    
+
                     if (!map.doingDialog) {
                         map.doTick();
                     } else if (map.doingDialog) {
