@@ -76,19 +76,19 @@ table#holder {
     margin: 0 auto;
 }
 
-    table#holder th, td {
-        border: 0px;
-    }
+table#holder th, td {
+    border: 0px;
+}
 
 table#level {
     width: 775px;
     margin: 0 auto;
 }
 
-    table#level th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
+table#level th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
 
 tbody tr:hover {
     background: black;

@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-    <style stype ="text/css" src="index.css"></style>
+    <link rel="stylesheet" type ="text/css" href="index.css">
 </HEAD>
 
 <BODY>
@@ -402,63 +402,71 @@
         var neededFiles = ["tiles.json", "entities.json", "weapons.json"];
         var loaded = false;
 
-        
-
         var conf;
         loadJSONFile(function (response) {
             conf = CONFIG(response);
         }, "/client/js/config.json");
 
-        var listLoaded = false;
+       
+        var refreshLevelsTable = function () {
+            console.log("Inside refresh");
+            var levelsTable = document.getElementById('levelTable');
+            
+            while (levelsTable.firstChild) {
+                levelsTable.removeChild(levelsTable.firstChild);
+            }
+        }
 
         var loadLevelsList = function () {
-            if (!listLoaded) {
-                listLoaded = true;
-                var levelsTable = document.getElementById('levelTable');
-                loadDB('level', function (data) {
-                    console.log(data, data === Array)
-                    var levels = data;
-                    if (data == null) {
-                        return;
-                    }
+            refreshLevelsTable();
+            var levelsTable = document.getElementById('levelTable');
+            loadDB('level', function (data) {
+                var levels;
 
-                    if (data.constructor === Array) {
-                        levels = data;
-                    }
-                    else {
-                        levels = [data];
-                    }
-                    
-                    for (var level of levels) {
-                        var levelName = level.levelName;
-                        var author = level.user;
-                        var dateCreated = level.dateCreated;
+                if (data == null) {
+                    return;
+                }
 
-                        var levelRow = levelsTable.insertRow(levelsTable.rows.length);
-                        levelRow.setAttribute("id", level.id);
+                if (data.constructor === Array) {
+                    levels = data;
+                }
+                else {
+                    levels = [data];
+                }
+
+                console.log(levels);
+                for (var level of levels) {
+                    var levelName = level.levelName;
+                    var author = level.user;
+                    var dateCreated = level.dateCreated;
+
+                    console.log("inside for");
+
+                    var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                    levelRow.setAttribute("id", level.id);
 
 
-                        var levelNameCell = levelRow.insertCell(0);
-                        levelNameCell.innerHTML = levelName;
+                    var levelNameCell = levelRow.insertCell(0);
+                    levelNameCell.innerHTML = levelName;
 
-                        var authorCell = levelRow.insertCell(1);
-                        authorCell.innerHTML = author;
+                    var authorCell = levelRow.insertCell(1);
+                    authorCell.innerHTML = author;
 
-                        var dateCreatedCell = levelRow.insertCell(2);
-                        dateCreatedCell.innerHTML = dateCreated;
+                    var dateCreatedCell = levelRow.insertCell(2);
+                    dateCreatedCell.innerHTML = dateCreated;
 
                         
-                        levelRow.onclick = function () {
-                            console.log(this.getAttribute("id"))
-                            loadDBFromID("level", this.getAttribute("id"), function (response) {
-                                toLevel();
-                                overWorld.toMapFromDB(response);
-                            });
-                        }
+                    levelRow.onclick = function () {
+                        console.log(this.getAttribute("id"))
+                        loadDBFromID("level", this.getAttribute("id"), function (response) {
+                            toLevel();
+                            overWorld.toMapFromDB(response);
+                        });
                     }
-                });
                 }
-            }
+            });
+        }
+            
         
 
         var map;

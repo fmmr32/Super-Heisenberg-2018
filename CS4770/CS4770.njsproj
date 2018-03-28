@@ -32,9 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="client\js\database.js">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="client\js\entities.js" />
     <Compile Include="client\js\config.js" />
     <Compile Include="client\js\editor.js" />
@@ -46,6 +43,7 @@
     <Compile Include="client\js\playermods.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="client\js\server.js" />
     <Compile Include="client\js\sprite.js" />
     <Compile Include="client\js\util.js">
       <SubType>Code</SubType>
