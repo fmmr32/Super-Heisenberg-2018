@@ -383,6 +383,18 @@ directions:
         }, this);
     }
 
+    toMapFromDB(mapObject) {
+        console.log(mapObject)
+        //loading the map the player chose
+        this.onOverWorld = false;
+        this.music.stop();
+        loaded = false;
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.remove();
+        map = new Level(this.user, JSON.stringify(mapObject), this);
+        map.loadCharacter(overWorld.characters.getCharacter());
+    }
+
     //going back to the overworld
     toOverWorld() {
         this.makeCanvas();

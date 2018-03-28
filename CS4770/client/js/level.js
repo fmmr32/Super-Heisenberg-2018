@@ -75,7 +75,7 @@ class Level {
         options2.leftHand = [chars.leftHand, chars.leftHandLow];
         options2.rightHand = [chars.rightHand, chars.rightHandLow];
         options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
-
+        console.log(this)
 
         options2.level = this;
         options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
@@ -95,7 +95,7 @@ class Level {
     }
 
     loadLevel(file) {
-
+        console.log(file)
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
         this.gravity = any.gravity;
@@ -466,6 +466,8 @@ function loadMap(name, player, callback, world) {
     }, "/client/resources/" + name + ".json");
 
 }
+
+
 
 
 class Museum extends Level {

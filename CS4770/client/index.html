@@ -120,7 +120,7 @@
         }
 
         #mainMenu {
-            display: table-cell;
+            display: none;
             vertical-align: middle;
             padding-top: 100px;
         }
@@ -325,7 +325,7 @@
 
     <div class=menuContainer>
 
-        <div id="signDiv" style="display:none">
+        <div id="signDiv" style="display:table-cell">
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
@@ -583,7 +583,10 @@
         var menuDiv = document.getElementById("mainMenu");
         var offLinePlay = document.getElementById("skipSign");
 
+        var playerUsername;
+
         signDivSignIn.onclick = function () {
+            playerUsername = signDivUsername.value;
             socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
             document.getElementById("signDiv").style.display = "none";
             document.getElementById("mainMenu").style.display = "table-cell";
@@ -684,6 +687,11 @@
             elemt = new Editor(canvas);
         }
 
+        function toLevel() {
+            document.getElementById("levelBrowser").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+        }
+
         function selectCharacter() {
             var char = document.getElementById("character");
         }
@@ -717,7 +725,9 @@
 
         }
 
-
+        var getUsername = function () {
+            return playerUsername;
+        }
 
 
        
@@ -779,21 +789,26 @@
                 listLoaded = true;
                 var levelsTable = document.getElementById('levelTable');
                 loadDB('level', function (data) {
-                    var levels;
+                    console.log(data, data === Array)
+                    var levels = data;
+                    if (data == null) {
+                        return;
+                    }
+
                     if (data.constructor === Array) {
-                        var levels = data;
+                        levels = data;
                     }
                     else {
                         levels = [data];
                     }
-
+                    
                     for (var level of levels) {
                         var levelName = level.levelName;
                         var author = level.user;
                         var dateCreated = level.dateCreated;
 
                         var levelRow = levelsTable.insertRow(levelsTable.rows.length);
-
+                        levelRow.setAttribute("id", level.id);
 
 
                         var levelNameCell = levelRow.insertCell(0);
@@ -805,24 +820,13 @@
                         var dateCreatedCell = levelRow.insertCell(2);
                         dateCreatedCell.innerHTML = dateCreated;
 
-                        var player = "";
-                        loadNeeded(player);
-                        levelRow.onclick = function (level) {
-                            loadDBFromID("level", level._id, function (response) {
-
-                               // var level1 = new Level(null, JSON.stringify(response), null);
-                                //level1.loadLevel(JSON.stringify(response));
-                                loadJSONFile(function (response) {
-
-                                });
-                                
-                                loadMap("map1", null, function (m) {
-                                    loadJSONFile(function (response) {
-                                        m.loadCharacter(response);
-                                    }, "/client/resources/characters.json");
-                                }, null);
-
-                            })
+                        
+                        levelRow.onclick = function () {
+                            console.log(this.getAttribute("id"))
+                            loadDBFromID("level", this.getAttribute("id"), function (response) {
+                                toLevel();
+                                overWorld.toMapFromDB(response);
+                            });
                         }
                     }
                 });
@@ -897,6 +901,8 @@
             if (loaded) {
                 canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
                 if (!overWorld.handleBuildings()) {
+                    
+
                     if (!map.doingDialog) {
                         map.doTick();
                     } else if (map.doingDialog) {
@@ -976,7 +982,7 @@
             seconds = (seconds < 10) ? "0" + seconds : seconds;
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
-        window.onload = loadNeeded();
+        window.onload = loadCurretUser();
     </script>
 
 

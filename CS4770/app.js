@@ -100,7 +100,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('loadDBbasedID', function (data) {
         console.log(data.id);
         loadDBFromID(data.collection, data.id, function (result) {
-            console.log(result);
+            console.log("inside loaddbfromID" + result + "Inside loadDBFromID app.js");
             socket.emit(data.collection, result[0])
         })
     });
