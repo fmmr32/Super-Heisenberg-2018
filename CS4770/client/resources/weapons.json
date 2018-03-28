@@ -6,7 +6,7 @@
     "width": 32,
     "factor": 1,
     "height": 32,
-    "damage": 100,
+    "damage": 10,
     "speed": 5,
     "impact": "die",
     "sound": "../resources/gun_sound.wav",
