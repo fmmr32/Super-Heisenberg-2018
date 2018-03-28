@@ -22,7 +22,7 @@ function loadWeapon(list,user, weaponMod) {
 function deepCopy(c, user) {
     if (c instanceof Weapon) {
         var animation = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
-        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets, sound:c.sound});
+        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets, sound:c.sound, hidden:c.hidden});
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
@@ -97,7 +97,8 @@ function loadWeapons(file) {
         options.impact = w.impact;
         options.price = w.price;
         options.sound = new SoundManager(w.sound, "game");
-        options.impactUpgrades = w.impactUpgrades
+        options.impactUpgrades = w.impactUpgrades;
+        options.hidden = w.hidden;
         weapons.set(w.id, new Weapon(options));
     }
 }
@@ -342,21 +343,19 @@ class Grenade extends Bullet {
         options.animation = this.animation;
         this.level.entities.push(new Entity(options));
 
-        var xOff = -(this.factor - 1) * this.animation.width / 2;
-        var yOff = -(this.factor - 1) * this.animation.height / 2;
+        var xOff = -(this.factor - 1) * this.animation[0].width / 2;
+        var yOff = -(this.factor - 1) * this.animation[0].height / 2;
 
-        var xMin = Math.min(this.getX() + this.animation.width * this.animation.factor, this.getX() + xOff);
-        var xMax = Math.max(this.getX() + this.animation.width * this.animation.factor, this.getX() + xOff);
+        var xMin = Math.min(this.getX() + this.animation[0].width * this.animation[0].factor, this.getX() + xOff);
+        var xMax = Math.max(this.getX() + this.animation[0].width * this.animation[0].factor, this.getX() + xOff);
 
-        var yMin = Math.min(this.getY() - this.getHeight() + this.animation.width * this.animation.factor, this.getY() - this.getHeight() + yOff);
-        var yMax = Math.max(this.getY() - this.getHeight() + this.animation.width * this.animation.factor, this.getY() - this.getHeight() + yOff);
+        var yMin = Math.min(this.getY() - this.getHeight() + this.animation[0].width * this.animation[0].factor, this.getY() - this.getHeight() + yOff);
+        var yMax = Math.max(this.getY() - this.getHeight() + this.animation[0].width * this.animation[0].factor, this.getY() - this.getHeight() + yOff);
 
-        console.log(xMin, xMax, yMin, yMax, this);
 
         for (var x = xMin; x < xMax; x++) {
             for (var y = yMin; y < yMax; y++) {
                 var ent = this.level.getEntity(x, y);
-                console.log(ent);
                 if (ent != null && ent instanceof EntityCreature && ent != this.getOwner() && this.damaged.indexOf(ent) == -1) {
                     ent.doDamage(this.getDamage());
                     this.damaged.push(ent);

@@ -107,7 +107,7 @@
     "animation": [
       {
         "startX": 0,
-        "startY": 0,
+        "startY": 137,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -118,7 +118,7 @@
       },
       {
         "startX": 0,
-        "startY": 33,
+        "startY": 170,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -129,7 +129,7 @@
       },
       {
         "startX": 0,
-        "startY": 99,
+        "startY": 236,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -140,7 +140,7 @@
       },
       {
         "startX": 0,
-        "startY": 66,
+        "startY": 203,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -151,7 +151,7 @@
       },
       {
         "startX": 28,
-        "startY": 0,
+        "startY": 137,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -162,7 +162,7 @@
       },
       {
         "startX": 28,
-        "startY": 33,
+        "startY": 170,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -173,7 +173,7 @@
       },
       {
         "startX": 28,
-        "startY": 66,
+        "startY": 203,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -184,7 +184,7 @@
       },
       {
         "startX": 28,
-        "startY": 99,
+        "startY": 236,
         "width": 28,
         "height": 33,
         "offSetX": 0,
@@ -204,7 +204,7 @@
     "height": 33,
     "animation": [
       {
-        "startX": 0,
+        "startX": 112,
         "startY": 0,
         "width": 28,
         "height": 33,
@@ -215,7 +215,7 @@
         "columns": 1
       },
       {
-        "startX": 0,
+        "startX": 112,
         "startY": 33,
         "width": 28,
         "height": 33,
@@ -226,7 +226,7 @@
         "columns": 1
       },
       {
-        "startX": 0,
+        "startX": 112,
         "startY": 99,
         "width": 28,
         "height": 33,
@@ -237,7 +237,7 @@
         "columns": 1
       },
       {
-        "startX": 0,
+        "startX": 112,
         "startY": 66,
         "width": 28,
         "height": 33,
@@ -248,7 +248,7 @@
         "columns": 1
       },
       {
-        "startX": 28,
+        "startX": 140,
         "startY": 0,
         "width": 28,
         "height": 33,
@@ -259,7 +259,7 @@
         "columns": 3
       },
       {
-        "startX": 28,
+        "startX": 140,
         "startY": 33,
         "width": 28,
         "height": 33,
@@ -270,7 +270,7 @@
         "columns": 3
       },
       {
-        "startX": 28,
+        "startX": 140,
         "startY": 66,
         "width": 28,
         "height": 33,
@@ -281,7 +281,7 @@
         "columns": 3
       },
       {
-        "startX": 28,
+        "startX": 140,
         "startY": 99,
         "width": 28,
         "height": 33,
