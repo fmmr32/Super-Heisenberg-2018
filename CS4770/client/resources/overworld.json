@@ -8,22 +8,30 @@
         "type": "level",
         "mapName": "map1",
         "X": 278,
-        "Y": 595
+        "Y": 595,
+        "startDialog": 0,
+        "endDialog": -1
       },
       {
         "type": "store",
         "X": 950,
-        "Y": 162
+        "Y": 162,
+        "startDialog": -1,
+        "endDialog": -1
       },
       {
         "type": "house",
         "X": 630,
-        "Y": 162
+        "Y": 162,
+        "startDialog": 3,
+        "endDialog": -1
       },
       {
         "type": "museum",
         "X": 278,
-        "Y": 178
+        "Y": 178,
+        "startDialog": -1,
+        "endDialog": 4
       }
     ],
     "paths": [

@@ -75,7 +75,6 @@ class Level {
         options2.leftHand = [chars.leftHand, chars.leftHandLow];
         options2.rightHand = [chars.rightHand, chars.rightHandLow];
         options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
-        console.log(this)
 
         options2.level = this;
         options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
@@ -95,15 +94,11 @@ class Level {
     }
 
     loadLevel(file) {
-        console.log(file)
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
-        this.startDialog = any.startDialog;
-        this.endDialog = any.endDialog;
-        this.doingDialog = this.startDialog != -1;
         this.background = new Image();
         this.background.src = any.background;
         
@@ -445,7 +440,7 @@ class Level {
         while (container.children.length != 0) {
             container.children[0].remove();
         }
-        overWorld.toOverWorld();
+        overWorld.toOverWorldNewCanvas(this);
     }
 }
 
@@ -519,9 +514,7 @@ class Museum extends Level {
     }
 
     toOverWorld() {
-        overWorld.inMuseum = false;
-        overWorld.onOverWorld = true;
-        overWorld.music.play();
+        overWorld.toOverWorld(this);
     }
 }
 

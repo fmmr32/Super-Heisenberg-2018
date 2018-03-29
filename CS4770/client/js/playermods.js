@@ -341,9 +341,7 @@ class Shop {
                         this.items[this.selected + this.offSet].select = 1;
                     }
                 } else {
-                    overWorld.inShop = false;
-                    overWorld.onOverWorld = true;
-                    overWorld.music.play();
+                    overWorld.toOverWorld(this);
                 }
                 break;
             case "quit":
@@ -606,9 +604,8 @@ class CharacterSelect {
                         this.selected = 1;
                     }
                 } else {
-                    overWorld.inCharacterSelect = false;
-                    overWorld.onOverWorld = true;
-                    overWorld.music.play();
+                    
+                    overWorld.toOverWorld(this);
                 }
                 break;
             case "action":
