@@ -54,18 +54,17 @@ class PopUp {
         this.image = image;
 
         this.position = position;
-        this.maxWidth = container.clientWidth / (position == "top" ? 4 : 2);
+        this.maxWidth = canvas.width / (position == "top" ? 4 : 2);
         this.maxHeight = maxHeight;
         this.text = text;
         this.duration = duration;
 
-        this.x = (container.clientWidth - this.maxWidth) / 2;
+        this.x = (canvas.width - this.maxWidth) / 2;
         this.y;
-
         if (position == "top") {
             this.y = 0;
         } else if (position == "bottom") {
-            this.y = canvas.height;
+            this.y = canvas.height - maxHeight;
         } else {
             this.y = canvas.height;
         }
@@ -139,12 +138,17 @@ class PopUp {
         }
     }
 
-    doDialog(img) {
+    doDialog(img, diag) {
         if (this.index < this.text.length) {
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, img.width, img.height, this.x - img.width / 4, this.y - this.size, img.width, img.height);
+            ctx.drawImage(img, 0, 0, img.width, img.height, this.x, this.y - this.size, img.width, img.height);
             ctx.font = this.size + "px sans-serif";
-            this.r = Math.max(this.r, wrapText(ctx, this.text[this.index].replace("%player%", overWorld.characters.getCharacter().name).replace("%main%","").replace("%second%",""), this.x + 5, this.y + 25, this.maxWidth, this.size));
+            var offSet = 5;
+            if (this.text[this.index].includes("%main%")) {
+                var main = diag.main == -1 ? overWorld.characters.getCharacter().Id : diag.main;
+                offSet += diag.info[main].width;
+            }
+            wrapText(ctx, this.text[this.index].replace("%player%", overWorld.characters.getCharacter().name).replace("%main%", "").replace("%second%", ""), this.x + offSet, this.y + 25, this.maxWidth / 2, this.size);
             ctx.font = '10px sans-serif';
         } else {
             //destroy and go into level..
@@ -171,7 +175,7 @@ class PopUp {
 }
 
 class Dialog {
-    constructor(id, text, size, player, bar, img, main,second, info) {
+    constructor(id, text, size, player, bar, img, main, second, info) {
 
         this.img = img;
         this.bar = bar;
@@ -186,7 +190,7 @@ class Dialog {
         this.player = player;
         this.id = id;
 
-        
+
         this.images = [];
         this.loadImages();
 
@@ -247,22 +251,38 @@ class Dialog {
         //}
     }
     loadImages() {
-        this.images = Dialog.loadImage(this.text, this.main, this.second, this.info);
+        this.images = Dialog.loadImages(this.text, this.main, this.second, this.info, this.bar, this.img);
+        this.popUp = new PopUp(this.bar, this.text, 0, "bottom", 15, 100);
+        this.popUp.index = 0;
     }
 
-    static loadImages(text, main, second, info) {
+    static loadImages(text, main, second, info, bar, img) {
         var images = [];
-        main = main == -1 ? overWorld.characters.getCharacter().id : main;
-        second = second == -1 ? overWorld.characters.getCharacter().id : second;
+        main = main == -1 ? overWorld.characters.getCharacter().Id : main;
+        second = second == -1 ? overWorld.characters.getCharacter().Id : second;
 
+        var maxWidth = canvas.width / 2;
+        var maxHeight = Math.max(info[main].height + 10, info[second].height + 10);
+        var index = 0;
         for (var t of text) {
-            var i;
+
+
+            var tc = create("canvas", "diag", 0, 0, maxWidth, maxHeight);
+            var ctx = tc.getContext("2d");
+            var rows = wrapText(ctx, t, 0, 0, maxWidth / 2, 10, true);
+
             if (t.includes("%second%")) {
                 //do stuff for the second character
-                
+                ctx.drawImage(bar, 0, 0, maxWidth / 2, info[second].height+10, 0, 0, maxWidth / 2, info[second].height+10);
+                ctx.drawImage(img, info[second].startX, info[second].startY, info[second].width, info[second].height, maxWidth / 2, 0, info[second].width, info[second].height);
             } else {
-               
+                ctx.drawImage(bar, 0, 0, maxWidth / 2, info[main].height+10, info[main].width, 0, maxWidth / 2, info[main].height+10);
+                ctx.drawImage(img, info[main].startX, info[main].startY, info[main].width, info[main].height, 0, 0, info[main].width, info[main].height);
             }
+            var i = new Image();
+            i.src = ctx.canvas.toDataURL("image/png");
+            images.push(i);
+            tc.remove();
         }
         return images;
     }
@@ -270,15 +290,10 @@ class Dialog {
 
     nextText() {
         this.popUp.index++;
-
-
     }
 
     doDialog() {
-        
-
-
-        this.popUp.doDialog();
+        this.popUp.doDialog(this.images[this.popUp.index], this);
     }
 
     static loadImage(name, options) {
@@ -296,25 +311,26 @@ class Dialog {
 
 function loadDialog(player) {
     var diag = [];
-    
+
     loadJSONFile(function (response) {
         var r = JSON.parse(response);
         var info = [];
         var img = new Image();
         img.src = "../resources/dialogs.png";
+        img.onload = function () {
 
-        for (var char of r.characters) {
-            info[char.id] = char;
-        }
+            for (var char of r.characters) {
+                info[char.id] = char;
+            }
 
 
+            for (var any of JSON.parse(response).story) {
+                //var temp = new Dialog(any.id, any.text, 15);
+                var imgBar = Dialog.loadImage("TextBox");
 
-        for (var any of JSON.parse(response).story) {
-            var temp = new Dialog(any.id, any.text, 15);
 
-            var imgBar = Dialog.loadImage("TextBox", { maxWidth: temp.maxWidth, maxHeight: temp.maxHeight, posX: ((container.clientWidth - temp.maxWidth) / 2) });
-
-            diag[any.id] = new Dialog(any.id, any.text, temp.size, player,imgBar, img, any.main,any.second, info);
+                diag[any.id] = new Dialog(any.id, any.text, 15, player, imgBar, img, any.main, any.second, info);
+            }
         }
 
     }, "/client/resources/dialogs.json");
@@ -322,7 +338,10 @@ function loadDialog(player) {
 }
 
 
-function wrapText(ctx, text, x, y, maxWidth, lineHeigth) {
+function wrapText(ctx, text, x, y, maxWidth, lineHeigth, noDraw) {
+    if (noDraw == undefined) {
+        noDraw = false;
+    }
     var rows = 1;
     var words = text.split(' ');
     var l = '';
@@ -332,7 +351,9 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeigth) {
             var temp = l + words[i] + ' ';
             //check if the maxWidth is reached           
             if (ctx.measureText(temp).width > maxWidth && i > 0) {
-                ctx.fillText(l, x, y);
+                if (!noDraw) {
+                    ctx.fillText(l, x, y);
+                }
                 l = words[i] + ' ';
                 y += lineHeigth;
                 rows++;

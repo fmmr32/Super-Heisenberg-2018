@@ -6,7 +6,7 @@
   "gravity": 9.81,
   "width": 650,
   "height": 500,
-  "startDialog": -1,
+  "startDialog": 0,
   "background": "../resources/museum.png",
   "endDialog":-1, 
   "spawnX": 150,

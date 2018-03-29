@@ -173,7 +173,7 @@ directions:
 class OverWorld {
     constructor(player, file) {
         this.user = player;
-        this.diag = loadDialog(player);
+       
         this.ach = loadAchievements();
         this.file = file;
 
@@ -436,6 +436,7 @@ directions:
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter(), false);
         this.museum = new Museum(player, this.characters.getCharacter(), this);
+        this.diag = loadDialog(player);
     }
 
     toMuseum() {
