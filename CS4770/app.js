@@ -74,6 +74,14 @@ var loadDBFromID = function (collection, id_object, callback) {
     });
 }
 
+var loadDBFromLevelName = function (input, callback) {
+    db.level.find({ levelName: input }, function (err, result) {
+        console.log("inside db.level.find({ name: input }, function (err, result) {");
+        console.log(result);
+        callback(result);
+    });
+}
+
 /*_____________________________ Write Game Thingies _____________________________*/
 
 
@@ -100,8 +108,16 @@ io.sockets.on('connection', function (socket) {
     socket.on('loadDBbasedID', function (data) {
         console.log(data.id);
         loadDBFromID(data.collection, data.id, function (result) {
-            console.log("inside loaddbfromID" + result + "Inside loadDBFromID app.js");
+            console.log("inside loaddbfromID" + JSON.stringify(result) + "Inside loadDBFromID app.js");
             socket.emit(data.collection, result[0])
+        })
+    });
+
+    socket.on('loadDBbasedLevelName', function (data) {
+        console.log(data.levelName);
+        loadDBFromLevelName(data.levelName, function (result) {
+            console.log("inside loadDBbasedLevelName" + result + "inside loadDBbasedLevelName");
+            socket.emit(data.levelName, result)
         })
     });
 
