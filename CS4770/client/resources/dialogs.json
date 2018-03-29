@@ -27,6 +27,13 @@
       "startY": 0,
       "width": 45,
       "height": 91
+    },
+    {
+      "id": 671,
+      "startX": 0,
+      "startY": 0,
+      "width": 0,
+      "height": 0
     }
   ],
 
@@ -46,9 +53,9 @@
       "main": -1,
       "second": 670,
       "text": [
-        "%player%: HERE YOU GO SIR, I FOUND SOMETHING USEFUL",
-        "%second%: HMM, LOOKS WELL ENOUGH, GOODJOB NOW GO AND FIND SOME MORE",
-        "%player%: YES SIR"
+        "%main%HERE YOU GO SIR, I FOUND SOMETHING USEFUL",
+        "%second%HMM, LOOKS WELL ENOUGH, GOODJOB NOW GO AND FIND SOME MORE",
+        "%main%YES SIR"
       ]
     },
     {
@@ -56,11 +63,30 @@
       "main": -1,
       "second": 670,
       "text": [
-        "%second%: I AM THE RULER OF THE WORLD, YOU CANNOT STOP ME, I WILL COLLECT ALL THE ARTIFACTS AND I WON'T BE STOPPED!!",
-        "%player%: DID YOU FORGET TO TAKE YOU MEDICATION? IT SEEMS TO ME YOU HAVE A FEW PROBLEMS",
-        "%second%: WHAT DID YOU JUST SAY TO ME??!!! YOU STUPID LITTLE MAGGOT",
-        "%player%: JUST HAND OVER THE STUFF AND I WON'T HAVE TO HURT YOU",
-        "%second%: GRRRRR...."
+        "%second%I AM THE RULER OF THE WORLD, YOU CANNOT STOP ME, I WILL COLLECT ALL THE ARTIFACTS AND I WON'T BE STOPPED!!",
+        "%main%DID YOU FORGET TO TAKE YOU MEDICATION? IT SEEMS TO ME YOU HAVE A FEW PROBLEMS",
+        "%second%WHAT DID YOU JUST SAY TO ME??!!! YOU STUPID LITTLE MAGGOT",
+        "%main%JUST HAND OVER THE STUFF AND I WON'T HAVE TO HURT YOU",
+        "%second%GRRRRR...."
+      ]
+    },
+    {
+      "id": 3,
+      "main": -1,
+      "second": 671,
+      "text": [
+        "%second%HEY %player% HAS COME TO VISIT US!",
+        "%main%JESUS CHRIST BE PRAISED.."
+      ]
+    },
+    {
+      "id": 4,
+      "main": -1,
+      "second": 670,
+      "text": [
+        "%second%Now go and find me some artifacts",
+        "%main%Yes Sir!",
+        "%second%Be careful of all this fake news and don't let these illegals take your bitcoins!!"
       ]
     }
   ]

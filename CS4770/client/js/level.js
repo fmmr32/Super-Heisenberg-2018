@@ -99,9 +99,6 @@ class Level {
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
-        this.startDialog = any.startDialog;
-        this.endDialog = any.endDialog;
-        this.doingDialog = this.startDialog != -1;
         this.background = new Image();
         this.background.src = any.background;
         
@@ -443,7 +440,7 @@ class Level {
         while (container.children.length != 0) {
             container.children[0].remove();
         }
-        overWorld.toOverWorld();
+        overWorld.toOverWorldNewCanvas(this);
     }
 }
 
@@ -517,9 +514,7 @@ class Museum extends Level {
     }
 
     toOverWorld() {
-        overWorld.inMuseum = false;
-        overWorld.onOverWorld = true;
-        overWorld.music.play();
+        overWorld.toOverWorld(this);
     }
 }
 

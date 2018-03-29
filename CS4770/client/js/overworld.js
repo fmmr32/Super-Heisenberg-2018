@@ -187,7 +187,9 @@ class OverWorld {
         this.shop = loadShop(player);
         this.exit = new ExitMenu(this);
 
-
+        this.startDialog = false;
+        this.doingDialog = false;
+        this.dialog = -1;
         this.paths = [];
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
@@ -234,7 +236,7 @@ class OverWorld {
         this.player = new OverWorldPlayer(options);
         loaded = true;
         this.getPlayer().spawn(x, y);
-
+        this.diag = loadDialog(player);
     }
 
     doTick() {
@@ -396,27 +398,51 @@ directions:
     }
 
     //going back to the overworld
-    toOverWorld() {
-        this.makeCanvas();
+    toOverWorld(type) {
+        overWorld.inShop = false;
+        this.inCharacterSelect = false;
+        this.inMuseum = false;
         this.onOverWorld = true;
-        console.log("called");
         this.music.play();
-        map = undefined;
+
+        var p = this.onPortal(this.getPlayer().getX(), this.getPlayer().getY());
+        if (p != null && p.endDialog != -1) {
+            this.doingDialog = true;
+            this.dialog = p.endDialog;
+            this.startDialog = false;
+            this.type = type;
+        } else {
+            this.doingDialog = false;
+        }
+    }
+
+    toOverWorldNewCanvas(type) {
+        this.makeCanvas();
+        this.toOverWorld(type);
     }
 
     handlePortal(portal) {
+        if (portal.startDialog != -1) {
+            this.doingDialog = true;
+            this.dialog = portal.startDialog;
+            this.startDialog = true;
+        }
         switch (portal.type) {
             case "level":
                 this.toMap(portal.mapName);
+                this.type = map;
                 break;
             case "store":
                 this.toShop();
+                this.type = this.shop;
                 break;
             case "house":
                 this.toCharacterSelect();
+                this.type = this.characters;
                 break;
             case "museum":
                 this.toMuseum();
+                this.type = this.museum;
                 break;
         }
     }
@@ -436,7 +462,7 @@ directions:
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter(), false);
         this.museum = new Museum(player, this.characters.getCharacter(), this);
-        this.diag = loadDialog(player);
+       
     }
 
     toMuseum() {
