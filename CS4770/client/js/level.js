@@ -220,8 +220,8 @@ class Level {
             options.sprite = [sprite];
             options.weapon = loadWeapon(sprite.complex.weapon, this.user);
             options.damage = sprite.complex.damage;
-            options.leftHand = sprite.complex.leftHand;
-            options.rightHand = sprite.complex.rightHand;
+            options.leftHand = [sprite.complex.leftHand, sprite.complex.leftHandLow];
+            options.rightHand = [sprite.complex.rightHand, sprite.complex.rightHandLow];
 
             options.moveSet = new MoveSet(sprite.complex.moveSet);
             //overrides the default moveSet

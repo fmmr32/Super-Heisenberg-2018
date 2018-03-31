@@ -218,7 +218,7 @@ class MoveSet {
         var delta = now - this.then;
         var move = "stop";
         var current = this.moves[this.currentMove];
-        if (delta > 1000 * (this.delay + current.delayBefore)) {
+        if (this.moves.length > 0 && delta > 1000 * (this.delay + current.delayBefore)) {
             var current = this.moves[this.currentMove];
             move = current.type;
 
