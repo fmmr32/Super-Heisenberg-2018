@@ -255,7 +255,6 @@ class Dialog {
 
 function loadDialog(player) {
     var diag = [];
-
     loadJSONFile(function (response) {
         var r = JSON.parse(response);
         var info = [];
@@ -269,10 +268,7 @@ function loadDialog(player) {
 
 
             for (var any of JSON.parse(response).story) {
-                //var temp = new Dialog(any.id, any.text, 15);
                 var imgBar = Dialog.loadImage("TextBox");
-
-
                 diag[any.id] = new Dialog(any.id, any.text, 15, player, imgBar, img, any.main, any.second, info);
             }
         }

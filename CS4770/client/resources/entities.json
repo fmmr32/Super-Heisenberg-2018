@@ -245,7 +245,10 @@
     "name": "Shotgun Knight",
     "complex": {
       "hp": 1000,
-      "artifact": 992,
+      "drop": {
+        "type": "artifact",
+        "id": 992
+      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
@@ -253,7 +256,7 @@
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
       "moveSet": [],
-      "weapon": [],
+      "weapon": [ 7 ],
       "healthBar": true
     },
     "source": "../resources/Bosses.png",
@@ -343,22 +346,32 @@
     "name": "Elon Musk",
     "complex": {
       "hp": 2000,
-      "artifact": 5,
+      "drop": {
+        "type": "weapon",
+        "id": 5
+      },
       "speed": 4,
       "jump": 0.5,
-      "leftHand": [ -6, 36 ],
-      "rightHand": [160, 95 ],
+      "leftHand": [ -40, 95 ],
+      "rightHand": [360, 95 ],
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
       "moveSet": [
         {
           "type": "fire",
-          "advanceAfter": 1,
+          "advanceAfter": 2,
           "delayBefore": 0,
           "delayAfter": 0
+        },
+        {
+          "type": "jump",
+          "advanceAfter": 1,
+          "delayBefore": 2,
+          "delayAfter": 0
+
         }
       ],
-      "weapon": [5],
+      "weapon": [7],
       "healthBar": true,
       "damage": 5
     },
@@ -405,9 +418,9 @@
         "startY": 525,
         "offSetX": 0,
         "offSetY": 0,
-        "frames": 3,
+        "frames": 2,
         "frameRate": 5,
-        "columns": 3
+        "columns": 2
       },
       {
         "startX": 0,
@@ -423,9 +436,9 @@
         "startY": 175,
         "offSetX": 0,
         "offSetY": 0,
-        "frames": 3,
+        "frames": 2,
         "frameRate": 5,
-        "columns": 3
+        "columns": 2
       },
       {
         "startX": 0,
@@ -449,7 +462,10 @@
     "name": "Evil Heisenberg",
     "complex": {
       "hp": 100,
-      "artifact": 989,
+      "drop": {
+        "type": "artifact",
+        "id": 989
+      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],

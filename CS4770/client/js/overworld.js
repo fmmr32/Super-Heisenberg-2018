@@ -196,6 +196,8 @@ class OverWorld {
 
         this.music = new SoundManager("../resources/temp/sounds/005_1.wav", "music");
 
+        this.img = [];
+        this.bg = 0;
         this.loadOverWorld(file);
 
         this.music.play();
@@ -213,8 +215,10 @@ class OverWorld {
         this.height = container.clientHeight;
 
         for (var any of JSON.parse(file)) {
-            this.img = new Image();
-            this.img.src = any.src;
+            var ig = new Image();
+            ig.src = any.src;
+            this.img.push(ig);
+
             this.portals = any.portals;
 
             this.paths[-1] = { id: -1, startX: 0, startY: 0, endX: 0, endY: 0 };
@@ -252,7 +256,7 @@ class OverWorld {
     drawWorld() {
         if (this.player != undefined) {
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.width, this.height);
+            ctx.drawImage(this.img[this.bg], 0, 0, this.img[this.bg].width, this.img[this.bg].height, 0, 0, this.width, this.height);
         }
     }
     check() {

@@ -19,7 +19,7 @@ class Editor {
         this.mouseLeft = false;
         this.mouseRight = false;
         this.img = new Image();
-        this.img.src = 'tileset.png';
+        this.img.src = 'gameTile.png';
         this.elem = "Content";
         this.id = window.performance.now();
         this.userName = getUsername();

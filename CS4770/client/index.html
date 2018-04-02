@@ -559,25 +559,20 @@
             }
         }
 
+
         function loadGame(reload, player) {
             //setting the divs correctly
             if (!reload) {
                 loadNeeded();
             }
-            var handler = 0;
             //loading into the overworld
             loadOverworld(player, function (m) {
                 loadJSONFile(function (response) {
                     loadJSONFile(function (r) {
                         loadJSONFile(function (t) {
-                            if (handler == 5) {
-                                console.log("FATAL ERROR HAS OCCURD. QUICK RUN");
-                                location.reload();
-                            }
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                             m.music.stop();
-                            handler++;
                         }, "/client/resources/values.json");
 
                     }, "/client/resources/characters.json");

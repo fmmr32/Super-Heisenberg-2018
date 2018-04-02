@@ -205,7 +205,7 @@
     "factor": 2,
     "frameRate": 1,
     "impact": "ricochet",
-    "impactUpgrades": [ "ricochet"],
+    "impactUpgrades": [ "ricochet" ],
     "cooldown": 15,
     "bulletSprite": 995,
     "bulletSpriteFlip": 995,
@@ -290,5 +290,161 @@
         "alive": 30
       }
     ]
+  },
+  {
+    "name": "Boss flame thrower",
+    "id": 7,
+    "columns": 1,
+    "width": 0,
+    "price": 4500,
+    "hidden": true,
+    "height": 0,
+    "damage": 10,
+    "sound": "../resources/gun_sound.wav",
+    "speed": 4,
+    "frames": 1,
+    "factor": 2,
+    "frameRate": 1,
+    "impact": "ricochet",
+    "impactUpgrades": [ "ricochet" ],
+    "cooldown": 15,
+    "bulletSprite": 995,
+    "bulletSpriteFlip": 995,
+    "gravity": false,
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      }
+    ],
+    "grenades": [
+      {
+        "id": 995,
+        "angle": 0,
+        "alive": 10
+      },
+      {
+        "id": 995,
+        "angle": 15,
+        "alive": 10
+      },
+      {
+        "id": 995,
+        "angle": 195,
+        "alive": 10
+      },
+      {
+        "id": 995,
+        "angle": 0,
+        "alive": 15
+      },
+      {
+        "id": 995,
+        "angle": 15,
+        "alive": 20
+      },
+      {
+        "id": 995,
+        "angle": 195,
+        "alive": 20
+      },
+      {
+        "id": 995,
+        "angle": 0,
+        "alive": 0
+      },
+      {
+        "id": 995,
+        "angle": 15,
+        "alive": 0
+      },
+      {
+        "id": 995,
+        "angle": 195,
+        "alive": 0
+      },
+      {
+        "id": 995,
+        "angle": 0,
+        "alive": 20
+      },
+      {
+        "id": 995,
+        "angle": 15,
+        "alive": 30
+      },
+      {
+        "id": 995,
+        "angle": 195,
+        "alive": 30
+      }
+    ]
+  },
+  {
+    "name": "Boss shotgun",
+    "id": 8,
+    "columns": 3,
+    "width": 0,
+    "factor": 1,
+    "price": 150,
+    "sound": "../resources/gun_sound.wav",
+    "height": 0,
+    "damage": 10,
+    "impact": "die",
+    "impactUpgrades": [ "die" ],
+    "speed": 5,
+    "frames": 8,
+    "frameRate": 24,
+    "cooldown": 30,
+    "bulletSprite": 999,
+    "bulletSpriteFlip": 998,
+    "gravity": false,
+    "hidden": true,
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      }
+    ],
+    "bullets": [
+      {
+        "angle": 15,
+        "alive": 60
+      },
+      {
+        "angle": 0,
+        "alive": 60
+      },
+      {
+        "angle": 195,
+        "alive": 60
+      }
+
+    ]
   }
+
 ]

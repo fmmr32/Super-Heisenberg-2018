@@ -50,10 +50,8 @@
     </Compile>
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
-    <Content Include="client\editor.html" />
     <Content Include="client\index.css" />
     <Content Include="client\index.html" />
-    <Content Include="client\old_index.html" />
     <Content Include="client\js\config.json">
       <SubType>Code</SubType>
     </Content>
@@ -82,7 +80,6 @@
     </Content>
     <Content Include="client\resources\map1.json" />
     <Content Include="client\resources\characters.json" />
-    <Content Include="client\resources\stud.png" />
     <Content Include="client\resources\temp\stone.png" />
     <Content Include="client\resources\temp\tiles.png" />
     <Content Include="client\resources\tiles.json" />
