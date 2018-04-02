@@ -24,6 +24,7 @@ class Editor {
         this.id = window.performance.now();
         this.userName = getUsername();
         this.date = this.getDate();
+        this.levelName = "";
         this.map = {};
 
         document.addEventListener("mousemove", this.onMouseMove, false);
@@ -116,6 +117,12 @@ class Editor {
             console.log(map);
         }
 
+        document.getElementById("levelName").onchange = function () {
+            var name = document.getElementById("levelName").value;
+            editor.levelName = name;
+            editor.map.levelName = name;
+            console.log(name);
+        }
 
         document.getElementById("mapW").onchange = function () {
             var w = document.getElementById("mapW").value;
@@ -173,6 +180,8 @@ class Editor {
         this.map = {
             id: this.id,
             user: this.userName,
+            dateCreated: this.date,
+            levelName: this.levelName,
             gravity: 9.81,
             width: 720,
             height: 480,
@@ -266,8 +275,12 @@ class Editor {
         var scrollPos = document.getElementById("gameDiv");
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
-        var x = Math.floor((event.clientX + scrollX - this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + scrollY - this.cw) / this.ch) * this.ch;
+        var gameDiv = document.getElementById("canvas");
+        var divOffsetX = gameDiv.offsetLeft;
+        var divOffsetY = gameDiv.offsetTop;
+
+        var x = Math.floor((event.clientX + divOffsetX / 2 + scrollX - this.cw) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + divOffsetY / 2 + scrollY - this.ch) / this.ch) * this.ch;
         var k;
         var type = null;
 
@@ -309,7 +322,7 @@ class Editor {
     }
 
     placeTile() {
-            // this.removeTile();
+       
         var scrollPos = document.getElementById("gameDiv");
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
