@@ -18,6 +18,7 @@
         **/
         this.direction = 0;
         this.moving = false;
+        this.hasFlipped = false;
     }
 
     getX() {
@@ -42,6 +43,22 @@
     setY(y) {
         this.y = y;
     }
+    isOOB(x, y) {
+        if (x < 0) {
+            return 0;
+        }
+        if (x > this.world.width) {
+            return 1;
+        }
+        if (y < 0) {
+            return 2;
+        }
+        if (y > this.world.height) {
+            return 3;
+        }
+        return -1;
+    }
+
     spawn(x, y) {
         if (x == undefined) {
             x = this.getX();
@@ -68,12 +85,43 @@
             } else {
                 blocky = true;
             }
+            var ob = this.isOOB(this.getX(), this.getY());
+            if (ob != -1) {
+                delta = [delta[0] * this.world.width, delta[1] * this.world.width];
+                x -= delta[0];
+                y -= delta[1];
+                if (!this.hasFlipped) {
+                    this.world.bg += this.world.getChange(this.getDirection())[0];
+                    this.hasFlipped = true;
+                }
+            }
+
             //when the player has reached the destination we set the new path
             if (blockx && blocky) {
+                if (ob != -1) {
+                    switch (ob) {
+                        case 0:
+                            this.setX(this.world.width + this.getX());
+                            break;
+                        case 1:
+                            this.setX(this.getX() - this.world.width);
+                            break;
+                        case 2:
+                            this.setY(this.world.height + this.getY());
+                            break;
+                        case 3:
+                            this.setY(this.getY() - this.world.height);
+                            break;
+                    }
+                    this.hasFlipped = false;
+                }
+
                 this.p = this.getPointer(path, this.getX(), this.getY());
                 this.setDirection(this.calcDirection(this.getX(), this.getY(), this.p));
             }
         }
+
+
         //drawing the player
         this.animation[this.getDirection()].doAnimation(x, y);
     }
@@ -215,10 +263,11 @@ class OverWorld {
         this.height = container.clientHeight;
 
         for (var any of JSON.parse(file)) {
-            var ig = new Image();
-            ig.src = any.src;
-            this.img.push(ig);
-
+            for (var bg of any.backgrounds) {
+                var ig = new Image();
+                ig.src = bg;
+                this.img.push(ig);
+            }
             this.portals = any.portals;
 
             this.paths[-1] = { id: -1, startX: 0, startY: 0, endX: 0, endY: 0 };
@@ -286,6 +335,9 @@ class OverWorld {
     //checks if the player is trying to walk on a path and returns said path
     onPath(x, y, d) {
         for (var path of this.paths) {
+            if (path.worldId != this.bg) {
+                continue;
+            }
             if ((x == path.startX || x == path.endX) && (y == path.startY || y == path.endY)) {
                 var delta = this.getDelta(d, path);
                 if (delta[0] == 0 && delta[1] == 0) {
@@ -492,6 +544,6 @@ function loadOverworld(player, callback) {
             clearInterval(interval)
             //   loadGame(false);
         }
-    }, "/client/resources/overworld.json");
+    }, "/client/resources/jsons/overworld.json");
 
 }

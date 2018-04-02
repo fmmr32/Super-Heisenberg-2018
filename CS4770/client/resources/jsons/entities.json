@@ -2,7 +2,7 @@
   {
     "id": 999,
     "name": "bullet",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 99,
     "startY": 58,
     "width": 12,
@@ -13,7 +13,7 @@
   {
     "id": 998,
     "name": "bullet",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 10,
     "startY": 115,
     "width": 12,
@@ -24,7 +24,7 @@
   {
     "id": 997,
     "name": "coin",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 0,
     "startY": 0,
     "width": 22,
@@ -44,7 +44,7 @@
   {
     "id": 996,
     "name": "grenade",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 73,
     "startY": 113,
     "width": 18,
@@ -55,12 +55,12 @@
   {
     "id": 995,
     "name": "explosion",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 89,
     "startY": 0,
     "width": 18,
     "height": 16,
-    "sound": "../resources/gun_sound.wav",
+    "sound": "../resources/sounds/gun_sound.wav",
     "centerPX": 9,
     "offSetPX": 0,
     "animation": [
@@ -74,7 +74,7 @@
   {
     "id": 994,
     "name": "lever",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 126,
     "startY": 0,
     "width": 60,
@@ -101,7 +101,7 @@
   {
     "id": 993,
     "name": "spike",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 0,
     "startY": 139,
     "width": 31,
@@ -112,7 +112,7 @@
   {
     "id": 992,
     "name": "JackalMask",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 0,
     "startY": 139,
     "width": 32,
@@ -131,7 +131,7 @@
   {
     "id": 991,
     "name": "Puzzle",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 187,
     "startY": 129,
     "width": 30,
@@ -150,7 +150,7 @@
   {
     "id": 990,
     "name": "Helmet",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 187,
     "startY": 0,
     "width": 32,
@@ -169,7 +169,7 @@
   {
     "id": 989,
     "name": "MilleniumRod",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 284,
     "startY": 0,
     "width": 32,
@@ -188,7 +188,7 @@
   {
     "id": 500,
     "name": "goomba",
-    "source": "../resources/entities.png",
+    "source": "../resources/spriteSheets/entities.png",
     "startX": 39,
     "startY": 109,
     "width": 20,
@@ -259,7 +259,7 @@
       "weapon": [ 7 ],
       "healthBar": true
     },
-    "source": "../resources/Bosses.png",
+    "source": "../resources/spriteSheets/Bosses.png",
     "animation": [
       {
         "startX": 0,
@@ -353,7 +353,7 @@
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -40, 95 ],
-      "rightHand": [360, 95 ],
+      "rightHand": [ 360, 95 ],
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
       "moveSet": [
@@ -371,11 +371,11 @@
 
         }
       ],
-      "weapon": [7],
+      "weapon": [ 7 ],
       "healthBar": true,
       "damage": 5
     },
-    "source": "../resources/Bosses.png",
+    "source": "../resources/spriteSheets/Bosses.png",
     "animation": [
       {
         "startX": 0,
@@ -503,7 +503,7 @@
       "weapon": [ 1 ],
       "healthBar": true
     },
-    "source": "../resources/Bosses.png",
+    "source": "../resources/spriteSheets/Bosses.png",
     "animation": [
       {
         "startX": 1001,
@@ -552,7 +552,7 @@
       },
       {
         "startX": 1141,
-        "startY":797,
+        "startY": 797,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,

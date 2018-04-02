@@ -17,7 +17,7 @@
     //making a popup
     constructPopUp() {
         var image = new Image();
-        image.src = "../resources/achievementBar.png";
+        image.src = "../resources/menus/achievementBar.png";
         image.color = "white";
         var text = ["ACHIEVEMENT GOT", this.text];
         var duration = 2;
@@ -43,7 +43,7 @@ function loadAchievements() {
             }
             ach[a.type].push(a);
         }
-    }, "/client/resources/achievements.json");
+    }, "/client/resources/jsons/achievements.json");
 
     return ach;
 }
@@ -259,7 +259,7 @@ function loadDialog(player) {
         var r = JSON.parse(response);
         var info = [];
         var img = new Image();
-        img.src = "../resources/dialogs.png";
+        img.src = "../resources/spriteSheets/dialogs.png";
         img.onload = function () {
 
             for (var char of r.characters) {
@@ -268,12 +268,12 @@ function loadDialog(player) {
 
 
             for (var any of JSON.parse(response).story) {
-                var imgBar = Dialog.loadImage("TextBox");
+                var imgBar = Dialog.loadImage("menus/TextBox");
                 diag[any.id] = new Dialog(any.id, any.text, 15, player, imgBar, img, any.main, any.second, info);
             }
         }
 
-    }, "/client/resources/dialogs.json");
+    }, "/client/resources/jsons/dialogs.json");
     return diag;
 }
 
@@ -313,7 +313,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeigth, noDraw) {
 class ExitMenu {
     constructor(world) {
         this.image = new Image();
-        this.image.src = "../resources/TextBox.png";
+        this.image.src = "../resources/menus/TextBox.png";
 
         this.select = 0;
         this.options = ["Resume", "Exit"];

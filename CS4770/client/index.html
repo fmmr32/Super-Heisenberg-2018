@@ -22,19 +22,19 @@
         <div id='mainMenu'>
 
             <div id='top'>
-                <img src='resources/Play.png' id='Play' onclick='playOptions()'>
+                <img src='resources/menus/Play.png' id='Play' onclick='playOptions()'>
             </div>
 
             <div id='other'>
-                <img src='resources/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
+                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
             </div>
 
             <div id='other'>
-                <img src='resources/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
+                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
             </div>
 
             <div id='bottom'>
-                <img src='resources/Options.png' id='Options' onclick='options()'></img>
+                <img src='resources/menus/Options.png' id='Options' onclick='options()'></img>
             </div>
 
         </div>
@@ -43,15 +43,15 @@
         <div id='playOptions'>
 
             <div id='top'>
-                <img src='resources/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
+                <img src='resources/menus/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
             </div>
 
             <div id='other'>
-                <img src='resources/LoadGame.png' id='LoadGame'></img>
+                <img src='resources/menus/LoadGame.png' id='LoadGame'></img>
             </div>
 
             <div id='bottom'>
-                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
             </div>
 
         </div>
@@ -59,15 +59,15 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
             </div>
 
             <div id='other'>
-                <img src='resources/LoadLevel.png' id='LoadLevel'></img>
+                <img src='resources/menus/LoadLevel.png' id='LoadLevel'></img>
             </div>
 
             <div id='bottom'>
-                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
             </div>
 
         </div>
@@ -82,9 +82,9 @@
                             <col width="200">
                             <col width="200">
                             <tr>
-                                <th><img src='resources/Title.png' id='left'></img></th>
-                                <th><img src='resources/Author.png' id='left'></img></th>
-                                <th><img src='resources/Created-On.png' id='left'></img></th>
+                                <th><img src='resources/menus/Title.png' id='left'></img></th>
+                                <th><img src='resources/menus/Author.png' id='left'></img></th>
+                                <th><img src='resources/menus/Created-On.png' id='left'></img></th>
                             </tr>
                         </table>
                     </td>
@@ -114,7 +114,7 @@
             </table>
             <br>
             <div id='bottom'>
-                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
             </div>
         </div>
 
@@ -134,7 +134,7 @@
                 </tbody>
             </table>
             <br>
-            <img src='resources/Back.png' id='Back' onclick='back()'></img>
+            <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
         </div>
 
         <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
@@ -144,9 +144,9 @@
             </div>
             <div id="side" class=editor style="margin:20px; width:auto; float:right">
                 <div id='buttons' style="margin:5px">
-                    <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
-                    <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
-                    <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
+                    <img src='resources/menus/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
+                    <img src='resources/menus/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
+                    <img src='resources/menus/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
                 </div>
 
 
@@ -533,7 +533,7 @@
         function loadCurretUser() {
             loadJSONFile(function (response) {
                 loadGame(false, JSON.parse(response));
-            }, "/client/resources/player.json");
+            }, "/client/resources/jsons/player.json");
         }
 
 
@@ -545,7 +545,7 @@
 
         function loadNeeded() {
             for (var x of neededFiles) {
-                var resource = "/client/resources/";
+                var resource = "/client/resources/jsons/";
                 if (x == "weapons.json") {
                     loadJSONFile(function (response) {
                         loadWeapons(response);
@@ -573,11 +573,11 @@
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                             m.music.stop();
-                        }, "/client/resources/values.json");
+                        }, "/client/resources/jsons/values.json");
 
-                    }, "/client/resources/characters.json");
+                    }, "/client/resources/jsons/characters.json");
                 }
-                    , "/client/resources/overWorldCharacters.json");
+                    , "/client/resources/jsons/overWorldCharacters.json");
             });
         }
 

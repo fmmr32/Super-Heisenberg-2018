@@ -1,7 +1,7 @@
 ﻿[
   {
     "id": 667,
-    "src": "../resources/OverWorldCharacter.png",
+    "src": "../resources/spriteSheets/OverWorldCharacter.png",
     "startX": 0,
     "startY": 0,
     "width": 28,
@@ -99,7 +99,7 @@
   },
   {
     "id": 668,
-    "src": "../resources/OverWorldCharacter.png",
+    "src": "../resources/spriteSheets/OverWorldCharacter.png",
     "startX": 0,
     "startY": 0,
     "width": 28,
@@ -197,7 +197,7 @@
   },
   {
     "id": 669,
-    "src": "../resources/OverWorldCharacter.png",
+    "src": "../resources/spriteSheets/OverWorldCharacter.png",
     "startX": 0,
     "startY": 0,
     "width": 28,

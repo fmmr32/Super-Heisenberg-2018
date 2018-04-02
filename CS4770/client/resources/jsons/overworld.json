@@ -1,6 +1,9 @@
 ﻿[
   {
-    "src": "../resources/OverWorld.png",
+    "backgrounds": [
+      "../resources/Backgrounds/OverWorld.png",
+      "../resources/Backgrounds/OverWorld2.png"
+    ],
     "startX": 630,
     "startY": 278,
     "portals": [
@@ -37,6 +40,7 @@
     "paths": [
       {
         "id": 0,
+        "worldId": 0,
         "startX": 278,
         "startY": 278,
         "endX": 630,
@@ -46,6 +50,7 @@
       },
       {
         "id": 1,
+        "worldId": 0,
         "startX": 630,
         "startY": 278,
         "endX": 950,
@@ -55,6 +60,7 @@
       },
       {
         "id": 2,
+        "worldId": 0,
         "startX": 278,
         "startY": 278,
         "endX": 278,
@@ -64,6 +70,7 @@
       },
       {
         "id": 3,
+        "worldId": 0,
         "startX": 950,
         "startY": 162,
         "endX": 950,
@@ -73,6 +80,7 @@
       },
       {
         "id": 4,
+        "worldId": 0,
         "startX": 630,
         "startY": 162,
         "endX": 630,
@@ -82,14 +90,44 @@
       },
       {
         "id": 5,
+        "worldId": 0,
         "startX": 278,
         "startY": 178,
         "endX": 278,
         "endY": 278,
         "startPointer": -1,
         "endPointer": -1
+      },
+      {
+        "id": 6,
+        "worldId": 0,
+        "startX": 950,
+        "startY": 278,
+        "endX": 1206,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 7,
+        "worldId": 0,
+        "startX": 1206,
+        "startY": 278,
+        "endX": 1366,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 8,
+        "worldId": 1,
+        "startX": -74,
+        "startY": 278,
+        "endX": 86,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
       }
-
     ]
   }
 ]

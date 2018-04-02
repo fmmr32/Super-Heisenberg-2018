@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "DirtGrassL",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 38,
     "startX": 0,
@@ -13,7 +13,7 @@
   {
     "id": 2,
     "name": "DirtGrassM",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 38,
     "startX": 32,
@@ -24,7 +24,7 @@
   {
     "id": 3,
     "name": "DirtGrassR",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 38,
     "startX": 64,
@@ -35,7 +35,7 @@
   {
     "id": 4,
     "name": "StoneGrassL",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 38,
     "startX": 0,
@@ -46,7 +46,7 @@
   {
     "id": 5,
     "name": "StoneGrassM",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 38,
     "startX": 32,
@@ -57,7 +57,7 @@
   {
     "id": 6,
     "name": "StoneGrassR",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 38,
     "startX": 64,
@@ -68,7 +68,7 @@
   {
     "id": 7,
     "name": "DirtL",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 0,
@@ -79,7 +79,7 @@
   {
     "id": 8,
     "name": "DirtM",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 32,
@@ -90,7 +90,7 @@
   {
     "id": 9,
     "name": "DirtR",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 64,
@@ -101,7 +101,7 @@
   {
     "id": 10,
     "name": "StoneL",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 0,
@@ -112,7 +112,7 @@
   {
     "id": 11,
     "name": "StoneM",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 32,
@@ -123,7 +123,7 @@
   {
     "id": 12,
     "name": "StoneR",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 64,
@@ -134,7 +134,7 @@
   {
     "id": 13,
     "name": "SnowL",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 0,
@@ -145,7 +145,7 @@
   {
     "id": 14,
     "name": "SnowM",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 32,
@@ -156,7 +156,7 @@
   {
     "id": 15,
     "name": "SnowR",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 64,
@@ -167,7 +167,7 @@
   {
     "id": 16,
     "name": "IceL",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 0,
@@ -179,7 +179,7 @@
   {
     "id": 17,
     "name": "IceM",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 32,
@@ -191,7 +191,7 @@
   {
     "id": 18,
     "name": "IceR",
-    "source": "../resources/gameTile.png",
+    "source": "../resources/spriteSheets/gameTile.png",
     "width": 32,
     "height": 36,
     "startX": 64,

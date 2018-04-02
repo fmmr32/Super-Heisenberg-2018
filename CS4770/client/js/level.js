@@ -465,7 +465,7 @@ function loadMap(name, player, callback, world) {
             clearInterval(interval)
             //   loadGame(false);
         }
-    }, "/client/resources/" + name + ".json");
+    }, "/client/resources/jsons/" + name + ".json");
 
 }
 
@@ -492,7 +492,7 @@ class Museum extends Level {
 
 
         var temp = new Image();
-        temp.src = "../resources/museum.png";
+        temp.src = "../resources/Backgrounds/museum.png";
         var m = this;
 
         temp.onload = function () {

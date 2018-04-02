@@ -6,7 +6,7 @@
   "gravity": 9.81,
   "width": 650,
   "height": 500,
-  "background": "../resources/museum.png",
+  "background": "../resources/Backgrounds/museum.png",
   "spawnX": 150,
   "spawnY": 10,
   "creatures": [

@@ -36,7 +36,7 @@ function deepCopy(c) {
 function loadWeapons(file) {
     for (var w of JSON.parse(file)) {
         var imgNormal = new Image();
-        imgNormal.src = "../resources/weapons.png";
+        imgNormal.src = "../resources/spriteSheets/weapons.png";
         imgNormal.width = w.width;
         imgNormal.height = w.height;
         imgNormal.startX = w.animation[0].startX;
@@ -45,7 +45,7 @@ function loadWeapons(file) {
         imgNormal.offSetY = w.animation[0].offSetY;
 
         var imgFlipped = new Image();
-        imgFlipped.src = "../resources/weapons.png";
+        imgFlipped.src = "../resources/spriteSheets/weapons.png";
         imgFlipped.width = w.width;
         imgFlipped.height = w.height;
         imgFlipped.startX = w.animation[1].startX;
