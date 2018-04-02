@@ -1,6 +1,6 @@
 ﻿
 body {
-    background-image: url(resources/loginScreen.png);
+    background-image: url(resources/menus/loginScreen.png);
     background-repeat: no-repeat;
     background-size: auto;
     background-position: center;
@@ -118,7 +118,7 @@ tbody tr:hover {
 }
 
 #mainMenu {
-    display: none;
+    display: table-cell;
     vertical-align: middle;
     padding-top: 100px;
 }

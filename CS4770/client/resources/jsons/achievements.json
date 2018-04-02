@@ -1,0 +1,45 @@
+﻿[
+  {
+    "id": 1,
+    "name": "kill enemie",
+    "type": "kill",
+    "maxKills": 1,
+    "function": {
+      "arguments": "",
+      "body": [
+        "if (map.getPlayer().killcount >= this.maxKills) {",
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();",
+        "}"
+      ]
+    },
+    "text": "YOU HAVE KILLED 1 ENEMY"
+  },
+  {
+    "id": 2,
+    "name": "pull a level",
+    "type": "pull",
+    "function": {
+      "arguments": "",
+      "body": [
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();"
+      ]
+    },
+    "text": "YOU HAVE PULLED THE LEVER KRONK"
+  },
+  {
+    "id": 3,
+    "name": "Kill the shotgun knight",
+    "type": "bossKill",
+    "function": {
+      "arguments": "e",
+      "body": [
+        "console.log(e);",
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();"
+      ]
+    },
+    "text": "You have killed the Shotgun Knight"
+  }
+]

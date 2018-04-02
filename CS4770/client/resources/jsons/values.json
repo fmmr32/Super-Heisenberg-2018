@@ -1,0 +1,41 @@
+﻿{
+  "impacts": {
+    "die": "your bullet will go away and do nothing upon hitting a block.",
+    "ricochet": "your bullet will try to ricochet when hitting a block.",
+    "explode": "your bullet will explode upon impact."
+  },
+  "shop": {
+    "toUpgrade": "You can upgrade it by pressing next.",
+    "toImpactUpgrade": "You can see the available impacts by pressing next.",
+    "currentValue": "Your current %type% is %value%.",
+    "canBuy": {
+      "upgrade": "You can upgrade this to %value% for %price% bitcoins.",
+      "impact": "You can upgrade this to  %impact% for %price% bitcoins.",
+      "weapon": "You can buy this weapon for %price% bitcoins."
+    },
+    "noBuy": {
+      "upgrade": "It seems that you don't have enough to upgrade this, this upgrade costs %price% bitcoins.",
+      "weapon": "It seems that you don't have enought to buy this, this weapon costs %price% bitcoins.",
+      "impact": "It seems that you don't have enough to get this impact, this impact costs %price% bitcoins."
+    }
+  },
+  "selectedCharacter": "Currently selected to player as.",
+  "weaponEquip": "By equipping this weapon it will replace the weapon in slot 1.",
+  "impactEquip": "You currently have this impact equipped.",
+  "weapons": {
+    "die": {
+      "pistol": 50,
+      "shotgun": 50
+    },
+    "ricochet": {
+      "pistol": 150,
+      "shotgun": 300,
+      "launcher": 500
+    },
+    "explode": {
+      "pistol": 200,
+      "shotgun": 400,
+      "grenade": 700
+    }
+  }
+}

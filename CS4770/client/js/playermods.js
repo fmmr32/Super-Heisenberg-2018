@@ -195,10 +195,10 @@ class Shop {
         this.texts = texts;
         this.player = player;
         this.img = new Image();
-        this.img.src = "../resources/TextBox.png";
+        this.img.src = "../resources/menus/TextBox.png";
 
         this.background = new Image();
-        this.background.src = "../resources/gunstoreBackground.png";
+        this.background.src = "../resources/Backgrounds/gunstoreBackground.png";
 
         this.offSet = 0;
         this.itemSelected = false;
@@ -385,10 +385,10 @@ class CharacterSelect {
         this.texts = texts;
 
         this.background = new Image();
-        this.background.src = "../resources/lodgeBackground.png";
+        this.background.src = "../resources/Backgrounds/lodgeBackground.png";
 
         this.img = new Image();
-        this.img.src = "../resources/TextBox.png";
+        this.img.src = "../resources/menus/TextBox.png";
         this.width = 0;
         this.height = 30;
         this.mainText = ["Character Select", "Armory"];

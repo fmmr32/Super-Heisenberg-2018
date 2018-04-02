@@ -50,43 +50,55 @@
     </Compile>
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
-    <Content Include="client\editor.html" />
     <Content Include="client\index.css" />
     <Content Include="client\index.html" />
-    <Content Include="client\old_index.html" />
     <Content Include="client\js\config.json">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="client\resources\values.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\achievements.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\dialogs.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\entities.json" />
-    <Content Include="client\resources\entities.png" />
-    <Content Include="client\resources\overworld.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\overWorldCharacters.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\player.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\weapons.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="client\resources\map1.json" />
-    <Content Include="client\resources\characters.json" />
-    <Content Include="client\resources\stud.png" />
+    <Content Include="client\resources\Backgrounds\gunstoreBackground.png" />
+    <Content Include="client\resources\Backgrounds\homeScreen.png" />
+    <Content Include="client\resources\Backgrounds\lodgeBackground.png" />
+    <Content Include="client\resources\Backgrounds\loginScreen.png" />
+    <Content Include="client\resources\Backgrounds\museum.png" />
+    <Content Include="client\resources\Backgrounds\OverWorld.png" />
+    <Content Include="client\resources\jsons\achievements.json" />
+    <Content Include="client\resources\jsons\characters.json" />
+    <Content Include="client\resources\jsons\dialogs.json" />
+    <Content Include="client\resources\jsons\entities.json" />
+    <Content Include="client\resources\jsons\map1.json" />
+    <Content Include="client\resources\jsons\overworld.json" />
+    <Content Include="client\resources\jsons\overWorldCharacters.json" />
+    <Content Include="client\resources\jsons\player.json" />
+    <Content Include="client\resources\jsons\tiles.json" />
+    <Content Include="client\resources\jsons\values.json" />
+    <Content Include="client\resources\jsons\weapons.json" />
+    <Content Include="client\resources\menus\achievementBar.png" />
+    <Content Include="client\resources\menus\Author.png" />
+    <Content Include="client\resources\menus\Back.png" />
+    <Content Include="client\resources\menus\BrowseLevels.png" />
+    <Content Include="client\resources\menus\Created-On.png" />
+    <Content Include="client\resources\menus\Creature.png" />
+    <Content Include="client\resources\menus\Entity.png" />
+    <Content Include="client\resources\menus\LevelEditor.png" />
+    <Content Include="client\resources\menus\LoadGame.png" />
+    <Content Include="client\resources\menus\LoadLevel.png" />
+    <Content Include="client\resources\menus\NewGame.png" />
+    <Content Include="client\resources\menus\NewLevel.png" />
+    <Content Include="client\resources\menus\Options.png" />
+    <Content Include="client\resources\menus\Play.png" />
+    <Content Include="client\resources\menus\TextBox.png" />
+    <Content Include="client\resources\menus\Tiles.png" />
+    <Content Include="client\resources\menus\Title.png" />
+    <Content Include="client\resources\sounds\gun_sound.wav" />
+    <Content Include="client\resources\spriteSheets\Bosses.png" />
+    <Content Include="client\resources\spriteSheets\characters.png" />
+    <Content Include="client\resources\spriteSheets\dialogs.png" />
+    <Content Include="client\resources\spriteSheets\entities.png" />
+    <Content Include="client\resources\spriteSheets\gameTile.png" />
+    <Content Include="client\resources\spriteSheets\OverWorldCharacter.png" />
+    <Content Include="client\resources\spriteSheets\weapons.png" />
     <Content Include="client\resources\temp\stone.png" />
     <Content Include="client\resources\temp\tiles.png" />
-    <Content Include="client\resources\tiles.json" />
-    <Content Include="client\resources\weapons.png" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
@@ -98,6 +110,11 @@
   <ItemGroup>
     <Folder Include="client\js\" />
     <Folder Include="client\resources\" />
+    <Folder Include="client\resources\Backgrounds\" />
+    <Folder Include="client\resources\jsons\" />
+    <Folder Include="client\resources\menus\" />
+    <Folder Include="client\resources\sounds\" />
+    <Folder Include="client\resources\spriteSheets\" />
     <Folder Include="client\resources\temp\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />

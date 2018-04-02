@@ -7,7 +7,7 @@
 
     <div class=menuContainer>
 
-        <div id="signDiv" style="display:table-cell">
+        <div id="signDiv" style="display: inline-block">
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
@@ -22,19 +22,19 @@
         <div id='mainMenu'>
 
             <div id='top'>
-                <img src='resources/Play.png' id='Play' onclick='playOptions()'>
+                <img src='resources/menus/Play.png' id='Play' onclick='playOptions()'>
             </div>
 
             <div id='other'>
-                <img src='resources/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
+                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
             </div>
 
             <div id='other'>
-                <img src='resources/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
+                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
             </div>
 
             <div id='bottom'>
-                <img src='resources/Options.png' id='Options' onclick='options()'></img>
+                <img src='resources/menus/Options.png' id='Options' onclick='options()'></img>
             </div>
 
         </div>
@@ -43,15 +43,15 @@
         <div id='playOptions'>
 
             <div id='top'>
-                <img src='resources/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
+                <img src='resources/menus/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
             </div>
 
             <div id='other'>
-                <img src='resources/LoadGame.png' id='LoadGame'></img>
+                <img src='resources/menus/LoadGame.png' id='LoadGame'></img>
             </div>
 
             <div id='bottom'>
-                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
             </div>
 
         </div>
@@ -59,15 +59,15 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
             </div>
 
             <div id='other'>
-                <img src='resources/LoadLevel.png' id='LoadLevel'></img>
+                <img src='resources/menus/LoadLevel.png' id='LoadLevel'></img>
             </div>
 
             <div id='bottom'>
-                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
             </div>
 
         </div>
@@ -82,9 +82,9 @@
                             <col width="200">
                             <col width="200">
                             <tr>
-                                <th><img src='resources/Title.png' id='left'></img></th>
-                                <th><img src='resources/Author.png' id='left'></img></th>
-                                <th><img src='resources/Created-On.png' id='left'></img></th>
+                                <th><img src='resources/menus/Title.png' id='left'></img></th>
+                                <th><img src='resources/menus/Author.png' id='left'></img></th>
+                                <th><img src='resources/menus/Created-On.png' id='left'></img></th>
                             </tr>
                         </table>
                     </td>
@@ -114,7 +114,7 @@
             </table>
             <br>
             <div id='bottom'>
-                <img src='resources/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
             </div>
         </div>
 
@@ -134,7 +134,7 @@
                 </tbody>
             </table>
             <br>
-            <img src='resources/Back.png' id='Back' onclick='back()'></img>
+            <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
         </div>
 
         <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
@@ -144,9 +144,9 @@
             </div>
             <div id="side" class=editor style="margin:20px; width:auto; float:right">
                 <div id='buttons' style="margin:5px">
-                    <img src='resources/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
-                    <img src='resources/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
-                    <img src='resources/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
+                    <img src='resources/menus/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
+                    <img src='resources/menus/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
+                    <img src='resources/menus/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
                 </div>
 
 
@@ -206,7 +206,7 @@
                     <tr>
                         <td>
                             <h5>Spawn Point (X-Coordinate):</h5>
-                            <input type="number" name="X" min="0" max=""> <!–– Set Max ––>
+                            <input type="number" id="X" min="0" max=""> <!–– Set Max ––>
                             <br>
                         </td>
                     </tr>
@@ -214,7 +214,7 @@
                     <tr>
                         <td>
                             <h5>Spawn Point (Y-Coordinate):</h5>
-                            <input type="number" name="Y" min="0" max=""> <!–– Set Max ––>
+                            <input type="number" id="Y" min="0" max=""> <!–– Set Max ––>
                             <br>
                         </td>
                     </tr>
@@ -234,10 +234,18 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <h5>Level Name:</h5>
+                            <input type="text" id="levelName"> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
 
                 </table>
                 <input type="button" name="Load" value="Load" onclick="loadLevel()">
-                <input type="button" name="Save" value="Save" onclick="saveLevel()">
+                <input type="button" id ="Save" value="Save">
             </div>
         </div>
     </div>
@@ -340,34 +348,18 @@
             var char = document.getElementById("character");
         }
 
-        function setBackground() {
-            var background = document.getElementById("background");
-        }
 
-        function setWidth(w) {
-
-        }
 
         /*loadLevelsList.onclick = function () {
             loadLevelsList();
         }*/
 
-        function setHeight(h) {
-
-        }
 
 
-        function setSpawnX(x) {
 
-        }
 
-        function setSpawnY(y) {
 
-        }
 
-        function setGravity(g) {
-
-        }
 
         //Story mode initialization
         //storyMode.onclick = function () {
@@ -533,7 +525,7 @@
         function loadCurretUser() {
             loadJSONFile(function (response) {
                 loadGame(false, JSON.parse(response));
-            }, "/client/resources/player.json");
+            }, "/client/resources/jsons/player.json");
         }
 
 
@@ -545,7 +537,7 @@
 
         function loadNeeded() {
             for (var x of neededFiles) {
-                var resource = "/client/resources/";
+                var resource = "/client/resources/jsons/";
                 if (x == "weapons.json") {
                     loadJSONFile(function (response) {
                         loadWeapons(response);
@@ -559,30 +551,25 @@
             }
         }
 
+
         function loadGame(reload, player) {
             //setting the divs correctly
             if (!reload) {
                 loadNeeded();
             }
-            var handler = 0;
             //loading into the overworld
             loadOverworld(player, function (m) {
                 loadJSONFile(function (response) {
                     loadJSONFile(function (r) {
                         loadJSONFile(function (t) {
-                            if (handler == 5) {
-                                console.log("FATAL ERROR HAS OCCURD. QUICK RUN");
-                                location.reload();
-                            }
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                             m.music.stop();
-                            handler++;
-                        }, "/client/resources/values.json");
+                        }, "/client/resources/jsons/values.json");
 
-                    }, "/client/resources/characters.json");
+                    }, "/client/resources/jsons/characters.json");
                 }
-                    , "/client/resources/overWorldCharacters.json");
+                    , "/client/resources/jsons/overWorldCharacters.json");
             });
         }
 
@@ -672,6 +659,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
+        //window.onload = newLevel();
     </script>
 
 

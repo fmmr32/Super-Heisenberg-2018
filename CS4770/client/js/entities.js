@@ -218,7 +218,7 @@ class MoveSet {
         var delta = now - this.then;
         var move = "stop";
         var current = this.moves[this.currentMove];
-        if (delta > 1000 * (this.delay + current.delayBefore)) {
+        if (this.moves.length > 0 && delta > 1000 * (this.delay + current.delayBefore)) {
             var current = this.moves[this.currentMove];
             move = current.type;
 
@@ -330,9 +330,34 @@ class Entity {
 
 
 }
+
 class Artifact extends Entity {
     constructor(options) {
         super(options);
+        this.type = options.type;
+        this.id = options.id;
+    }
+
+    handlePickUp(player) {
+        switch (this.type) {
+            case "artifact":
+                if (player.artifacts.indexOf(this.id) == -1) {
+                    player.artifacts.push(this.id);
+                }
+                break;
+            case "weapon":
+                if (!Shop.hasWeapon(this.level.user, this.id)) {
+                    var obj = {};
+                    obj.id = this.id;
+                    obj.damageMult = 1;
+                    obj.speedMult = 1;
+                    obj.equippedImpact = "ricochet";
+                    obj.availableImpact = ["ricochet"];
+
+                    this.level.user.weapons.push(obj);
+                }
+                break;
+        }
     }
 }
 
@@ -342,7 +367,7 @@ class EntityMovable extends Entity {
         this.speed = options.speed;
         this.vs = 0;
         this.hs = 0;
-        this.lastOffSet = 0;
+        this.lastOffSet = -1;
         this.elapsedTime = 1;
         this.onFloor = false;
     }
@@ -472,9 +497,7 @@ class EntityMovable extends Entity {
                                     collidingEntity.flipState(this);
                                 }
                             } else if (collidingEntity instanceof Artifact) {
-                                if (this.artifacts.indexOf(collidingEntity.getSprite().id) == -1) {
-                                    this.artifacts.push(collidingEntity.getSprite().id);
-                                }
+                                collidingEntity.handlePickUp(this);
                                 this.level.exitMap(true);
                             } else {
                                 //picking up a coin?
@@ -627,7 +650,7 @@ class EntityInteractable extends Entity {
                 case "end":
                     this.level.exitMap(true);
                     break;
-                
+
             }
         }
     }
@@ -862,7 +885,7 @@ class EntityCreature extends EntityMovable {
                         this.setHSpeed(0);
                         break;
                     case 3:
-                        if (this.godlike) { break;}
+                        if (this.godlike) { break; }
                         this.doRespawn();
                         break;
                 }
@@ -914,8 +937,7 @@ class Boss extends EntityCreature {
 
 
     doRespawn(source) {
-        var prop = {};
-        prop.id = this.loot;
+        var prop = this.loot;
         prop.x = this.getX();
         prop.y = this.getY() - this.getHeight();
         this.level.loadArtifact(prop);
