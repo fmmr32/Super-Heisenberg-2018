@@ -107,12 +107,12 @@ signDivSignUp.onclick = function () {
 
 
 function loadJSONFile(callback, file) {
-    socket.emit('loadJSON', {
-        fileName: file
-    });
-    if (!socket.hasListeners(name)) {
-        socket.on(file, function (data) {
-            callback(data.toString());
+        socket.emit('loadJSON', {
+            fileName: file
         });
-    }
-}
+        if (!socket.hasListeners(name)) {
+            socket.on(file, function (data) {
+                callback(data.toString());
+            });
+        }
+    } 

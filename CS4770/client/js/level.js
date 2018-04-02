@@ -41,7 +41,7 @@ class Level {
 
     }
 
-    
+
 
 
 
@@ -77,7 +77,7 @@ class Level {
         options2.animation = Animation.loadAnimationArray(chars.animation, chars.Id, chars.source);
 
         options2.level = this;
-        options2.weapon = loadWeapon(this.user.equipped, this.user, this.user.weapons);
+        options2.weapon = loadWeapon(this.user.equipped);
         options2.name = chars.name;
 
         options2.money = this.user.money;
@@ -101,7 +101,7 @@ class Level {
         this.height = any.height;
         this.background = new Image();
         this.background.src = any.background;
-        
+
 
 
         while (container.children.length != 0) {
@@ -184,12 +184,24 @@ class Level {
     }
 
     loadArtifact(artifact) {
+        console.log(artifact);
         var options = {};
         options.x = artifact.x;
         options.y = artifact.y;
         options.level = this;
-        options.sprite = [getSprite(artifact.id)];
-        options.animation = Animation.loadAnimation(artifact.id);
+        options.type = artifact.type;
+        options.id = artifact.id;
+        switch (artifact.type) {
+            case "weapon":
+                var w = deepCopy(weapons.get(artifact.id));
+                options.sprite = [getSprite(999)];
+                options.animation = w.animations;
+                break;
+            case "artifact":
+                options.sprite = [getSprite(artifact.id)];
+                options.animation = Animation.loadAnimation(artifact.id);
+                break;
+        }
         this.entities.push(new Artifact(options));
     }
 
@@ -218,7 +230,7 @@ class Level {
             options.y = y;
 
             options.sprite = [sprite];
-            options.weapon = loadWeapon(sprite.complex.weapon, this.user);
+            options.weapon = loadWeapon(sprite.complex.weapon);
             options.damage = sprite.complex.damage;
             options.leftHand = [sprite.complex.leftHand, sprite.complex.leftHandLow];
             options.rightHand = [sprite.complex.rightHand, sprite.complex.rightHandLow];
@@ -239,7 +251,7 @@ class Level {
             options.animation = Animation.loadAnimation(id);
             var creature;
             if (id >= 400 && id < 600) {
-                options.loot = getSprite(id).complex.artifact;
+                options.loot = getSprite(id).complex.drop;
                 creature = new Boss(options);
             } else {
                 creature = new EntityCreature(options);
@@ -400,14 +412,9 @@ class Level {
         var timeplayed = this.getPlayer().timeplayed;
         this.user.achievements = this.getPlayer().achievements;
         this.user.artifacts = this.getPlayer().artifacts;
+
         if (completed) {
-            //add more...
-            if (this.endDialog != -1) {
-                this.doingDialog = true;
-            } else {
-                //goto overworld
                 this.toOverWorld();
-            }
         }
 
     }
@@ -458,7 +465,7 @@ function loadMap(name, player, callback, world) {
             clearInterval(interval)
             //   loadGame(false);
         }
-    }, "/client/resources/" + name + ".json");
+    }, "/client/resources/jsons/" + name + ".json");
 
 }
 
@@ -467,8 +474,8 @@ function loadMap(name, player, callback, world) {
 
 class Museum extends Level {
     constructor(player, character, world) {
-        super(player,null, world);
-        super.width = sizeSettings[0]*2;
+        super(player, null, world);
+        super.width = sizeSettings[0] * 2;
         super.height = sizeSettings[1];
         super.spawnX = 50;
         super.spawnY = 550;
@@ -485,11 +492,11 @@ class Museum extends Level {
 
 
         var temp = new Image();
-        temp.src = "../resources/museum.png";
+        temp.src = "../resources/Backgrounds/museum.png";
         var m = this;
 
         temp.onload = function () {
-            m.resizeImage(this, canvas, 0,"background");
+            m.resizeImage(this, canvas, 0, "background");
 
         }
         this.loadArtifacts();

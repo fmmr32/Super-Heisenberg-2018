@@ -1,9 +1,9 @@
 ﻿var weapons = new Map();
 
-function loadWeapon(list,user, weaponMod) {
+function loadWeapon(list, weaponMod) {
     var temp = [];
     for (var id of list) {
-        var newob = deepCopy(weapons.get(id), user);
+        var newob = deepCopy(weapons.get(id));
         if (weaponMod != undefined) {
             for (var mods of weaponMod) {
                 if (mods.id == id) {
@@ -19,15 +19,14 @@ function loadWeapon(list,user, weaponMod) {
     return temp;
 }
 
-function deepCopy(c, user) {
+function deepCopy(c) {
     if (c instanceof Weapon) {
         var animation = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
         return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets, sound:c.sound, hidden:c.hidden});
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
-        loadNeeded();
-        loadGame(false, user);
+        console.log(c, "SOMETHING BAD HAPPEND");
         return null;
     }
 }
@@ -37,7 +36,7 @@ function deepCopy(c, user) {
 function loadWeapons(file) {
     for (var w of JSON.parse(file)) {
         var imgNormal = new Image();
-        imgNormal.src = "../resources/weapons.png";
+        imgNormal.src = "../resources/spriteSheets/weapons.png";
         imgNormal.width = w.width;
         imgNormal.height = w.height;
         imgNormal.startX = w.animation[0].startX;
@@ -46,7 +45,7 @@ function loadWeapons(file) {
         imgNormal.offSetY = w.animation[0].offSetY;
 
         var imgFlipped = new Image();
-        imgFlipped.src = "../resources/weapons.png";
+        imgFlipped.src = "../resources/spriteSheets/weapons.png";
         imgFlipped.width = w.width;
         imgFlipped.height = w.height;
         imgFlipped.startX = w.animation[1].startX;

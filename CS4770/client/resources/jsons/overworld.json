@@ -1,0 +1,133 @@
+﻿[
+  {
+    "backgrounds": [
+      "../resources/Backgrounds/OverWorld.png",
+      "../resources/Backgrounds/OverWorld2.png"
+    ],
+    "startX": 630,
+    "startY": 278,
+    "portals": [
+      {
+        "type": "level",
+        "mapName": "map1",
+        "X": 278,
+        "Y": 595,
+        "startDialog": 0,
+        "endDialog": -1
+      },
+      {
+        "type": "store",
+        "X": 950,
+        "Y": 162,
+        "startDialog": -1,
+        "endDialog": -1
+      },
+      {
+        "type": "house",
+        "X": 630,
+        "Y": 162,
+        "startDialog": 3,
+        "endDialog": -1
+      },
+      {
+        "type": "museum",
+        "X": 278,
+        "Y": 178,
+        "startDialog": -1,
+        "endDialog": 4
+      }
+    ],
+    "paths": [
+      {
+        "id": 0,
+        "worldId": 0,
+        "startX": 278,
+        "startY": 278,
+        "endX": 630,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 1,
+        "worldId": 0,
+        "startX": 630,
+        "startY": 278,
+        "endX": 950,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 2,
+        "worldId": 0,
+        "startX": 278,
+        "startY": 278,
+        "endX": 278,
+        "endY": 595,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 3,
+        "worldId": 0,
+        "startX": 950,
+        "startY": 162,
+        "endX": 950,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 4,
+        "worldId": 0,
+        "startX": 630,
+        "startY": 162,
+        "endX": 630,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 5,
+        "worldId": 0,
+        "startX": 278,
+        "startY": 178,
+        "endX": 278,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 6,
+        "worldId": 0,
+        "startX": 950,
+        "startY": 278,
+        "endX": 1206,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 7,
+        "worldId": 0,
+        "startX": 1206,
+        "startY": 278,
+        "endX": 1366,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      },
+      {
+        "id": 8,
+        "worldId": 1,
+        "startX": -74,
+        "startY": 278,
+        "endX": 86,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1
+      }
+    ]
+  }
+]
