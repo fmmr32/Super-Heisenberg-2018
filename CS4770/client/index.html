@@ -7,7 +7,7 @@
 
     <div class=menuContainer>
 
-        <div id="signDiv" style="display:table-cell">
+        <div id="signDiv" style="display:none">
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
@@ -206,7 +206,7 @@
                     <tr>
                         <td>
                             <h5>Spawn Point (X-Coordinate):</h5>
-                            <input type="number" name="X" min="0" max=""> <!–– Set Max ––>
+                            <input type="number" id ="X" min="0" max=""> <!–– Set Max ––>
                             <br>
                         </td>
                     </tr>
@@ -214,7 +214,7 @@
                     <tr>
                         <td>
                             <h5>Spawn Point (Y-Coordinate):</h5>
-                            <input type="number" name="Y" min="0" max=""> <!–– Set Max ––>
+                            <input type="number" id="Y" min="0" max=""> <!–– Set Max ––>
                             <br>
                         </td>
                     </tr>
@@ -237,7 +237,7 @@
 
                 </table>
                 <input type="button" name="Load" value="Load" onclick="loadLevel()">
-                <input type="button" name="Save" value="Save" onclick="saveLevel()">
+                <input type="button" id ="Save" value="Save">
             </div>
         </div>
     </div>
@@ -340,34 +340,18 @@
             var char = document.getElementById("character");
         }
 
-        function setBackground() {
-            var background = document.getElementById("background");
-        }
 
-        function setWidth(w) {
-
-        }
 
         /*loadLevelsList.onclick = function () {
             loadLevelsList();
         }*/
 
-        function setHeight(h) {
-
-        }
 
 
-        function setSpawnX(x) {
 
-        }
 
-        function setSpawnY(y) {
 
-        }
 
-        function setGravity(g) {
-
-        }
 
         //Story mode initialization
         //storyMode.onclick = function () {
@@ -672,6 +656,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
+        //window.onload = newLevel();
     </script>
 
 

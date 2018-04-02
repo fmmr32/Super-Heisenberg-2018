@@ -5,7 +5,7 @@ class Editor {
 
         this.p = 0;		//offset
         this.cw = 32;	//cell width
-        this.ch = 36;	//cell height
+        this.ch = 32;	//cell height
         this.bw = canvas.width;
         this.bh = canvas.height;
 
@@ -20,42 +20,16 @@ class Editor {
         this.mouseRight = false;
         this.img = new Image();
         this.img.src = 'tileset.png';
-
         this.elem = "Content";
+        this.id = window.performance.now();
+        this.userName = getUsername();
+        this.date = this.getDate();
+        this.map = {};
 
         document.addEventListener("mousemove", this.onMouseMove, false);
 
 
-        this.map = {
-            gravity: 9.81,
-            width: 720,
-            height: 480,
-            spawnX: 150,
-            SpawnY: 10,
-
-            creatures: [{
-
-                moveset:
-                    [
-                        {
-
-                        }
-                    ]
-            }],
-
-            entities: [
-                {
-
-                }
-            ],
-            content: [
-                {
-
-                }
-            ]
-        }
-
-
+     
         var editor = this;
         this.canvas.addEventListener("mousedown", function (e) {
             if (e.which == 1) {
@@ -149,6 +123,7 @@ class Editor {
             editor.canvas.width = w;
             console.log("Changing Width...");
             editor.drawBoard();
+            editor.draw(this.map);
         }
 
         document.getElementById("mapH").onchange = function () {
@@ -157,20 +132,23 @@ class Editor {
             editor.canvas.height = h;
             console.log("Changing Height...");
             editor.drawBoard();
+            editor.draw(this.map);
         }
 
-        document.getElementsByName("X").onchange = function () {
+        document.getElementById("Y").onchange = function () {
             var ycoord = document.getElementById("Y").value;
             editor.map.spawnY = ycoord;
         }
 
-        document.getElementsByName("Y").onchange = function () {
+        document.getElementById("X").onchange = function () {
             var xcoord = document.getElementById("X").value;
             editor.map.spawnX = xcoord;
             console.log("changing y spawn");
         }
 
-        document.getElementsByName("save").onclick = function () {
+        document.getElementById("Save").onclick = function () {
+            console.log(editor.map);
+            writeDB("level", editor.map);
 
         }
 
@@ -186,10 +164,72 @@ class Editor {
         this.loadTiles(this);
         this.loadCreatures(this);
         this.loadEntities(this);
+        this.initMap();
+        this.draw(map);
     }
 
+    initMap() {
+
+        this.map = {
+            id: this.id,
+            user: this.userName,
+            gravity: 9.81,
+            width: 720,
+            height: 480,
+            spawnX: 150,
+            SpawnY: 10,
+
+            creatures: [{
+
+                moveset:
+                    [
+                        {
+
+                        }
+                    ]
+            }],
+
+            entities: [
+                {
+
+                }
+            ],
+            content: [
+                {
+                    id: 1,
+                    posX: 0,
+                    posY: 32
+                },
+                {
+                    id: 1,
+                    posX: 32,
+                    posY: 32
+                }
+            ]
+        }
+    }
+
+    getDate() {
+
+        var today = new Date();
+        var day = today.getDate();
+        var month = today.getMonth() + 1; //January is 0!
+        var year = today.getFullYear();
+
+        if (day < 10) {
+            day = '0' + day;
+        }
+
+        if (month < 10) {
+            month = '0' + month;
+        }
+
+        today = month + '/' + day + '/' + year;
+        console.log(today);
+        return today;
 
 
+    }
     //StartEditor() {
     //    editor = new Editor(720, 480);
     //}
@@ -269,14 +309,20 @@ class Editor {
     }
 
     placeTile() {
+            // this.removeTile();
         var scrollPos = document.getElementById("gameDiv");
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
+        var gameDiv = document.getElementById("canvas");
+        var divOffsetX = gameDiv.offsetLeft;
+        var divOffsetY = gameDiv.offsetTop;
 
-        var x = Math.floor((event.clientX + scrollX - this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + scrollY - this.ch) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + divOffsetX/2  + scrollX - this.cw) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + divOffsetY/2  + scrollY - this.ch) / this.ch) * this.ch;
 
         getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
+        this.removeTile();
+        console.log(this.map);
 
         switch (this.elem) {
             case "Creature":
@@ -299,12 +345,12 @@ class Editor {
             id: this.selection,
             posX: x,
             posY: y,
-            moveset: move
+            moveset: 1
         }
         //check to see if tile position is already in existance
-        for (i = 0; i < map.creatures.length; i++) {
+        for (i = 0; i < this.map.creatures.length; i++) {
 
-            if (map.creatures[i].posX == x && map.creatures[i].posY == y) {
+            if (this.map.creatures[i].posX == x && this.map.creatures[i].posY == y) {
 
                 taken = true;
                 break;
@@ -312,14 +358,14 @@ class Editor {
         }
         if (taken) {
             console.log("Overwriting position...");
-            map.creatures.splice(i, 1)
-            map.creatures.push(creat);
+            this.map.creatures.splice(i, 1)
+            this.map.creatures.push(creat);
 
 
 
         }
         else {
-            map.creatures.push(creat);
+            this.map.creatures.push(creat);
             console.log("pushing");
         }
 
@@ -337,23 +383,23 @@ class Editor {
             posY: y
         }
         //check to see if tile position is already in existance
-        for (i = 0; i < map.entities.length; i++) {
+        for (i = 0; i < this.map.entities.length; i++) {
 
-            if (map.entities[i].posX == x && map.entities[i].posY == y) {
+            if (this.map.entities[i].posX == x && this.map.entities[i].posY == y) {
                 taken = true;
                 break;
             }
         }
         if (taken) {
             console.log("Overwriting position...");
-            map.entities.splice(i, 1)
-            map.entities.push(ent);
+            this.map.entities.splice(i, 1)
+            this.map.entities.push(ent);
 
 
 
         }
         else {
-            map.entities.push(ent);
+            this.map.entities.push(ent);
             console.log("pushing");
 
         }
@@ -497,5 +543,35 @@ class Editor {
             column++;
             if (column == 3) { column = 0; }
         }
+    }
+
+    draw(map) {
+
+        var k;
+        var x;
+        var y;
+        var drawId;
+
+        for (k = 0; k < this.map.content.length; k++) {
+
+            drawId = this.map.content[k].id;
+            x = this.map.content[k].posX;
+            y = this.map.content[k].posY;
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+        }
+        for (k = 0; k < this.map.entities.length; k++) {
+
+            drawId = this.map.entities[k].id;
+            x = this.map.entities[k].posX;
+            y = this.map.entities[k].posY;
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+        }
+        for (k = 0; k < this.map.creatures.length; k++) {
+            drawId = this.map.creatures[k].id;
+            x = this.map.creatures[k].posX;
+            y = this.map.creatures[k].posY;
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+        }
+
     }
 }
