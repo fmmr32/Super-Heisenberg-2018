@@ -249,7 +249,7 @@ class Editor {
     removeTile() {
         var context = this.canvas.getContext("2d");
 
-        var scrollPos = document.getElementById("gameDiv");
+        var scrollPos = document.getElementById("editor").children[0];
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
         var gameDiv = document.getElementById("canvas");
@@ -299,8 +299,7 @@ class Editor {
     }
 
     placeTile() {
-
-        var scrollPos = document.getElementById("gameDiv");
+        var scrollPos = document.getElementById("editor").children[0];
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
         var gameDiv = document.getElementById("canvas");
