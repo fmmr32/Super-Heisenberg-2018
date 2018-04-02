@@ -237,7 +237,7 @@
   {
     "id": 401,
     "startX": 0,
-    "startY": 0,
+    "startY": 701,
     "width": 200,
     "height": 160,
     "centerPX": 100,
@@ -338,7 +338,7 @@
   {
     "id": 402,
     "startX": 0,
-    "startY": 961,
+    "startY": 350,
     "width": 339,
     "height": 175,
     "centerPX": 169,
@@ -453,8 +453,8 @@
   },
   {
     "id": 420,
-    "startX": 39,
-    "startY": 11,
+    "startX": 1001,
+    "startY": 701,
     "width": 70,
     "height": 96,
     "centerPX": 32,

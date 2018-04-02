@@ -30,7 +30,7 @@ class Editor {
         document.addEventListener("mousemove", this.onMouseMove, false);
 
 
-     
+
         var editor = this;
         this.canvas.addEventListener("mousedown", function (e) {
             if (e.which == 1) {
@@ -187,34 +187,11 @@ class Editor {
             height: 480,
             spawnX: 150,
             SpawnY: 10,
-
-            creatures: [{
-
-                moveset:
-                    [
-                        {
-
-                        }
-                    ]
-            }],
-
-            entities: [
-                {
-
-                }
-            ],
-            content: [
-                {
-                    id: 1,
-                    posX: 0,
-                    posY: 32
-                },
-                {
-                    id: 1,
-                    posX: 32,
-                    posY: 32
-                }
-            ]
+            background: "../resources/Backgrounds/museum.png",
+            creatures: [],
+            interacts:[],
+            entities: [],
+            content: []
         }
     }
 
@@ -272,7 +249,7 @@ class Editor {
     removeTile() {
         var context = this.canvas.getContext("2d");
 
-        var scrollPos = document.getElementById("gameDiv");
+        var scrollPos = document.getElementById("editor").children[0];
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
         var gameDiv = document.getElementById("canvas");
@@ -322,16 +299,15 @@ class Editor {
     }
 
     placeTile() {
-       
-        var scrollPos = document.getElementById("gameDiv");
+        var scrollPos = document.getElementById("editor").children[0];
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
         var gameDiv = document.getElementById("canvas");
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
 
-        var x = Math.floor((event.clientX + divOffsetX/2  + scrollX - this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + divOffsetY/2  + scrollY - this.ch) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + divOffsetX / 2 + scrollX - this.cw) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + divOffsetY / 2 + scrollY - this.ch) / this.ch) * this.ch;
 
         getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
         this.removeTile();
@@ -355,10 +331,9 @@ class Editor {
         var taken = false;
         var i;
         var creat = {
-            id: this.selection,
-            posX: x,
-            posY: y,
-            moveset: 1
+            Id: this.selection,
+            X: x,
+            Y: y,
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.creatures.length; i++) {
@@ -391,9 +366,9 @@ class Editor {
         var taken = false;
         var i;
         var ent = {
-            id: this.selection,
-            posX: x,
-            posY: y
+            Id: this.selection,
+            X: x,
+            Y: y
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.entities.length; i++) {
@@ -425,9 +400,10 @@ class Editor {
         var taken = false;
         var i;
         var cont = {
-            id: this.selection,
-            posX: x,
-            posY: y
+            blockId: this.selection,
+            blockX: x,
+            blockY: y,
+            meta: [{ "ricochet": true }] 
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.content.length; i++) {
@@ -499,7 +475,7 @@ class Editor {
             var sprite = id[1];
             console.log(sprite.id);
             //just making sure we are only doing the tiles
-            if (sprite.id < 400 || sprite.id> 666) {
+            if (sprite.id < 400 || sprite.id > 666) {
                 continue;
             }
             //adding a new row
