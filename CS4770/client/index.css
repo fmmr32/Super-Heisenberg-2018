@@ -118,7 +118,7 @@ tbody tr:hover {
 }
 
 #mainMenu {
-    display: table-cell;
+    display: none;
     vertical-align: middle;
     padding-top: 100px;
 }
