@@ -252,42 +252,15 @@
       "rightHand": [ 45, 36 ],
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
-      "moveSet": [
-        {
-          "type": "left",
-          "advanceAfter": 10,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-
-        {
-          "type": "jump",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-        {
-          "type": "fire",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0.2
-        },
-        {
-          "type": "right",
-          "advanceAfter": 11,
-          "delayAfter": 0,
-          "delayBefore": 0
-        }
-
-      ],
+      "moveSet": [],
       "weapon": [],
       "healthBar": true
     },
-    "source": "../resources/ShotgunKnight.png",
+    "source": "../resources/Bosses.png",
     "animation": [
       {
         "startX": 0,
-        "startY": 0,
+        "startY": 701,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 5,
@@ -296,7 +269,7 @@
       },
       {
         "startX": 0,
-        "startY": 160,
+        "startY": 861,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 5,
@@ -305,7 +278,7 @@
       },
       {
         "startX": 0,
-        "startY": 0,
+        "startY": 701,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -314,7 +287,7 @@
       },
       {
         "startX": 0,
-        "startY": 160,
+        "startY": 861,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -323,7 +296,7 @@
       },
       {
         "startX": 600,
-        "startY": 480,
+        "startY": 1181,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 2,
@@ -332,7 +305,7 @@
       },
       {
         "startX": 0,
-        "startY": 320,
+        "startY": 1021,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -341,7 +314,7 @@
       },
       {
         "startX": 0,
-        "startY": 640,
+        "startY": 1341,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 2,
@@ -350,7 +323,113 @@
       },
       {
         "startX": 200,
-        "startY": 320,
+        "startY": 1021,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 402,
+    "startX": 0,
+    "startY": 961,
+    "width": 339,
+    "height": 175,
+    "centerPX": 169,
+    "offSetPX": 40,
+    "name": "Elon Musk",
+    "complex": {
+      "hp": 2000,
+      "artifact": 5,
+      "speed": 4,
+      "jump": 0.5,
+      "leftHand": [ -6, 36 ],
+      "rightHand": [160, 95 ],
+      "leftHandLow": [ 13, 55 ],
+      "rightHandLow": [ 28, 55 ],
+      "moveSet": [
+        {
+          "type": "fire",
+          "advanceAfter": 1,
+          "delayBefore": 0,
+          "delayAfter": 0
+        }
+      ],
+      "weapon": [5],
+      "healthBar": true,
+      "damage": 5
+    },
+    "source": "../resources/Bosses.png",
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 350,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 350,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 525,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 3,
+        "frameRate": 5,
+        "columns": 3
+      },
+      {
+        "startX": 0,
+        "startY": 350,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 175,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 3,
+        "frameRate": 5,
+        "columns": 3
+      },
+      {
+        "startX": 0,
+        "startY": 0,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -408,11 +487,11 @@
       "weapon": [ 1 ],
       "healthBar": true
     },
-    "source": "../resources/characters.png",
+    "source": "../resources/Bosses.png",
     "animation": [
       {
-        "startX": 0,
-        "startY": 0,
+        "startX": 1001,
+        "startY": 701,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 5,
@@ -420,8 +499,8 @@
         "columns": 4
       },
       {
-        "startX": 0,
-        "startY": 192,
+        "startX": 1001,
+        "startY": 893,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 5,
@@ -429,8 +508,8 @@
         "columns": 4
       },
       {
-        "startX": 0,
-        "startY": 0,
+        "startX": 1001,
+        "startY": 701,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -438,8 +517,8 @@
         "columns": 1
       },
       {
-        "startX": 0,
-        "startY": 192,
+        "startX": 1001,
+        "startY": 893,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -447,8 +526,8 @@
         "columns": 1
       },
       {
-        "startX": 70,
-        "startY": 96,
+        "startX": 1071,
+        "startY": 797,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -456,8 +535,8 @@
         "columns": 1
       },
       {
-        "startX": 140,
-        "startY": 96,
+        "startX": 1141,
+        "startY":797,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -465,8 +544,8 @@
         "columns": 1
       },
       {
-        "startX": 70,
-        "startY": 288,
+        "startX": 1071,
+        "startY": 989,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,
@@ -474,8 +553,8 @@
         "columns": 1
       },
       {
-        "startX": 140,
-        "startY": 288,
+        "startX": 1141,
+        "startY": 989,
         "offSetX": 0,
         "offSetY": 0,
         "frames": 1,

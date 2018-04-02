@@ -153,8 +153,6 @@ class Weapon {
                     temp = new Bullet(angle, bullet.alive, options, character);
                 }
 
-
-
                 temp.setX(character.getX() + offsetHand[0] + offsetGun.x);
                 temp.setY(character.getY() - character.getHeight() + offsetHand[1] + offsetGun.y);
                 this.tick = this.cooldown;
