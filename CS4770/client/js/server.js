@@ -6,11 +6,14 @@ var loadDB = function (name, callback) {
         collection: name
     });
 
-   // if (!socket.hasListeners(name)) {
-        socket.on(name, function (data) {
-            callback(data);
-        });
-   // }
+    if (socket.hasListeners(name)) {
+        socket.removeListener();
+    }
+
+    socket.on(name, function (data) {
+        callback(data);
+    });
+   
 }
 
 
@@ -23,12 +26,15 @@ var loadDBFromID = function (name, id_object, callback) {
         id: id_object
     });
 
-   // if (!socket.hasListeners(name)) {
-        console.log("inside socket.on loaddbfromid");
-        socket.on(name, function (data) {
-            callback(data);
-        });
-    //}
+    if (socket.hasListeners(name)) {
+        socket.removeListener();
+    }
+
+    console.log("inside socket.on loaddbfromid");
+    socket.on(name, function (data) {
+        callback(data);
+    });
+    
 }
 
 
@@ -37,11 +43,14 @@ var loadDBFromLevelName = function (input, callback) {
         levelName: input
     });
 
-    //if (!socket.hasListeners(input)) {
-        socket.on(input, function (data) {
-            callback(data);
-        });
-   // }
+    if (socket.hasListeners(name)) {
+        socket.removeListener();
+    }
+    
+    socket.on(input, function (data) {
+        callback(data);
+    });
+    
 }
 
 
