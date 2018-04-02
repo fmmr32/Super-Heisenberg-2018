@@ -21,7 +21,7 @@ class Editor {
         this.img = new Image();
         this.img.src = 'gameTile.png';
         this.elem = "Content";
-        this.id = window.performance.now();
+        this.id = JSON.stringify(window.performance.now());
         this.userName = getUsername();
         this.date = this.getDate();
         this.levelName = "";
