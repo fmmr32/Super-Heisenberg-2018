@@ -105,9 +105,16 @@
                                 </tbody>
                             </table>
                         </div>
-                        <form onsubmit="return false">
-                            <input type="text" id="searchLevelBox" name="levelSearch" placeholder="Search for Level"> 
-                            <input type="submit" id="submitSearch" value="Search" onclick="searchLevel()">
+                        <div style="display:inline-block">
+                            <p style="display:inline-block; margin-bottom:0px">Search Level by:</p>
+                            <select id="selectionBox" style="display:inline-block; margin-top:16px">
+                                <option value="levelName">Level</option>
+                                <option value="user">Author</option>
+                            </select>
+                        </div>
+                        <form style="display:inline-block" onsubmit="return false">      
+                            <input type="text" id="searchBox" name="levelSearch" style="width:50%" placeholder="Search Levels">
+                            <input type="submit" id="submitSearch" value="Search" onclick="searchLevels()">
                         </form>
                     </td>
                 </tr>
@@ -293,7 +300,7 @@
             document.getElementById("levelBrowser").style.display = "table-cell";
             if (fromEditor) {
                 document.getElementById("levelEditorOptions").style.display = "none";
-                loadLevelsList({ authour: getUsername() }, 'level');
+                loadLevelsList({ author: getUsername() }, 'level');
             }
             else {
                 document.getElementById("mainMenu").style.display = "none";
@@ -468,6 +475,18 @@
                     }
                 }
             });
+        }
+
+        var searchLevels = function () {
+            var selectionBox = document.getElementById("selectionBox");
+            var selectedValue = selectionBox.options[selectionBox.selectedIndex].value;
+
+            var searchBox = document.getElementById("searchBox");
+            var searchquery = { [selectedValue]: searchBox.value };
+
+            console.log(searchquery.userName);
+            
+            loadLevelsList({ [selectedValue]: searchBox.value }, "level");
         }
            
 

@@ -1,12 +1,17 @@
 ﻿var mongojs = require('mongojs');
 var db = mongojs('localhost:27017/cs4770', ['account', 'player','progress','levels','entity','character','weapons','tiles','achievements']);
 
-
-
 var express = require('express');
 var fs = require('fs');
 var app = express();
 var serv = require('http').Server(app);
+
+process.on('SIGHUP', function () {
+    db.close();
+    console.log('About to exit');
+    process.exit();
+});
+
 
 app.use(express.static(__dirname + '/client'));
 app.use(express.static(__dirname + '/client/js'));
@@ -88,11 +93,10 @@ var writeDB = function (data) {
 
 /*_______________________________________________________________________________*/
 
-
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     console.log('socket connection');
-
+    
 
     socket.on('loadDBFromQuery', function (data) {
         console.log(data.query);

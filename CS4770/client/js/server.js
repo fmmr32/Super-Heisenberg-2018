@@ -102,6 +102,8 @@ socket.on('signUpResponse', function (data) {
     if (data.success) {
         alert("Sign up successul.");
 
+        playerUsername = signDivUsername.value;
+
         document.getElementById("signDiv").style.display = "none";
         document.getElementById("mainMenu").style.display = "table-cell";
     } else
