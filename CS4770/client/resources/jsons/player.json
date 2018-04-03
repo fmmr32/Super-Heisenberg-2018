@@ -3,7 +3,7 @@
   "id": "player1",
   "currentCharacter": 667,
   "achievements": [],
-  "unlockedCharacters": [ 667 ],
+  "unlockedOverworlds": [0,1],
   "money": 0,
   "weapons": [
     {

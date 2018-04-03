@@ -268,9 +268,8 @@
         var sizeSettings = [1280, 720];
 
 
-        offLinePlay.onclick = function () {
-            document.getElementById("signDiv").style.display = "none";
-            loadCurretUser();
+        document.getElementById("skipSign").onclick = function () {
+            playNewGame();
         }
 
         function playOptions() {
@@ -312,6 +311,7 @@
             document.getElementById("settings").style.display = "none";
             document.getElementById("gameDiv").style.display = "none";
             document.getElementById("editor").style.display = "none";
+            document.getElementById("signDiv").style.display = "none";
             document.getElementById("mainMenu").style.display = "table-cell";
         }
 

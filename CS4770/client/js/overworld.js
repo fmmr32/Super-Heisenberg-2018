@@ -43,21 +43,7 @@
     setY(y) {
         this.y = y;
     }
-    isOOB(x, y) {
-        if (x < 0) {
-            return 0;
-        }
-        if (x > this.world.width) {
-            return 1;
-        }
-        if (y < 0) {
-            return 2;
-        }
-        if (y > this.world.height) {
-            return 3;
-        }
-        return -1;
-    }
+    
 
     spawn(x, y) {
         if (x == undefined) {
@@ -85,13 +71,13 @@
             } else {
                 blocky = true;
             }
-            var ob = this.isOOB(this.getX(), this.getY());
+            var ob = this.world.isOOB(this.getX(), this.getY());
             if (ob != -1) {
                 delta = [delta[0] * this.world.width, delta[1] * this.world.width];
                 x -= delta[0];
                 y -= delta[1];
                 if (!this.hasFlipped) {
-                    this.world.bg += this.world.getChange(this.getDirection())[0];
+                    this.world.bg = this.world.getBackground(this.world.user, path);
                     this.hasFlipped = true;
                 }
             }
@@ -125,6 +111,9 @@
         //drawing the player
         this.animation[this.getDirection()].doAnimation(x, y);
     }
+
+   
+
     //gets the correct next path
     getPointer(path, x, y) {
         if (path.startX == x && path.startY == y) {
@@ -265,8 +254,8 @@ class OverWorld {
         for (var any of JSON.parse(file)) {
             for (var bg of any.backgrounds) {
                 var ig = new Image();
-                ig.src = bg;
-                this.img.push(ig);
+                ig.src = bg.src;
+                this.img[bg.id] = ig;
             }
             this.portals = any.portals;
 
@@ -279,6 +268,7 @@ class OverWorld {
             this.startY = any.startY;
         }
     }
+
     //loads the player
     loadPlayer(player, reload) {
         var options = player;
@@ -292,6 +282,34 @@ class OverWorld {
         this.diag = loadDialog(player);
     }
 
+    //gets the first available background for the world
+    getBackground(player, path) {
+        for (var bg of path.toOverworlds) {
+            if (player.unlockedOverworlds.indexOf(bg) != -1) {
+                return bg;
+            }
+        }
+        return -1;
+    }
+
+    //checks if it is OOB
+    isOOB(x, y) {
+        if (x < 0) {
+            return 0;
+        }
+        if (x > this.width) {
+            return 1;
+        }
+        if (y < 0) {
+            return 2;
+        }
+        if (y > this.height) {
+            return 3;
+        }
+        return -1;
+    }
+
+    //handles every tick made
     doTick() {
         this.check();
         this.drawWorld();
@@ -302,12 +320,15 @@ class OverWorld {
         return this.player;
     }
 
+    //draws the main background
     drawWorld() {
         if (this.player != undefined) {
             var ctx = canvas.getContext("2d");
             ctx.drawImage(this.img[this.bg], 0, 0, this.img[this.bg].width, this.img[this.bg].height, 0, 0, this.width, this.height);
         }
     }
+
+    //checks if the canvas has the right size
     check() {
         if (canvas.width != sizeSettings[0]) {
             canvas.width = sizeSettings[0];
@@ -326,7 +347,7 @@ class OverWorld {
     //check if the player is on a portal to a level or shop
     onPortal(x, y) {
         for (var portal of this.portals) {
-            if (portal.X == x && portal.Y == y) {
+            if (portal.X == x && portal.Y == y && portal.worldId.indexOf(this.bg) != -1) {
                 return portal
             }
         }
@@ -335,7 +356,7 @@ class OverWorld {
     //checks if the player is trying to walk on a path and returns said path
     onPath(x, y, d) {
         for (var path of this.paths) {
-            if (path.worldId != this.bg) {
+            if (path.worldId.indexOf(this.bg) == -1) {
                 continue;
             }
             if ((x == path.startX || x == path.endX) && (y == path.startY || y == path.endY)) {
@@ -343,6 +364,10 @@ class OverWorld {
                 if (delta[0] == 0 && delta[1] == 0) {
                     continue;
                 }
+                if ((this.isOOB(path.startX, path.startY) != -1 || this.isOOB(path.endX, path.endY) != -1) && this.getBackground(this.user, path) == -1) {
+                    continue;
+                }
+
                 if ((x + delta[0] == path.startX || x + delta[0] == path.endX) && (y + delta[1] == path.startY || y + delta[1] == path.endY)) {
                     return path;
                 }
@@ -350,7 +375,7 @@ class OverWorld {
         }
         return -1;
     }
-
+    //handles the operations in side the buildings
     handleBuildings() {
         if (this.inShop) {
             this.shop.openShop();
@@ -369,6 +394,7 @@ class OverWorld {
         return false;
     }
 
+    //handles keyboard inputs while inside a building
     handleKeys(type, isDown) {
         if (this.inShop) {
             this.shop.navigate(type);
@@ -429,6 +455,7 @@ directions:
         }
     }
 
+    //goes to a map from a local json file used for the campaign
     toMap(name) {
         //loading the map the player chose
         this.onOverWorld = false;
@@ -441,6 +468,7 @@ directions:
         }, this);
     }
 
+    //goes to a map from a database object
     toMapFromDB(mapObject) {
         console.log(mapObject)
         //loading the map the player chose
@@ -472,12 +500,15 @@ directions:
         }
     }
 
+    //remade of the canvas used, used for when switching from a map object to the overworld
     toOverWorldNewCanvas(type) {
         this.makeCanvas();
         this.toOverWorld(type);
     }
 
+    //handles a portal on the overworld
     handlePortal(portal) {
+        //checks if a dialog needs to start
         if (portal.startDialog != -1) {
             this.doingDialog = true;
             this.dialog = portal.startDialog;
@@ -508,19 +539,21 @@ directions:
         this.onOverWorld = false;
         this.inShop = true;
     }
+    //going to the character select
     toCharacterSelect() {
         this.music.stop();
         this.inCharacterSelect = true;
         this.onOverWorld = false;
     }
 
+    //loads the characters
     loadCharacterSelect(overWorld, characters, player, texts) {
         this.characters = new CharacterSelect(overWorld, characters, player, texts);
         this.loadPlayer(this.characters.getOverWorldCharacter(), false);
         this.museum = new Museum(player, this.characters.getCharacter(), this);
-       
     }
 
+    //going to the museum
     toMuseum() {
         this.museum.loadArtifacts();
         this.onOverWorld = false;
@@ -530,7 +563,7 @@ directions:
 
 }
 
-
+//initial loading function
 function loadOverworld(player, callback) {
     loadJSONFile(function (response) {
         try {

@@ -84,7 +84,7 @@
     ],
     "bullets": [
       {
-        "angle": 15,
+        "angle": 20,
         "alive": 60
       },
       {
@@ -92,7 +92,7 @@
         "alive": 60
       },
       {
-        "angle": 195,
+        "angle": 340,
         "alive": 60
       }
 

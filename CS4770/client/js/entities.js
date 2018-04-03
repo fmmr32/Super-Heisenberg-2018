@@ -218,10 +218,21 @@ class MoveSet {
         var delta = now - this.then;
         var move = "stop";
         var current = this.moves[this.currentMove];
+
         if (this.moves.length > 0 && delta > 1000 * (this.delay + current.delayBefore)) {
             var current = this.moves[this.currentMove];
-            move = current.type;
-
+            if (current.type == "fire") {
+                if (this.ent.currentWeapon != null && !this.ent.currentWeapon.canFire()) {
+                    return move;
+                }
+            }
+            if (current.type == "ai") {
+                //HELP
+               move= this.ai(current);
+            } else {
+                move = current.type;
+            }
+        
             this.then = now - (delta % this.delay);
             this.delay = current.delayAfter;
             this.tick++;
@@ -235,6 +246,52 @@ class MoveSet {
         }
         return move;
     }
+
+    ai(move) {
+        var m = "stop";
+        var d = this.ent.getX() - map.getPlayer().getX();
+        switch (move.ai) {
+            case "follow":
+                var s = 0;
+                if (d > 0) {
+                    //player is behind the enemy
+                    if (d > this.ent.getSpeed()) {
+                        s -= this.ent.getSpeed();
+                    } else {
+                        s -= d;
+                    }
+                    m = "left";
+                } else if(d < 0){
+                    //player is in front of the enemy
+                    if (d > this.ent.getSpeed()) {
+                        s += this.ent.getSpeed();
+                    } else {
+                        s += d;
+                    }
+                    m = "right";
+                }
+                var nextX = this.ent.getX() + s;
+                if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.getBlock(this.ent.getX(), this.ent.getY()).Id == 0) {
+                    if (this.ent.getVSpeed() == 0 && !this.ent.jumpDown) {
+                        m = "jump";
+                    }
+                }
+                break;
+            case "aim":
+                //aiming towards the player, HELP MATH IS SCARY
+                if (this.ent.currentWeapon != undefined) {
+                    d = Math.abs(d);
+                    var vd = (this.ent.getY() - this.ent.getHeight() / 2) - (map.getPlayer().getY() - map.getPlayer().getHeight() / 2);
+                    var c = Math.sqrt(Math.pow(d, 2) + Math.pow(vd, 2));
+                    var angle = 0;
+                    this.ent.currentWeapon.setAngle(angle);
+                }
+                break;
+
+        }
+        return m;
+    }
+
 
     advanceMove(move) {
         this.tick = 0;
@@ -337,7 +394,7 @@ class Artifact extends Entity {
         this.type = options.type;
         this.id = options.id;
     }
-
+    //handles the pickups
     handlePickUp(player) {
         switch (this.type) {
             case "artifact":
@@ -690,6 +747,7 @@ class EntityCreature extends EntityMovable {
             this.moveSet = options.moveSet;
             this.damage = options.damage;
             this.sleep = true;
+            this.moveSet.ent = this;
         }
     }
 
@@ -804,12 +862,6 @@ class EntityCreature extends EntityMovable {
                             }
                             if (br) break;
                         }
-                    }
-                    break;
-                case "aim":
-                    //aiming towards the player, HELP MATH IS SCARY
-                    if (this.currentWeapon != undefined) {
-                        this.currentWeapon.setAngle();
                     }
                     break;
                 case "quit":
