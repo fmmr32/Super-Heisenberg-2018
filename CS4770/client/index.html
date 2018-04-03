@@ -26,15 +26,15 @@
             </div>
 
             <div id='other'>
-                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
+                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser(false)'>
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
+                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'>
             </div>
 
             <div id='bottom'>
-                <img src='resources/menus/Options.png' id='Options' onclick='options()'></img>
+                <img src='resources/menus/Options.png' id='Options' onclick='options()'>
             </div>
 
         </div>
@@ -59,15 +59,15 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()">
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LoadLevel.png' id='LoadLevel'></img>
+                <img src='resources/menus/LoadLevel.png' id='LoadLevel' onclick='levelBrowser(true)'>
             </div>
 
             <div id='bottom'>
-                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'>
             </div>
 
         </div>
@@ -288,10 +288,16 @@
             }
         }
 
-        function levelBrowser() {
-            document.getElementById("mainMenu").style.display = "none";
+        function levelBrowser(fromEditor) {
             document.getElementById("levelBrowser").style.display = "table-cell";
-            loadLevelsList();
+            if (fromEditor) {
+                document.getElementById("levelEditorOptions").style.display = "none";
+                loadLevelsList({ authour: getUsername() }, 'level');
+            }
+            else {
+                document.getElementById("mainMenu").style.display = "none";
+                loadLevelsList(null, 'level');
+            }
         }
 
         function levelEditorOptions() {
@@ -414,58 +420,10 @@
             }
         }
 
-        var loadLevelsList = function () {
-            refreshLevelsTable();
-            var levelsTable = document.getElementById('levelTable');
-            loadDB('level', function (data) {
-                var levels;
-
-                if (data == null) {
-                    return;
-                }
-
-                if (data.constructor === Array) {
-                    levels = data;
-                }
-                else {
-                    levels = [data];
-                }
-
-                for (var level of levels) {
-                    var levelName = level.levelName;
-                    var author = level.user;
-                    var dateCreated = level.dateCreated;
-
-                    var levelRow = levelsTable.insertRow(levelsTable.rows.length);
-                    levelRow.setAttribute("id", level.id);
-
-
-                    var levelNameCell = levelRow.insertCell(0);
-                    levelNameCell.innerHTML = levelName;
-
-                    var authorCell = levelRow.insertCell(1);
-                    authorCell.innerHTML = author;
-
-                    var dateCreatedCell = levelRow.insertCell(2);
-                    dateCreatedCell.innerHTML = dateCreated;
-
-
-                    levelRow.onclick = function () {
-                        console.log(this.getAttribute("id"))
-                        loadDBFromID("level", this.getAttribute("id"), function (response) {
-                            toLevel();
-                            overWorld.toMapFromDB(response);
-                        });
-                    }
-                }
-            });
-        }
-            
-        var searchLevel = function () {
-            var input = document.getElementById('searchLevelBox').value;
+        var loadLevelsList = function (query, collection) {
             var levelsTable = document.getElementById('levelTable');
 
-            loadDBFromLevelName(input, function (data) {
+            loadDBFromQuery(query, collection, function (data) {
                 refreshLevelsTable();
                 var levels;
 
@@ -501,22 +459,23 @@
 
                     levelRow.onclick = function () {
                         console.log(this.getAttribute("id"))
-                        loadDBFromID("level", this.getAttribute("id"), function (response) {
+                        loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                             console.log("rfhdyjbfhyujfrjn");
                             console.log(response);
                             toLevel();
-                            overWorld.toMapFromDB(response);
+                            overWorld.toMapFromDB(response[0]);
                         });
                     }
                 }
             });
         }
+           
 
         var map;
         //achievement array
         function loadUserDatabase() {
             console.log("Inside loadUserDatabase " + playerUsername);
-            loadDBFromID('player', playerUsername, function (response) {
+            loadDBFromQuery({ id: playerUsername }, 'player', function (response) {
                 console.log("Inside loaduserdatabase " + JSON.stringify(response[0]));
                 loadGame(false, response[0]);
             });

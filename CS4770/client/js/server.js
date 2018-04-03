@@ -38,19 +38,24 @@ var loadDBFromID = function (name, id_object, callback) {
 }
 
 
-var loadDBFromLevelName = function (input, callback) {
-    socket.emit('loadDBbasedLevelName', {
-        levelName: input
+var loadDBFromQuery = function (query, collection, callback) {
+    console.log(query + " " + collection);
+    socket.emit('loadDBFromQuery', {
+        query: query,
+        collection: collection
     });
 
-    if (socket.hasListeners(name)) {
+    if (socket.hasListeners(collection)) {
+        console.log("inside socket.haslisteners");
         socket.removeListener();
     }
-    
-    socket.on(input, function (data) {
+
+    socket.on(collection, function (data) {
+        console.log(data);
+        console.log(data[0]);
         callback(data);
     });
-    
+
 }
 
 
