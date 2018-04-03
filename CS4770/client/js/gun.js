@@ -110,11 +110,13 @@ class Weapon {
         }
     }
 
-
+    canFire() {
+        return this.tick === 0;
+    }
 
     fireWeapon(character, level) {
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
-        if (this.tick === 0) {
+        if (this.canFire()) {
             this.sound.play();
             if (character.getLastOffSet() < 0) {
                 this.animations[0].animating = true;
@@ -139,7 +141,7 @@ class Weapon {
 
                 //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
-                    angle = -angle - 180;
+                    angle = 180 - angle;
                     offsetHand = character.leftHand[character.slideDown ? 1 : 0];
                     offsetGun = this.barrel.Flipped;
                 }
@@ -204,39 +206,23 @@ class Bullet extends EntityMovable {
 
     }
 
-
     bulletTravel(onTick) {
         if (this.alive > 0) {
             this.alive--;
 
             //calculating the angle the bullet flies at and what the x,y changes to
-            var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
-            dy = -dy;
-            var dx;
-            if (this.angle >= 0) {
-                dx = this.speed - Math.abs(dy);
-            } else {
-                dx = -this.speed + Math.abs(dy);
-            }
-            dx = Math.floor(dx);
+            var dx = Math.sin((this.angle+90) * 2 * Math.PI / 360) * this.speed;
+            var dy = Math.cos((this.angle + 90) * 2 * Math.PI / 360) * this.speed;
+            dx = dx > 0 ? Math.floor(dx) : Math.ceil(dx);
+            dy = dy > 0 ? Math.floor(dy) : Math.ceil(dy);
 
-            if (dy >= 0) {
-                dy = Math.floor(dy);
-            } else {
-                dy = Math.ceil(dy);
-            }
+            console.log(dx, dy, this.angle);
             this.setHSpeed(dx);
 
             this.setVSpeed(dy);
 
             var x = this.getX();
-            if (this.angle >= 0) {
-                this.lastOffSet = this.getSprite().offSet;
-                x += this.getSprite().getCenter();
-            } else {
-                this.lastOffSet = -this.getSprite().offSet;
-                x -= this.getSprite().getCenter();
-            }
+          
             if (this.gravity) {
                 this.doGravity();
             }
@@ -259,10 +245,10 @@ class Bullet extends EntityMovable {
 
                                 break;
                             case 2:
-                                this.angle = -this.angle - 180;
+                                this.angle  -= 180;
                                 break;
                             case 3:
-                                this.angle += 180;
+                                this.angle -= 180;
                                 break;
                         }
                     } if (this.impact == "explode") {
@@ -360,5 +346,21 @@ class Grenade extends Bullet {
             }
         }
 
+    }
+
+}
+
+function testCircle() {
+    var ctx = canvas.getContext("2d");
+    var r = 100;
+
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
+
+    for (var i = 0; i < 360; i += 20) {
+        var dx = Math.sin(i * 2 * Math.PI / 360);
+        var dy = Math.cos(i * 2 * Math.PI / 360); 
+        console.log(i, x + dx*r, y + dy*r);
+        ctx.fillText(i, x + dx*r, y + dy*r);
     }
 }

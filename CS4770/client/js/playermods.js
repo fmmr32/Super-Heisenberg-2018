@@ -65,7 +65,7 @@
 
         return this.texts.weapons[impact][name];
     }
-
+    //returns the weapon needed
     getWeapon(id, player) {
         for (var weapon of player.weapons) {
             if (weapon.id == id) {
@@ -177,6 +177,7 @@
             }
         }
     }
+    //resetting the style of the canvas
     resetStyle(ctx) {
         ctx.globalAlpha = 1;
         ctx.fillStyle = "black";
@@ -203,18 +204,14 @@ class Shop {
         this.offSet = 0;
         this.itemSelected = false;
     }
-
-    mainMenu(ctx) {
-        ctx.fillText("<-", this.width + 5, ((this.selected) * this.height + this.height / 2));
-    }
-
-
+    //resets the style
     resetStyle(ctx) {
         ctx.globalAlpha = 1;
         ctx.fillStyle = "black";
         ctx.font = "15px sans-serif";
     }
 
+    //opens the shop
     openShop() {
         this.checkWidth();
         var ctx = canvas.getContext("2d");
@@ -249,9 +246,12 @@ class Shop {
         }
 
     }
+    //checks if the player has that weapon
     hasWeapon(id) {
         return Shop.hasWeapon(this.player, id);
     }
+
+
     static hasWeapon(player, id) {
         for (var weapon of player.weapons) {
             if (weapon.id == id) {
@@ -274,7 +274,7 @@ class Shop {
         }
 
     }
-
+    //adds a weapon to the shop
     addItem(item) {
         this.items.push(new Item(item));
     }
@@ -435,6 +435,7 @@ class CharacterSelect {
         ctx.fillRect(canvas.width / 2 - this.width - this.width / 2 + (this.selected * this.width * 2), canvas.height / 2 - this.height, this.width, this.height);
         this.resetStyle(ctx);
     }
+    //resetting the style
     resetStyle(ctx) {
         ctx.globalAlpha = 1;
         ctx.fillStyle = "black";
@@ -465,6 +466,7 @@ class CharacterSelect {
         wrapText(ctx, this.characters[this.selected].description, 20, container.clientHeight / 2 + 150, container.clientWidth - 40, 20);
     }
 
+    //opens the armory for changing the loadout
     openArmory(ctx) {
         var drawn = 0;
         for (var t of this.player.weapons) {

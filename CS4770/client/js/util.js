@@ -380,6 +380,7 @@ class ExitMenu {
                         this.world.inExitMenu = false;
                         this.world.getPlayer().setX(overWorld.startX)
                         this.world.getPlayer().setY(overWorld.startY);
+                        this.world.bg = 0;
                         this.world.music.stop();
                         this.select = 0;
                         back();

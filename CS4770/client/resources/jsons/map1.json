@@ -11,22 +11,18 @@
   "spawnY": 10,
   "creatures": [
     {
-      "Id": 420,
+      "Id": 500,
       "X": 70,
       "Y": 210,
       "moveSet": [
         {
-          "type": "stop",
+          "type": "ai",
+          "ai": "aim",
           "advanceAfter": 1,
           "delayAfter": 0,
           "delayBefore": 0
         }
       ]
-    },
-    {
-      "Id": 401,
-      "X": 300,
-      "Y": 200
     }
   ],
   "entities": [
@@ -223,16 +219,5 @@
         { "ricochet": true }
       ]
     }
-
-
-
-
-
-
-
-
-
-
-
   ]
 }

@@ -250,7 +250,7 @@ class Level {
             }
             options.animation = Animation.loadAnimation(id);
             var creature;
-            if (id >= 400 && id < 600) {
+            if (id >= 400 && id < 500) {
                 options.loot = getSprite(id).complex.drop;
                 creature = new Boss(options);
             } else {
