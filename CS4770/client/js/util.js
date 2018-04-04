@@ -408,6 +408,7 @@ class SoundManager {
         this.sound = new Audio(sound);
         this.sound.preload = 'auto';
         this.players = [];
+        this.type = type;
         var v = 100;
         switch (type) {
             case "music":
@@ -432,6 +433,9 @@ class SoundManager {
     }
 
     play() {
+        if (this.type == "none") {
+            return;
+        }
         var temp = this.sound.cloneNode();
         temp.play();
         var obj = this;

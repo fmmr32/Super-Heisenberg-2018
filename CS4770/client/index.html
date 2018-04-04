@@ -405,7 +405,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json","moveSets.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -517,7 +517,15 @@
                     loadJSONFile(function (response) {
                         loadWeapons(response);
                     }, resource + x);
+                } else if (x == "moveSets.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            console.log(any);
+                            moves[any.id] = any;
+                        }
+                    }, resource + x);
                 }
+
                 else {
                     loadJSONFile(function (response) {
                         loadSprites(response, canvas);

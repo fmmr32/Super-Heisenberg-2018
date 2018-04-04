@@ -122,6 +122,8 @@ function loadSprites(json, container, tile) {
         }
         if (tile.sound != undefined) {
             options.sound = new SoundManager(tile.sound, "game");
+        } else {
+            options.sound = new SoundManager("", "none");
         }
 
 

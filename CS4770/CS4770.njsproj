@@ -66,6 +66,9 @@
     <Content Include="client\resources\jsons\dialogs.json" />
     <Content Include="client\resources\jsons\entities.json" />
     <Content Include="client\resources\jsons\map1.json" />
+    <Content Include="client\resources\jsons\moveSets.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\jsons\overworld.json" />
     <Content Include="client\resources\jsons\overWorldCharacters.json" />
     <Content Include="client\resources\jsons\player.json" />

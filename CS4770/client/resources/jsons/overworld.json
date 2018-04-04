@@ -8,6 +8,10 @@
       {
         "id": 1,
         "src": "../resources/Backgrounds/OverWorld2.png"
+      },
+      {
+        "id": 2,
+        "src": "../resources/Backgrounds/OverWorld3.png"
       }
     ],
     "startX": 630,
@@ -134,13 +138,11 @@
         "endY": 278,
         "startPointer": -1,
         "endPointer": -1,
-        "toOverworlds": [
-          1
-        ]
+        "toOverworlds": [ 1,2]
       },
       {
         "id": 8,
-        "worldId": [ 1 ],
+        "worldId": [ 1,2 ],
         "startX": -74,
         "startY": 278,
         "endX": 86,

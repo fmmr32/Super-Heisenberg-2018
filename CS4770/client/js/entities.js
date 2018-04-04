@@ -1,4 +1,5 @@
-﻿
+﻿var moves = [];
+
 class Animation {
     constructor(image, frames, frameRate, columns, forcedAnimate) {
         this.image = image;
@@ -228,11 +229,11 @@ class MoveSet {
             }
             if (current.type == "ai") {
                 //HELP
-               move= this.ai(current);
+                move = this.ai(current);
             } else {
                 move = current.type;
             }
-        
+
             this.then = now - (delta % this.delay);
             this.delay = current.delayAfter;
             this.tick++;
@@ -255,23 +256,15 @@ class MoveSet {
                 var s = 0;
                 if (d > 0) {
                     //player is behind the enemy
-                    if (d > this.ent.getSpeed()) {
-                        s -= this.ent.getSpeed();
-                    } else {
-                        s -= d;
-                    }
+                    s -= this.ent.getSpeed();
                     m = "left";
-                } else if(d < 0){
+                } else if (d < 0) {
                     //player is in front of the enemy
-                    if (d > this.ent.getSpeed()) {
-                        s += this.ent.getSpeed();
-                    } else {
-                        s += d;
-                    }
+                    s += this.ent.getSpeed();
                     m = "right";
                 }
                 var nextX = this.ent.getX() + s;
-                if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.getBlock(this.ent.getX(), this.ent.getY()).Id == 0) {
+                if (map.getBlock(nextX, this.ent.getY()).Id == 0) {
                     if (this.ent.getVSpeed() == 0 && !this.ent.jumpDown) {
                         m = "jump";
                     }
@@ -280,12 +273,40 @@ class MoveSet {
             case "aim":
                 //aiming towards the player, HELP MATH IS SCARY
                 if (this.ent.currentWeapon != undefined) {
-                    d = Math.abs(d);
-                    var vd = (this.ent.getY() - this.ent.getHeight() / 2) - (map.getPlayer().getY() - map.getPlayer().getHeight() / 2);
-                    var c = Math.sqrt(Math.pow(d, 2) + Math.pow(vd, 2));
-                    var angle = 0;
+                    var cx = this.ent.getX();
+                    var cy = this.ent.getY() - this.ent.getHeight() / 2;
+
+                    var px = map.getPlayer().getX();
+                    var py = map.getPlayer().getY() - map.getPlayer().getHeight() / 2;
+
+                    var t = Math.atan2(px - cx, py - cy);
+                    if (t < 0) {
+                        t += Math.PI * 2;
+                    }
+                    var angle = Math.floor(180 / Math.PI * t) - 90;
+                    if (this.ent.getLastOffSet() <= 0 && (angle > 90 && angle < 270)) {
+                        this.ent.lastOffSet = this.ent.getSpeed();
+                        angle = 180 - angle;
+                    } else if (this.ent.getLastOffSet() > 0 && (angle < 90 || angle > 270)) {
+                        this.ent.lastOffSet = -this.ent.getSpeed();
+                        angle = 180 - angle;
+                    }
+
                     this.ent.currentWeapon.setAngle(angle);
                 }
+                break;
+            case "patrol":
+                m = move.moves[move.index];
+                var s = this.ent.getSpeed();
+                if (m == "left") { s = -s };
+                var nextX = this.ent.getX() + s;
+                if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.isOOB(nextX, this.ent.getY()) != 0) {
+                    move.index++;
+                    if (move.index >= move.moves.length) {
+                        move.index = 0;
+                    }
+                }
+                m = move.moves[move.index];
                 break;
 
         }
