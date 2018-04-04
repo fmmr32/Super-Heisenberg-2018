@@ -228,7 +228,6 @@ class MoveSet {
                 }
             }
             if (current.type == "ai") {
-                //HELP
                 move = this.ai(current);
             } else {
                 move = current.type;
@@ -271,7 +270,6 @@ class MoveSet {
                 }
                 break;
             case "aim":
-                //aiming towards the player, HELP MATH IS SCARY
                 if (this.ent.currentWeapon != undefined) {
                     var cx = this.ent.getX();
                     var cy = this.ent.getY() - this.ent.getHeight() / 2;

@@ -320,7 +320,6 @@ class Grenade extends Bullet {
         options.y = this.getY() - this.getHeight();
         options.sprite = new Array(1).fill(this.getSprite());
 
-        console.log(this.isFlame);
         if (!this.isFlame) {
             getSprite(this.id).sound.play();
         }
