@@ -188,7 +188,6 @@ tbody tr:hover {
 }
 
 table#select, table#inputs {
-    margin-left: 100px;
     border: 2px solid black;
     border-collapse: collapse;
 }
