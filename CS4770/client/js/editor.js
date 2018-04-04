@@ -144,23 +144,30 @@ class Editor {
 
         document.getElementById("Y").onchange = function () {
             var ycoord = document.getElementById("Y").value;
-            editor.map.spawnY = ycoord;
+            var y = parseInt(ycoord);
+            editor.map.spawnY = y;
+            console.log(editor.map.spawnY);
         }
 
         document.getElementById("X").onchange = function () {
             var xcoord = document.getElementById("X").value;
-            editor.map.spawnX = xcoord;
-            console.log("changing y spawn");
+            var x = parseInt(xcoord);
+            editor.map.spawnX = x;
+            console.log(editor.map.spawnX);
         }
 
         document.getElementById("Save").onclick = function () {
             console.log(editor.map);
             writeDB("level", editor.map);
-
+            //overWorld.toMapFromDB(editor.map);
         }
 
-        document.getElementsByName("load").onclick = function () {
-
+        document.getElementById("Load").onclick = function () {
+            editor.loadLevelsForEditor();
+            document.getElementById("levelBrowser").style.display = "table-cell";
+          //  console.log(newMap);
+           // this.draw(this.map);
+            
         }
     }
 
@@ -306,8 +313,8 @@ class Editor {
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
 
-        var x = Math.floor((event.clientX + divOffsetX / 2 + scrollX - this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + divOffsetY / 2 + scrollY - this.ch) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + divOffsetX  + scrollX - this.cw) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + divOffsetY  + scrollY - this.ch) / this.ch) * this.ch;
 
         getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
         this.removeTile();
@@ -563,4 +570,75 @@ class Editor {
         }
 
     }
+
+    loadLevelsForEditor() {
+    refreshLevelsTable();
+    var levelsTable = document.getElementById('levelTable');
+    loadDB('level', function (data) {
+        var levels;
+
+        if (data == null) {
+            return;
+        }
+
+        if (data.constructor === Array) {
+            levels = data;
+        }
+        else {
+            levels = [data];
+        }
+
+        for (var level of levels) {
+            var levelName = level.levelName;
+            var author = level.user;
+            var dateCreated = level.dateCreated;
+
+            var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+            levelRow.setAttribute("id", level.id);
+
+
+            var levelNameCell = levelRow.insertCell(0);
+            levelNameCell.innerHTML = levelName;
+
+            var authorCell = levelRow.insertCell(1);
+            authorCell.innerHTML = author;
+
+            var dateCreatedCell = levelRow.insertCell(2);
+            dateCreatedCell.innerHTML = dateCreated;
+
+
+            levelRow.onclick = function () {
+                console.log(this.getAttribute("id"))
+                loadDBFromID("level", this.getAttribute("id"), function (response) {
+                    var temp = response;
+                    editor.map = response;
+                    console.log(response);
+                    console.log(editor.map);
+                    var user = getUsername();
+
+                    if (temp.user == user) {
+                        console.log("loading...");
+                       // console.log(this.map);
+                        overWorld.toMapFromDB(editor.map);
+                        toLevel();
+                        document.getElementById("levelBrowser").style.display = "none";
+                        document.getElementById("editor").style.display = "none";
+                        //loadMap();
+                    }
+                    else {
+                        alert("Cannot Edit Other Players Maps");
+                    }
+                    
+                    document.getElementById("levelBrowser").style.display = "none";
+
+
+
+
+                    //toLevel();
+                    // overWorld.toMapFromDB(response);
+                });
+            }
+        }
+    });
+}
 }
