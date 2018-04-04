@@ -21,8 +21,8 @@ function loadWeapon(list, weaponMod) {
 
 function deepCopy(c) {
     if (c instanceof Weapon) {
-        var animation = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
-        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets, sound:c.sound, hidden:c.hidden});
+        var animations = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
+        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animations, barrel: c.barrel, bullets: c.bullets, sound:c.sound, hidden:c.hidden, isFlame: c.isFlame, name:c.name});
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
@@ -135,6 +135,7 @@ class Weapon {
                 options.gravity = bullet.gravity;
                 options.impact = this.impact;
                 options.factor = bullet.factor;
+                options.flame = this.name.indexOf("flame") != -1;
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand[character.slideDown ? 1 : 0];
                 var offsetGun = this.barrel.Normal;
@@ -216,7 +217,6 @@ class Bullet extends EntityMovable {
             dx = dx > 0 ? Math.floor(dx) : Math.ceil(dx);
             dy = dy > 0 ? Math.floor(dy) : Math.ceil(dy);
 
-            console.log(dx, dy, this.angle);
             this.setHSpeed(dx);
 
             this.setVSpeed(dy);
@@ -285,6 +285,7 @@ class Grenade extends Bullet {
     constructor(angle, alive, options, id, owner) {
         super(angle, alive, options, owner);
         this.id = id;
+        this.isFlame = options.flame;
         var img = new Image();
         img.src = getSprite(id).image.src;
         img.width = getSprite(id).width;
@@ -318,7 +319,11 @@ class Grenade extends Bullet {
         options.x = this.getX();
         options.y = this.getY() - this.getHeight();
         options.sprite = new Array(1).fill(this.getSprite());
-        getSprite(this.id).sound.play();
+
+        console.log(this.isFlame);
+        if (!this.isFlame) {
+            getSprite(this.id).sound.play();
+        }
 
         options.level = this.level;
         this.animation[0].animating = true;

@@ -9,20 +9,12 @@
   "background": "../resources/Backgrounds/museum.png",
   "spawnX": 150,
   "spawnY": 10,
+  "music": "",
   "creatures": [
     {
       "Id": 500,
       "X": 70,
-      "Y": 210,
-      "moveSet": [
-        {
-          "type": "ai",
-          "ai": "aim",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0
-        }
-      ]
+      "Y": 210
     }
   ],
   "entities": [
