@@ -21,28 +21,10 @@
     "centerPX": 6,
     "offSetPX": 6
   },
+
+
   {
     "id": 997,
-    "name": "coin",
-    "source": "../resources/spriteSheets/entities.png",
-    "startX": 0,
-    "startY": 0,
-    "width": 22,
-    "height": 21,
-    "centerPX": 12,
-    "offSetPX": 0,
-    "animation": [
-      {
-        "frames": 18,
-        "frameRate": 10,
-        "columns": 4
-      }
-    ]
-
-  },
-
-  {
-    "id": 996,
     "name": "grenade",
     "source": "../resources/spriteSheets/entities.png",
     "startX": 73,
@@ -53,7 +35,7 @@
     "offSetPX": 6
   },
   {
-    "id": 995,
+    "id": 996,
     "name": "explosion",
     "source": "../resources/spriteSheets/entities.png",
     "startX": 89,
@@ -72,7 +54,102 @@
     ]
   },
   {
+    "id": 995,
+    "name": "JackalMask",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 139,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 8,
+        "columns": 2
+      }
+    ]
+
+  },
+  {
     "id": 994,
+    "name": "Puzzle",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 187,
+    "startY": 129,
+    "width": 30,
+    "height": 28,
+    "centerPX": 15,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 9,
+        "frameRate": 8,
+        "columns": 3
+      }
+    ]
+
+  },
+  {
+    "id": 993,
+    "name": "Helmet",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 187,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 12,
+        "frameRate": 5,
+        "columns": 3
+      }
+    ]
+
+  },
+  {
+    "id": 992,
+    "name": "MilleniumRod",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 284,
+    "startY": 0,
+    "width": 32,
+    "height": 60,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 10,
+        "frameRate": 5,
+        "columns": 4
+      }
+    ]
+
+  },
+  {
+    "id": 800,
+    "name": "coin",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 22,
+    "height": 21,
+    "centerPX": 12,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 18,
+        "frameRate": 10,
+        "columns": 4
+      }
+    ]
+
+  },
+  {
+    "id": 801,
     "name": "lever",
     "source": "../resources/spriteSheets/entities.png",
     "startX": 126,
@@ -99,91 +176,15 @@
     ]
   },
   {
-    "id": 993,
+    "id": 802,
     "name": "spike",
     "source": "../resources/spriteSheets/entities.png",
     "startX": 0,
-    "startY": 139,
+    "startY": 236,
     "width": 31,
     "height": 18,
     "centerPX": 16,
     "offSetPX": 0
-  },
-  {
-    "id": 992,
-    "name": "JackalMask",
-    "source": "../resources/spriteSheets/entities.png",
-    "startX": 0,
-    "startY": 139,
-    "width": 32,
-    "height": 32,
-    "centerPX": 16,
-    "offSetPX": 0,
-    "animation": [
-      {
-        "frames": 6,
-        "frameRate": 8,
-        "columns": 2
-      }
-    ]
-
-  },
-  {
-    "id": 991,
-    "name": "Puzzle",
-    "source": "../resources/spriteSheets/entities.png",
-    "startX": 187,
-    "startY": 129,
-    "width": 30,
-    "height": 28,
-    "centerPX": 15,
-    "offSetPX": 0,
-    "animation": [
-      {
-        "frames": 9,
-        "frameRate": 8,
-        "columns": 3
-      }
-    ]
-
-  },
-  {
-    "id": 990,
-    "name": "Helmet",
-    "source": "../resources/spriteSheets/entities.png",
-    "startX": 187,
-    "startY": 0,
-    "width": 32,
-    "height": 32,
-    "centerPX": 16,
-    "offSetPX": 0,
-    "animation": [
-      {
-        "frames": 12,
-        "frameRate": 5,
-        "columns": 3
-      }
-    ]
-
-  },
-  {
-    "id": 989,
-    "name": "MilleniumRod",
-    "source": "../resources/spriteSheets/entities.png",
-    "startX": 284,
-    "startY": 0,
-    "width": 32,
-    "height": 60,
-    "centerPX": 16,
-    "offSetPX": 0,
-    "animation": [
-      {
-        "frames": 10,
-        "frameRate": 5,
-        "columns": 4
-      }
-    ]
-
   },
   {
     "id": 500,
@@ -197,7 +198,7 @@
     "offSetPX": 3,
     "complex": {
       "speed": 3,
-      "moveSet":1,
+      "moveSet": 1,
       "hp": 10,
       "weapon": [ 1 ],
       "leftHand": [ -20, -3 ],

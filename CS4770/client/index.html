@@ -112,7 +112,7 @@
                                 <option value="user">Author</option>
                             </select>
                         </div>
-                        <form style="display:inline-block" onsubmit="return false">      
+                        <form style="display:inline-block" onsubmit="return false">
                             <input type="text" id="searchBox" name="levelSearch" style="width:50%" placeholder="Search Levels">
                             <input type="submit" id="submitSearch" value="Search" onclick="searchLevels()">
                         </form>
@@ -182,11 +182,7 @@
                     <tr>
                         <td>
                             <h5>Background:</h5>
-                            <select id="background" onchange="setBackground(this)">
-                                <option value="B1">B1</option>
-                                <option value="B2">B2</option>
-                                <option value="B3">B3</option>
-                            </select>
+                            <select id="background" onchange="setBackground(this)"></select>
                         </td>
                     </tr>
 
@@ -230,8 +226,8 @@
 
                     <tr>
                         <td>
-                            <h5>Moveset:</h5>
-                            <input type="number" name="move" min="0" max=""> <!–– Set Max ––>
+                            <h5>Music:</h5>
+                            <select id="music"></select>
                             <br>
                         </td>
                     </tr>
@@ -247,12 +243,12 @@
 
                 </table>
                 <input type="button" name="Load" value="Load" onclick="loadLevel()">
-                <input type="button" id ="Save" value="Save">
+                <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
             </div>
         </div>
     </div>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/entities.js"></script>
@@ -364,11 +360,35 @@
             loadLevelsList();
         }*/
 
+        function populateBackground() {
+            var selection = document.getElementById("background");
+            getFiles(function (data) {
+                for (var any of data) {
+                    any = any.replace(".png", "");
+                    var opt = document.createElement('option');
+                    opt.value = any;
+                    opt.innerHTML = any;
+                    selection.appendChild(opt);
+                }
+            }, "Backgrounds");
+        }
 
-
-
-
-
+     
+        function populateMusic() {
+            var selection = document.getElementById("music");
+            getFiles(function (data) {
+                for (var any of data) {
+                    any = any.replace(".png", "");
+                    var opt = document.createElement('option');
+                    opt.value = any;
+                    opt.innerHTML = any;
+                    selection.appendChild(opt);
+                }
+            }, "sounds/music");
+        }
+        populateBackground();
+        populateMusic();
+     
 
 
         //Story mode initialization
@@ -405,7 +425,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json","moveSets.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json", "moveSets.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -481,10 +501,10 @@
             var searchquery = { [selectedValue]: searchBox.value };
 
             console.log(searchquery.userName);
-            
+
             loadLevelsList({ [selectedValue]: searchBox.value }, "level");
         }
-           
+
 
         var map;
         //achievement array
@@ -591,7 +611,7 @@
                     if (conf[charCode] == "action") {
                         overWorld.diag[overWorld.dialog].nextText();
                     }
-                }else  if (!overWorld.handleKeys(conf[charCode], true)) {
+                } else if (!overWorld.handleKeys(conf[charCode], true)) {
                     if (!overWorld.doingDialog) {
                         map.getPlayer().doMove(conf[charCode], true);
                     }
@@ -641,7 +661,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-        //window.onload = newLevel();
+            //window.onload = newLevel();
     </script>
 
 

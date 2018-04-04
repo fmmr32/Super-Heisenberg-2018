@@ -13,7 +13,7 @@ var loadDB = function (name, callback) {
     socket.on(name, function (data) {
         callback(data);
     });
-   
+
 }
 
 
@@ -34,7 +34,7 @@ var loadDBFromID = function (name, id_object, callback) {
     socket.on(name, function (data) {
         callback(data);
     });
-    
+
 }
 
 
@@ -113,7 +113,7 @@ socket.on('signUpResponse', function (data) {
 
 signDivSignIn.onclick = function () {
     playerUsername = signDivUsername.value;
-    socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value }); 
+    socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value });
 }
 
 
@@ -123,12 +123,22 @@ signDivSignUp.onclick = function () {
 
 
 function loadJSONFile(callback, file) {
-        socket.emit('loadJSON', {
-            fileName: file
+    socket.emit('loadJSON', {
+        fileName: file
+    });
+    if (!socket.hasListeners(name)) {
+        socket.on(file, function (data) {
+            callback(data.toString());
         });
-        if (!socket.hasListeners(name)) {
-            socket.on(file, function (data) {
-                callback(data.toString());
-            });
-        }
-    } 
+    }
+}
+
+function getFiles(callback, file) {
+    var path = "/client/resources/" + file;
+    socket.emit('getFiles', { fileName: path });
+    if (!socket.hasListeners(name)) {
+        socket.on(path, function (data) {
+            callback(data);
+        });
+    }
+}

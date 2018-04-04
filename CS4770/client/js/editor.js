@@ -445,7 +445,7 @@ class Editor {
             }
             //adding a new row
             if (column == 0) {
-                row = table.insertRow(0);
+                row = table.insertRow(table.rows.length);
             }
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
@@ -480,7 +480,7 @@ class Editor {
             }
             //adding a new row
             if (column == 0) {
-                row = table.insertRow(0);
+                row = table.insertRow(table.rows.length);
             }
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
@@ -509,12 +509,12 @@ class Editor {
         for (var id of sprites) {
             var sprite = id[1];
             //just making sure we are only doing the tiles
-            if (sprite.id < 669 || sprite.id > 997) {
+            if (sprite.id < 669 || sprite.id > 900) {
                 continue;
             }
             //adding a new row
             if (column == 0) {
-                row = table.insertRow(0);
+                row = table.insertRow(table.rows.length);
             }
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
