@@ -244,7 +244,7 @@
 
 
                 </table>
-                <input type="button" name="Load" value="Load" onclick="loadLevel()">
+                <input type="button" id="Load" value="Load">
                 <input type="button" id ="Save" value="Save">
             </div>
         </div>
@@ -460,7 +460,7 @@
                 }
             });
         }
-            
+
         var searchLevel = function () {
             var input = document.getElementById('searchLevelBox').value;
             var levelsTable = document.getElementById('levelTable');
