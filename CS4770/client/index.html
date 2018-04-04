@@ -59,11 +59,11 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()">
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel(true)">
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LoadLevel.png' id='LoadLevel'>
+                <img src='resources/menus/LoadLevel.png' id="LoadLevel" onclick="newLevel(false)">
             </div>
 
             <div id='bottom'>
@@ -334,11 +334,22 @@
             document.getElementById("entity").style.display = "inline-block";
         }
 
-        function newLevel() {
+        function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
-            document.getElementById("editor").style.display = "table-cell";
-            var canvas = document.getElementById("canvas")
-            elemt = new Editor(canvas);
+            if (fromMenu) {  
+                document.getElementById("editor").style.display = "table-cell";
+                var canvas = document.getElementById("canvas")
+                elemt = new Editor(canvas);
+            }
+            else {
+                document.getElementById("editor").style.display = "none";
+                var canvas = document.getElementById("canvas")
+                elemt = new Editor(canvas);
+                elemt.loadLevelsForEditor({ user: getUsername }, "level");
+                document.getElementById("selectionBoxDiv").style.display = "none";
+                document.getElementById("selectionBox").selectedIndex = 0;
+                document.getElementById("levelBrowser").style.display = "table-cell";
+            }
         }
 
         function toLevel() {
@@ -379,22 +390,7 @@
         }
         populateBackground();
         populateMusic();
-     
-
-
-        //Story mode initialization
-        //storyMode.onclick = function () {
-        //    loadUserDatabase();
-        //}
-        //Test database
-        //    testDatabase.onclick = function () {
-        //        testDatabaseFunct();
-        //    }
-
-        // pushtodatabase.onclick = function () {
-        // 	pushdatabasefunct();
-        // }
-        //game
+ 
 
         var canvas;
         var container = document.getElementById("gameDiv");
