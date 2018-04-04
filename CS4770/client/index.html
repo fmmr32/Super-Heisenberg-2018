@@ -26,7 +26,7 @@
             </div>
 
             <div id='other'>
-                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser(false)'>
+                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'>
             </div>
 
             <div id='other'>
@@ -59,11 +59,11 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()">
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel(true)">
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LoadLevel.png' id='LoadLevel' onclick='levelBrowser(true)'>
+                <img src='resources/menus/LoadLevel.png' id="LoadLevel" onclick="newLevel(false)">
             </div>
 
             <div id='bottom'>
@@ -105,8 +105,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div style="display:inline-block">
-                            <p style="display:inline-block; margin-bottom:0px">Search Level by:</p>
+                        <div id="selectionBoxDiv"style="display:inline-block">
+                            <p style="display:inline-block; margin-right: 5px; margin-bottom:0px">Search Level by:</p>
                             <select id="selectionBox" style="display:inline-block; margin-top:16px">
                                 <option value="levelName">Level</option>
                                 <option value="user">Author</option>
@@ -242,7 +242,7 @@
 
 
                 </table>
-                <input type="button" id="Load" value="Load" onclick="loadLevel()">
+                <input type="button" id="Load" value="Load">
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
             </div>
@@ -287,16 +287,12 @@
             }
         }
 
-        function levelBrowser(fromEditor) {
+        function levelBrowser() {
             document.getElementById("levelBrowser").style.display = "table-cell";
-            if (fromEditor) {
-                document.getElementById("levelEditorOptions").style.display = "none";
-                loadLevelsList({ author: getUsername() }, 'level');
-            }
-            else {
-                document.getElementById("mainMenu").style.display = "none";
-                loadLevelsList(null, 'level');
-            }
+            document.getElementById("selectionBox").selectedIndex = 0;
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("selectionBoxDiv").style.display = "inline-block";
+            loadLevelsList(null, 'level');
         }
 
         function levelEditorOptions() {
@@ -338,11 +334,22 @@
             document.getElementById("entity").style.display = "inline-block";
         }
 
-        function newLevel() {
+        function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
-            document.getElementById("editor").style.display = "table-cell";
-            var canvas = document.getElementById("canvas")
-            elemt = new Editor(canvas);
+            if (fromMenu) {  
+                document.getElementById("editor").style.display = "table-cell";
+                var canvas = document.getElementById("canvas")
+                elemt = new Editor(canvas);
+            }
+            else {
+                document.getElementById("editor").style.display = "none";
+                var canvas = document.getElementById("canvas")
+                elemt = new Editor(canvas);
+                elemt.loadLevelsForEditor({ user: getUsername }, "level");
+                document.getElementById("selectionBoxDiv").style.display = "none";
+                document.getElementById("selectionBox").selectedIndex = 0;
+                document.getElementById("levelBrowser").style.display = "table-cell";
+            }
         }
 
         function toLevel() {
@@ -354,11 +361,6 @@
             var char = document.getElementById("character");
         }
 
-
-
-        /*loadLevelsList.onclick = function () {
-            loadLevelsList();
-        }*/
 
         function populateBackground() {
             var selection = document.getElementById("background");
@@ -388,22 +390,7 @@
         }
         populateBackground();
         populateMusic();
-     
-
-
-        //Story mode initialization
-        //storyMode.onclick = function () {
-        //    loadUserDatabase();
-        //}
-        //Test database
-        //    testDatabase.onclick = function () {
-        //        testDatabaseFunct();
-        //    }
-
-        // pushtodatabase.onclick = function () {
-        // 	pushdatabasefunct();
-        // }
-        //game
+ 
 
         var canvas;
         var container = document.getElementById("gameDiv");

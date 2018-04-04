@@ -156,11 +156,23 @@ class Editor {
         }
 
         document.getElementById("Load").onclick = function () {
-            editor.loadLevelsForEditor();
+            editor.loadLevelsForEditor({ user: getUsername }, "level");
+            document.getElementById("selectionBoxDiv").style.display = "none";
+            document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("levelBrowser").style.display = "table-cell";
           //  console.log(newMap);
            // this.draw(this.map);
             
+        }
+
+        document.getElementById("LoadLevel").onclick = function () {
+            document.getElementById("levelBrowser").style.display = "table-cell";
+            document.getElementById("selectionBox").selectedIndex = 0;
+            document.getElementById("levelEditorOptions").style.display = "none";
+            editor.loadLevelsForEditor({ user: getUsername }, "level");
+            //  console.log(newMap);
+            // this.draw(this.map);
+
         }
     }
 
@@ -648,74 +660,75 @@ class Editor {
 
     }
 
-    loadLevelsForEditor() {
-    refreshLevelsTable();
-    var levelsTable = document.getElementById('levelTable');
-    loadDB('level', function (data) {
-        var levels;
+    loadLevelsForEditor(query, collection) {
+        refreshLevelsTable();
+        var levelsTable = document.getElementById('levelTable');
+        loadDBFromQuery(query, collection, function (data) {
+            console.log(data);
+            var levels;
 
-        if (data == null) {
-            return;
-        }
-
-        if (data.constructor === Array) {
-            levels = data;
-        }
-        else {
-            levels = [data];
-        }
-
-        for (var level of levels) {
-            var levelName = level.levelName;
-            var author = level.user;
-            var dateCreated = level.dateCreated;
-
-            var levelRow = levelsTable.insertRow(levelsTable.rows.length);
-            levelRow.setAttribute("id", level.id);
-
-
-            var levelNameCell = levelRow.insertCell(0);
-            levelNameCell.innerHTML = levelName;
-
-            var authorCell = levelRow.insertCell(1);
-            authorCell.innerHTML = author;
-
-            var dateCreatedCell = levelRow.insertCell(2);
-            dateCreatedCell.innerHTML = dateCreated;
-
-
-            levelRow.onclick = function () {
-                console.log(this.getAttribute("id"))
-                loadDBFromID("level", this.getAttribute("id"), function (response) {
-                    var temp = response;
-                    editor.map = response;
-                    console.log(response);
-                    console.log(editor.map);
-                    var user = getUsername();
-
-                    if (temp.user == user) {
-                        console.log("loading...");
-                       // console.log(this.map);
-                        overWorld.toMapFromDB(editor.map);
-                        toLevel();
-                        document.getElementById("levelBrowser").style.display = "none";
-                        document.getElementById("editor").style.display = "none";
-                        //loadMap();
-                    }
-                    else {
-                        alert("Cannot Edit Other Players Maps");
-                    }
-                    
-                    document.getElementById("levelBrowser").style.display = "none";
-
-
-
-
-                    //toLevel();
-                    // overWorld.toMapFromDB(response);
-                });
+            if (data == null) {
+                return;
             }
-        }
-    });
-}
+
+            if (data.constructor === Array) {
+                levels = data;
+            }
+            else {
+                levels = [data];
+            }
+
+            for (var level of levels) {
+                var levelName = level.levelName;
+                var author = level.user;
+                var dateCreated = level.dateCreated;
+
+                var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                levelRow.setAttribute("id", level.id);
+
+
+                var levelNameCell = levelRow.insertCell(0);
+                levelNameCell.innerHTML = levelName;
+
+                var authorCell = levelRow.insertCell(1);
+                authorCell.innerHTML = author;
+
+                var dateCreatedCell = levelRow.insertCell(2);
+                dateCreatedCell.innerHTML = dateCreated;
+
+
+                levelRow.onclick = function () {
+                    console.log(this.getAttribute("id"))
+                    loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
+                        var temp = response[0];
+                        editor.map = response[0];
+                        console.log(response);
+                        console.log(editor.map);
+                        var user = getUsername();
+
+                        if (temp.user == user) {
+                            console.log("loading...");
+                           // console.log(this.map);
+                            overWorld.toMapFromDB(editor.map);
+                            toLevel();
+                            document.getElementById("levelBrowser").style.display = "none";
+                            document.getElementById("editor").style.display = "none";
+                            //loadMap();
+                        }
+                        else {
+                            alert("Cannot Edit Other Players Maps");
+                        }
+                    
+                        document.getElementById("levelBrowser").style.display = "none";
+
+
+
+
+                        //toLevel();
+                        // overWorld.toMapFromDB(response);
+                    });
+                }
+            }
+        });
+    }
 }
