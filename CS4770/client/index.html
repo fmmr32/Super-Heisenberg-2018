@@ -145,22 +145,16 @@
         </div>
 
         <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
-        <div id="editor" style="display:none">
-            <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll;   margin:20px; float:left">
+        <div id="editor">
+            <div id="gameDiv" style=" display: inline-block; width: 720px; height: 480px; overflow:scroll; text-align: center; vertical-align:top; margin-top: 25px;">
                 <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
             </div>
-            <div id="side" class=editor style="margin:20px; width:auto; float:right">
+            <div id="side">
                 <div id='buttons' style="margin:5px">
                     <img src='resources/menus/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
                     <img src='resources/menus/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
                     <img src='resources/menus/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
                 </div>
-
-
-
-
-
-
 
                 <hr noshade>
 
@@ -198,6 +192,14 @@
 
                     <tr>
                         <td>
+                            <h5>Gravity:</h5>
+                            <input type="range" name="points" min="5" max="15" oninput="setBackground(this.value)" ">
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
                             <h5>Map Width:</h5>
                             <input id="mapW" type="number" name="width" min="0" max=""> <!–– Set Max ––>
                         </td>
@@ -228,13 +230,6 @@
 
                     <tr>
                         <td>
-                            <h5>Gravity:</h5>
-                            <input type="range" name="points" min="0" max="5" oninput="setBackground(this.value)" ">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
                             <h5>Moveset:</h5>
                             <input type="number" name="move" min="0" max=""> <!–– Set Max ––>
                             <br>
@@ -253,6 +248,7 @@
                 </table>
                 <input type="button" name="Load" value="Load" onclick="loadLevel()">
                 <input type="button" id ="Save" value="Save">
+                <input type="button" value="Back" onclick="back()">
             </div>
         </div>
     </div>
