@@ -187,7 +187,6 @@ class Level {
     }
 
     loadArtifact(artifact) {
-        console.log(artifact);
         var options = {};
         options.x = artifact.x;
         options.y = artifact.y;

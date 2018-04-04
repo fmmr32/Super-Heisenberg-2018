@@ -182,14 +182,14 @@
                     <tr>
                         <td>
                             <h5>Background:</h5>
-                            <select id="background" onchange="setBackground(this)"></select>
+                            <select id="background" onchange="elemt.setBackground(this.value)"></select>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
                             <h5>Gravity:</h5>
-                            <input type="range" name="points" min="5" max="15" oninput="setBackground(this.value)" ">
+                            <input type="range" name="points" min="5" max="15" oninput="elemt.setGravity(this.value)">
                         </td>
                     </tr>
 
@@ -227,7 +227,7 @@
                     <tr>
                         <td>
                             <h5>Music:</h5>
-                            <select id="music"></select>
+                            <select id="music" onchange="elemt.setMusic(this.value)"></select>
                             <br>
                         </td>
                     </tr>

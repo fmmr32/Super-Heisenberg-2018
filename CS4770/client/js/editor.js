@@ -10,7 +10,7 @@ class Editor {
         this.bh = canvas.height;
 
 
-        this.selection = 0;
+        this.selection = 1000;
         this.editor = null;
         //Selection var for tile placement.
         this.mouseClicked = false;   //Var for mouse listeners
@@ -110,13 +110,6 @@ class Editor {
         }
 
 
-        document.getElementById("background").onchange = function () {
-            var background = document.getElementById("background");
-            var b = background.options[background.selectedIndex].value;
-            editor.map.background = b;
-            console.log(map);
-        }
-
         document.getElementById("levelName").onchange = function () {
             var name = document.getElementById("levelName").value;
             editor.levelName = name;
@@ -195,6 +188,7 @@ class Editor {
             spawnX: 150,
             SpawnY: 10,
             background: "../resources/Backgrounds/museum.png",
+            music:"../resources/sounds/music/005_1.wav",
             creatures: [],
             interacts:[],
             entities: [],
@@ -236,6 +230,17 @@ class Editor {
 
     //}
 
+    setBackground(value) {
+        this.map.background = "../resources/Backgrounds/" + value + ".png";
+    }
+
+    setGravity(value) {
+        this.map.gravity = value;
+    }
+
+    setMusic(value) {
+        this.map.music = "../resources/sounds/music/" + value + ".wav";
+    }
 
     onMouseMove() {
 
@@ -252,6 +257,21 @@ class Editor {
         }
     }
 
+    checkPosition(x, y) {
+        var type = null;
+        var k = 0;
+        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
+            //check for the tiles
+            if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
+            //check for the entities
+            if (k < this.map.entities.length && this.map.entities[k].X == x && this.map.entities[k].Y == y) { type = "entities"; break; }
+            //check for the creatures
+            if (k < this.map.creatures.length && this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
+            //check for the interacts
+            if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { type = "interacts"; break; }
+        }
+        return [type, k];
+    }
 
     removeTile() {
         var context = this.canvas.getContext("2d");
@@ -265,24 +285,16 @@ class Editor {
 
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
-        var k;
-        var type = null;
+        var data = this.checkPosition(x, y);
+
+        var k = data[1];
+        var type = data[0];
 
         context.clearRect(x + 1, y + 1, this.cw - 1, this.ch - 1);
 
 
-        for (k = 0; k < this.map.content.length; k++) {
-            if (this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
-        }
-        for (k = 0; k < this.map.entities.length; k++) {
-            if (type != null) { break; }
-            if (this.map.entities[k].X == x && this.map.entities[k].Y == y) { type = "entities"; }
-        }
-        for (k = 0; k < this.map.creatures.length; k++) {
-            if (type != null) { break; }
-            if (this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
-        }
-
+        
+       
 
         switch (type) {
 
@@ -301,6 +313,9 @@ class Editor {
                 console.log("Deleting Creature...");
                 this.map.creatures.splice(k, 1)
                 break;
+            case "interacts":
+                this.map.interacts.splice(k, 1);
+                break;
         }
         this.drawBoard();
     }
@@ -316,9 +331,29 @@ class Editor {
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
 
+        if (this.selection == 1000) {
+            //do stuff with selecting anything
+            var data = this.checkPosition(x, y);
+            switch (data[0]) {
+                case "content":
+                    console.log(this.map.content[data[1]]);
+                    break;
+                case "entities":
+                    console.log(this.map.entities[data[1]]);
+                    break;
+                case "creatures":
+                    console.log(this.map.creatures[data[1]]);
+                    break;
+                case "interacts":
+                    console.log(this.map.interacts[data[1]]);
+                    break;
+                
+            }
+            return;
+        }
+
         getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
         this.removeTile();
-        console.log(this.map);
 
         switch (this.elem) {
             case "Creature":
@@ -394,7 +429,11 @@ class Editor {
 
         }
         else {
-            this.map.entities.push(ent);
+            if (ent.id == 800) {
+                this.map.entities.push(ent);
+            } else {
+                this.map.interacts.push(ent);
+            }
             console.log("pushing");
 
         }
@@ -442,8 +481,21 @@ class Editor {
     loadTiles(editor) {
         //this is the table we are using
         var table = document.getElementById("tiles").children[0];
+        table.removeChild(table.children[0]);
+        table.appendChild(document.createElement("tbody"));
+        var row = table.insertRow(0);
         var column = 0;
-        var row;
+        var c = row.insertCell(column);
+        var smallC = document.createElement("canvas");
+        smallC.width = this.cw;
+        smallC.height = this.ch;
+        c.setAttribute("id", 1000);
+        c.onclick = function () {//insert whatever function handled the tiles selection here}
+            editor.selection = parseInt(this.id);
+        }
+        getSprite(1000).drawBackground(0, 0, smallC, this.cw, this.ch);
+        c.appendChild(smallC);
+        column++;
         for (var id of sprites) {
             var sprite = id[1];
             //just making sure we are only doing the tiles
@@ -476,11 +528,23 @@ class Editor {
         console.log(sprites);
         //this is the table we are using
         var table = document.getElementById("creature").children[0];
+        table.removeChild(table.children[0]);
+        table.appendChild(document.createElement("tbody"));
+        var row = table.insertRow(0);
         var column = 0;
-        var row;
+        var c = row.insertCell(column);
+        var smallC = document.createElement("canvas");
+        smallC.width = this.cw;
+        smallC.height = this.ch;
+        c.setAttribute("id", 1000);
+        c.onclick = function () {//insert whatever function handled the tiles selection here}
+            editor.selection = parseInt(this.id);
+        }
+        getSprite(1000).drawBackground(0, 0, smallC, this.cw, this.ch);
+        c.appendChild(smallC);
+        column++;
         for (var id of sprites) {
             var sprite = id[1];
-            console.log(sprite.id);
             //just making sure we are only doing the tiles
             if (sprite.id < 400 || sprite.id > 666) {
                 continue;
@@ -511,8 +575,21 @@ class Editor {
     loadEntities(editor) {
         //this is the table we are using
         var table = document.getElementById("entity").children[0];
+        table.removeChild(table.children[0]);
+        table.appendChild(document.createElement("tbody"));
+        var row = table.insertRow(0);
         var column = 0;
-        var row;
+        var c = row.insertCell(column);
+        var smallC = document.createElement("canvas");
+        smallC.width = this.cw;
+        smallC.height = this.ch;
+        c.setAttribute("id", 1000);
+        c.onclick = function () {//insert whatever function handled the tiles selection here}
+            editor.selection = parseInt(this.id);
+        }
+        getSprite(1000).drawBackground(0, 0, smallC, this.cw, this.ch);
+        c.appendChild(smallC);
+        column++;
         for (var id of sprites) {
             var sprite = id[1];
             //just making sure we are only doing the tiles
