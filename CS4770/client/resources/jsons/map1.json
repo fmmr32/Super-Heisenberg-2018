@@ -9,24 +9,12 @@
   "background": "../resources/Backgrounds/museum.png",
   "spawnX": 150,
   "spawnY": 10,
+  "music": "",
   "creatures": [
     {
-      "Id": 420,
+      "Id": 500,
       "X": 70,
-      "Y": 210,
-      "moveSet": [
-        {
-          "type": "stop",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0
-        }
-      ]
-    },
-    {
-      "Id": 401,
-      "X": 300,
-      "Y": 200
+      "Y": 210
     }
   ],
   "entities": [
@@ -223,16 +211,5 @@
         { "ricochet": true }
       ]
     }
-
-
-
-
-
-
-
-
-
-
-
   ]
 }

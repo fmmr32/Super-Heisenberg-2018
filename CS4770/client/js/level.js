@@ -101,14 +101,14 @@ class Level {
         this.height = any.height;
         this.background = new Image();
         this.background.src = any.background;
-
+        this.sound = new SoundManager(any.music, "music");
+        this.background.onload = this.resizeImage(this.background, canvas, 0, "background");
 
 
         while (container.children.length != 0) {
             container.children[0].remove();
         }
         canvas = create('canvas', 'fg', 0, 0, sizeSettings[0], sizeSettings[1]);
-        this.resizeImage(this.background, canvas, 0, "background");
         var background = create('canvas', 'bg', 0, 0, this.width, this.height);
 
         this.container = canvas;
@@ -235,10 +235,10 @@ class Level {
             options.leftHand = [sprite.complex.leftHand, sprite.complex.leftHandLow];
             options.rightHand = [sprite.complex.rightHand, sprite.complex.rightHandLow];
 
-            options.moveSet = new MoveSet(sprite.complex.moveSet);
+            options.moveSet = new MoveSet(moves[sprite.complex.moveSet].moveSet);
             //overrides the default moveSet
             if (ent.moveSet != undefined) {
-                options.moveSet = new MoveSet(ent.moveSet);
+                options.moveSet = new MoveSet(moves[ent.moveSet].moveSet);
             }
             //gets the correct name
             if (ent.name != undefined || sprite.name != undefined) {
@@ -250,7 +250,7 @@ class Level {
             }
             options.animation = Animation.loadAnimation(id);
             var creature;
-            if (id >= 400 && id < 600) {
+            if (id >= 400 && id < 500) {
                 options.loot = getSprite(id).complex.drop;
                 creature = new Boss(options);
             } else {
@@ -275,6 +275,7 @@ class Level {
 
 
     doTick() {
+        this.resizeImage(this.background, canvas, 0, "background");
         this.drawMap();
         for (var popUp of this.popUps) {
             popUp.doPopUp();

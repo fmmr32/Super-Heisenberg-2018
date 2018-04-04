@@ -1,4 +1,5 @@
-﻿
+﻿var moves = [];
+
 class Animation {
     constructor(image, frames, frameRate, columns, forcedAnimate) {
         this.image = image;
@@ -218,9 +219,19 @@ class MoveSet {
         var delta = now - this.then;
         var move = "stop";
         var current = this.moves[this.currentMove];
+
         if (this.moves.length > 0 && delta > 1000 * (this.delay + current.delayBefore)) {
             var current = this.moves[this.currentMove];
-            move = current.type;
+            if (current.type == "fire") {
+                if (this.ent.currentWeapon != null && !this.ent.currentWeapon.canFire()) {
+                    return move;
+                }
+            }
+            if (current.type == "ai") {
+                move = this.ai(current);
+            } else {
+                move = current.type;
+            }
 
             this.then = now - (delta % this.delay);
             this.delay = current.delayAfter;
@@ -235,6 +246,71 @@ class MoveSet {
         }
         return move;
     }
+
+    ai(move) {
+        var m = "stop";
+        var d = this.ent.getX() - map.getPlayer().getX();
+        switch (move.ai) {
+            case "follow":
+                var s = 0;
+                if (d > 0) {
+                    //player is behind the enemy
+                    s -= this.ent.getSpeed();
+                    m = "left";
+                } else if (d < 0) {
+                    //player is in front of the enemy
+                    s += this.ent.getSpeed();
+                    m = "right";
+                }
+                var nextX = this.ent.getX() + s;
+                if (map.getBlock(nextX, this.ent.getY()).Id == 0) {
+                    if (this.ent.getVSpeed() == 0 && !this.ent.jumpDown) {
+                        m = "jump";
+                    }
+                }
+                break;
+            case "aim":
+                if (this.ent.currentWeapon != undefined) {
+                    var cx = this.ent.getX();
+                    var cy = this.ent.getY() - this.ent.getHeight() / 2;
+
+                    var px = map.getPlayer().getX();
+                    var py = map.getPlayer().getY() - map.getPlayer().getHeight() / 2;
+
+                    var t = Math.atan2(px - cx, py - cy);
+                    if (t < 0) {
+                        t += Math.PI * 2;
+                    }
+                    var angle = Math.floor(180 / Math.PI * t) - 90;
+                    if (this.ent.getLastOffSet() <= 0 && (angle > 90 && angle < 270)) {
+                        this.ent.lastOffSet = this.ent.getSpeed();
+                        angle = 180 - angle;
+                    } else if (this.ent.getLastOffSet() > 0 && (angle < 90 || angle > 270)) {
+                        this.ent.lastOffSet = -this.ent.getSpeed();
+                        angle = 180 - angle;
+                    }
+
+                    this.ent.currentWeapon.setAngle(angle);
+                }
+                break;
+            case "patrol":
+                m = move.moves[move.index];
+                var s = this.ent.getSpeed();
+                if (m == "left") { s = -s };
+                var nextX = this.ent.getX() + s;
+                if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.isOOB(nextX, this.ent.getY()) != 0) {
+                    move.index++;
+                    if (move.index >= move.moves.length) {
+                        move.index = 0;
+                    }
+                }
+                m = move.moves[move.index];
+                break;
+
+        }
+        return m;
+    }
+
 
     advanceMove(move) {
         this.tick = 0;
@@ -337,7 +413,7 @@ class Artifact extends Entity {
         this.type = options.type;
         this.id = options.id;
     }
-
+    //handles the pickups
     handlePickUp(player) {
         switch (this.type) {
             case "artifact":
@@ -690,6 +766,7 @@ class EntityCreature extends EntityMovable {
             this.moveSet = options.moveSet;
             this.damage = options.damage;
             this.sleep = true;
+            this.moveSet.ent = this;
         }
     }
 
@@ -804,12 +881,6 @@ class EntityCreature extends EntityMovable {
                             }
                             if (br) break;
                         }
-                    }
-                    break;
-                case "aim":
-                    //aiming towards the player, HELP MATH IS SCARY
-                    if (this.currentWeapon != undefined) {
-                        this.currentWeapon.setAngle();
                     }
                     break;
                 case "quit":

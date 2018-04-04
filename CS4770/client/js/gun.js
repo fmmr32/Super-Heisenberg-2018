@@ -21,8 +21,8 @@ function loadWeapon(list, weaponMod) {
 
 function deepCopy(c) {
     if (c instanceof Weapon) {
-        var animation = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
-        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animation, barrel: c.barrel, bullets: c.bullets, sound:c.sound, hidden:c.hidden});
+        var animations = [deepCopy(c.animations[0]), deepCopy(c.animations[1])];
+        return new Weapon({ damage: c.damage, speed: c.speed, cooldown: c.cooldown, animations:animations, barrel: c.barrel, bullets: c.bullets, sound:c.sound, hidden:c.hidden, isFlame: c.isFlame, name:c.name});
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
@@ -110,11 +110,13 @@ class Weapon {
         }
     }
 
-
+    canFire() {
+        return this.tick === 0;
+    }
 
     fireWeapon(character, level) {
         //can only shoot the weapon again if the cooldown of the weapon is 0 and it's done animating
-        if (this.tick === 0) {
+        if (this.canFire()) {
             this.sound.play();
             if (character.getLastOffSet() < 0) {
                 this.animations[0].animating = true;
@@ -133,13 +135,14 @@ class Weapon {
                 options.gravity = bullet.gravity;
                 options.impact = this.impact;
                 options.factor = bullet.factor;
+                options.flame = this.name.indexOf("flame") != -1;
                 var angle = bullet.angle;
                 var offsetHand = character.rightHand[character.slideDown ? 1 : 0];
                 var offsetGun = this.barrel.Normal;
 
                 //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
-                    angle = -angle - 180;
+                    angle = 180 - angle;
                     offsetHand = character.leftHand[character.slideDown ? 1 : 0];
                     offsetGun = this.barrel.Flipped;
                 }
@@ -204,39 +207,22 @@ class Bullet extends EntityMovable {
 
     }
 
-
     bulletTravel(onTick) {
         if (this.alive > 0) {
             this.alive--;
 
             //calculating the angle the bullet flies at and what the x,y changes to
-            var dy = Math.sin(this.angle / 180 * Math.PI) * this.speed;
-            dy = -dy;
-            var dx;
-            if (this.angle >= 0) {
-                dx = this.speed - Math.abs(dy);
-            } else {
-                dx = -this.speed + Math.abs(dy);
-            }
-            dx = Math.floor(dx);
+            var dx = Math.sin((this.angle+90) * 2 * Math.PI / 360) * this.speed;
+            var dy = Math.cos((this.angle + 90) * 2 * Math.PI / 360) * this.speed;
+            dx = dx > 0 ? Math.floor(dx) : Math.ceil(dx);
+            dy = dy > 0 ? Math.floor(dy) : Math.ceil(dy);
 
-            if (dy >= 0) {
-                dy = Math.floor(dy);
-            } else {
-                dy = Math.ceil(dy);
-            }
             this.setHSpeed(dx);
 
             this.setVSpeed(dy);
 
             var x = this.getX();
-            if (this.angle >= 0) {
-                this.lastOffSet = this.getSprite().offSet;
-                x += this.getSprite().getCenter();
-            } else {
-                this.lastOffSet = -this.getSprite().offSet;
-                x -= this.getSprite().getCenter();
-            }
+          
             if (this.gravity) {
                 this.doGravity();
             }
@@ -259,10 +245,10 @@ class Bullet extends EntityMovable {
 
                                 break;
                             case 2:
-                                this.angle = -this.angle - 180;
+                                this.angle  -= 180;
                                 break;
                             case 3:
-                                this.angle += 180;
+                                this.angle -= 180;
                                 break;
                         }
                     } if (this.impact == "explode") {
@@ -299,6 +285,7 @@ class Grenade extends Bullet {
     constructor(angle, alive, options, id, owner) {
         super(angle, alive, options, owner);
         this.id = id;
+        this.isFlame = options.flame;
         var img = new Image();
         img.src = getSprite(id).image.src;
         img.width = getSprite(id).width;
@@ -332,7 +319,10 @@ class Grenade extends Bullet {
         options.x = this.getX();
         options.y = this.getY() - this.getHeight();
         options.sprite = new Array(1).fill(this.getSprite());
-        getSprite(this.id).sound.play();
+
+        if (!this.isFlame) {
+            getSprite(this.id).sound.play();
+        }
 
         options.level = this.level;
         this.animation[0].animating = true;
@@ -360,5 +350,21 @@ class Grenade extends Bullet {
             }
         }
 
+    }
+
+}
+
+function testCircle() {
+    var ctx = canvas.getContext("2d");
+    var r = 100;
+
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
+
+    for (var i = 0; i < 360; i += 20) {
+        var dx = Math.sin(i * 2 * Math.PI / 360);
+        var dy = Math.cos(i * 2 * Math.PI / 360); 
+        console.log(i, x + dx*r, y + dy*r);
+        ctx.fillText(i, x + dx*r, y + dy*r);
     }
 }

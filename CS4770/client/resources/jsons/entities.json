@@ -197,35 +197,8 @@
     "offSetPX": 3,
     "complex": {
       "speed": 3,
+      "moveSet":1,
       "hp": 10,
-      "moveSet": [
-        {
-          "type": "left",
-          "advanceAfter": 10,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-
-        {
-          "type": "jump",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-        {
-          "type": "fire",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0.2
-        },
-        {
-          "type": "right",
-          "advanceAfter": 12,
-          "delayAfter": 0,
-          "delayBefore": 0
-        }
-
-      ],
       "weapon": [ 1 ],
       "leftHand": [ -20, -3 ],
       "rightHand": [ 10, -3 ],
@@ -245,6 +218,7 @@
     "name": "Shotgun Knight",
     "complex": {
       "hp": 1000,
+      "moveSet": 0,
       "drop": {
         "type": "artifact",
         "id": 992
@@ -255,7 +229,6 @@
       "rightHand": [ 45, 36 ],
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
-      "moveSet": [],
       "weapon": [ 7 ],
       "healthBar": true
     },
@@ -346,6 +319,7 @@
     "name": "Elon Musk",
     "complex": {
       "hp": 2000,
+      "moveSet": 0,
       "drop": {
         "type": "weapon",
         "id": 5
@@ -356,21 +330,6 @@
       "rightHand": [ 360, 95 ],
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
-      "moveSet": [
-        {
-          "type": "fire",
-          "advanceAfter": 2,
-          "delayBefore": 0,
-          "delayAfter": 0
-        },
-        {
-          "type": "jump",
-          "advanceAfter": 1,
-          "delayBefore": 2,
-          "delayAfter": 0
-
-        }
-      ],
       "weapon": [ 7 ],
       "healthBar": true,
       "damage": 5
@@ -462,6 +421,7 @@
     "name": "Evil Heisenberg",
     "complex": {
       "hp": 100,
+      "moveSet": 0,
       "drop": {
         "type": "artifact",
         "id": 989
@@ -472,34 +432,6 @@
       "rightHand": [ 45, 36 ],
       "leftHandLow": [ 13, 60 ],
       "rightHandLow": [ 28, 60 ],
-      "moveSet": [
-        {
-          "type": "left",
-          "advanceAfter": 10,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-
-        {
-          "type": "jump",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0
-        },
-        {
-          "type": "fire",
-          "advanceAfter": 1,
-          "delayAfter": 0,
-          "delayBefore": 0.2
-        },
-        {
-          "type": "right",
-          "advanceAfter": 12,
-          "delayAfter": 0,
-          "delayBefore": 0
-        }
-
-      ],
       "weapon": [ 1 ],
       "healthBar": true
     },

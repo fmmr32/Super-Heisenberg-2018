@@ -1,12 +1,17 @@
 ﻿var mongojs = require('mongojs');
-var db = mongojs('localhost:27017/CS4770', ['account', 'player','progress','levels','entity','character','weapons','tiles','achievements']);
-
-
+var db = mongojs('localhost:27017/cs4770', ['account', 'player','progress','levels','entity','character','weapons','tiles','achievements']);
 
 var express = require('express');
 var fs = require('fs');
 var app = express();
 var serv = require('http').Server(app);
+
+process.on('SIGHUP', function () {
+    db.close();
+    console.log('About to exit');
+    process.exit();
+});
+
 
 app.use(express.static(__dirname + '/client'));
 app.use(express.static(__dirname + '/client/js'));
@@ -61,25 +66,20 @@ var addUser = function(data,callback){
 
 /*__________________________________________Load game thingies_________________________________*/
 
-var loadDB = function (collection, callback) {
-    console.log(collection + "inside loadDB game thingies");
-    db.collection(collection).find({}, function (err, result) {
-        callback(result);
-    });
-}
-
-var loadDBFromID = function (collection, id_object, callback) {
-    db.collection(collection).find({id:id_object}, function (err, result) {
-        callback(result);
-    });
-}
-
-var loadDBFromLevelName = function (input, callback) {
-    db.level.find({ levelName: input }, function (err, result) {
-        console.log("inside db.level.find({ name: input }, function (err, result) {");
-        console.log(result);
-        callback(result);
-    });
+var loadDBFromQuery = function (query, collection, callback) {
+    console.log("inside loaddbfromquery");
+    if (query == null) {
+        console.log("inside if");
+        db.collection(collection).find({}, function (err, result) {
+            callback(result);
+        });
+    }
+    else {
+        console.log("inside else");
+        db.collection(collection).find(query, function (err, result) {
+            callback(result);
+        });
+    }
 }
 
 /*_____________________________ Write Game Thingies _____________________________*/
@@ -93,31 +93,17 @@ var writeDB = function (data) {
 
 /*_______________________________________________________________________________*/
 
-
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     console.log('socket connection');
+    
 
-    socket.on('loadDB', function (data) {
-        loadDB(data.collection, function (result) {
+    socket.on('loadDBFromQuery', function (data) {
+        console.log(data.query);
+        loadDBFromQuery(data.query, data.collection, function (result) {
+            console.log("inside loadDBbasedLevelName " + data.query + " inside loadDBbasedLevelName");
             console.log(result);
-			socket.emit(data.collection, result)
-		})
-    });
-
-    socket.on('loadDBbasedID', function (data) {
-        console.log(data.id);
-        loadDBFromID(data.collection, data.id, function (result) {
-            console.log("inside loaddbfromID" + JSON.stringify(result) + "Inside loadDBFromID app.js");
-            socket.emit(data.collection, result[0])
-        })
-    });
-
-    socket.on('loadDBbasedLevelName', function (data) {
-        console.log(data.levelName);
-        loadDBFromLevelName(data.levelName, function (result) {
-            console.log("inside loadDBbasedLevelName" + result + "inside loadDBbasedLevelName");
-            socket.emit(data.levelName, result)
+            socket.emit(data.collection, result)
         })
     });
 
@@ -125,9 +111,7 @@ io.sockets.on('connection', function (socket) {
 		console.log("inside writeDB");
         writeDB(data);
     });
-
-
-   
+ 
     socket.on('loadJSON', function (data) {
         console.log(data.fileName);
         var fileName = data.fileName;

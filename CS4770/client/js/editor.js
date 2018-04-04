@@ -463,9 +463,9 @@ class Editor {
             //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
             //this should all work
             var smallC = document.createElement("canvas");
-            smallC.width = sprite.width;
-            smallC.height = sprite.height;
-            sprite.drawBackground(0, 0, smallC);
+            smallC.width = this.cw;
+            smallC.height = this.ch;
+            sprite.drawBackground(0, 0, smallC, this.cw, this.ch);
             cell.appendChild(smallC);
             column++;
             if (column == 3) { column = 0; }
@@ -498,9 +498,9 @@ class Editor {
             //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
             //this should all work
             var smallC = document.createElement("canvas");
-            smallC.width = sprite.width;
-            smallC.height = sprite.height;
-            sprite.drawBackground(0, 0, smallC);
+            smallC.width = this.cw;
+            smallC.height = this.ch;
+            sprite.drawBackground(0, 0, smallC, this.cw, this.ch);
             cell.appendChild(smallC);
             column++;
             if (column == 3) { column = 0; }
@@ -532,9 +532,9 @@ class Editor {
             //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
             //this should all work
             var smallC = document.createElement("canvas");
-            smallC.width = sprite.width;
-            smallC.height = sprite.height;
-            sprite.drawBackground(0, 0, smallC);
+            smallC.width = this.cw;
+            smallC.height = this.ch;
+            sprite.drawBackground(0, 0, smallC, this.cw, this.ch);
             cell.appendChild(smallC);
             column++;
             if (column == 3) { column = 0; }

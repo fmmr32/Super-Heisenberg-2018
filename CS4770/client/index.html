@@ -26,15 +26,15 @@
             </div>
 
             <div id='other'>
-                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'></img>
+                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser(false)'>
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'></img>
+                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'>
             </div>
 
             <div id='bottom'>
-                <img src='resources/menus/Options.png' id='Options' onclick='options()'></img>
+                <img src='resources/menus/Options.png' id='Options' onclick='options()'>
             </div>
 
         </div>
@@ -59,15 +59,15 @@
         <div id='levelEditorOptions'>
 
             <div id='top'>
-                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()"></img>
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel()">
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LoadLevel.png' id='LoadLevel'></img>
+                <img src='resources/menus/LoadLevel.png' id='LoadLevel' onclick='levelBrowser(true)'>
             </div>
 
             <div id='bottom'>
-                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'>
             </div>
 
         </div>
@@ -105,9 +105,16 @@
                                 </tbody>
                             </table>
                         </div>
-                        <form onsubmit="return false">
-                            <input type="text" id="searchLevelBox" name="levelSearch" placeholder="Search for Level"> 
-                            <input type="submit" id="submitSearch" value="Search" onclick="searchLevel()">
+                        <div style="display:inline-block">
+                            <p style="display:inline-block; margin-bottom:0px">Search Level by:</p>
+                            <select id="selectionBox" style="display:inline-block; margin-top:16px">
+                                <option value="levelName">Level</option>
+                                <option value="user">Author</option>
+                            </select>
+                        </div>
+                        <form style="display:inline-block" onsubmit="return false">      
+                            <input type="text" id="searchBox" name="levelSearch" style="width:50%" placeholder="Search Levels">
+                            <input type="submit" id="submitSearch" value="Search" onclick="searchLevels()">
                         </form>
                     </td>
                 </tr>
@@ -138,22 +145,16 @@
         </div>
 
         <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
-        <div id="editor" style="display:none">
-            <div id="gameDiv" style=" width: 720px; height: 480px; overflow:scroll;   margin:20px; float:left">
+        <div id="editor">
+            <div id="gameDiv" style=" display: inline-block; width: 720px; height: 480px; overflow:scroll; text-align: center; vertical-align:top; margin-top: 25px;">
                 <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
             </div>
-            <div id="side" class=editor style="margin:20px; width:auto; float:right">
+            <div id="side">
                 <div id='buttons' style="margin:5px">
                     <img src='resources/menus/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
                     <img src='resources/menus/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
                     <img src='resources/menus/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
                 </div>
-
-
-
-
-
-
 
                 <hr noshade>
 
@@ -191,6 +192,14 @@
 
                     <tr>
                         <td>
+                            <h5>Gravity:</h5>
+                            <input type="range" name="points" min="5" max="15" oninput="setBackground(this.value)" ">
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
                             <h5>Map Width:</h5>
                             <input id="mapW" type="number" name="width" min="0" max=""> <!–– Set Max ––>
                         </td>
@@ -221,13 +230,6 @@
 
                     <tr>
                         <td>
-                            <h5>Gravity:</h5>
-                            <input type="range" name="points" min="0" max="5" oninput="setBackground(this.value)" ">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
                             <h5>Moveset:</h5>
                             <input type="number" name="move" min="0" max=""> <!–– Set Max ––>
                             <br>
@@ -244,8 +246,9 @@
 
 
                 </table>
-                <input type="button" id="Load" value="Load">
+                <input type="button" name="Load" value="Load" onclick="loadLevel()">
                 <input type="button" id ="Save" value="Save">
+                <input type="button" value="Back" onclick="back()">
             </div>
         </div>
     </div>
@@ -268,9 +271,8 @@
         var sizeSettings = [1280, 720];
 
 
-        offLinePlay.onclick = function () {
-            document.getElementById("signDiv").style.display = "none";
-            loadCurretUser();
+        document.getElementById("skipSign").onclick = function () {
+            playNewGame();
         }
 
         function playOptions() {
@@ -289,10 +291,16 @@
             }
         }
 
-        function levelBrowser() {
-            document.getElementById("mainMenu").style.display = "none";
+        function levelBrowser(fromEditor) {
             document.getElementById("levelBrowser").style.display = "table-cell";
-            loadLevelsList();
+            if (fromEditor) {
+                document.getElementById("levelEditorOptions").style.display = "none";
+                loadLevelsList({ author: getUsername() }, 'level');
+            }
+            else {
+                document.getElementById("mainMenu").style.display = "none";
+                loadLevelsList(null, 'level');
+            }
         }
 
         function levelEditorOptions() {
@@ -312,6 +320,7 @@
             document.getElementById("settings").style.display = "none";
             document.getElementById("gameDiv").style.display = "none";
             document.getElementById("editor").style.display = "none";
+            document.getElementById("signDiv").style.display = "none";
             document.getElementById("mainMenu").style.display = "table-cell";
         }
 
@@ -396,7 +405,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json","moveSets.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -414,58 +423,10 @@
             }
         }
 
-        var loadLevelsList = function () {
-            refreshLevelsTable();
-            var levelsTable = document.getElementById('levelTable');
-            loadDB('level', function (data) {
-                var levels;
-
-                if (data == null) {
-                    return;
-                }
-
-                if (data.constructor === Array) {
-                    levels = data;
-                }
-                else {
-                    levels = [data];
-                }
-
-                for (var level of levels) {
-                    var levelName = level.levelName;
-                    var author = level.user;
-                    var dateCreated = level.dateCreated;
-
-                    var levelRow = levelsTable.insertRow(levelsTable.rows.length);
-                    levelRow.setAttribute("id", level.id);
-
-
-                    var levelNameCell = levelRow.insertCell(0);
-                    levelNameCell.innerHTML = levelName;
-
-                    var authorCell = levelRow.insertCell(1);
-                    authorCell.innerHTML = author;
-
-                    var dateCreatedCell = levelRow.insertCell(2);
-                    dateCreatedCell.innerHTML = dateCreated;
-
-
-                    levelRow.onclick = function () {
-                        console.log(this.getAttribute("id"))
-                        loadDBFromID("level", this.getAttribute("id"), function (response) {
-                            toLevel();
-                            overWorld.toMapFromDB(response);
-                        });
-                    }
-                }
-            });
-        }
-
-        var searchLevel = function () {
-            var input = document.getElementById('searchLevelBox').value;
+        var loadLevelsList = function (query, collection) {
             var levelsTable = document.getElementById('levelTable');
 
-            loadDBFromLevelName(input, function (data) {
+            loadDBFromQuery(query, collection, function (data) {
                 refreshLevelsTable();
                 var levels;
 
@@ -501,22 +462,35 @@
 
                     levelRow.onclick = function () {
                         console.log(this.getAttribute("id"))
-                        loadDBFromID("level", this.getAttribute("id"), function (response) {
+                        loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                             console.log("rfhdyjbfhyujfrjn");
                             console.log(response);
                             toLevel();
-                            overWorld.toMapFromDB(response);
+                            overWorld.toMapFromDB(response[0]);
                         });
                     }
                 }
             });
         }
 
+        var searchLevels = function () {
+            var selectionBox = document.getElementById("selectionBox");
+            var selectedValue = selectionBox.options[selectionBox.selectedIndex].value;
+
+            var searchBox = document.getElementById("searchBox");
+            var searchquery = { [selectedValue]: searchBox.value };
+
+            console.log(searchquery.userName);
+            
+            loadLevelsList({ [selectedValue]: searchBox.value }, "level");
+        }
+           
+
         var map;
         //achievement array
         function loadUserDatabase() {
             console.log("Inside loadUserDatabase " + playerUsername);
-            loadDBFromID('player', playerUsername, function (response) {
+            loadDBFromQuery({ id: playerUsername }, 'player', function (response) {
                 console.log("Inside loaduserdatabase " + JSON.stringify(response[0]));
                 loadGame(false, response[0]);
             });
@@ -543,7 +517,14 @@
                     loadJSONFile(function (response) {
                         loadWeapons(response);
                     }, resource + x);
+                } else if (x == "moveSets.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            moves[any.id] = any;
+                        }
+                    }, resource + x);
                 }
+
                 else {
                     loadJSONFile(function (response) {
                         loadSprites(response, canvas);
