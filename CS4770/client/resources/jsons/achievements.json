@@ -31,11 +31,12 @@
   {
     "id": 3,
     "name": "Kill the shotgun knight",
+    "entId": 401,
     "type": "bossKill",
     "function": {
       "arguments": "e",
       "body": [
-        "console.log(e);",
+        "console.log('for the horde ', this);",
         "map.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();"
       ]

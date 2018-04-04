@@ -90,6 +90,8 @@ class Level {
         this.getPlayer().spawn(this.spawnX, this.spawnY, 2);
         this.player = chars;
         this.time = performance.now();
+
+        this.resizeImage(this.background, canvas, 0, "background");
         loaded = true;
     }
 
@@ -99,17 +101,18 @@ class Level {
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
-        this.background = new Image();
-        this.background.src = any.background;
-        this.sound = new SoundManager(any.music, "music");
-        this.background.onload = this.resizeImage(this.background, canvas, 0, "background");
-
+     
 
         while (container.children.length != 0) {
             container.children[0].remove();
         }
         canvas = create('canvas', 'fg', 0, 0, sizeSettings[0], sizeSettings[1]);
         var background = create('canvas', 'bg', 0, 0, this.width, this.height);
+
+
+        this.background = new Image();
+        this.background.src = any.background;
+        this.sound = new SoundManager(any.music, "music");
 
         this.container = canvas;
         changeCanvas(canvas, this);
@@ -271,11 +274,11 @@ class Level {
     setSprite(block, background) {
         getSprite(block.Id).drawBackground(block.X, block.Y, background);
     }
+    
 
 
 
     doTick() {
-        this.resizeImage(this.background, canvas, 0, "background");
         this.drawMap();
         for (var popUp of this.popUps) {
             popUp.doPopUp();
@@ -480,26 +483,32 @@ class Museum extends Level {
         super.height = sizeSettings[1];
         super.spawnX = 50;
         super.spawnY = 550;
-        super.loadCharacter(character);
-        super.getPlayer().float = true;
-        super.getPlayer().jump = 0;
-        super.getPlayer().currentWeapon = null;
-        super.getPlayer().weapons = [];
-        super.getPlayer().healthBar = null;
 
 
-        super.image = new Image();
-        super.background = new Image();
-
+        console.log(this);
 
         var temp = new Image();
         temp.src = "../resources/Backgrounds/museum.png";
         var m = this;
 
+        var obj = this;
         temp.onload = function () {
-            m.resizeImage(this, canvas, 0, "background");
+            m.resizeImage(temp, canvas, 0, "background");
+
+
+
+            obj.loadCharacter(character);
+            obj.getPlayer().float = true;
+            obj.getPlayer().jump = 0;
+            obj.getPlayer().currentWeapon = null;
+            obj.getPlayer().weapons = [];
+            obj.getPlayer().healthBar = null;
+
 
         }
+        this.image = new Image();
+        this.background = new Image();
+
         this.loadArtifacts();
 
     }
