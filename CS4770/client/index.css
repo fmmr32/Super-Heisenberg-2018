@@ -95,8 +95,6 @@ tbody tr:hover {
 }
 
 
-
-
 .menuContainer {
     display: table;
     height: 100%;
@@ -106,11 +104,17 @@ tbody tr:hover {
     position: absolute;
 }
 
-.side {
+#editor {
     display: none;
-    float: right;
-    margin-top: 10px;
-    height: 720px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#side {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 25px;
+    height: auto;
     width: 410px;
     border: 3px solid black;
     border-collapse: collapse;
@@ -228,10 +232,12 @@ table#inputs tr {
 
 h5 {
     float: left;
+    padding-bottom: 0px;
+    margin-bottom: 3px;
 }
 
 #inputs input, select {
-    margin-top: 25px;
+    margin-top: 20px;
     margin-right: 5px;
     float: right;
 }
@@ -314,3 +320,4 @@ input, textarea {
     margin-top: 20px;
     margin-left: 22px;
 }
+
