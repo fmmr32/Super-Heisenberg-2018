@@ -520,7 +520,6 @@
                 } else if (x == "moveSets.json") {
                     loadJSONFile(function (response) {
                         for (var any of JSON.parse(response)) {
-                            console.log(any);
                             moves[any.id] = any;
                         }
                     }, resource + x);
