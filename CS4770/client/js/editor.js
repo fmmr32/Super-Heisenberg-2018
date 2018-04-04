@@ -263,8 +263,8 @@ class Editor {
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
 
-        var x = Math.floor((event.clientX + divOffsetX / 2 + scrollX - this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + divOffsetY / 2 + scrollY - this.ch) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
         var k;
         var type = null;
 
@@ -272,15 +272,15 @@ class Editor {
 
 
         for (k = 0; k < this.map.content.length; k++) {
-            if (this.map.content[k].posX == x && this.map.content[k].posY == y) { type = "content"; break; }
+            if (this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
         }
         for (k = 0; k < this.map.entities.length; k++) {
             if (type != null) { break; }
-            if (this.map.entities[k].posX == x && this.map.entities[k].posY == y) { type = "entities"; }
+            if (this.map.entities[k].X == x && this.map.entities[k].Y == y) { type = "entities"; }
         }
         for (k = 0; k < this.map.creatures.length; k++) {
             if (type != null) { break; }
-            if (this.map.creatures[k].posX == x && this.map.creatures[k].posY == y) { type = "creatures"; break; }
+            if (this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
         }
 
 
@@ -313,8 +313,8 @@ class Editor {
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
 
-        var x = Math.floor((event.clientX + divOffsetX  + scrollX - this.cw) / this.cw) * this.cw;
-        var y = Math.floor((event.clientY + divOffsetY  + scrollY - this.ch) / this.ch) * this.ch;
+        var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
 
         getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
         this.removeTile();
@@ -452,7 +452,7 @@ class Editor {
             }
             //adding a new row
             if (column == 0) {
-                row = table.insertRow(table.rows.length);
+                row = table.insertRow(0);
             }
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
@@ -487,7 +487,7 @@ class Editor {
             }
             //adding a new row
             if (column == 0) {
-                row = table.insertRow(table.rows.length);
+                row = table.insertRow(0);
             }
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
@@ -516,12 +516,12 @@ class Editor {
         for (var id of sprites) {
             var sprite = id[1];
             //just making sure we are only doing the tiles
-            if (sprite.id < 669 || sprite.id > 900) {
+            if (sprite.id < 669 || sprite.id > 997) {
                 continue;
             }
             //adding a new row
             if (column == 0) {
-                row = table.insertRow(table.rows.length);
+                row = table.insertRow(0);
             }
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
@@ -551,21 +551,21 @@ class Editor {
         for (k = 0; k < this.map.content.length; k++) {
 
             drawId = this.map.content[k].id;
-            x = this.map.content[k].posX;
-            y = this.map.content[k].posY;
+            x = this.map.content[k].blockX;
+            y = this.map.content[k].blockY;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
         }
         for (k = 0; k < this.map.entities.length; k++) {
 
             drawId = this.map.entities[k].id;
-            x = this.map.entities[k].posX;
-            y = this.map.entities[k].posY;
+            x = this.map.entities[k].X;
+            y = this.map.entities[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
         }
         for (k = 0; k < this.map.creatures.length; k++) {
             drawId = this.map.creatures[k].id;
-            x = this.map.creatures[k].posX;
-            y = this.map.creatures[k].posY;
+            x = this.map.creatures[k].X;
+            y = this.map.creatures[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
         }
 
