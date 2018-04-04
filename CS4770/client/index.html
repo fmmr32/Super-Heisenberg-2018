@@ -378,7 +378,7 @@
             var selection = document.getElementById("music");
             getFiles(function (data) {
                 for (var any of data) {
-                    any = any.replace(".png", "");
+                    any = any.replace(".WAV", "");
                     var opt = document.createElement('option');
                     opt.value = any;
                     opt.innerHTML = any;
