@@ -328,7 +328,7 @@
 
                 </table>
                 <input type="button" id="Overwrite" value="Overwrite" style="display:none">
-                <input type="button" id="Save" value="Save as New">
+                <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
             </div>
 
@@ -429,6 +429,7 @@
         function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
             if (fromMenu) {
+                document.getElementById("Save").value = "Save";
                 document.getElementById("editor").style.display = "table-cell";
                 var canvas = document.getElementById("canvas")
                 elemt = new Editor(canvas);

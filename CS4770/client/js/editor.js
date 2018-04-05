@@ -144,22 +144,32 @@ class Editor {
 
         document.getElementById("mapW").onchange = function () {
             var w = document.getElementById("mapW").value;
-            editor.bw = w;
-            editor.canvas.width = w;
-            console.log("Changing Width...");
-            editor.drawBoard();
-            editor.map.width = w;
-            editor.draw(this.map);
+            if (w < 30000) {
+                editor.bw = w;
+                editor.canvas.width = w;
+                console.log("Changing Width...");
+                editor.drawBoard();
+                editor.map.width = w;
+                editor.draw(this.map);
+            }
+            else {
+                alert("Please select a value below 30,000 for the width of the map");
+            }
         }
 
         document.getElementById("mapH").onchange = function () {
             var h = document.getElementById("mapH").value;
-            editor.bh = h;
-            editor.canvas.height = h;
-            console.log("Changing Height...");
-            editor.drawBoard();
-            editor.map.height = h;
-            editor.draw(this.map);
+            if (h < 5000) {
+                editor.bh = h;
+                editor.canvas.height = h;
+                console.log("Changing Height...");
+                editor.drawBoard();
+                editor.map.height = h;
+                editor.draw(this.map);
+            }
+            else {
+                alert("Please select a value below 5000 for the height of the map");
+            }
         }
 
         document.getElementById("Y").onchange = function () {
@@ -192,6 +202,9 @@ class Editor {
                     editor.map._id = JSON.stringify(window.performance.now());
                     editor.map.id = JSON.stringify(window.performance.now());
                     writeDB("level", editor.map);
+
+                    //back();
+                    //alert("Your level has been saved!");
                 }
                 else {
                     alert("New level must have a different name than any levels you've published previously.")
@@ -446,13 +459,7 @@ class Editor {
         ent.style.display = show ? "" : "none";
     }
 
-    clearCanvas() {
-        var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
-        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-
-    checkPosition(x, y) {
+checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
         this.showInteracts(false);
@@ -488,7 +495,7 @@ class Editor {
         return [type, k];
     }
 
-    removeTile() {
+removeTile() {
         var context = this.canvas.getContext("2d");
 
         var scrollPos = document.getElementById("editor").children[0];
@@ -973,6 +980,7 @@ class Editor {
 
                 levelRow.onclick = function () {
                     document.getElementById("Overwrite").style.display = "inline-block";
+                    document.getElementById("Save").value = "Save As New";
                     console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
