@@ -286,6 +286,7 @@ class Editor {
                 options.type = "meta";
                 options.meta = { "passThrough": this.checked };
                 options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
                 elemt.map.interacts[elemt.select[1]].action.push(options);
             }
         }
@@ -443,6 +444,9 @@ class Editor {
         block1.style.display = show ? "" : "none";
         var block2 = document.getElementById("BlockMeta2");
         block2.style.display = show ? "" : "none";
+
+        var block = [block0, block1, block2];
+
         if (show) {
             var data = this.select;
             if (this.select[0] == "interacts") {
@@ -590,10 +594,13 @@ class Editor {
                         options.type = this.select[2];
                         if (this.select[3] == 800) {
                             options.entType = "Entity";
+                            getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         } else if (this.select[3] < 400) {
                             options.entType = "Tile";
+                            getSprite(1002).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         } else {
                             options.entType = "EntityCreature";
+                            getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         }
                         options.id = this.select[3];
                         options.amount = 1; //change this later maybe
