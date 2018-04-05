@@ -172,6 +172,7 @@ class Editor {
         document.getElementById("LoadLevel").onclick = function () {
             document.getElementById("levelBrowser").style.display = "table-cell";
             document.getElementById("selectionBox").selectedIndex = 0;
+            document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
             editor.loadLevelsForEditor({ user: getUsername }, "level");
             //  console.log(newMap);
