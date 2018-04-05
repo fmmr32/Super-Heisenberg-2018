@@ -37,6 +37,10 @@
                 <img src='resources/menus/Options.png' id='Options' onclick='options()'>
             </div>
 
+            <div id='logoutDiv'>
+                <img src='resources/menus/logout.png' id='Logout' onclick='logout()'>
+            </div>
+
         </div>
 
 
@@ -291,7 +295,7 @@
 
         document.getElementById("skipSign").onclick = function () {
             playNewGame();
-        }
+        }   
 
         function playOptions() {
             document.getElementById("mainMenu").style.display = "none";
@@ -325,6 +329,11 @@
         function options() {
             document.getElementById("mainMenu").style.display = "none";
             document.getElementById("settings").style.display = "table-cell";
+        }
+
+        var logout = function () {
+            document.getElementById("mainMenu").style.display = "none";
+            signDiv.style.display = 'table-cell';
         }
 
         function back() {
