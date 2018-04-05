@@ -161,6 +161,7 @@ class Editor {
 
         document.getElementById("Load").onclick = function () {
             editor.loadLevelsForEditor({ user: getUsername }, "level");
+            document.getElementById("editor").style.display = "none";
             document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("levelBrowser").style.display = "table-cell";
@@ -464,7 +465,7 @@ class Editor {
 
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
-
+        console.log(this.map);
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
@@ -769,20 +770,20 @@ class Editor {
             drawId = this.map.content[k].blockId;
             x = this.map.content[k].blockX;
             y = this.map.content[k].blockY;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
         for (k = 0; k < this.map.entities.length; k++) {
 
             drawId = this.map.entities[k].Id;
             x = this.map.entities[k].X;
             y = this.map.entities[k].Y;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas,this.cw,this.ch);
         }
         for (k = 0; k < this.map.creatures.length; k++) {
             drawId = this.map.creatures[k].Id;
             x = this.map.creatures[k].X;
             y = this.map.creatures[k].Y;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
 
     }
@@ -828,18 +829,20 @@ class Editor {
                     console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
-                        editor.map = response[0];
+                        elemt.map = temp;
                         console.log(response);
-                        console.log(editor.map);
+                        console.log(elemt.map);
                         var user = getUsername();
 
                         if (temp.user == user) {
                             console.log("loading...");
                            // console.log(this.map);
-                            overWorld.toMapFromDB(editor.map);
-                            toLevel();
+                           // overWorld.toMapFromDB(editor.map);
+                          //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
-                            document.getElementById("editor").style.display = "none";
+                            document.getElementById("editor").style.display = "table-cell";
+                            elemt.draw(elemt.map);
+
                             //loadMap();
                         }
                         else {
