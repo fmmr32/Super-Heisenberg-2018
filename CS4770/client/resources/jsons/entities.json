@@ -209,7 +209,7 @@
     "offSetPX": 3,
     "complex": {
       "speed": 3,
-      "moveSet": 1,
+      "moveSet": 0,
       "hp": 10,
       "weapon": [ 1 ],
       "leftHand": [ -20, -3 ],

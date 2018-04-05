@@ -105,7 +105,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="selectionBoxDiv"style="display:inline-block">
+                        <div id="selectionBoxDiv" style="display:inline-block">
                             <p style="display:inline-block; margin-right: 5px; margin-bottom:0px">Search Level by:</p>
                             <select id="selectionBox" style="display:inline-block; margin-top:16px">
                                 <option value="levelName">Level</option>
@@ -192,8 +192,30 @@
                             <input type="range" name="points" min="5" max="15" oninput="elemt.setGravity(this.value)">
                         </td>
                     </tr>
+                    <tr id="MoveSets" style="display:none">
+                        <td>
+                            <h5>MoveSet</h5>
+                            <select id="MoveSetsDropdown"></select>
+                        </td>
+                    </tr>
+                    <tr id="EntityAmount" style="display:none">
+                        <td>
+                            <h5>Amount</h5>
+                            <input id="entAmount" type="number" name="width" min="0" max=""> <!–– Set Max ––>
+                        </td>
 
-
+                    </tr>
+                    <tr id="BlockMeta" style="display:none">
+                        <td>
+                            <h5>Tile Properties</h5>
+                            <input type="checkbox" id="Ricochet" value="ricochet" />
+                            <label for="Ricochet" class="tile-label">Ricochet</label>
+                            <input type="checkbox" id="Ice" value="ice" />
+                            <label for="Ice" class="tile-label">Ice</label>
+                            <input type="checkbox" id="PassThrough" value="passThrough" />
+                            <label for="PassThrough" class="tile-label">PassThrough</label>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <h5>Map Width:</h5>
@@ -336,7 +358,7 @@
 
         function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
-            if (fromMenu) {  
+            if (fromMenu) {
                 document.getElementById("editor").style.display = "table-cell";
                 var canvas = document.getElementById("canvas")
                 elemt = new Editor(canvas);
@@ -375,7 +397,7 @@
             }, "Backgrounds");
         }
 
-     
+
         function populateMusic() {
             var selection = document.getElementById("music");
             getFiles(function (data) {
@@ -390,7 +412,7 @@
         }
         populateBackground();
         populateMusic();
- 
+
 
         var canvas;
         var container = document.getElementById("gameDiv");
@@ -648,7 +670,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-            //window.onload = newLevel();
+                //window.onload = newLevel();
     </script>
 
 

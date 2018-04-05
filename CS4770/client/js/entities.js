@@ -335,7 +335,9 @@ class Entity {
         if (options.animation != undefined) {
             this.animation = options.animation;
         }
-
+        if (options.amount != undefined) {
+            this.amount = options.amount;
+        }
     }
 
 
@@ -365,7 +367,7 @@ class Entity {
 
         //makes sure the entity is drawn at the correct place
         X += this.level.offSetX;
-
+        Y += this.level.offSetY;
 
 
 
@@ -579,7 +581,11 @@ class EntityMovable extends Entity {
                                 this.level.exitMap(true);
                             } else {
                                 //picking up a coin?
-                                this.money++;
+                                if (collidingEntity.amount != undefined) {
+                                    this.money += collidingEntity.amount;
+                                } else {
+                                    this.money++;
+                                }
                                 this.level.removeEntity(collidingEntity);
                                 var e = new CustomEvent("collection");
                                 document.dispatchEvent(e);
