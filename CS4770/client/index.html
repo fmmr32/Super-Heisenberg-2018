@@ -150,8 +150,92 @@
 
         <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
         <div id="editor">
-            <div id="gameDiv" style=" display: inline-block; width: 720px; height: 480px; overflow:scroll; text-align: center; vertical-align:top; margin-top: 25px;">
-                <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
+            <div style=" display: inline-block; width: 720px; height: 480px;  text-align: center; vertical-align:top; margin-top: 25px;">
+                <div id="gameDiv" style="overflow:scroll">
+                    <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
+                </div>
+                <div style="display:inline-block; float:right">
+                    <table style="width:250px">
+                        <tr id="MoveSets" style="display:none">
+                            <td>
+                                <h5>MoveSet</h5>
+                            </td>
+                            <td>
+                                <select id="MoveSetsDropdown"></select>
+                            </td>
+                        </tr>
+                        <tr id="EntityAmount" style="display:none">
+                            <td>
+                                <h5>Amount</h5>
+                            </td>
+                            <td>
+                                <input id="entAmount" type="number" name="width" min="0" max=""> <!–– Set Max ––>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+                <div style="display:inline-block; float:right">
+                    <table style="width:250px">
+                        <tr id="Interacts" style="display:none">
+                            <td>
+                                <h5>Interacts</h5>
+                            </td>
+                            <td>
+                                <select id="InteractType">
+                                    <option value="spawn">spawn</option>
+                                    <option value="meta">meta</option>
+                                    <option value="damage">damage</option>
+                                    <option value="exit">exit</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="InteractRepeat" value="InteractRepeat" />
+                                <label for="InteractRepeat" class="tile-label">Repeats</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="display:inline-block; float:right">
+                    <table style="width:250px">
+                        
+                        
+                        <tr id="BlockMeta0" style="display:none">
+                            <td>
+
+                            </td>
+                            <td>
+                                <input type="checkbox" id="Ricochet" value="ricochet" />
+                            </td>
+                            <td>
+                                <label for="Ricochet" class="tile-label">Ricochet</label>
+                            </td>
+                        </tr>
+                        <tr id="BlockMeta1" style="display:none">
+                            <td>
+                                <h5>Tile Properties</h5>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="Ice" value="ice" />
+                            </td>
+                            <td>
+                                <label for="Ice" class="tile-label">Ice</label>
+                            </td>
+                        </tr>
+                        <tr id="BlockMeta2" style="display:none">
+                            <td>
+
+                            </td>
+                            <td>
+                                <input type="checkbox" id="PassThrough" value="passThrough" />
+                            </td>
+                            <td>
+                                <label for="PassThrough" class="tile-label">PassThrough</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
             <div id="side">
                 <div id='buttons' style="margin:5px">
@@ -196,43 +280,7 @@
                             <input type="range" name="points" min="5" max="15" oninput="elemt.setGravity(this.value)">
                         </td>
                     </tr>
-                    <tr id="MoveSets" style="display:none">
-                        <td>
-                            <h5>MoveSet</h5>
-                            <select id="MoveSetsDropdown"></select>
-                        </td>
-                    </tr>
-                    <tr id="EntityAmount" style="display:none">
-                        <td>
-                            <h5>Amount</h5>
-                            <input id="entAmount" type="number" name="width" min="0" max=""> <!–– Set Max ––>
-                        </td>
 
-                    </tr>
-                    <tr id="Interacts" style="display:none">
-                        <td>
-                            <h5>Interacts</h5>
-                            <select id="InteractType">
-                                <option value="spawn">spawn</option>
-                                <option value="meta">meta</option>
-                                <option value="damage">damage</option>
-                                <option value="exit">exit</option>
-                            </select>
-                            <input type="checkbox" id="InteractRepeat" value="InteractRepeat" />
-                            <label for="InteractRepeat" class="tile-label">Repeats</label>
-                        </td>
-                    </tr>
-                    <tr id="BlockMeta" style="display:none">
-                        <td>
-                            <h5>Tile Properties</h5>
-                            <input type="checkbox" id="Ricochet" value="ricochet" />
-                            <label for="Ricochet" class="tile-label">Ricochet</label>
-                            <input type="checkbox" id="Ice" value="ice" />
-                            <label for="Ice" class="tile-label">Ice</label>
-                            <input type="checkbox" id="PassThrough" value="passThrough" />
-                            <label for="PassThrough" class="tile-label">PassThrough</label>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <h5>Map Width:</h5>
@@ -285,6 +333,8 @@
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
             </div>
+
+
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -308,7 +358,7 @@
 
         document.getElementById("skipSign").onclick = function () {
             playNewGame();
-        }   
+        }
 
         function playOptions() {
             document.getElementById("mainMenu").style.display = "none";
@@ -692,7 +742,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-                //window.onload = newLevel();
+                            //window.onload = newLevel();
     </script>
 
 
