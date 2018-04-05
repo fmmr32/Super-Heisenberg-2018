@@ -10,6 +10,7 @@ class Editor {
         this.bh = canvas.height;
 
 
+
         this.selection = 1000;
         this.editor = null;
         //Selection var for tile placement.
@@ -246,6 +247,9 @@ class Editor {
     }
 
     setup() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawBoard();
         this.setUpDocument();
         this.loadTiles(this);
@@ -842,6 +846,12 @@ class Editor {
                           //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
                             document.getElementById("editor").style.display = "table-cell";
+                            var canvas = document.getElementById('canvas');
+                            var context = canvas.getContext('2d');
+                            context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
+                            elemt.drawBoard();
+                        
+
                             elemt.draw(elemt.map);
 
                             //loadMap();
