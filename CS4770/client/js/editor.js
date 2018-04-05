@@ -105,7 +105,6 @@ class Editor {
         }
         context.strokeStyle = "black";
         context.stroke();
-        this.draw(this.map);
     }
 
     setUpDocument() {
