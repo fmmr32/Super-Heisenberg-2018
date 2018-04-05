@@ -469,7 +469,7 @@ class Editor {
         return [type, k];
     }
 
-    removeTile() {
+removeTile() {
         var context = this.canvas.getContext("2d");
 
         var scrollPos = document.getElementById("editor").children[0];
@@ -511,9 +511,20 @@ class Editor {
                 break;
             case "interacts":
                 this.map.interacts.splice(k, 1);
+                this.clearCanvas();
+                this.draw(this.map);
                 break;
+
+            case "action":
+                var j = data[2];
+                console.log(this.map.interacts[k].action[j]);
+                console.log(this.map.interacts[k].action);
+                this.map.interacts[k].action.splice(j, 1);
+                console.log(this.map.interacts[k].action);
         }
+        
         this.drawBoard();
+        
     }
 
     placeTile() {
