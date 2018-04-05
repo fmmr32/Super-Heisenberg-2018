@@ -446,7 +446,7 @@ class Editor {
         ent.style.display = show ? "" : "none";
     }
 
-    checkPosition(x, y) {
+checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
         this.showInteracts(false);
@@ -456,6 +456,7 @@ class Editor {
         }
         var type = null;
         var k = 0;
+        var j = 0;
         for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
             //check for the tiles
             if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
@@ -465,6 +466,18 @@ class Editor {
             if (k < this.map.creatures.length && this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
             //check for the interacts
             if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { this.select = []; type = "interacts"; break; }
+            //check for the interactions
+           // var temp = this.map.interacts[k]
+           // if (temp != "undefined") { 
+           //     if (k < temp.action.length) {
+           //         for (var j = 0; j < temp.length; j++) {
+           //             if (this.map.interacts[k].action[j].X == x && this.map.interacts[k].action[j].Y == y) {
+           //                 type = "action";
+           //                 return [type, k, j];
+           //             }
+           //         }
+           //     }
+           // }
         }
         return [type, k];
     }
