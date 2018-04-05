@@ -152,6 +152,7 @@ tbody tr:hover {
 }
 
 #top {
+    padding-top: 50px;
     padding-bottom: 50px;
 }
 
@@ -332,6 +333,10 @@ input#Overwrite {
 }
 
 input#Save {
+    width: 25%
+}
+
+input#SaveAsNew {
     width: 25%
 }
 
