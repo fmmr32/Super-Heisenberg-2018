@@ -1,5 +1,50 @@
 [
   {
+    "id": 1004,
+    "name": "C",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 32,
+    "startY": 32,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 1003,
+    "name": "M",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 0,
+    "startY": 32,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 1002,
+    "name": "T",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 32,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 1001,
+    "name": "E",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+
+  {
     "id": 1000,
     "name": "selection",
     "source": "../resources/menus/select.png",

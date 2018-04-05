@@ -10,6 +10,7 @@ class Editor {
         this.bh = canvas.height;
 
 
+
         this.selection = 1000;
         this.editor = null;
         //Selection var for tile placement.
@@ -104,7 +105,6 @@ class Editor {
         }
         context.strokeStyle = "black";
         context.stroke();
-        this.draw(this.map);
     }
 
     setUpDocument() {
@@ -292,6 +292,7 @@ class Editor {
                 options.type = "meta";
                 options.meta = { "passThrough": this.checked };
                 options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
                 elemt.map.interacts[elemt.select[1]].action.push(options);
             }
         }
@@ -321,8 +322,6 @@ class Editor {
     }
 
     setup() {
-        this.initMap();
-        this.drawBackground();
         this.drawBoard();
         this.setUpDocument();
         this.loadTiles(this);
@@ -421,7 +420,7 @@ class Editor {
         var row = document.getElementById("MoveSets");
         row.style.display = show ? "" : "none";
         if (show) {
-            var dropdown = row.children[0].children[1];
+            var dropdown = row.children[1].children[0];
             if (dropdown.children.length == 0) {
                 for (var mov of moves) {
                     var opt = document.createElement('option');
@@ -589,10 +588,13 @@ class Editor {
                         options.type = this.select[2];
                         if (this.select[3] == 800) {
                             options.entType = "Entity";
+                            getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         } else if (this.select[3] < 400) {
                             options.entType = "Tile";
+                            getSprite(1002).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         } else {
                             options.entType = "EntityCreature";
+                            getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         }
                         options.id = this.select[3];
                         options.amount = 1; //change this later maybe
@@ -968,6 +970,12 @@ class Editor {
                           //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
                             document.getElementById("editor").style.display = "table-cell";
+                            var canvas = document.getElementById('canvas');
+                            var context = canvas.getContext('2d');
+                            context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
+                            elemt.drawBoard();
+                        
+
                             elemt.draw(elemt.map);
 
                             //loadMap();
