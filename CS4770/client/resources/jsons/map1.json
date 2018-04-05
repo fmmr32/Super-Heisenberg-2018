@@ -53,12 +53,6 @@
       "action": [
         {
           "x": 582,
-          "y": 328,
-          "type": "meta",
-          "meta": { "passThrough": true }
-        },
-        {
-          "x": 582,
           "y": 300,
           "type": "spawn",
           "id": 800,
