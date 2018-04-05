@@ -21,6 +21,10 @@ class Block {
     deleteMeta(key) {
         delete this.meta[key];
     }
+    toJSON() {
+        var options = { blockId: this.Id, blockX: this.X, blockY: this.Y, meta: this.meta };
+        return JSON.stringify(options);
+    }
 
 }
 
@@ -179,6 +183,9 @@ class Level {
             options.y = ent.Y;
             options.level = this;
             options.sprite = [getSprite(id)];
+            if (ent.amount != undefined) {
+                options.amount = ent.amount;
+            }
             //loading the entity animation
 
             options.animation = Animation.loadAnimation(id);
@@ -187,7 +194,6 @@ class Level {
     }
 
     loadArtifact(artifact) {
-        console.log(artifact);
         var options = {};
         options.x = artifact.x;
         options.y = artifact.y;
@@ -366,11 +372,13 @@ class Level {
     }
 
     isOOB(x, y) {
+        
         if (x > this.width) {
             return 1;
         } else if (x < 2) {
             return 2;
         } else if (y > this.height || y < -1) {
+            console.log(x, y);
             return 3;
         } else {
             return 0;
@@ -381,9 +389,14 @@ class Level {
     drawMap() {
         if (this.getPlayer() != undefined && this.image != undefined) {
             var width = container.clientWidth / 2;
+            var height = container.clientHeight / 2;
+
 
             this.offSetX = width - this.getPlayer().getX() - 32;
             this.offSetX = Math.min(0, this.offSetX);
+
+            this.offSetY = height - this.getPlayer().getY() - 36;
+            this.offSetY = Math.min(0, this.offSetY);
 
             //case for when the map is smaller than the viewport
             var space = container.clientWidth - this.width
@@ -393,7 +406,7 @@ class Level {
             var context = canvas.getContext("2d");
 
             context.drawImage(this.background, 0, 0, this.background.width, this.background.height, this.offSetX, 0, this.background.width, this.background.height);
-            context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, 0, this.width, this.height);
+            context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, this.offSetY, this.width, this.height);
         }
     }
 

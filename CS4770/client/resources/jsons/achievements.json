@@ -13,7 +13,7 @@
         "}"
       ]
     },
-    "text": "YOU HAVE KILLED 1 ENEMY"
+    "text": "You have killed 1 enemy"
   },
   {
     "id": 2,
@@ -26,7 +26,7 @@
         "this.constructPopUp();"
       ]
     },
-    "text": "YOU HAVE PULLED THE LEVER KRONK"
+    "text": "You have pulled the lever Kronk"
   },
   {
     "id": 3,
@@ -36,11 +36,71 @@
     "function": {
       "arguments": "e",
       "body": [
-        "console.log('for the horde ', this);",
+        "if(e.detail == this.entId){",
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();}"
+      ]
+    },
+    "text": "You have killed the Shotgun Knight"
+  },
+  {
+    "id": 4,
+    "name": "Kill Elon Musk",
+    "entId": 402,
+    "type": "bossKill",
+    "function": {
+      "arguments": "e",
+      "body": [
+        "if(e.detail == this.entId){",
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();}"
+      ]
+    },
+    "text": "You have killed Elon Musk"
+  },
+  {
+    "id": 5,
+    "name": "Hoarder",
+    "amount": 100,
+    "type": "collection",
+    "function": {
+      "arguments": "",
+      "body": [
+        "if(map.getPlayer().money >= this.amount){",
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();}"
+      ]
+    },
+    "text": "You have collect 100 Bitcoins!!"
+  },
+  {
+    "id": 6,
+    "name": "trapped",
+    "type": "trap",
+    "function": {
+      "arguments": "",
+      "body": [
         "map.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();"
       ]
     },
-    "text": "You have killed the Shotgun Knight"
+    "text": "You have activated this trap card"
+  },
+  {
+    "id": 7,
+    "name": "You never learn",
+    "type": "trap",
+    "amount": 10,
+    "index": 0,
+    "function": {
+      "arguments": "",
+      "body": [
+        "if(this.index >= this.amount){",
+        "map.getPlayer().awardAchievement(this.id);",
+        "this.constructPopUp();",
+        "}else{this.index++}"
+      ]
+    },
+    "text": "You never learn do you?"
   }
 ]

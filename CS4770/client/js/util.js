@@ -35,7 +35,7 @@ function loadAchievements() {
             var a = new Achievement(ac, map);
             document.addEventListener(a.type, function (e) {
                 for (var a of ach[e.type]) {
-                    a.function();
+                    a.function(e);
                 }
             });
             if (ach[a.type] == undefined) {

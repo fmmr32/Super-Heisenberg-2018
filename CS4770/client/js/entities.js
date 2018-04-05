@@ -335,7 +335,9 @@ class Entity {
         if (options.animation != undefined) {
             this.animation = options.animation;
         }
-
+        if (options.amount != undefined) {
+            this.amount = options.amount;
+        }
     }
 
 
@@ -365,7 +367,7 @@ class Entity {
 
         //makes sure the entity is drawn at the correct place
         X += this.level.offSetX;
-
+        Y += this.level.offSetY;
 
 
 
@@ -571,14 +573,22 @@ class EntityMovable extends Entity {
                                 if (collidingEntity.type == "pressurePlate" || collidingEntity.type == "spike") {
                                     //do stuff with a plate
                                     collidingEntity.flipState(this);
+                                    var e = new CustomEvent("trap");
+                                    document.dispatchEvent(e);
                                 }
                             } else if (collidingEntity instanceof Artifact) {
                                 collidingEntity.handlePickUp(this);
                                 this.level.exitMap(true);
                             } else {
                                 //picking up a coin?
-                                this.money++;
+                                if (collidingEntity.amount != undefined) {
+                                    this.money += collidingEntity.amount;
+                                } else {
+                                    this.money++;
+                                }
                                 this.level.removeEntity(collidingEntity);
+                                var e = new CustomEvent("collection");
+                                document.dispatchEvent(e);
                             }
                         }
                     }
@@ -1012,8 +1022,8 @@ class Boss extends EntityCreature {
         prop.x = this.getX();
         prop.y = this.getY() - this.getHeight();
         this.level.loadArtifact(prop);
-
-        var e = new Event("bossKill", { id: this.sprite.id });
+        var id = this.getSprite().id;
+        var e = new CustomEvent("bossKill", { detail: id });
         document.dispatchEvent(e);
         super.doRespawn(source);
     }

@@ -1,5 +1,16 @@
 [
   {
+    "id": 1000,
+    "name": "selection",
+    "source": "../resources/menus/select.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 225,
+    "height": 225,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
     "id": 999,
     "name": "bullet",
     "source": "../resources/spriteSheets/entities.png",
@@ -198,7 +209,7 @@
     "offSetPX": 3,
     "complex": {
       "speed": 3,
-      "moveSet": 1,
+      "moveSet": 0,
       "hp": 10,
       "weapon": [ 1 ],
       "leftHand": [ -20, -3 ],
