@@ -27,6 +27,8 @@ class Editor {
         this.levelName = "";
         this.map = {};
 
+        this.select = [];
+
         document.addEventListener("mousemove", this.onMouseMove, false);
 
 
@@ -123,6 +125,7 @@ class Editor {
             editor.canvas.width = w;
             console.log("Changing Width...");
             editor.drawBoard();
+            editor.map.width = w;
             editor.draw(this.map);
         }
 
@@ -132,6 +135,7 @@ class Editor {
             editor.canvas.height = h;
             console.log("Changing Height...");
             editor.drawBoard();
+            editor.map.height = h;
             editor.draw(this.map);
         }
 
@@ -174,8 +178,70 @@ class Editor {
             // this.draw(this.map);
 
         }
+
+        //this adds the movesets to a creature
+        document.getElementById("MoveSetsDropdown").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map[elemt.select[0]][elemt.select[1]].moveSet = this.value;
+            } else {
+
+            }
+        }
+
+        document.getElementById("entAmount").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map[elemt.select[0]][elemt.select[1]].amount = parseInt(this.value);
+            } else {
+
+            }
+        }
+
+        document.getElementById("Ricochet").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ricochet", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ricochet": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ricochet": this.checked });
+                }
+            } else {
+
+            }
+        }
+        document.getElementById("Ice").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ice", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = {"ice": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ice": this.checked });
+                }
+            } else {
+
+            }
+        }
+        document.getElementById("PassThrough").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("passThrough", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "passThrough": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "passThrough": this.checked });
+                }
+            } else {
+
+            }
+        }
     }
 
+    hasMeta(type, block) {
+        for (var m of block.meta) {
+            if (m[type] != undefined) {
+                return block.meta.indexOf(m);
+            }
+        }
+        return -1;
+    }
 
     setup() {
         this.drawBoard();
@@ -197,8 +263,8 @@ class Editor {
             gravity: 9.81,
             width: 720,
             height: 480,
-            spawnX: 150,
-            SpawnY: 10,
+            spawnX: 0,
+            spawnY: 0,
             background: "../resources/Backgrounds/museum.png",
             music:"../resources/sounds/music/005_1.wav",
             creatures: [],
@@ -269,7 +335,63 @@ class Editor {
         }
     }
 
+    showMoveSets(show) {
+        var row = document.getElementById("MoveSets")
+        row.style.display = show ? "" : "none";
+        if (show) {
+            var dropdown = row.children[0].children[1];
+            if (dropdown.children.length == 0) {
+                for (var mov of moves) {
+                    var opt = document.createElement('option');
+                    opt.value = mov.id;
+                    opt.innerHTML = mov.name;
+                    dropdown.appendChild(opt);
+                }
+            }
+            if (this.select[0] != "interacts") {
+                var set = this.map[this.select[0]][this.select[1]].moveSet
+                dropdown.selectedIndex = set == undefined ? 0 : set;
+            }
+        }
+    }
+
+    showMeta(show) {
+        var block = document.getElementById("BlockMeta")
+        block.style.display = show ? "" : "none";
+        if (show) {
+            if (this.select[0] != "interacts") {
+                for (var child of block.children[0].children) {
+                    if (child.nodeName == "INPUT") {
+                        if (this.map[this.select[0]][this.select[1]].meta == undefined) {
+                            this.map[this.select[0]][this.select[1]].meta = [];
+                        }
+                        var thing = this.hasMeta(child.value, this.map[this.select[0]][this.select[1]]);
+                        if (thing != -1) {
+                            child.checked = this.map[this.select[0]][this.select[1]].meta[thing][child.value];
+                        } else {
+                            child.checked = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    showInteracts(show) {
+
+    }
+
+    showEntities(show) {
+        var ent = document.getElementById("EntityAmount")
+        ent.style.display = show ? "" : "none";
+    }
+
     checkPosition(x, y) {
+        this.showMoveSets(false);
+        this.showMeta(false);
+        this.showInteracts(false);
+        this.showEntities(false);
+        this.select = [];
         var type = null;
         var k = 0;
         for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
@@ -346,18 +468,23 @@ class Editor {
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
+            console.log(data);
             switch (data[0]) {
                 case "content":
-                    console.log(this.map.content[data[1]]);
+                    this.select = data;
+                    this.showMeta(true)
                     break;
                 case "entities":
-                    console.log(this.map.entities[data[1]]);
+                    this.select = data;
+                    this.showEntities(true);
                     break;
                 case "creatures":
-                    console.log(this.map.creatures[data[1]]);
+                    this.select = data;
+                    this.showMoveSets(true);
                     break;
                 case "interacts":
-                    console.log(this.map.interacts[data[1]]);
+                    this.select = data;
+                    this.showInteracts(true);
                     break;
                 
             }
@@ -441,7 +568,7 @@ class Editor {
 
         }
         else {
-            if (ent.id == 800) {
+            if (ent.Id == 800) {
                 this.map.entities.push(ent);
             } else {
                 this.map.interacts.push(ent);
@@ -639,20 +766,20 @@ class Editor {
 
         for (k = 0; k < this.map.content.length; k++) {
 
-            drawId = this.map.content[k].id;
+            drawId = this.map.content[k].blockId;
             x = this.map.content[k].blockX;
             y = this.map.content[k].blockY;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
         }
         for (k = 0; k < this.map.entities.length; k++) {
 
-            drawId = this.map.entities[k].id;
+            drawId = this.map.entities[k].Id;
             x = this.map.entities[k].X;
             y = this.map.entities[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
         }
         for (k = 0; k < this.map.creatures.length; k++) {
-            drawId = this.map.creatures[k].id;
+            drawId = this.map.creatures[k].Id;
             x = this.map.creatures[k].X;
             y = this.map.creatures[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
