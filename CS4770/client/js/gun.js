@@ -133,7 +133,7 @@ class Weapon {
                 options.level = level;
                 options.damage = this.damage;
                 options.gravity = bullet.gravity;
-                options.impact = this.impact;
+                options.impact = bullet.impact;
                 options.factor = bullet.factor;
                 options.flame = this.name.indexOf("flame") != -1;
                 var angle = bullet.angle;
@@ -231,6 +231,9 @@ class Bullet extends EntityMovable {
             x += collision.modDX;
             //handles what do do when the bullet hits a block
             if (collision.code !== 0) {
+                if (this.impact == "die") {
+                    return true;
+                }
                 var block = this.level.getBlock(x, this.getY());
                 if (block.meta !== null) {
                     if (this.impact == "ricochet" && block.hasMeta("ricochet")) {

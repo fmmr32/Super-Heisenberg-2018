@@ -497,7 +497,7 @@ class EntityMovable extends Entity {
         var toX = Math.max(creaX, creaX + this.getHSpeed());
         var toY = Math.max(creaY, creaY + this.getVSpeed() + this.getHeight() - 1);
 
-
+        
 
         //checking to see if the from x to the new x collides
         for (var x = fromX; x <= toX; x++) {
@@ -510,10 +510,24 @@ class EntityMovable extends Entity {
                         //setting back to the correct spawn x
                         if (this.getVSpeed() == 0) {
                             y = toY + 1;
+                        } else if (this.getVSpeed() > 0) {
+                            // console.log(this.level.getBlock(toX, y - this.getHeight()).Id);
+                            if (this.getHSpeed() == 0) {
+                                this.setY(y - this.getHeight());
+                            } else {
+                                for (var dy = fromY; dy < toY; dy++) {
+                                    if (this.level.getBlock(x, dy).Id != 0) {
+                                        this.setY(dy);
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            this.setY(fromY);
                         }
 
-
-                        this.setY(y - this.getHeight());
+                        
+                       
 
                         this.setHSpeed(0);
                         this.setVSpeed(0);
@@ -715,7 +729,7 @@ class EntityInteractable extends Entity {
                             switch (entType) {
                                 //spawning a creature
                                 case "EntityCreature":
-                                    this.level.loadCreature([{ X: x, Y: y, Id: id }]);
+                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet:action.moveSet }]);
                                     break;
                                 //spawning a basic entity
                                 case "Tile":
@@ -723,7 +737,7 @@ class EntityInteractable extends Entity {
                                     this.level.loadBlock(tile, this.level.Tbackground);
                                     break;
                                 default:
-                                    this.level.loadEntity([{ X: x, Y: y, Id: id }]);
+                                    this.level.loadEntity([{ X: x, Y: y, Id: id}]);
                                     break;
                             }
                         }

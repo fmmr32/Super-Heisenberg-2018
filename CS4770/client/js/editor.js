@@ -180,7 +180,7 @@ class Editor {
             console.log(editor.map);
             if (editor.oldName != editor.levelName) {
                 editor.levelName = editor.oldName;
-            } 
+            }
             writeDB("level", editor.map);
             //overWorld.toMapFromDB(editor.map);
         }
@@ -198,14 +198,14 @@ class Editor {
                 }
             });
         }
-  
+
 
         document.getElementById("LoadLevel").onclick = function () {
             document.getElementById("levelBrowser").style.display = "table-cell";
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
-  
+
             editor.loadLevelsForEditor({ user: getUsername }, "level");
             //  console.log(newMap);
             // this.draw(this.map);
@@ -215,9 +215,9 @@ class Editor {
         //this adds the movesets to a creature
         document.getElementById("MoveSetsDropdown").onchange = function () {
             if (elemt.select[0] != "interacts") {
-                elemt.map[elemt.select[0]][elemt.select[1]].moveSet = this.value;
+                elemt.map[elemt.select[0]][elemt.select[1]].moveSet = parseInt(this.value);
             } else {
-
+                elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].moveSet = parseInt(this.value);
             }
         }
 
@@ -225,23 +225,31 @@ class Editor {
             if (elemt.select[0] != "interacts") {
                 elemt.map[elemt.select[0]][elemt.select[1]].amount = parseInt(this.value);
             } else {
-
+                elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].amount = parseInt(this.value);
             }
         }
+        ////for the damage
+        //document.getElementById("damAmount").onchange = function () {
+        //    if (elemt.select[0] != "interacts") {
+        //        elemt.map[elemt.select[0]][elemt.select[1]].damage = parseInt(this.value);
+        //    } else {
+        //        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].damage = parseInt(this.value);
+        //    }
+        //}
 
         document.getElementById("Ricochet").onchange = function () {
-            elemt.handleMetaChange("ricochet");
+            elemt.handleMetaChange("ricochet", this.checked);
         }
 
         document.getElementById("Ice").onchange = function () {
-            elemt.handleMetaChange("ice");
+            elemt.handleMetaChange("ice", this.checked);
         }
 
         document.getElementById("PassThrough").onchange = function () {
-            elemt.handleMetaChange("passThrough");
+            elemt.handleMetaChange("passThrough", this.checked);
         }
 
-        
+
 
         document.getElementById("InteractType").onchange = function () {
             elemt.select[2] = this.value;
@@ -251,19 +259,29 @@ class Editor {
         }
     }
 
-    handleMetaChange(type) {
+    handleMetaChange(type, checked) {
         //checks if we are doing something with the interacts
         if (this.select[0] != "interacts") {
             var m = this.hasMeta(type, this.map[this.select[0]][this.select[1]]);
             if (m != -1) {
-                this.map[this.select[0]][this.select[1]].meta[m] = { type: this.checked };
+                this.map[this.select[0]][this.select[1]].meta[m] = { type: checked };
             } else {
-                this.map[this.select[0]][this.select[1]].meta.push({ type: this.checked });
+                this.map[this.select[0]][this.select[1]].meta.push({ type: checked });
             }
             //sets the ineract action for this block
         } else {
-            var data = this.select[3];
-            var block = this.map.content[data[1]];
+            var block;
+            if (this.select[3] instanceof Array) {
+                block = this.map.content[this.select[3][1]];
+            } else {
+                var thing = this.hasMeta(type, this.map.interacts[this.select[1]].action[this.select[3]])
+                if (thing != -1) {
+                    this.map.interacts[this.select[1]].action[this.select[3]].meta[thing][type] = checked;
+                } else {
+                    this.map.interacts[this.select[1]].action[this.select[3]].meta.push({ type: checked });
+                }
+                return;
+            }
             var options = {};
             options.x = block.blockX;
             options.y = block.blockY;
@@ -276,6 +294,9 @@ class Editor {
     }
 
     hasMeta(type, block) {
+        if (block.meta == undefined) {
+            return -1;
+        }
         for (var m of block.meta) {
             if (m[type] != undefined) {
                 return block.meta.indexOf(m);
@@ -404,10 +425,14 @@ class Editor {
                 }
             }
             var data = this.select;
+            var set;
             if (this.select[0] == "interacts") {
                 data = this.select[2];
+                set = this.map.interacts[this.select[1]].action[this.select[3]].moveSet;
+            } else {
+                set = this.map[data[0]][data[1]].moveSet
             }
-            var set = this.map[data[0]][data[1]].moveSet
+
             dropdown.selectedIndex = set == undefined ? 0 : set;
         }
     }
@@ -418,18 +443,24 @@ class Editor {
         if (show) {
             var data = this.select;
             if (this.select[0] == "interacts") {
-                data = this.select[3];
+                if (this.select[3] instanceof Array) {
+                    data = this.select[3];
+                }
             }
+            var b = this.map[data[0]][data[1]];
+            if (this.select[0] == "interacts" && !(this.select[3] instanceof Array)) {
+                b = this.map.interacts[this.select[1]].action[this.select[3]];
+            }
+
+
             for (var child of block.children[0].children) {
-                if (child.nodeName == "INPUT") {
-                    if (this.map[data[0]][data[1]].meta == undefined) {
-                        this.map[data[0]][data[1]].meta = [];
-                    }
-                    var thing = this.hasMeta(child.value, this.map[data[0]][data[1]]);
+                if (child.children[1].children[0].nodeName == "INPUT") {
+
+                    var thing = this.hasMeta(child.children[1].children[0].value, b);
                     if (thing != -1) {
-                        child.checked = this.map[data[0]][data[1]].meta[thing][child.value];
+                        child.children[1].children[0].checked = b.meta[thing][child.children[1].children[0].value];
                     } else {
-                        child.checked = false;
+                        child.children[1].children[0].checked = false;
                     }
                 }
             }
@@ -444,19 +475,41 @@ class Editor {
     showEntities(show) {
         var ent = document.getElementById("EntityAmount");
         ent.style.display = show ? "" : "none";
+        if (show) {
+            var a = document.getElementById("entAmount");
+            if (this.select[0] != "interacts") {
+                a.value = this.map.entities[this.select[1]].amount;
+            } else {
+                a.value = this.map.interacts[this.select[1]].action[this.select[3]].amount;
+            }
+        }
     }
+    ////for the damage
+    //showDamage(show) {
+    //    var dam = document.getElementById();
+    //    dam.style.display = show ? "" : "none";
+    //    if (show) {
+    //        var a = document.getElementById();
+    //        if (this.select[0] != "interacts") {
+    //            a.value = this.map.entities[this.select[1]].damage;
+    //        } else {
+    //            a.value = this.map.interacts[this.select[1]].action[this.select[3]].damage;
+    //        }
+    //    }
+    //}
 
     checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
         this.showInteracts(false);
         this.showEntities(false);
+        //  this.showDamage(false);
         if (this.select[0] != "interacts") {
             this.select = [];
         }
         var type = null;
         var k = 0;
-        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
+        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length, this.map.interacts.length); k++) {
             //check for the tiles
             if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
             //check for the entities
@@ -465,6 +518,21 @@ class Editor {
             if (k < this.map.creatures.length && this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
             //check for the interacts
             if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { this.select = []; type = "interacts"; break; }
+            //check for placed interact things
+            if (k < this.map.interacts.length) {
+                var interact = this.map.interacts[k];
+                var br = false;
+                for (var j = 0; j < interact.action.length; j++) {
+                    if (interact.action[j].x == x && interact.action[j].y == y) {
+                        this.select = ["interacts", k, interact.action[j].entType, j];
+                        br = true;
+                        break;
+                    }
+                }
+                if (br) {
+                    break;
+                }
+            }
         }
         return [type, k];
     }
@@ -478,7 +546,7 @@ class Editor {
         var gameDiv = document.getElementById("canvas");
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
-
+        this.select = [];
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
         var data = this.checkPosition(x, y);
@@ -526,11 +594,9 @@ class Editor {
 
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
-        console.log(this.map);
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
-            console.log(data);
             switch (data[0]) {
                 case "content":
                     if (this.select[0] == "interacts" && this.select[2] == "meta") {
@@ -555,24 +621,45 @@ class Editor {
                     this.showInteracts(true);
                     break;
                 default:
-                    if (this.select[0] == "interacts" && this.select[2] == "spawn" && this.select[3] != undefined) {
-                        var options = {};
-                        options.x = x;
-                        options.y = y;
-                        options.type = this.select[2];
-                        if (this.select[3] == 800) {
-                            options.entType = "Entity";
-                            getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
-                        } else if (this.select[3] < 400) {
-                            options.entType = "Tile";
-                            getSprite(1002).drawBackground(x, y, this.canvas, this.cw, this.hw);
-                        } else {
-                            options.entType = "EntityCreature";
-                            getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
+                    if (this.select[0] == "interacts") {
+                        if (this.select[2] == "spawn" && this.select[3] != undefined) {
+                            var options = {};
+                            options.x = x;
+                            options.y = y;
+                            options.type = this.select[2];
+                            if (this.select[3] >= 800 && this.select[3] <= 802) {
+                                options.entType = "Entity";
+                                getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
+                            } else if (this.select[3] < 400 || this.select[3] == 1005) {
+                                options.entType = "Tile";
+                                options.meta = [getSprite(this.select[3]).meta];
+                                getSprite(1002).drawBackground(x, y, this.canvas, this.cw, this.hw);
+                            } else if (this.select[3] < 800) {
+                                options.entType = "EntityCreature";
+                                options.moveSet = 0;
+                                getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
+                            }
+                            options.id = this.select[3];
+                            options.amount = 1; //change this later maybe
+                            this.map[this.select[0]][this.select[1]].action.push(options);
+                        } else if (this.select[2] != undefined && this.select[3] != undefined) {
+                            switch (this.select[2]) {
+                                case "Tile":
+                                    this.showMeta(true);
+                                    break;
+                                case "Entity":
+                                    this.showEntities(true);
+                                    break;
+                                case "EntityCreature":
+                                    this.showMoveSets(true);
+                                    break;
+                                case "interacts":
+                                    this.showInteracts(true);
+                                case "damage":
+                                    this.showDamage(true);
+                                    break;
+                            }
                         }
-                        options.id = this.select[3];
-                        options.amount = 1; //change this later maybe
-                        this.map[this.select[0]][this.select[1]].action.push(options);
                     }
                     break;
             }
@@ -581,7 +668,6 @@ class Editor {
 
         getSprite(this.selection).drawBackground(x, y, this.canvas, this.cw, this.ch);
         this.removeTile();
-
         switch (this.elem) {
             case "Creature":
                 this.placeCreature(x, y);
@@ -637,8 +723,15 @@ class Editor {
         var ent = {
             Id: this.selection,
             X: x,
-            Y: y
+            Y: y,
         }
+        if (ent.Id == 800) {
+            ent.amount = 1;
+        }
+        if (ent.Id == 802) {
+            ent.damage = 1;
+        }
+
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.entities.length; i++) {
 
@@ -648,23 +741,17 @@ class Editor {
             }
         }
         if (taken) {
-            console.log("Overwriting position...");
             this.map.entities.splice(i, 1)
             this.map.entities.push(ent);
-
-
-
         }
         else {
-            if (ent.Id == 800) {
+            if (ent.Id == 800 || ent.Id == 802) {
                 this.map.entities.push(ent);
             } else {
                 ent.repeatable = false;
                 ent.action = [];
                 this.map.interacts.push(ent);
             }
-            console.log("pushing");
-
         }
 
 
@@ -678,7 +765,7 @@ class Editor {
             blockId: this.selection,
             blockX: x,
             blockY: y,
-            meta: [{ "ricochet": true }]
+            meta: [getSprite(this.selection).meta != undefined ? getSprite(this.selection).meta : { "ricochet": true }]
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.content.length; i++) {
@@ -725,6 +812,22 @@ class Editor {
         getSprite(1000).drawBackground(0, 0, smallC, this.cw, this.ch);
         c.appendChild(smallC);
         column++;
+        c = row.insertCell(column);
+        smallC = document.createElement("canvas");
+        smallC.width = this.cw;
+        smallC.height = this.ch;
+        c.setAttribute("id", 1005);
+        c.onclick = function () {//insert whatever function handled the tiles selection here}
+            if (editor.select[0] != "interacts") {
+                editor.selection = parseInt(this.id);
+            } else {
+                editor.select[3] = parseInt(this.id);
+            }
+        }
+        getSprite(1005).drawBackground(0, 0, smallC, this.cw, this.ch);
+        c.appendChild(smallC);
+        column++;
+
         for (var id of sprites) {
             var sprite = id[1];
             //just making sure we are only doing the tiles
@@ -878,7 +981,7 @@ class Editor {
             drawId = this.map.entities[k].Id;
             x = this.map.entities[k].X;
             y = this.map.entities[k].Y;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas,this.cw,this.ch);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
         for (k = 0; k < this.map.creatures.length; k++) {
             drawId = this.map.creatures[k].Id;
@@ -939,16 +1042,16 @@ class Editor {
 
                         if (temp.user == user) {
                             console.log("loading...");
-                           // console.log(this.map);
-                           // overWorld.toMapFromDB(editor.map);
-                          //  toLevel();
+                            // console.log(this.map);
+                            // overWorld.toMapFromDB(editor.map);
+                            //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
                             document.getElementById("editor").style.display = "table-cell";
                             var canvas = document.getElementById('canvas');
                             var context = canvas.getContext('2d');
                             context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
                             elemt.drawBoard();
-                        
+
 
                             elemt.draw(elemt.map);
 

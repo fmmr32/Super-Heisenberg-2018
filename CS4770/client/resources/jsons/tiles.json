@@ -1,5 +1,16 @@
 ﻿[
   {
+    "id": 1005,
+    "name": "X",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 0,
+    "startY": 64,
+    "width": 32,
+    "height": 32,
+    "offSetY": 6,
+    "meta": [ { "passThrough": true } ]
+  },
+  {
     "id": 1,
     "name": "DirtGrassL",
     "source": "../resources/spriteSheets/gameTile.png",
@@ -173,7 +184,7 @@
     "startX": 0,
     "startY": 503,
     "offSetY": 4,
-    "meta": [{"ice": true}]
+    "meta": [ { "ice": true } ]
   },
 
   {
