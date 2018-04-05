@@ -150,15 +150,15 @@
 
         <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
         <div id="editor">
-            <div style=" display: inline-block; width: 720px; height: 480px;  text-align: center; vertical-align:top; margin-top: 25px;">
+            <div style=" display: inline-block; width: 720px; height: 480px;  text-align: center; vertical-align:top; margin-top: 15px;">
                 <div id="gameDiv" style="overflow:scroll">
                     <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
                 </div>
-                <div style="display:inline-block; float:right">
-                    <table style="width:250px">
+                <div style="display:inline-block; float:right; margin-top:10px;">
+                    <table id="EntityEdit">
                         <tr id="MoveSets" >
                             <td>
-                                <h5>MoveSet</h5>
+                                <p>MoveSet</p>
                             </td>
                             <td>
                                 <select id="MoveSetsDropdown"></select>
@@ -166,20 +166,27 @@
                         </tr>
                         <tr id="EntityAmount" >
                             <td>
-                                <h5>Amount</h5>
+                                <p>Amount</p>
                             </td>
                             <td>
                                 <input id="entAmount" type="number" name="width" min="0" max=""> <!–– Set Max ––>
                             </td>
-
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Damage</p>
+                            </td>
+                            <td>
+                                <input id="damAmount" type="number" name="width" min="0" max="100"> <!–– Set Max ––>
+                            </td>
                         </tr>
                     </table>
                 </div>
-                <div style="display:inline-block; float:right">
-                    <table style="width:250px">
+                <div style="display:inline-block; float:right; margin-top:10px;">
+                    <table id="InteractEdit">
                         <tr id="Interacts" >
                             <td>
-                                <h5>Interacts</h5>
+                                <p>Interacts</p>
                             </td>
                             <td>
                                 <select id="InteractType">
@@ -191,13 +198,13 @@
                             </td>
                             <td>
                                 <input type="checkbox" id="InteractRepeat" value="InteractRepeat" />
-                                <label for="InteractRepeat" class="tile-label">Repeats</label>
+                                <p>Repeats</p>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div style="display:inline-block; float:right">
-                    <table style="width:250px" id="BlockMeta">
+                <div style="display:inline-block; float:right; margin-top:10px;">
+                    <table id="BlockMeta">
                         <tr>
                             <td>
 
@@ -206,18 +213,18 @@
                                 <input type="checkbox" id="Ricochet" value="ricochet" />
                             </td>
                             <td>
-                                <label for="Ricochet" class="tile-label">Ricochet</label>
+                                <p>Ricochet</p>
                             </td>
                         </tr>
                         <tr >
                             <td>
-                                <h5>Tile Properties</h5>
+                                <p>Tile Properties</p>
                             </td>
                             <td>
                                 <input type="checkbox" id="Ice" value="ice" />
                             </td>
                             <td>
-                                <label for="Ice" class="tile-label">Ice</label>
+                                <p>Ice</p>
                             </td>
                         </tr>
                         <tr>
@@ -228,7 +235,7 @@
                                 <input type="checkbox" id="PassThrough" value="passThrough" />
                             </td>
                             <td>
-                                <label for="PassThrough" class="tile-label">PassThrough</label>
+                                <p>Pass Through</p>
                             </td>
                         </tr>
                     </table>
@@ -328,7 +335,7 @@
 
                 </table>
                 <input type="button" id="Overwrite" value="Overwrite" style="display:none">
-                <input type="button" id="Save" value="Save as New">
+                <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
             </div>
 
@@ -429,6 +436,7 @@
         function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
             if (fromMenu) {
+                document.getElementById("Save").value = "Save";
                 document.getElementById("editor").style.display = "table-cell";
                 var canvas = document.getElementById("canvas")
                 elemt = new Editor(canvas);

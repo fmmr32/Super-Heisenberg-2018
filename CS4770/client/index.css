@@ -117,7 +117,7 @@ tbody tr:hover {
 #side {
     display: inline-block;
     vertical-align: top;
-    margin-top: 25px;
+    margin-top: 15px;
     height: auto;
     width: 410px;
     border: 3px solid black;
@@ -152,6 +152,7 @@ tbody tr:hover {
 }
 
 #top {
+    padding-top: 50px;
     padding-bottom: 50px;
 }
 
@@ -237,6 +238,8 @@ table#inputs tr {
 h5 {
     float: left;
     padding-bottom: 0px;
+    padding-top: 0px;
+    margin-top: 3px;
     margin-bottom: 3px;
 }
 
@@ -333,7 +336,104 @@ input#Save {
     width: 25%
 }
 
+input#SaveAsNew {
+    width: 25%
+}
+
 input#Back {
     width: 25%
 }
 
+table#EntityEdit {
+    width: 250px;
+    height: 100px;
+}
+
+table#EntityEdit tr, td {
+    max-height: 75px;
+    background-color: #484848;
+    border: hidden;
+    padding-left: 5px;
+    text-align: center;
+    }
+
+select#MoveSetsDropdown {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: middle;
+    float: right;
+    width: 120px;
+}
+
+input#entAmount {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: middle;
+    float: right;
+    width: 120px;
+}
+
+table#InteractEdit {
+    width: 300px;
+    height: 100px;
+}
+
+table#InteractEdit tr, td {
+    max-height: 75px;
+    background-color: #484848;
+    border: hidden;
+}
+
+select#InteractType {
+    margin-right: 0px;
+    margin-left:0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right:0px;
+    vertical-align: middle;
+    text-align: left;
+    float: left;
+    width:72px;
+}
+
+input#InteractRepeat {
+    float: left;
+}
+
+table#BlockMeta {
+    width: 250px;
+    height: 100px;
+}
+
+table#BlockMeta tr, td {
+    max-height: 75px;
+    background-color: #484848;
+    border: hidden;
+}
+
+input#Ricochet{
+    float:right;
+}
+
+input#Ice {
+    float: right;
+}
+
+input#PassThrough {
+    float: right;
+}

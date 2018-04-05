@@ -144,22 +144,32 @@ class Editor {
 
         document.getElementById("mapW").onchange = function () {
             var w = document.getElementById("mapW").value;
-            editor.bw = w;
-            editor.canvas.width = w;
-            console.log("Changing Width...");
-            editor.drawBoard();
-            editor.map.width = w;
-            editor.draw(this.map);
+            if (w < 30000) {
+                editor.bw = w;
+                editor.canvas.width = w;
+                console.log("Changing Width...");
+                editor.drawBoard();
+                editor.map.width = w;
+                editor.draw(this.map);
+            }
+            else {
+                alert("Please select a value below 30,000 for the width of the map");
+            }
         }
 
         document.getElementById("mapH").onchange = function () {
             var h = document.getElementById("mapH").value;
-            editor.bh = h;
-            editor.canvas.height = h;
-            console.log("Changing Height...");
-            editor.drawBoard();
-            editor.map.height = h;
-            editor.draw(this.map);
+            if (h < 5000) {
+                editor.bh = h;
+                editor.canvas.height = h;
+                console.log("Changing Height...");
+                editor.drawBoard();
+                editor.map.height = h;
+                editor.draw(this.map);
+            }
+            else {
+                alert("Please select a value below 5000 for the height of the map");
+            }
         }
 
         document.getElementById("Y").onchange = function () {
@@ -192,6 +202,9 @@ class Editor {
                     editor.map._id = JSON.stringify(window.performance.now());
                     editor.map.id = JSON.stringify(window.performance.now());
                     writeDB("level", editor.map);
+
+                    //back();
+                    //alert("Your level has been saved!");
                 }
                 else {
                     alert("New level must have a different name than any levels you've published previously.")
@@ -498,7 +511,7 @@ class Editor {
     //    }
     //}
 
-    checkPosition(x, y) {
+checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
         this.showInteracts(false);
@@ -509,7 +522,8 @@ class Editor {
         }
         var type = null;
         var k = 0;
-        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length, this.map.interacts.length); k++) {
+        var j = 0;
+        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
             //check for the tiles
             if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
             //check for the entities
@@ -518,26 +532,23 @@ class Editor {
             if (k < this.map.creatures.length && this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
             //check for the interacts
             if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { this.select = []; type = "interacts"; break; }
-            //check for placed interact things
-            if (k < this.map.interacts.length) {
-                var interact = this.map.interacts[k];
-                var br = false;
-                for (var j = 0; j < interact.action.length; j++) {
-                    if (interact.action[j].x == x && interact.action[j].y == y) {
-                        this.select = ["interacts", k, interact.action[j].entType, j];
-                        br = true;
-                        break;
-                    }
-                }
-                if (br) {
-                    break;
-                }
-            }
+            //check for the interactions
+           // var temp = this.map.interacts[k]
+           // if (temp != "undefined") { 
+           //     if (k < temp.action.length) {
+           //         for (var j = 0; j < temp.length; j++) {
+           //             if (this.map.interacts[k].action[j].X == x && this.map.interacts[k].action[j].Y == y) {
+           //                 type = "action";
+           //                 return [type, k,this.map.interacts[j].entType, j];
+           //             }
+           //         }
+           //     }
+           // }
         }
         return [type, k];
     }
 
-    removeTile() {
+removeTile() {
         var context = this.canvas.getContext("2d");
 
         var scrollPos = document.getElementById("editor").children[0];
@@ -579,9 +590,20 @@ class Editor {
                 break;
             case "interacts":
                 this.map.interacts.splice(k, 1);
+                this.clearCanvas();
+                this.draw(this.map);
                 break;
+
+            case "action":
+                var j = data[2];
+                console.log(this.map.interacts[k].action[j]);
+                console.log(this.map.interacts[k].action);
+                this.map.interacts[k].action.splice(j, 1);
+                console.log(this.map.interacts[k].action);
         }
+        
         this.drawBoard();
+        
     }
 
     placeTile() {
@@ -965,6 +987,7 @@ class Editor {
     draw(map) {
 
         var k;
+        var j;
         var x;
         var y;
         var drawId;
@@ -989,6 +1012,20 @@ class Editor {
             y = this.map.creatures[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
+        for (k = 0; k < this.map.interacts.length; k++) {
+            drawId = this.map.interacts[k].Id;
+            x = this.map.interacts[k].X;
+            y = this.map.interacts[k].Y;
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+                for (j = 0; j < this.map.interacts[k].action.length; j++) {
+                    drawId = this.map.interacts[k].action[j].id;
+                    x = this.map.interacts[k].action[j].x;
+                    y = this.map.interacts[k].action[j].y;
+                    getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+
+                }
+        }
+
 
     }
 
@@ -1031,6 +1068,7 @@ class Editor {
 
                 levelRow.onclick = function () {
                     document.getElementById("Overwrite").style.display = "inline-block";
+                    document.getElementById("Save").value = "Save As New";
                     console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
