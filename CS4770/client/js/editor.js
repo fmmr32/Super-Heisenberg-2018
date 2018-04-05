@@ -285,6 +285,7 @@ class Editor {
                 options.type = "meta";
                 options.meta = { "passThrough": this.checked };
                 options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
                 elemt.map.interacts[elemt.select[1]].action.push(options);
             }
         }
@@ -584,10 +585,13 @@ class Editor {
                         options.type = this.select[2];
                         if (this.select[3] == 800) {
                             options.entType = "Entity";
+                            getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         } else if (this.select[3] < 400) {
                             options.entType = "Tile";
+                            getSprite(1002).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         } else {
                             options.entType = "EntityCreature";
+                            getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
                         }
                         options.id = this.select[3];
                         options.amount = 1; //change this later maybe
