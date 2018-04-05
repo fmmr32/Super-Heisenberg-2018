@@ -1,43 +1,5 @@
 ﻿var socket = io();
 
-//This loads things from the database
-var loadDB = function (name, callback) {
-    socket.emit('loadDB', {
-        collection: name
-    });
-
-    if (socket.hasListeners(name)) {
-        socket.removeListener();
-    }
-
-    socket.on(name, function (data) {
-        callback(data);
-    });
-
-}
-
-
-var loadDBFromID = function (name, id_object, callback) {
-    console.log("inside loaddbfromid");
-    console.log(name);
-    console.log(id_object);
-    socket.emit('loadDBbasedID', {
-        collection: name,
-        id: id_object
-    });
-
-    if (socket.hasListeners(name)) {
-        socket.removeListener();
-    }
-
-    console.log("inside socket.on loaddbfromid");
-    socket.on(name, function (data) {
-        callback(data);
-    });
-
-}
-
-
 var loadDBFromQuery = function (query, collection, callback) {
     console.log(query + " " + collection);
     socket.emit('loadDBFromQuery', {

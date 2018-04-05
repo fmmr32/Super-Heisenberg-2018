@@ -89,7 +89,7 @@ var writeDB = function (data) {
     var object = data.data;
     console.log(object._id);
     console.log("inside upsert");
-    db.collection(data.collection).update({ _id: object._id }, object, { upsert: true });
+    db.collection(data.collection).update({ id: object.id }, object, { upsert: true });
 }
 
 /*_______________________________________________________________________________*/

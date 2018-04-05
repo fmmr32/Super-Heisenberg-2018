@@ -186,10 +186,17 @@ class Editor {
         }
 
         document.getElementById("Save").onclick = function () {
-            console.log(editor.map);
-            editor.map._id = JSON.stringify(window.performance.now());
-            writeDB("level", editor.map);
-            //overWorld.toMapFromDB(editor.map);
+            loadDBFromQuery({ levelName: editor.levelName, user: getUsername() }, "level", function (reponse) {
+                if (reponse.length == 0) {
+                    console.log(editor.map);
+                    editor.map._id = JSON.stringify(window.performance.now());
+                    editor.map.id = JSON.stringify(window.performance.now());
+                    writeDB("level", editor.map);
+                }
+                else {
+                    alert("New level must have a different name than any levels you've published previously.")
+                }
+            });
         }
   
 
