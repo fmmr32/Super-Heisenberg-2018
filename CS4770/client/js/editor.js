@@ -413,7 +413,7 @@ class Editor {
         var row = document.getElementById("MoveSets");
         row.style.display = show ? "" : "none";
         if (show) {
-            var dropdown = row.children[0].children[1];
+            var dropdown = row.children[1].children[0];
             if (dropdown.children.length == 0) {
                 for (var mov of moves) {
                     var opt = document.createElement('option');
