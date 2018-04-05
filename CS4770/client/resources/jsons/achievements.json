@@ -53,7 +53,9 @@
       "body": [
         "if(e.detail == this.entId){",
         "map.getPlayer().awardAchievement(this.id);",
-        "this.constructPopUp();}"
+        "this.constructPopUp();}",
+        "overWorld.user.unlockedOverworlds.splice(1,1);",
+        "overWorld.user.unlockedOverWorlds.push(2);"
       ]
     },
     "text": "You have killed Elon Musk"

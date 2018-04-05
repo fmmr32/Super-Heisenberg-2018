@@ -437,8 +437,12 @@ class Editor {
     }
 
     showMeta(show) {
-        var block = document.getElementById("BlockMeta");
-        block.style.display = show ? "" : "none";
+        var block0 = document.getElementById("BlockMeta0");
+        block0.style.display = show ? "" : "none";
+        var block1 = document.getElementById("BlockMeta1");
+        block1.style.display = show ? "" : "none";
+        var block2 = document.getElementById("BlockMeta2");
+        block2.style.display = show ? "" : "none";
         if (show) {
             var data = this.select;
             if (this.select[0] == "interacts") {
