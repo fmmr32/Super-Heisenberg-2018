@@ -328,3 +328,15 @@ input, textarea {
     margin-left: 22px;
 }
 
+input#Overwrite {
+    width: 25%
+}
+
+input#Save {
+    width: 25%
+}
+
+input#Back {
+    width: 25%
+}
+

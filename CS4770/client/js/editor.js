@@ -29,6 +29,8 @@ class Editor {
 
         this.select = [];
 
+        this.oldName = "";
+
         document.addEventListener("mousemove", this.onMouseMove, false);
 
 
@@ -153,28 +155,29 @@ class Editor {
             console.log(editor.map.spawnX);
         }
 
-        document.getElementById("Save").onclick = function () {
+        document.getElementById("Overwrite").onclick = function () {
             console.log(editor.map);
+            if (editor.oldName != editor.levelName) {
+                editor.levelName = editor.oldName;
+            } 
             writeDB("level", editor.map);
             //overWorld.toMapFromDB(editor.map);
         }
 
-        document.getElementById("Load").onclick = function () {
-            editor.loadLevelsForEditor({ user: getUsername }, "level");
-            document.getElementById("editor").style.display = "none";
-            document.getElementById("selectionBoxDiv").style.display = "none";
-            document.getElementById("selectionBox").selectedIndex = 0;
-            document.getElementById("levelBrowser").style.display = "table-cell";
-          //  console.log(newMap);
-           // this.draw(this.map);
-            
+        document.getElementById("Save").onclick = function () {
+            console.log(editor.map);
+            editor.map._id = JSON.stringify(window.performance.now());
+            writeDB("level", editor.map);
+            //overWorld.toMapFromDB(editor.map);
         }
+  
 
         document.getElementById("LoadLevel").onclick = function () {
             document.getElementById("levelBrowser").style.display = "table-cell";
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
+  
             editor.loadLevelsForEditor({ user: getUsername }, "level");
             //  console.log(newMap);
             // this.draw(this.map);
@@ -827,10 +830,12 @@ class Editor {
 
 
                 levelRow.onclick = function () {
+                    document.getElementById("Overwrite").style.display = "inline-block";
                     console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
                         elemt.map = temp;
+                        elemt.oldName = elemt.map.levelName;
                         console.log(response);
                         console.log(elemt.map);
                         var user = getUsername();
