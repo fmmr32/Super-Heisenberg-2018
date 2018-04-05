@@ -171,16 +171,6 @@ class Editor {
            // this.draw(this.map);
             
         }
-
-        document.getElementById("LoadLevel").onclick = function () {
-            document.getElementById("levelBrowser").style.display = "table-cell";
-            document.getElementById("selectionBox").selectedIndex = 0;
-            document.getElementById("levelEditorOptions").style.display = "none";
-            editor.loadLevelsForEditor({ user: getUsername }, "level");
-            //  console.log(newMap);
-            // this.draw(this.map);
-
-        }
     }
 
 
