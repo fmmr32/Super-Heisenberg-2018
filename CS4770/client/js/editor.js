@@ -223,78 +223,48 @@ class Editor {
         }
 
         document.getElementById("Ricochet").onchange = function () {
-             //checks if we are doing something with the interacts
-            if (elemt.select[0] != "interacts") {
-                var m = elemt.hasMeta("ricochet", elemt.map[elemt.select[0]][elemt.select[1]]);
-                if (m != -1) {
-                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ricochet": this.checked };
-                } else {
-                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ricochet": this.checked });
-                }
-                 //sets the ineract action for this block
-            } else {
-                var data = elemt.select[3];
-                var block = elemt.map.content[data[1]];
-                var options = {};
-                options.x = block.blockX;
-                options.y = block.blockY;
-                options.type = "meta";
-                options.meta = { "ricochet": this.checked };
-                options.id = block.blockId;
-                elemt.map.interacts[elemt.select[1]].action.push(options);
-            }
+            elemt.handleMetaChange("ricochet");
         }
+
         document.getElementById("Ice").onchange = function () {
-            //checks if we are doing something with the interacts
-            if (elemt.select[0] != "interacts") {
-                var m = elemt.hasMeta("ice", elemt.map[elemt.select[0]][elemt.select[1]]);
-                if (m != -1) {
-                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ice": this.checked };
-                } else {
-                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ice": this.checked });
-                }
-                 //sets the ineract action for this block
-            } else {
-                var data = elemt.select[3];
-                var block = elemt.map.content[data[1]];
-                var options = {};
-                options.x = block.blockX;
-                options.y = block.blockY;
-                options.type = "meta";
-                options.meta = { "ice": this.checked };
-                options.id = block.blockId;
-                elemt.map.interacts[elemt.select[1]].action.push(options);
-            }
+            elemt.handleMetaChange("ice");
         }
+
         document.getElementById("PassThrough").onchange = function () {
-            //checks if we are doing something with the interacts
-            if (elemt.select[0] != "interacts") {
-                var m = elemt.hasMeta("passThrough", elemt.map[elemt.select[0]][elemt.select[1]]);
-                if (m != -1) {
-                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "passThrough": this.checked };
-                } else {
-                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "passThrough": this.checked });
-                }
-                //sets the ineract action for this block
-            } else {
-                var data = elemt.select[3];
-                var block = elemt.map.content[data[1]];
-                var options = {};
-                options.x = block.blockX;
-                options.y = block.blockY;
-                options.type = "meta";
-                options.meta = { "passThrough": this.checked };
-                options.id = block.blockId;
-                getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
-                elemt.map.interacts[elemt.select[1]].action.push(options);
-            }
+            elemt.handleMetaChange("passThrough");
         }
+
+        
 
         document.getElementById("InteractType").onchange = function () {
             elemt.select[2] = this.value;
         }
         document.getElementById("InteractRepeat").onchange = function () {
             elemt.map[elemt.select[0]][elemt.select[1]].repeatable = this.checked;
+        }
+    }
+
+    handleMetaChange(type) {
+        //checks if we are doing something with the interacts
+        if (this.select[0] != "interacts") {
+            var m = this.hasMeta(type, this.map[this.select[0]][this.select[1]]);
+            if (m != -1) {
+                this.map[this.select[0]][this.select[1]].meta[m] = { type: this.checked };
+            } else {
+                this.map[this.select[0]][this.select[1]].meta.push({ type: this.checked });
+            }
+            //sets the ineract action for this block
+        } else {
+            var data = this.select[3];
+            var block = this.map.content[data[1]];
+            var options = {};
+            options.x = block.blockX;
+            options.y = block.blockY;
+            options.type = "meta";
+            options.meta = { type: this.checked };
+            options.id = block.blockId;
+            getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
+            this.map.interacts[this.select[1]].action.push(options);
         }
     }
 
