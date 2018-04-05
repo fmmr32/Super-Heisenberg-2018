@@ -862,6 +862,7 @@ class Editor {
     draw(map) {
 
         var k;
+        var j;
         var x;
         var y;
         var drawId;
@@ -886,6 +887,20 @@ class Editor {
             y = this.map.creatures[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
+        for (k = 0; k < this.map.interacts.length; k++) {
+            drawId = this.map.interacts[k].Id;
+            x = this.map.interacts[k].X;
+            y = this.map.interacts[k].Y;
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+                for (j = 0; j < this.map.interacts[k].action.length; j++) {
+                    drawId = this.map.interacts[k].action[j].id;
+                    x = this.map.interacts[k].action[j].x;
+                    y = this.map.interacts[k].action[j].y;
+                    getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+
+                }
+        }
+
 
     }
 
