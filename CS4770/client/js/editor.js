@@ -928,6 +928,7 @@ class Editor {
 
                 levelRow.onclick = function () {
                     document.getElementById("Overwrite").style.display = "inline-block";
+                    document.getElementById("Save").value = "Save As New";
                     console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
