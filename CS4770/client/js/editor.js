@@ -314,6 +314,10 @@ class Editor {
     }
 
     setup() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.initMap();
         this.drawBoard();
         this.setUpDocument();
         this.loadTiles(this);
