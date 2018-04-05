@@ -126,25 +126,7 @@ class Level {
 
         //loading in the tiles of a level
         for (var tile of any.content) {
-            var block = new Block(tile.blockId, tile.blockX, tile.blockY);
-
-            if (getSprite(tile.blockId).meta != undefined) {
-                for (var key in getSprite(tile.blockId).meta) {
-                    block.addMeta(key, getSprite(tile.blockId).meta[key]);
-                }
-            }
-            for (var m of tile.meta) {
-                block.addMeta(Object.keys(m), Object.values(m));
-            }
-            for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
-                if (this.tiles[x] === undefined) {
-                    this.tiles[x] = [];
-                }
-                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
-                    this.tiles[x][y] = block;
-                }
-            }
-            this.setSprite(block, background);
+            this.loadBlock(tile, background);
         }
         //loading in the entities of a level
         this.loadEntity(any.entities);
@@ -155,6 +137,29 @@ class Level {
         //loading the creatures
         this.loadCreature(any.creatures);
     }
+
+    loadBlock(tile, background) {
+        var block = new Block(tile.blockId, tile.blockX, tile.blockY);
+
+        if (getSprite(tile.blockId).meta != undefined) {
+            for (var key in getSprite(tile.blockId).meta) {
+                block.addMeta(key, getSprite(tile.blockId).meta[key]);
+            }
+        }
+        for (var m of tile.meta) {
+            block.addMeta(Object.keys(m), Object.values(m));
+        }
+        for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
+            if (this.tiles[x] === undefined) {
+                this.tiles[x] = [];
+            }
+            for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
+                this.tiles[x][y] = block;
+            }
+        }
+        this.setSprite(block, background);
+    }
+
     //takes in an arracy of basic interact values
     loadInteracts(interacts) {
         for (var interact of interacts) {
@@ -378,7 +383,6 @@ class Level {
         } else if (x < 2) {
             return 2;
         } else if (y > this.height || y < -1) {
-            console.log(x, y);
             return 3;
         } else {
             return 0;
