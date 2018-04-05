@@ -511,7 +511,7 @@ class Editor {
     //    }
     //}
 
-checkPosition(x, y) {
+    checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
         this.showInteracts(false);
@@ -523,7 +523,7 @@ checkPosition(x, y) {
         var type = null;
         var k = 0;
         var j = 0;
-        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
+        for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length, this.map.interacts.length); k++) {
             //check for the tiles
             if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
             //check for the entities
@@ -532,23 +532,26 @@ checkPosition(x, y) {
             if (k < this.map.creatures.length && this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
             //check for the interacts
             if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { this.select = []; type = "interacts"; break; }
-            //check for the interactions
-           // var temp = this.map.interacts[k]
-           // if (temp != "undefined") { 
-           //     if (k < temp.action.length) {
-           //         for (var j = 0; j < temp.length; j++) {
-           //             if (this.map.interacts[k].action[j].X == x && this.map.interacts[k].action[j].Y == y) {
-           //                 type = "action";
-           //                 return [type, k,this.map.interacts[j].entType, j];
-           //             }
-           //         }
-           //     }
-           // }
+            //check for placed interact things
+            if (k < this.map.interacts.length) {
+                var interact = this.map.interacts[k];
+                var br = false;
+                for (var j = 0; j < interact.action.length; j++) {
+                    if (interact.action[j].x == x && interact.action[j].y == y) {
+                        this.select = ["interacts", k, interact.action[j].entType, j];
+                        br = true;
+                        break;
+                    }
+                }
+                if (br) {
+                    break;
+                }
+            }
         }
         return [type, k];
     }
 
-removeTile() {
+    removeTile() {
         var context = this.canvas.getContext("2d");
 
         var scrollPos = document.getElementById("editor").children[0];
@@ -601,9 +604,9 @@ removeTile() {
                 this.map.interacts[k].action.splice(j, 1);
                 console.log(this.map.interacts[k].action);
         }
-        
+
         this.drawBoard();
-        
+
     }
 
     placeTile() {
@@ -619,6 +622,7 @@ removeTile() {
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
+            console.log(data);
             switch (data[0]) {
                 case "content":
                     if (this.select[0] == "interacts" && this.select[2] == "meta") {
@@ -1017,13 +1021,13 @@ removeTile() {
             x = this.map.interacts[k].X;
             y = this.map.interacts[k].Y;
             getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
-                for (j = 0; j < this.map.interacts[k].action.length; j++) {
-                    drawId = this.map.interacts[k].action[j].id;
-                    x = this.map.interacts[k].action[j].x;
-                    y = this.map.interacts[k].action[j].y;
-                    getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+            for (j = 0; j < this.map.interacts[k].action.length; j++) {
+                drawId = this.map.interacts[k].action[j].id;
+                x = this.map.interacts[k].action[j].x;
+                y = this.map.interacts[k].action[j].y;
+                getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
 
-                }
+            }
         }
 
 
