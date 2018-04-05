@@ -298,7 +298,9 @@ class MoveSet {
                 var s = this.ent.getSpeed();
                 if (m == "left") { s = -s };
                 var nextX = this.ent.getX() + s;
-                if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.isOOB(nextX, this.ent.getY()) != 0) {
+                this.ent.setHSpeed(s);
+                var col = this.ent.doCollision();
+                if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.isOOB(nextX, this.ent.getY()) != 0 || col.code == 2) {
                     move.index++;
                     if (move.index >= move.moves.length) {
                         move.index = 0;
@@ -335,7 +337,9 @@ class Entity {
         if (options.animation != undefined) {
             this.animation = options.animation;
         }
-
+        if (options.amount != undefined) {
+            this.amount = options.amount;
+        }
     }
 
 
@@ -365,7 +369,7 @@ class Entity {
 
         //makes sure the entity is drawn at the correct place
         X += this.level.offSetX;
-
+        Y += this.level.offSetY;
 
 
 
@@ -521,8 +525,10 @@ class EntityMovable extends Entity {
                         } else {
                             if (this.getVSpeed() > 0) {
                                 temp.code = 3;
-                            } else {
+                            } else if (this.getVSpeed() < 0) {
                                 temp.code = 1;
+                            } else {
+                                temp.code = 2;
                             }
                         }
                         return temp;
@@ -579,7 +585,11 @@ class EntityMovable extends Entity {
                                 this.level.exitMap(true);
                             } else {
                                 //picking up a coin?
-                                this.money++;
+                                if (collidingEntity.amount != undefined) {
+                                    this.money += collidingEntity.amount;
+                                } else {
+                                    this.money++;
+                                }
                                 this.level.removeEntity(collidingEntity);
                                 var e = new CustomEvent("collection");
                                 document.dispatchEvent(e);
@@ -611,8 +621,9 @@ class EntityMovable extends Entity {
         if (this.level.getBlock(x, this.getY()).Id == 0) {
             this.onFloor = false;
 
-
-            this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
+            if (this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity) < 100) {
+                this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
+            }
             this.elapsedTime++;
         } else {
             this.elapsedTime = 0;
@@ -707,6 +718,10 @@ class EntityInteractable extends Entity {
                                     this.level.loadCreature([{ X: x, Y: y, Id: id }]);
                                     break;
                                 //spawning a basic entity
+                                case "Tile":
+                                    var tile = { blockId: id, blockX: x, blockY: y };
+                                    this.level.loadBlock(tile);
+                                    break;
                                 default:
                                     this.level.loadEntity([{ X: x, Y: y, Id: id }]);
                                     break;
@@ -719,9 +734,9 @@ class EntityInteractable extends Entity {
                 case "meta":
                     //adding or removing a meta tag
                     if (this.state) {
-                        this.level.getBlock(action.x, action.y).addMeta(Object.keys(action.meta), Object.values(action.meta))
+                        this.level.getBlock(action.x, action.y+getSprite(action.id).offSet).addMeta(Object.keys(action.meta), Object.values(action.meta))
                     } else {
-                        this.level.getBlock(action.x, action.y).deleteMeta(Object.keys(action.meta))
+                        this.level.getBlock(action.x, action.y + getSprite(action.id).offSet).deleteMeta(Object.keys(action.meta))
                     }
                     break;
                 case "damage":

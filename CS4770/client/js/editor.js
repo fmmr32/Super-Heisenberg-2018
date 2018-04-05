@@ -10,6 +10,7 @@ class Editor {
         this.bh = canvas.height;
 
 
+
         this.selection = 1000;
         this.editor = null;
         //Selection var for tile placement.
@@ -26,6 +27,10 @@ class Editor {
         this.date = this.getDate();
         this.levelName = "";
         this.map = {};
+
+        this.select = [];
+
+        this.oldName = "";
 
         document.addEventListener("mousemove", this.onMouseMove, false);
 
@@ -62,11 +67,31 @@ class Editor {
         console.log(this);
     }
 
-
+    resizeImage(image, canvas, t) {
+        if ((image.width < canvas.width || image.width < this.map.width) && t < 50) {
+            //create temp canvas that is twice the size of the current image
+            var c = document.createElement("canvas");
+            c.width = image.width * 2;
+            c.height = image.height;
+            var ctx = c.getContext("2d");
+            //drawing the image
+            ctx.drawImage(image, 0, 0);
+            ctx.drawImage(image, image.width, 0);
+            image = new Image();
+            image.src = c.toDataURL("image/png");
+            var obj = this;
+            image.onload = function () {
+                //recursive step
+                obj.resizeImage(this, canvas, t++);
+            };
+        }
+        return image;
+    }
 
     drawBoard() {
         //grid square width
         var context = this.canvas.getContext("2d");
+
 
         for (var x = 0; x <= this.bw; x += this.cw) {
             context.moveTo(0.5 + x + this.p, this.p);
@@ -80,6 +105,7 @@ class Editor {
         }
         context.strokeStyle = "black";
         context.stroke();
+        this.draw(this.map);
     }
 
     setUpDocument() {
@@ -123,6 +149,7 @@ class Editor {
             editor.canvas.width = w;
             console.log("Changing Width...");
             editor.drawBoard();
+            editor.map.width = w;
             editor.draw(this.map);
         }
 
@@ -132,6 +159,7 @@ class Editor {
             editor.canvas.height = h;
             console.log("Changing Height...");
             editor.drawBoard();
+            editor.map.height = h;
             editor.draw(this.map);
         }
 
@@ -149,33 +177,142 @@ class Editor {
             console.log(editor.map.spawnX);
         }
 
-        document.getElementById("Save").onclick = function () {
+        document.getElementById("Overwrite").onclick = function () {
             console.log(editor.map);
+            if (editor.oldName != editor.levelName) {
+                editor.levelName = editor.oldName;
+            } 
             writeDB("level", editor.map);
             //overWorld.toMapFromDB(editor.map);
         }
 
-        document.getElementById("Load").onclick = function () {
-            editor.loadLevelsForEditor({ user: getUsername }, "level");
-            document.getElementById("selectionBoxDiv").style.display = "none";
-            document.getElementById("selectionBox").selectedIndex = 0;
-            document.getElementById("levelBrowser").style.display = "table-cell";
-          //  console.log(newMap);
-           // this.draw(this.map);
-            
+        document.getElementById("Save").onclick = function () {
+            console.log(editor.map);
+            editor.map._id = JSON.stringify(window.performance.now());
+            writeDB("level", editor.map);
+            //overWorld.toMapFromDB(editor.map);
         }
+  
 
         document.getElementById("LoadLevel").onclick = function () {
             document.getElementById("levelBrowser").style.display = "table-cell";
             document.getElementById("selectionBox").selectedIndex = 0;
+            document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
+  
             editor.loadLevelsForEditor({ user: getUsername }, "level");
             //  console.log(newMap);
             // this.draw(this.map);
 
         }
+
+        //this adds the movesets to a creature
+        document.getElementById("MoveSetsDropdown").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map[elemt.select[0]][elemt.select[1]].moveSet = this.value;
+            } else {
+
+            }
+        }
+
+        document.getElementById("entAmount").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map[elemt.select[0]][elemt.select[1]].amount = parseInt(this.value);
+            } else {
+
+            }
+        }
+
+        document.getElementById("Ricochet").onchange = function () {
+             //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ricochet", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ricochet": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ricochet": this.checked });
+                }
+                 //sets the ineract action for this block
+            } else {
+                var data = elemt.select[3];
+                var block = elemt.map.content[data[1]];
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "ricochet": this.checked };
+                options.id = block.blockId;
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
+        }
+        document.getElementById("Ice").onchange = function () {
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ice", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ice": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ice": this.checked });
+                }
+                 //sets the ineract action for this block
+            } else {
+                var data = elemt.select[3];
+                var block = elemt.map.content[data[1]];
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "ice": this.checked };
+                options.id = block.blockId;
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
+        }
+        document.getElementById("PassThrough").onchange = function () {
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("passThrough", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "passThrough": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "passThrough": this.checked });
+                }
+                //sets the ineract action for this block
+            } else {
+                var data = elemt.select[3];
+                var block = elemt.map.content[data[1]];
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "passThrough": this.checked };
+                options.id = block.blockId;
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
+        }
+
+        document.getElementById("InteractType").onchange = function () {
+            elemt.select[2] = this.value;
+        }
+        document.getElementById("InteractRepeat").onchange = function () {
+            elemt.map[elemt.select[0]][elemt.select[1]].repeatable = this.checked;
+        }
     }
 
+    hasMeta(type, block) {
+        for (var m of block.meta) {
+            if (m[type] != undefined) {
+                return block.meta.indexOf(m);
+            }
+        }
+        return -1;
+    }
+
+    drawBackground() {
+        var image = new Image();
+        image.src = this.map.background;
+        var bg = this.resizeImage(image, this.canvas, 0);
+        this.canvas.getContext("2d").drawImage(bg, 0, 0);
+    }
 
     setup() {
         this.drawBoard();
@@ -183,7 +320,6 @@ class Editor {
         this.loadTiles(this);
         this.loadCreatures(this);
         this.loadEntities(this);
-        this.initMap();
         this.draw(map);
     }
 
@@ -197,12 +333,12 @@ class Editor {
             gravity: 9.81,
             width: 720,
             height: 480,
-            spawnX: 150,
-            SpawnY: 10,
+            spawnX: 0,
+            spawnY: 0,
             background: "../resources/Backgrounds/museum.png",
-            music:"../resources/sounds/music/005_1.wav",
+            music: "../resources/sounds/music/005_1.wav",
             creatures: [],
-            interacts:[],
+            interacts: [],
             entities: [],
             content: []
         }
@@ -243,7 +379,11 @@ class Editor {
     //}
 
     setBackground(value) {
+        console.log(value);
         this.map.background = "../resources/Backgrounds/" + value + ".png";
+        this.drawBackground();
+        this.drawBoard();
+        this.draw(this.map);
     }
 
     setGravity(value) {
@@ -269,7 +409,70 @@ class Editor {
         }
     }
 
+    showMoveSets(show) {
+        var row = document.getElementById("MoveSets");
+        row.style.display = show ? "" : "none";
+        if (show) {
+            var dropdown = row.children[1].children[0];
+            if (dropdown.children.length == 0) {
+                for (var mov of moves) {
+                    var opt = document.createElement('option');
+                    opt.value = mov.id;
+                    opt.innerHTML = mov.name;
+                    dropdown.appendChild(opt);
+                }
+            }
+            var data = this.select;
+            if (this.select[0] == "interacts") {
+                data = this.select[2];
+            }
+            var set = this.map[data[0]][data[1]].moveSet
+            dropdown.selectedIndex = set == undefined ? 0 : set;
+        }
+    }
+
+    showMeta(show) {
+        var block = document.getElementById("BlockMeta");
+        block.style.display = show ? "" : "none";
+        if (show) {
+            var data = this.select;
+            if (this.select[0] == "interacts") {
+                data = this.select[3];
+            }
+            for (var child of block.children[0].children) {
+                if (child.nodeName == "INPUT") {
+                    if (this.map[data[0]][data[1]].meta == undefined) {
+                        this.map[data[0]][data[1]].meta = [];
+                    }
+                    var thing = this.hasMeta(child.value, this.map[data[0]][data[1]]);
+                    if (thing != -1) {
+                        child.checked = this.map[data[0]][data[1]].meta[thing][child.value];
+                    } else {
+                        child.checked = false;
+                    }
+                }
+            }
+        }
+    }
+
+    showInteracts(show) {
+        var ent = document.getElementById("Interacts");
+        ent.style.display = show ? "" : "none";
+    }
+
+    showEntities(show) {
+        var ent = document.getElementById("EntityAmount");
+        ent.style.display = show ? "" : "none";
+    }
+
     checkPosition(x, y) {
+        this.showMoveSets(false);
+        this.showMeta(false);
+        this.showInteracts(false);
+        this.showEntities(false);
+        if (this.select[0] != "interacts") {
+            this.select = [];
+        }
         var type = null;
         var k = 0;
         for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length); k++) {
@@ -280,7 +483,7 @@ class Editor {
             //check for the creatures
             if (k < this.map.creatures.length && this.map.creatures[k].X == x && this.map.creatures[k].Y == y) { type = "creatures"; break; }
             //check for the interacts
-            if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { type = "interacts"; break; }
+            if (k < this.map.interacts.length && this.map.interacts[k].X == x && this.map.interacts[k].Y == y) { this.select = []; type = "interacts"; break; }
         }
         return [type, k];
     }
@@ -305,8 +508,8 @@ class Editor {
         context.clearRect(x + 1, y + 1, this.cw - 1, this.ch - 1);
 
 
-        
-       
+
+
 
         switch (type) {
 
@@ -342,24 +545,52 @@ class Editor {
 
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
-
+        console.log(this.map);
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
+            console.log(data);
             switch (data[0]) {
                 case "content":
-                    console.log(this.map.content[data[1]]);
+                    if (this.select[0] == "interacts" && this.select[2] == "meta") {
+                        this.select.push(data);
+                    }
+                    else {
+                        this.select = data;
+                    }
+                    this.showMeta(true)
                     break;
                 case "entities":
-                    console.log(this.map.entities[data[1]]);
+                    this.select = data;
+                    this.showEntities(true);
                     break;
                 case "creatures":
-                    console.log(this.map.creatures[data[1]]);
+                    this.select = data;
+                    this.showMoveSets(true);
                     break;
                 case "interacts":
-                    console.log(this.map.interacts[data[1]]);
+                    this.select = data;
+                    this.select[2] = "spawn";
+                    this.showInteracts(true);
                     break;
-                
+                default:
+                    if (this.select[0] == "interacts" && this.select[2] == "spawn" && this.select[3] != undefined) {
+                        var options = {};
+                        options.x = x;
+                        options.y = y;
+                        options.type = this.select[2];
+                        if (this.select[3] == 800) {
+                            options.entType = "Entity";
+                        } else if (this.select[3] < 400) {
+                            options.entType = "Tile";
+                        } else {
+                            options.entType = "EntityCreature";
+                        }
+                        options.id = this.select[3];
+                        options.amount = 1; //change this later maybe
+                        this.map[this.select[0]][this.select[1]].action.push(options);
+                    }
+                    break;
             }
             return;
         }
@@ -441,9 +672,11 @@ class Editor {
 
         }
         else {
-            if (ent.id == 800) {
+            if (ent.Id == 800) {
                 this.map.entities.push(ent);
             } else {
+                ent.repeatable = false;
+                ent.action = [];
                 this.map.interacts.push(ent);
             }
             console.log("pushing");
@@ -461,7 +694,7 @@ class Editor {
             blockId: this.selection,
             blockX: x,
             blockY: y,
-            meta: [{ "ricochet": true }] 
+            meta: [{ "ricochet": true }]
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.content.length; i++) {
@@ -521,8 +754,12 @@ class Editor {
             //adding a new cell at the index of the column
             var cell = row.insertCell(column);
             cell.setAttribute("id", sprite.id);
-            cell.onclick = function () {//insert whatever function handled the tiles selection here}
-                editor.selection = parseInt(this.id);
+            cell.onclick = function () {//insert whatever function handled the tiles selection here
+                if (editor.select[0] != "interacts") {
+                    editor.selection = parseInt(this.id);
+                } else {
+                    editor.select[3] = parseInt(this.id);
+                }
             }
             //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
             //this should all work
@@ -569,7 +806,11 @@ class Editor {
             var cell = row.insertCell(column);
             cell.setAttribute("id", sprite.id);
             cell.onclick = function () {//insert whatever function handled the tiles selection here}
-                editor.selection = parseInt(this.id);
+                if (editor.select[0] != "interacts") {
+                    editor.selection = parseInt(this.id);
+                } else {
+                    editor.select[3] = parseInt(this.id);
+                }
             }
             //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
             //this should all work
@@ -616,7 +857,11 @@ class Editor {
             var cell = row.insertCell(column);
             cell.setAttribute("id", sprite.id);
             cell.onclick = function () {//insert whatever function handled the tiles selection here}
-                editor.selection = parseInt(this.id);
+                if (editor.select[0] != "interacts") {
+                    editor.selection = parseInt(this.id);
+                } else {
+                    editor.select[3] = parseInt(this.id);
+                }
             }
             //setting the image, we need to create different icons for every image it seems, every cell has his own id as well to use with the function,
             //this should all work
@@ -639,23 +884,23 @@ class Editor {
 
         for (k = 0; k < this.map.content.length; k++) {
 
-            drawId = this.map.content[k].id;
+            drawId = this.map.content[k].blockId;
             x = this.map.content[k].blockX;
             y = this.map.content[k].blockY;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
         for (k = 0; k < this.map.entities.length; k++) {
 
-            drawId = this.map.entities[k].id;
+            drawId = this.map.entities[k].Id;
             x = this.map.entities[k].X;
             y = this.map.entities[k].Y;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas,this.cw,this.ch);
         }
         for (k = 0; k < this.map.creatures.length; k++) {
-            drawId = this.map.creatures[k].id;
+            drawId = this.map.creatures[k].Id;
             x = this.map.creatures[k].X;
             y = this.map.creatures[k].Y;
-            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas);
+            getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
         }
 
     }
@@ -698,27 +943,37 @@ class Editor {
 
 
                 levelRow.onclick = function () {
+                    document.getElementById("Overwrite").style.display = "inline-block";
                     console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
-                        editor.map = response[0];
+                        elemt.map = temp;
+                        elemt.oldName = elemt.map.levelName;
                         console.log(response);
-                        console.log(editor.map);
+                        console.log(elemt.map);
                         var user = getUsername();
 
                         if (temp.user == user) {
                             console.log("loading...");
                            // console.log(this.map);
-                            overWorld.toMapFromDB(editor.map);
-                            toLevel();
+                           // overWorld.toMapFromDB(editor.map);
+                          //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
-                            document.getElementById("editor").style.display = "none";
+                            document.getElementById("editor").style.display = "table-cell";
+                            var canvas = document.getElementById('canvas');
+                            var context = canvas.getContext('2d');
+                            context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
+                            elemt.drawBoard();
+                        
+
+                            elemt.draw(elemt.map);
+
                             //loadMap();
                         }
                         else {
                             alert("Cannot Edit Other Players Maps");
                         }
-                    
+
                         document.getElementById("levelBrowser").style.display = "none";
 
 

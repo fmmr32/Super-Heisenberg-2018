@@ -21,6 +21,10 @@ class Block {
     deleteMeta(key) {
         delete this.meta[key];
     }
+    toJSON() {
+        var options = { blockId: this.Id, blockX: this.X, blockY: this.Y, meta: this.meta };
+        return JSON.stringify(options);
+    }
 
 }
 
@@ -122,25 +126,7 @@ class Level {
 
         //loading in the tiles of a level
         for (var tile of any.content) {
-            var block = new Block(tile.blockId, tile.blockX, tile.blockY);
-
-            if (getSprite(tile.blockId).meta != undefined) {
-                for (var key in getSprite(tile.blockId).meta) {
-                    block.addMeta(key, getSprite(tile.blockId).meta[key]);
-                }
-            }
-            for (var m of tile.meta) {
-                block.addMeta(Object.keys(m), Object.values(m));
-            }
-            for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
-                if (this.tiles[x] === undefined) {
-                    this.tiles[x] = [];
-                }
-                for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
-                    this.tiles[x][y] = block;
-                }
-            }
-            this.setSprite(block, background);
+            this.loadBlock(tile, background);
         }
         //loading in the entities of a level
         this.loadEntity(any.entities);
@@ -151,6 +137,29 @@ class Level {
         //loading the creatures
         this.loadCreature(any.creatures);
     }
+
+    loadBlock(tile, background) {
+        var block = new Block(tile.blockId, tile.blockX, tile.blockY);
+
+        if (getSprite(tile.blockId).meta != undefined) {
+            for (var key in getSprite(tile.blockId).meta) {
+                block.addMeta(key, getSprite(tile.blockId).meta[key]);
+            }
+        }
+        for (var m of tile.meta) {
+            block.addMeta(Object.keys(m), Object.values(m));
+        }
+        for (var x = tile.blockX; x < tile.blockX + getSprite(block.Id).width; x++) {
+            if (this.tiles[x] === undefined) {
+                this.tiles[x] = [];
+            }
+            for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
+                this.tiles[x][y] = block;
+            }
+        }
+        this.setSprite(block, background);
+    }
+
     //takes in an arracy of basic interact values
     loadInteracts(interacts) {
         for (var interact of interacts) {
@@ -179,6 +188,9 @@ class Level {
             options.y = ent.Y;
             options.level = this;
             options.sprite = [getSprite(id)];
+            if (ent.amount != undefined) {
+                options.amount = ent.amount;
+            }
             //loading the entity animation
 
             options.animation = Animation.loadAnimation(id);
@@ -365,6 +377,7 @@ class Level {
     }
 
     isOOB(x, y) {
+        
         if (x > this.width) {
             return 1;
         } else if (x < 2) {
@@ -380,9 +393,14 @@ class Level {
     drawMap() {
         if (this.getPlayer() != undefined && this.image != undefined) {
             var width = container.clientWidth / 2;
+            var height = container.clientHeight / 2;
+
 
             this.offSetX = width - this.getPlayer().getX() - 32;
             this.offSetX = Math.min(0, this.offSetX);
+
+            this.offSetY = height - this.getPlayer().getY() - 36;
+            this.offSetY = Math.min(0, this.offSetY);
 
             //case for when the map is smaller than the viewport
             var space = container.clientWidth - this.width
@@ -392,7 +410,7 @@ class Level {
             var context = canvas.getContext("2d");
 
             context.drawImage(this.background, 0, 0, this.background.width, this.background.height, this.offSetX, 0, this.background.width, this.background.height);
-            context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, 0, this.width, this.height);
+            context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, this.offSetY, this.width, this.height);
         }
     }
 
