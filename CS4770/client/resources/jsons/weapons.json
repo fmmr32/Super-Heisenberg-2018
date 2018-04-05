@@ -114,8 +114,8 @@
     "impact": "ricochet",
     "impactUpgrades": [ "ricochet", "explode" ],
     "cooldown": 30,
-    "bulletSprite": 996,
-    "bulletSpriteFlip": 996,
+    "bulletSprite": 997,
+    "bulletSpriteFlip": 997,
     "gravity": true,
     "hidden": false,
     "animation": [
@@ -138,7 +138,7 @@
     ],
     "grenades": [
       {
-        "id": 995,
+        "id": 996,
         "angle": 15,
         "alive": 120
       }
@@ -184,7 +184,7 @@
     ],
     "grenades": [
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 60
       }
@@ -207,8 +207,8 @@
     "impact": "ricochet",
     "impactUpgrades": [ "ricochet" ],
     "cooldown": 15,
-    "bulletSprite": 995,
-    "bulletSpriteFlip": 995,
+    "bulletSprite": 996,
+    "bulletSpriteFlip": 996,
     "gravity": false,
     "animation": [
       {
@@ -230,62 +230,62 @@
     ],
     "grenades": [
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 10
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 10
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 10
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 15
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 20
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 20
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 0
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 0
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 0
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 20
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 30
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 30
       }
@@ -308,8 +308,8 @@
     "impact": "ricochet",
     "impactUpgrades": [ "ricochet" ],
     "cooldown": 15,
-    "bulletSprite": 995,
-    "bulletSpriteFlip": 995,
+    "bulletSprite": 996,
+    "bulletSpriteFlip": 996,
     "gravity": false,
     "animation": [
       {
@@ -331,62 +331,62 @@
     ],
     "grenades": [
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 10
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 10
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 10
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 15
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 20
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 20
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 0
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 0
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 0
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 0,
         "alive": 20
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 20,
         "alive": 30
       },
       {
-        "id": 995,
+        "id": 996,
         "angle": 340,
         "alive": 30
       }

@@ -571,6 +571,8 @@ class EntityMovable extends Entity {
                                 if (collidingEntity.type == "pressurePlate" || collidingEntity.type == "spike") {
                                     //do stuff with a plate
                                     collidingEntity.flipState(this);
+                                    var e = new CustomEvent("trap");
+                                    document.dispatchEvent(e);
                                 }
                             } else if (collidingEntity instanceof Artifact) {
                                 collidingEntity.handlePickUp(this);
@@ -579,6 +581,8 @@ class EntityMovable extends Entity {
                                 //picking up a coin?
                                 this.money++;
                                 this.level.removeEntity(collidingEntity);
+                                var e = new CustomEvent("collection");
+                                document.dispatchEvent(e);
                             }
                         }
                     }
@@ -1012,8 +1016,8 @@ class Boss extends EntityCreature {
         prop.x = this.getX();
         prop.y = this.getY() - this.getHeight();
         this.level.loadArtifact(prop);
-
-        var e = new Event("bossKill", { id: this.sprite.id });
+        var id = this.getSprite().id;
+        var e = new CustomEvent("bossKill", { detail: id });
         document.dispatchEvent(e);
         super.doRespawn(source);
     }
