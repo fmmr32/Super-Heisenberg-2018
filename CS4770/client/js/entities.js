@@ -719,8 +719,8 @@ class EntityInteractable extends Entity {
                                     break;
                                 //spawning a basic entity
                                 case "Tile":
-                                    var tile = { blockId: id, blockX: x, blockY: y };
-                                    this.level.loadBlock(tile);
+                                    var tile = {blockId: id, blockX: x, blockY: y, meta: [{ "ricochet": true }] };
+                                    this.level.loadBlock(tile, this.level.Tbackground);
                                     break;
                                 default:
                                     this.level.loadEntity([{ X: x, Y: y, Id: id }]);

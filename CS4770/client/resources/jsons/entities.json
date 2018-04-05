@@ -287,7 +287,7 @@
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
       "weapon": [ 7 ],
-      "healthBar": true
+      "healthBar": false
     },
     "source": "../resources/spriteSheets/Bosses.png",
     "animation": [
@@ -388,7 +388,7 @@
       "leftHandLow": [ 13, 55 ],
       "rightHandLow": [ 28, 55 ],
       "weapon": [ 7 ],
-      "healthBar": true,
+      "healthBar": false,
       "damage": 5
     },
     "source": "../resources/spriteSheets/Bosses.png",
@@ -490,7 +490,7 @@
       "leftHandLow": [ 13, 60 ],
       "rightHandLow": [ 28, 60 ],
       "weapon": [ 1 ],
-      "healthBar": true
+      "healthBar": false
     },
     "source": "../resources/spriteSheets/Bosses.png",
     "animation": [

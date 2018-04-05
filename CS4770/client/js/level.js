@@ -111,7 +111,7 @@ class Level {
             container.children[0].remove();
         }
         canvas = create('canvas', 'fg', 0, 0, sizeSettings[0], sizeSettings[1]);
-        var background = create('canvas', 'bg', 0, 0, this.width, this.height);
+        this.Tbackground = create('canvas', 'bg', 0, 0, this.width, this.height);
 
 
         this.background = new Image();
@@ -126,7 +126,7 @@ class Level {
 
         //loading in the tiles of a level
         for (var tile of any.content) {
-            this.loadBlock(tile, background);
+            this.loadBlock(tile, this.Tbackground);
         }
         //loading in the entities of a level
         this.loadEntity(any.entities);
