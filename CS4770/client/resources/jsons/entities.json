@@ -241,7 +241,54 @@
     "width": 31,
     "height": 32,
     "centerPX": 16,
-    "offSetPX": 0
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 129,
+        "startY": 49,
+        "offSetY": 5
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 129,
+        "startY": 49,
+        "offSetY": 5
+      }
+    ]
+  },
+  {
+    "id": 803,
+    "name": "pressurePlate",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 624,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 0,
+        "startY": 624,
+        "offSetY": 5
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 0,
+        "startY": 656,
+        "offSetY": 5
+      }
+    ]
   },
   {
     "id": 500,

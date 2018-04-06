@@ -337,6 +337,7 @@
                 <input type="button" id="Overwrite" value="Overwrite" style="display:none">
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
+                <input type="button"id="TestLevel" value="Test" >
             </div>
 
 
@@ -413,6 +414,11 @@
             document.getElementById("editor").style.display = "none";
             document.getElementById("signDiv").style.display = "none";
             document.getElementById("mainMenu").style.display = "table-cell";
+            if (overWorld.isTestLevel) {
+                overWorld.isTestLevel = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+            }
         }
 
         function tilesOptions() {

@@ -216,6 +216,7 @@ class OverWorld {
 
         this.onOverWorld = true;
 
+        this.isTestLevel = false;
         this.inShop = false;
         this.inCharacterSelect = false;
         this.inMuseum = false;
@@ -483,6 +484,11 @@ directions:
 
     //going back to the overworld
     toOverWorld(type) {
+        if (this.isTestLevel) {
+            back();
+            return;
+        }
+
         overWorld.inShop = false;
         this.inCharacterSelect = false;
         this.inMuseum = false;
