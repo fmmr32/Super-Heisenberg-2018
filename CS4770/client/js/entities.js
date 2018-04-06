@@ -450,6 +450,7 @@ class EntityMovable extends Entity {
         this.lastOffSet = -1;
         this.elapsedTime = 1;
         this.onFloor = false;
+        this.float = options.float;
     }
 
 
@@ -620,28 +621,29 @@ class EntityMovable extends Entity {
 
     //handles the gravity
     doGravity() {
-        if (this.float) { return };
+        if (!this.float) {
 
-        var x = this.getX() + this.getSprite().getCenter();
-        //checks if a enitty is in the air then setting the last offset, this allows the player to stand on the edge
-        if (this.level.getBlock(x, this.getY()).Id == 0) {
-            if (this.level.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
-                x += this.getLastOffSet();
-            } else if (this.level.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
-                x -= this.getLastOffSet();
+            var x = this.getX() + this.getSprite().getCenter();
+            //checks if a enitty is in the air then setting the last offset, this allows the player to stand on the edge
+            if (this.level.getBlock(x, this.getY()).Id == 0) {
+                if (this.level.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
+                    x += this.getLastOffSet();
+                } else if (this.level.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
+                    x -= this.getLastOffSet();
+                }
             }
-        }
-        //see if the entity is in the air then let the entity fall
-        if (this.level.getBlock(x, this.getY()).Id == 0) {
-            this.onFloor = false;
+            //see if the entity is in the air then let the entity fall
+            if (this.level.getBlock(x, this.getY()).Id == 0) {
+                this.onFloor = false;
 
-            if (this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity) < 100) {
-                this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
+                if (this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity) < 100) {
+                    this.setVSpeed(this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity));
+                }
+                this.elapsedTime++;
+            } else {
+                this.elapsedTime = 0;
+                this.onFloor = true;
             }
-            this.elapsedTime++;
-        } else {
-            this.elapsedTime = 0;
-            this.onFloor = true;
         }
 
         this.doCollision();

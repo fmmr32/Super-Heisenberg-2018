@@ -201,7 +201,7 @@ class Bullet extends EntityMovable {
 
         this.factor = options.factor;
         this.impact = options.impact;
-
+        this.float = false;
         this.sprite = options.sprite;
         this.gravity = options.gravity;
 

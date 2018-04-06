@@ -402,8 +402,8 @@
     "sound": "../resources/sounds/gun_sound.wav",
     "height": 0,
     "damage": 10,
-    "impact": "die",
-    "impactUpgrades": [ "die" ],
+    "impact": "ricochet",
+    "impactUpgrades": [ "ricochet" ],
     "speed": 5,
     "frames": 8,
     "frameRate": 24,
@@ -445,6 +445,96 @@
       }
 
     ]
+  },
+  {
+    "name": "Boss pistol",
+    "id": 9,
+    "columns": 3,
+    "width": 0,
+    "factor": 1,
+    "price": 150,
+    "sound": "../resources/sounds/gun_sound.wav",
+    "height": 0,
+    "damage": 10,
+    "impact": "die",
+    "impactUpgrades": [ "die" ],
+    "speed": 5,
+    "frames": 8,
+    "frameRate": 24,
+    "cooldown": 30,
+    "bulletSprite": 999,
+    "bulletSpriteFlip": 998,
+    "gravity": false,
+    "hidden": true,
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      }
+    ],
+    "bullets": [
+      {
+        "angle": 0,
+        "alive": 60
+      }
+    ]
+  },
+  {
+    "name": "Boss grenade",
+    "id": 10,
+    "columns": 3,
+    "width": 0,
+    "factor": 3,
+    "price": 150,
+    "sound": "../resources/sounds/gun_sound.wav",
+    "height": 0,
+    "damage": 10,
+    "impact": "explode",
+    "impactUpgrades": [ "explode" ],
+    "speed": 5,
+    "frames": 8,
+    "frameRate": 24,
+    "cooldown": 30,
+    "bulletSprite": 997,
+    "bulletSpriteFlip": 997,
+    "gravity": true,
+    "hidden": true,
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "barrelX": 0,
+        "barrelY": 0,
+        "offSetX": 0,
+        "offSetY": 0
+      }
+    ],
+    "grenades": [
+      {
+        "id": 996,
+        "angle": 340,
+        "alive": 60
+      }
+    ]
   }
-
 ]
