@@ -104,3 +104,7 @@ function getFiles(callback, file) {
         });
     }
 }
+
+function storeLocally(map) {
+    socket.emit('storeLocally',  map);
+}

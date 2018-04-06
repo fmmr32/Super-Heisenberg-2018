@@ -1091,10 +1091,6 @@
     "complex": {
       "hp": 1000,
       "moveSet": 0,
-      "drop": {
-        "type": "artifact",
-        "id": 992
-      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
@@ -1187,15 +1183,11 @@
     "width": 339,
     "height": 175,
     "centerPX": 169,
-    "offSetPX": 40,
+    "offSetPX": 100,
     "name": "Elon Musk",
     "complex": {
       "hp": 2000,
       "moveSet": 0,
-      "drop": {
-        "type": "weapon",
-        "id": 5
-      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -40, 95 ],
@@ -1204,6 +1196,7 @@
       "rightHandLow": [ 28, 55 ],
       "weapon": [ 7 ],
       "healthBar": false,
+      "float": true,
       "damage": 5
     },
     "source": "../resources/spriteSheets/Bosses.png",

@@ -49,6 +49,15 @@
         "Y": 178,
         "startDialog": -1,
         "endDialog": 4
+      },
+      {
+        "type": "level",
+        "mapName": "space",
+        "worldId": [ 1, 2 ],
+        "X": 270,
+        "Y": 150,
+        "startDialog": -1,
+        "endDialog": -1
       }
     ],
     "paths": [
@@ -134,18 +143,29 @@
         "worldId": [ 0 ],
         "startX": 1206,
         "startY": 278,
-        "endX": 1366,
+        "endX": 1550,
         "endY": 278,
         "startPointer": -1,
         "endPointer": -1,
-        "toOverworlds": [ 1,2]
+        "toOverworlds": [ 1, 2 ]
       },
       {
         "id": 8,
-        "worldId": [ 1,2 ],
+        "worldId": [ 1, 2 ],
         "startX": -74,
         "startY": 278,
-        "endX": 86,
+        "endX": 270,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 9,
+        "worldId": [ 1, 2 ],
+        "startX": 270,
+        "startY": 150,
+        "endX": 270,
         "endY": 278,
         "startPointer": -1,
         "endPointer": -1,
