@@ -1187,7 +1187,7 @@
     "width": 339,
     "height": 175,
     "centerPX": 169,
-    "offSetPX": 40,
+    "offSetPX": 100,
     "name": "Elon Musk",
     "complex": {
       "hp": 2000,
@@ -1204,6 +1204,7 @@
       "rightHandLow": [ 28, 55 ],
       "weapon": [ 7 ],
       "healthBar": false,
+      "float": true,
       "damage": 5
     },
     "source": "../resources/spriteSheets/Bosses.png",

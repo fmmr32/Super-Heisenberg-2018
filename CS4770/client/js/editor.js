@@ -491,6 +491,13 @@ class Editor {
         }
     }
 
+    storeMap() {
+        if (this.map.levelName == undefined) {
+            this.map.levelName = "default";
+        }
+        storeLocally(this.map);
+    }
+
     showInteracts(show) {
         var ent = document.getElementById("Interacts");
         ent.style.display = show ? "" : "none";

@@ -403,6 +403,8 @@ class ExitMenu {
 
 }
 
+var sounds = [];
+
 class SoundManager {
     constructor(sound, type) {
         this.sound = new Audio(sound);
@@ -421,7 +423,7 @@ class SoundManager {
                 this.sound.volume = v / 100;
                 break;
         }
-
+        sounds.push(this);
     }
 
     setVolume(volume) {
@@ -442,6 +444,7 @@ class SoundManager {
         if (!this.sound.loop) {
             temp.addEventListener("ended", function () {
                 obj.players.splice(obj.players.indexOf(temp), 1);
+                sounds.splice(sounds.indexOf(this), 1);
             })
         }
 

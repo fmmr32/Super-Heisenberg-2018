@@ -334,7 +334,7 @@
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
                 <input type="button" id="TestLevel" value="Test">
-                <input type="button" id="LocalStorage" value="StoreLocal">
+                <input type="button" id="LocalStorage" value="StoreLocal" onclick="elemt.storeMap()">
             </div>
 
 
@@ -694,22 +694,21 @@
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
             if (isChanging) {
                 changeKey(charCode);
-            } else
-                if (charCode && loaded) {
-                    if (overWorld.inExitMenu) {
-                        overWorld.exit.navigate(conf[charCode]);
-                        return true;
+            } else if (charCode && loaded) {
+                if (overWorld.inExitMenu) {
+                    overWorld.exit.navigate(conf[charCode]);
+                    return true;
+                }
+                if (overWorld.doingDialog) {
+                    if (conf[charCode] == "action") {
+                        overWorld.diag[overWorld.dialog].nextText();
                     }
-                    if (overWorld.doingDialog) {
-                        if (conf[charCode] == "action") {
-                            overWorld.diag[overWorld.dialog].nextText();
-                        }
-                    } else if (!overWorld.handleKeys(conf[charCode], true)) {
-                        if (!overWorld.doingDialog) {
-                            map.getPlayer().doMove(conf[charCode], true);
-                        }
+                } else if (!overWorld.handleKeys(conf[charCode], true)) {
+                    if (!overWorld.doingDialog) {
+                        map.getPlayer().doMove(conf[charCode], true);
                     }
                 }
+            }
         };
 
         document.onkeyup = function (e) {
@@ -752,7 +751,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-                                //window.onload = newLevel();
+                                    //window.onload = newLevel();
     </script>
 
 

@@ -219,15 +219,26 @@ class Level {
         this.entities.push(new Artifact(options));
     }
 
+    checkSpawnY(x, y, sprite) {
+        for (var fromY = y; fromY < (y + sprite.height); fromY++) {
+            if (this.getBlock(x, fromY).Id != 0 && fromY < (y + sprite.height)) {
+                y -= 1;
+                return this.checkSpawnY(x, y,sprite);
+            }
+        }
+        return y;
+    }
+
     //takes in an array of creature values, can be basic information as in id, x, y but can be more complex
     loadCreature(creatures) {
         //loading the creatures
         for (var ent of creatures) {
             var id = ent.Id;
-            var x = ent.X;
-            var y = ent.Y;
-
             var sprite = getSprite(id);
+            var x = ent.X;
+            var y = this.checkSpawnY(x, ent.Y, sprite);
+
+            
 
             var options = {};
             options.jump = sprite.complex.jump;
@@ -240,6 +251,8 @@ class Level {
             options.speed = sprite.complex.speed;
             options.moves = sprite.complex.moves;
             options.level = this;
+            
+
             options.x = x;
             options.y = y;
 
@@ -259,7 +272,7 @@ class Level {
                 options.name = ent.name != undefined ? ent.name : sprite.name;
             }
             //sets a healthbar if any
-            if (ent.healthBar != undefined || sprite.complex.healthBar != undefined) {
+            if ((ent.healthBar != undefined && ent.healthBar) || (sprite.complex.healthBar != undefined && sprite.complex.healthBar)) {
                 options.healthBar = { x: 125, y: 10, alignment: "h" };
             }
             options.animation = Animation.loadAnimation(id);
@@ -270,8 +283,8 @@ class Level {
             } else {
                 creature = new EntityCreature(options);
             }
-
-
+            console.log(creature);
+                
             this.entities.push(creature);
         }
     }

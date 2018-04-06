@@ -447,7 +447,7 @@ class EntityMovable extends Entity {
         this.speed = options.speed;
         this.vs = 0;
         this.hs = 0;
-        this.lastOffSet = -1;
+        this.lastOffSet = -this.getSprite().getOffSet();
         this.elapsedTime = 1;
         this.onFloor = false;
         this.float = options.float;
@@ -516,13 +516,7 @@ class EntityMovable extends Entity {
                             if (this.getHSpeed() == 0) {
                                 this.setY(y - this.getHeight());
                             } else {
-                                //still gives problems
-                                for (var dy = fromY; dy < toY; dy++) {
-                                    if (this.level.getBlock(x, dy).Id != 0) {
-                                        this.setY(dy);
-                                        break;
-                                    }
-                                }
+                                this.setY(creaY);
                             }
                         } else {
                             this.setY(fromY);
@@ -633,6 +627,7 @@ class EntityMovable extends Entity {
                     x -= this.getLastOffSet();
                 }
             }
+
             //see if the entity is in the air then let the entity fall
             if (this.level.getBlock(x, this.getY()).Id == 0) {
                 this.onFloor = false;
@@ -822,6 +817,14 @@ class EntityCreature extends EntityMovable {
     }
 
     doRespawn(source) {
+        if (this.loot != undefined) {
+            var prop = this.loot;
+            prop.x = this.getX();
+            prop.y = this.getY() - this.getHeight()/2;
+            this.level.loadArtifact(prop);
+            var id = this.getSprite().id;
+        }
+
         //checks if the creature is able to respawn
         if (this.respawn) {
             this.spawn(this.level.spawnX, this.level.spawnY, 2);
@@ -1044,12 +1047,8 @@ class Boss extends EntityCreature {
 
 
     doRespawn(source) {
-        var prop = this.loot;
-        prop.x = this.getX();
-        prop.y = this.getY() - this.getHeight();
-        this.level.loadArtifact(prop);
-        var id = this.getSprite().id;
-        var e = new CustomEvent("bossKill", { detail: id });
+
+        var e = new CustomEvent("bossKill", { detail: this.getSprite().id });
         document.dispatchEvent(e);
         super.doRespawn(source);
     }
