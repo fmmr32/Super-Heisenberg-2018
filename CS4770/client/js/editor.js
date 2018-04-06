@@ -497,19 +497,19 @@ class Editor {
             }
         }
     }
-    ////for the damage
-    //showDamage(show) {
-    //    var dam = document.getElementById();
-    //    dam.style.display = show ? "" : "none";
-    //    if (show) {
-    //        var a = document.getElementById();
-    //        if (this.select[0] != "interacts") {
-    //            a.value = this.map.entities[this.select[1]].damage;
-    //        } else {
-    //            a.value = this.map.interacts[this.select[1]].action[this.select[3]].damage;
-    //        }
-    //    }
-    //}
+    //for the damage
+    showDamage(show) {
+        var dam = document.getElementById("DamageAmount");
+        dam.style.display = show ? "" : "none";
+        if (show) {
+            var a = document.getElementById();
+            if (this.select[0] != "interacts") {
+                a.value = this.map.entities[this.select[1]].damage;
+            } else {
+                a.value = this.map.interacts[this.select[1]].action[this.select[3]].damage;
+            }
+        }
+    }
 
     clearCanvas() {
         var canvas = document.getElementById('canvas');
@@ -522,7 +522,7 @@ class Editor {
         this.showMeta(false);
         this.showInteracts(false);
         this.showEntities(false);
-        //  this.showDamage(false);
+        this.showDamage(false);
         if (this.select[0] != "interacts") {
             this.select = [];
         }
