@@ -22,7 +22,7 @@ function setConf(button) {
     for (var b of Object.keys(button)) {
         var row = settingsTable.insertRow(settingsTable.rows.length);
         var cell1 = row.insertCell(0);
-        row.onclick = function () { isChanging = true; changer[0] = this.cells[1].innerHTML; };
+        row.onclick = function () {isChanging = true; changer[0] = this.cells[1].innerHTML; };
         var cell2 = row.insertCell(1);
        
         cell2.innerHTML = button[b];
