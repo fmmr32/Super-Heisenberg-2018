@@ -1091,10 +1091,6 @@
     "complex": {
       "hp": 1000,
       "moveSet": 0,
-      "drop": {
-        "type": "artifact",
-        "id": 992
-      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
@@ -1192,10 +1188,6 @@
     "complex": {
       "hp": 2000,
       "moveSet": 0,
-      "drop": {
-        "type": "weapon",
-        "id": 5
-      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -40, 95 ],

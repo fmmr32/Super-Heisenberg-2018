@@ -64,6 +64,9 @@
     <Content Include="client\resources\jsons\achievements.json" />
     <Content Include="client\resources\jsons\characters.json" />
     <Content Include="client\resources\jsons\dialogs.json" />
+    <Content Include="client\resources\jsons\drops.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\jsons\entities.json" />
     <Content Include="client\resources\jsons\map1.json" />
     <Content Include="client\resources\jsons\moveSets.json">

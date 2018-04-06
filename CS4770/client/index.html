@@ -180,6 +180,15 @@
                                 <input id="damAmount" type="number" name="width" min="0" max="100"> <!–– Set Max ––>
                             </td>
                         </tr>
+                        <tr id="LootDrop" style="display:none">
+                            <td>
+                                <p>Loot</p>
+                            </td>
+                            <td>
+                                <select id="Lut">
+                                </select>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div style="display:inline-block; float:right; margin-top:10px;">
@@ -515,7 +524,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json", "moveSets.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json", "moveSets.json","drops.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -633,6 +642,12 @@
                             moves[any.id] = any;
                         }
                     }, resource + x);
+                } else if (x == "drops.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            drops[any.id] = any;
+                        }
+                    }, resource + x)
                 }
 
                 else {

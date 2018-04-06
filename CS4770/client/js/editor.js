@@ -234,6 +234,14 @@ class Editor {
             }
         }
 
+        document.getElementById("Lut").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map.creatures[elemt.select[1]].loot = parseInt(this.value);
+            } else {
+                elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].loot = parseInt(this.value);
+            }
+        }
+
         document.getElementById("entAmount").onchange = function () {
             if (elemt.select[0] != "interacts") {
                 elemt.map[elemt.select[0]][elemt.select[1]].amount = parseInt(this.value);
@@ -251,15 +259,105 @@ class Editor {
         }
 
         document.getElementById("Ricochet").onchange = function () {
-            elemt.handleMetaChange("ricochet", this.checked);
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ricochet", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ricochet": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ricochet": this.checked });
+                }
+                //sets the ineract action for elemt block
+            } else {
+                var block;
+                if (elemt.select[3] instanceof Array) {
+                    block = elemt.map.content[elemt.select[3][1]];
+                } else {
+                    var thing = elemt.hasMeta(type, elemt.map.interacts[elemt.select[1]].action[elemt.select[3]])
+                    if (thing != -1) {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta[thing]["ricochet"] = this.checked;
+                    } else {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta.push({ "ricochet": this.checked });
+                    }
+                    return;
+                }
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "ricochet": elemt.this.checked };
+                options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
         }
 
         document.getElementById("Ice").onchange = function () {
-            elemt.handleMetaChange("ice", this.checked);
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ice", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ice": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ice": this.checked });
+                }
+                //sets the ineract action for elemt block
+            } else {
+                var block;
+                if (elemt.select[3] instanceof Array) {
+                    block = elemt.map.content[elemt.select[3][1]];
+                } else {
+                    var thing = elemt.hasMeta(type, elemt.map.interacts[elemt.select[1]].action[elemt.select[3]])
+                    if (thing != -1) {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta[thing]["ice"] = this.checked;
+                    } else {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta.push({ "ice": this.checked });
+                    }
+                    return;
+                }
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "ice": elemt.this.checked };
+                options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
         }
 
         document.getElementById("PassThrough").onchange = function () {
-            elemt.handleMetaChange("passThrough", this.checked);
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("passThrough", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "passThrough": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "passThrough": this.checked });
+                }
+                //sets the ineract action for elemt block
+            } else {
+                var block;
+                if (elemt.select[3] instanceof Array) {
+                    block = elemt.map.content[elemt.select[3][1]];
+                } else {
+                    var thing = elemt.hasMeta(type, elemt.map.interacts[elemt.select[1]].action[elemt.select[3]])
+                    if (thing != -1) {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta[thing]["passThrough"] = this.checked;
+                    } else {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta.push({ "passThrough": this.checked });
+                    }
+                    return;
+                }
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "passThrough": elemt.this.checked };
+                options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
         }
 
 
@@ -280,40 +378,6 @@ class Editor {
             document.getElementById("gameDiv").style.display = "table-cell";
             overWorld.isTestLevel = true;
             overWorld.toMapFromDB(elemt.map);
-        }
-    }
-
-    handleMetaChange(type, checked) {
-        //checks if we are doing something with the interacts
-        if (this.select[0] != "interacts") {
-            var m = this.hasMeta(type, this.map[this.select[0]][this.select[1]]);
-            if (m != -1) {
-                this.map[this.select[0]][this.select[1]].meta[m] = { type: checked };
-            } else {
-                this.map[this.select[0]][this.select[1]].meta.push({ type: checked });
-            }
-            //sets the ineract action for this block
-        } else {
-            var block;
-            if (this.select[3] instanceof Array) {
-                block = this.map.content[this.select[3][1]];
-            } else {
-                var thing = this.hasMeta(type, this.map.interacts[this.select[1]].action[this.select[3]])
-                if (thing != -1) {
-                    this.map.interacts[this.select[1]].action[this.select[3]].meta[thing][type] = checked;
-                } else {
-                    this.map.interacts[this.select[1]].action[this.select[3]].meta.push({ type: checked });
-                }
-                return;
-            }
-            var options = {};
-            options.x = block.blockX;
-            options.y = block.blockY;
-            options.type = "meta";
-            options.meta = { type: this.checked };
-            options.id = block.blockId;
-            getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
-            this.map.interacts[this.select[1]].action.push(options);
         }
     }
 
@@ -439,7 +503,7 @@ class Editor {
         var row = document.getElementById("MoveSets");
         row.style.display = show ? "" : "none";
         if (show) {
-            var dropdown = row.children[1].children[0];
+            var dropdown = document.getElementById("MoveSetsDropdown");
             if (dropdown.children.length == 0) {
                 for (var mov of moves) {
                     var opt = document.createElement('option');
@@ -527,6 +591,32 @@ class Editor {
             } else {
                 a.value = this.map.interacts[this.select[1]].action[this.select[3]].damage;
             }
+        }
+    }
+
+    showLoot(show) {
+        var row = document.getElementById("LootDrop");
+        row.style.display = show ? "" : "none";
+        if (show) {
+            var dropdown = document.getElementById("Lut");
+            if (dropdown.children.length == 0) {
+                for (var mov of drops) {
+                    var opt = document.createElement('option');
+                    opt.value = mov.id;
+                    opt.innerHTML = mov.name;
+                    dropdown.appendChild(opt);
+                }
+            }
+            var data = this.select;
+            var set;
+            if (this.select[0] == "interacts") {
+                data = this.select[2];
+                set = this.map.creatures[this.select[1]].action[this.select[3]].drop;
+            } else {
+                set = this.map[data[0]][data[1]].drop
+            }
+
+            dropdown.selectedIndex = set == undefined ? 0 : set;
         }
     }
 
@@ -667,6 +757,7 @@ class Editor {
                 case "creatures":
                     this.select = data;
                     this.showMoveSets(true);
+                    this.showLoot(true);
                     break;
                 case "interacts":
                     this.select = data;
@@ -690,6 +781,7 @@ class Editor {
                             } else if (this.select[3] < 800) {
                                 options.entType = "EntityCreature";
                                 options.moveSet = 0;
+                                options.loot = -1;
                                 getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
                             }
                             options.id = this.select[3];
@@ -705,6 +797,7 @@ class Editor {
                                     break;
                                 case "EntityCreature":
                                     this.showMoveSets(true);
+                                     this.showLoot(true);
                                     break;
                                 case "interacts":
                                     this.showInteracts(true);
@@ -742,6 +835,7 @@ class Editor {
             Id: this.selection,
             X: x,
             Y: y,
+            loot: -1
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.creatures.length; i++) {

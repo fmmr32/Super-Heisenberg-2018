@@ -1,4 +1,5 @@
 ﻿var moves = [];
+var drops = [];
 
 class Animation {
     constructor(image, frames, frameRate, columns, forcedAnimate) {
@@ -282,11 +283,13 @@ class MoveSet {
                         t += Math.PI * 2;
                     }
                     var angle = Math.floor(180 / Math.PI * t) - 90;
-                    if (this.ent.getLastOffSet() <= 0 && (angle > 90 && angle < 270)) {
-                        this.ent.lastOffSet = this.ent.getSpeed();
+                    if (this.ent.getLastOffSet() < 0 && (angle > 90 && angle < 270)) {
+                        this.ent.lastOffSet = this.ent.getSprite().getOffSet();
+                        angle = angle - 180;
+                    } else if (this.ent.getLastOffSet() > 0 && (angle <= 90 || angle > 270)) {
+                        this.ent.lastOffSet = -this.ent.getSprite().getOffSet();
                         angle = 180 - angle;
-                    } else if (this.ent.getLastOffSet() > 0 && (angle < 90 || angle > 270)) {
-                        this.ent.lastOffSet = -this.ent.getSpeed();
+                    } else {
                         angle = 180 - angle;
                     }
 
@@ -777,6 +780,9 @@ class EntityCreature extends EntityMovable {
         this.leftHand = options.leftHand;
         this.rightHand = options.rightHand;
 
+        if (options.loot != undefined) {
+            this.loot = options.loot; //add the loot of the boss
+        }
 
         this.jump = options.jump;
 
@@ -822,7 +828,6 @@ class EntityCreature extends EntityMovable {
             prop.x = this.getX();
             prop.y = this.getY() - this.getHeight()/2;
             this.level.loadArtifact(prop);
-            var id = this.getSprite().id;
         }
 
         //checks if the creature is able to respawn
@@ -1042,7 +1047,7 @@ class Boss extends EntityCreature {
     constructor(options) {
         super(options);
 
-        this.loot = options.loot; //add the loot of the boss
+       
     }
 
 

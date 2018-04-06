@@ -204,16 +204,16 @@ class Level {
         options.y = artifact.y;
         options.level = this;
         options.type = artifact.type;
-        options.id = artifact.id;
+        options.id = artifact.dropId;
         switch (artifact.type) {
             case "weapon":
-                var w = deepCopy(weapons.get(artifact.id));
+                var w = deepCopy(weapons.get(artifact.dropId));
                 options.sprite = [getSprite(999)];
                 options.animation = w.animations;
                 break;
             case "artifact":
-                options.sprite = [getSprite(artifact.id)];
-                options.animation = Animation.loadAnimation(artifact.id);
+                options.sprite = [getSprite(artifact.dropId)];
+                options.animation = Animation.loadAnimation(artifact.dropId);
                 break;
         }
         this.entities.push(new Artifact(options));
@@ -277,8 +277,11 @@ class Level {
             }
             options.animation = Animation.loadAnimation(id);
             var creature;
+            if (ent.loot != undefined && ent.loot != -1) {
+                options.loot = drops[ent.loot];
+            }
+
             if (id >= 400 && id < 500) {
-                options.loot = getSprite(id).complex.drop;
                 creature = new Boss(options);
             } else {
                 creature = new EntityCreature(options);

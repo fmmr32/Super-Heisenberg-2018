@@ -457,4 +457,12 @@ class SoundManager {
             t.currentTime = 0;
         }
     }
+
+    static changeAllVolumes(volume, type) {
+        for (var sound of sounds) {
+            if (sound.type = type) {
+                sound.setVolume(volume);
+            }
+        }
+    }
 }
