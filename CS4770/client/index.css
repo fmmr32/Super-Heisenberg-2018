@@ -19,10 +19,7 @@ img {
     overflow: hidden;
     z-index: 5;
 }
-label.tile-label{
-  float:right;
-  margin-top:16px;
-}
+
 
 #left {
     margin: 0;
@@ -38,17 +35,7 @@ img:hover {
     z-index: 5;
 }
 
-table#title {
-    width: 775px;
-    margin: 0 auto;
-}
-
-table#gameSettings {
-    width: 775px;
-    margin: 0 auto;
-}
-
-table, th, td {
+    table, td, th{
     border: 1px solid black;
     border-collapse: collapse;
 }
@@ -75,12 +62,31 @@ th {
     color: rgb(219,50,100);
 }
 
+table#title {
+    width: 775px;
+    margin: 0 auto;
+}
+
+table#gameSettings {
+    width: 750px;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+
+table#gameSettings td {
+    text-align: center;
+}
+
+table#gameSettings tr:hover {
+    background: black;
+}
+
 table#holder {
     width: 800px;
     margin: 0 auto;
 }
 
-table#holder th, td {
+table#holder th, table#holder td {
     border: 0px;
 }
 
@@ -89,14 +95,18 @@ table#level {
     margin: 0 auto;
 }
 
-table#level th, td {
+table#level th, table#level td {
     border: 1px solid black;
     border-collapse: collapse;
 }
 
-tbody tr:hover {
+tbody#levelTable tr:hover{
     background: black;
 }
+
+
+
+
 
 
 .menuContainer {
@@ -198,7 +208,7 @@ table#select, table#inputs {
     border-collapse: collapse;
 }
 
-table#select th, td {
+table#select th, table#select td {
     border: 2px solid black;
     border-collapse: collapse;
     color: white;
@@ -228,11 +238,13 @@ table#inputs {
 
 table#inputs td {
     padding-left: 5px;
+    height:50px;
 }
 
 table#inputs tr {
     background-color: #484848;
     border: hidden;
+    height: 50px;
 }
 
 h5 {
@@ -349,13 +361,13 @@ table#EntityEdit {
     height: 100px;
 }
 
-table#EntityEdit tr, td {
+table#EntityEdit tr, table#EntityEdit td {
     max-height: 75px;
     background-color: #484848;
     border: hidden;
     padding-left: 5px;
     text-align: center;
-    }
+}
 
 select#MoveSetsDropdown {
     margin-right: 0px;
@@ -390,7 +402,7 @@ table#InteractEdit {
     height: 100px;
 }
 
-table#InteractEdit tr, td {
+table#InteractEdit tr, table#InteractEdit td {
     max-height: 75px;
     background-color: #484848;
     border: hidden;
@@ -416,11 +428,11 @@ input#InteractRepeat {
 }
 
 table#BlockMeta {
-    width: 250px;
+    width: 300px;
     height: 100px;
 }
 
-table#BlockMeta tr, td {
+table#BlockMeta tr, table#BlockMeta td {
     max-height: 75px;
     background-color: #484848;
     border: hidden;
@@ -428,12 +440,37 @@ table#BlockMeta tr, td {
 
 input#Ricochet{
     float:right;
+    width:15px;
+    height:15px;
 }
 
 input#Ice {
     float: right;
+    width: 15px;
+    height: 15px;
 }
 
 input#PassThrough {
     float: right;
+    width: 15px;
+    height: 15px;
 }
+
+
+select#background, input#gravity, input#mapW, input#mapH, input#X, input#Y, select#music, input#levelName{
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: top;
+}
+
+input#Save {
+    margin-bottom:8px;
+}
+
+
