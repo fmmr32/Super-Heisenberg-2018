@@ -459,7 +459,13 @@ class Editor {
         ent.style.display = show ? "" : "none";
     }
 
-checkPosition(x, y) {
+    clearCanvas() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
         this.showInteracts(false);
@@ -495,7 +501,7 @@ checkPosition(x, y) {
         return [type, k];
     }
 
-removeTile() {
+        removeTile() {
         var context = this.canvas.getContext("2d");
 
         var scrollPos = document.getElementById("editor").children[0];
@@ -539,14 +545,12 @@ removeTile() {
                 this.map.interacts.splice(k, 1);
                 this.clearCanvas();
                 this.draw(this.map);
+                this.drawBoard();
                 break;
 
             case "action":
                 var j = data[2];
-                console.log(this.map.interacts[k].action[j]);
-                console.log(this.map.interacts[k].action);
                 this.map.interacts[k].action.splice(j, 1);
-                console.log(this.map.interacts[k].action);
         }
         
         this.drawBoard();
