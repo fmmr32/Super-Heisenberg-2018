@@ -516,6 +516,7 @@ class EntityMovable extends Entity {
                             if (this.getHSpeed() == 0) {
                                 this.setY(y - this.getHeight());
                             } else {
+                                //still gives problems
                                 for (var dy = fromY; dy < toY; dy++) {
                                     if (this.level.getBlock(x, dy).Id != 0) {
                                         this.setY(dy);

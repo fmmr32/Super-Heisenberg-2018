@@ -241,14 +241,14 @@ class Editor {
                 elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].amount = parseInt(this.value);
             }
         }
-        ////for the damage
-        //document.getElementById("damAmount").onchange = function () {
-        //    if (elemt.select[0] != "interacts") {
-        //        elemt.map[elemt.select[0]][elemt.select[1]].damage = parseInt(this.value);
-        //    } else {
-        //        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].damage = parseInt(this.value);
-        //    }
-        //}
+        //for the damage
+        document.getElementById("damAmount").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map[elemt.select[0]][elemt.select[1]].damage = parseInt(this.value);
+            } else {
+                elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].damage = parseInt(this.value);
+            }
+        }
 
         document.getElementById("Ricochet").onchange = function () {
             elemt.handleMetaChange("ricochet", this.checked);
@@ -266,9 +266,20 @@ class Editor {
 
         document.getElementById("InteractType").onchange = function () {
             elemt.select[2] = this.value;
+            if (this.value == "damage") {
+                elemt.map.interacts[elemt.select[1]].action.push({ "type": "damage", "damage": 1 });
+                elemt.select[3] = elemt.map.interacts[elemt.select[1]].action.length - 1;
+                elemt.showDamage(true);
+            }
         }
         document.getElementById("InteractRepeat").onchange = function () {
             elemt.map[elemt.select[0]][elemt.select[1]].repeatable = this.checked;
+        }
+        document.getElementById("TestLevel").onclick = function () {
+            document.getElementById("editor").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+            overWorld.isTestLevel = true;
+            overWorld.toMapFromDB(elemt.map);
         }
     }
 
@@ -483,6 +494,7 @@ class Editor {
     showInteracts(show) {
         var ent = document.getElementById("Interacts");
         ent.style.display = show ? "" : "none";
+        document.getElementById("InteractType").selectedIndex = 0;
     }
 
     showEntities(show) {
@@ -502,7 +514,7 @@ class Editor {
         var dam = document.getElementById("DamageAmount");
         dam.style.display = show ? "" : "none";
         if (show) {
-            var a = document.getElementById();
+            var a = document.getElementById("damAmount");
             if (this.select[0] != "interacts") {
                 a.value = this.map.entities[this.select[1]].damage;
             } else {
@@ -661,7 +673,7 @@ class Editor {
                             options.x = x;
                             options.y = y;
                             options.type = this.select[2];
-                            if (this.select[3] >= 800 && this.select[3] <= 802) {
+                            if (this.select[3] >= 800 && this.select[3] <= 803) {
                                 options.entType = "Entity";
                                 getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
                             } else if (this.select[3] < 400 || this.select[3] == 1005) {
@@ -737,9 +749,6 @@ class Editor {
             console.log("Overwriting position...");
             this.map.creatures.splice(i, 1)
             this.map.creatures.push(creat);
-
-
-
         }
         else {
             this.map.creatures.push(creat);
@@ -779,7 +788,7 @@ class Editor {
             this.map.entities.push(ent);
         }
         else {
-            if (ent.Id == 800 || ent.Id == 802) {
+            if (ent.Id == 800) {
                 this.map.entities.push(ent);
             } else {
                 ent.repeatable = false;

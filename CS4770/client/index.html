@@ -206,9 +206,7 @@
                 <div style="display:inline-block; float:right; margin-top:10px;">
                     <table id="BlockMeta" style="display:none">
                         <tr>
-                            <td>
-
-                            </td>
+                            <td></td>
                             <td>
                                 <input type="checkbox" id="Ricochet" value="ricochet" />
                             </td>
@@ -216,7 +214,7 @@
                                 <p>Ricochet</p>
                             </td>
                         </tr>
-                        <tr >
+                        <tr>
                             <td>
                                 <p>Tile Properties</p>
                             </td>
@@ -228,9 +226,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-
-                            </td>
+                            <td></td>
                             <td>
                                 <input type="checkbox" id="PassThrough" value="passThrough" />
                             </td>
@@ -337,6 +333,8 @@
                 <input type="button" id="Overwrite" value="Overwrite" style="display:none">
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
+                <input type="button" id="TestLevel" value="Test">
+                <input type="button" id="LocalStorage" value="StoreLocal">
             </div>
 
 
@@ -413,6 +411,11 @@
             document.getElementById("editor").style.display = "none";
             document.getElementById("signDiv").style.display = "none";
             document.getElementById("mainMenu").style.display = "table-cell";
+            if (overWorld.isTestLevel) {
+                overWorld.isTestLevel = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+            }
         }
 
         function tilesOptions() {
@@ -689,23 +692,24 @@
         document.onkeydown = function (e) {
             e = e || window.event;
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-            if (charCode && loaded) {
-                if (overWorld.inExitMenu) {
-                    overWorld.exit.navigate(conf[charCode]);
-                    return true;
-                }
-                if (overWorld.doingDialog) {
-                    if (conf[charCode] == "action") {
-                        overWorld.diag[overWorld.dialog].nextText();
-                    }
-                } else if (!overWorld.handleKeys(conf[charCode], true)) {
-                    if (!overWorld.doingDialog) {
-                        map.getPlayer().doMove(conf[charCode], true);
-                    }
-                }
-            } else if (isChanging) {
+            if (isChanging) {
                 changeKey(charCode);
-            }
+            } else
+                if (charCode && loaded) {
+                    if (overWorld.inExitMenu) {
+                        overWorld.exit.navigate(conf[charCode]);
+                        return true;
+                    }
+                    if (overWorld.doingDialog) {
+                        if (conf[charCode] == "action") {
+                            overWorld.diag[overWorld.dialog].nextText();
+                        }
+                    } else if (!overWorld.handleKeys(conf[charCode], true)) {
+                        if (!overWorld.doingDialog) {
+                            map.getPlayer().doMove(conf[charCode], true);
+                        }
+                    }
+                }
         };
 
         document.onkeyup = function (e) {
@@ -748,7 +752,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-                            //window.onload = newLevel();
+                                //window.onload = newLevel();
     </script>
 
 
