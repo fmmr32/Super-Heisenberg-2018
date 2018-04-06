@@ -1,5 +1,17 @@
 ﻿[
   {
+    "id": -1,
+    "name": "debug_fire",
+    "moveSet": [
+      {
+        "type": "fire",
+        "advanceAfter": 1,
+        "delayBefore": 1,
+        "delayAfter": 0
+      }
+    ]
+  },
+  {
     "id": 0,
     "name": "nothing",
     "moveSet": [

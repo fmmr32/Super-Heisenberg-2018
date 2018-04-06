@@ -559,7 +559,7 @@ class Editor {
 
     removeTile() {
         var context = this.canvas.getContext("2d");
-
+       
         var scrollPos = document.getElementById("editor").children[0];
         var scrollX = scrollPos.scrollLeft;
         var scrollY = scrollPos.scrollTop;
@@ -570,6 +570,10 @@ class Editor {
         var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
         var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
         var data = this.checkPosition(x, y);
+
+        if (this.select[0] == "interacts") {
+            this.map.interacts[this.select[1]].action.splice(this.select[3], 1);
+        }
 
         var k = data[1];
         var type = data[0];

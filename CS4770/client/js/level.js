@@ -235,7 +235,7 @@ class Level {
             if (ent.hp != undefined) {
                 options.hp = ent.hp;
             }
-
+            
 
             options.speed = sprite.complex.speed;
             options.moves = sprite.complex.moves;
@@ -248,7 +248,7 @@ class Level {
             options.damage = sprite.complex.damage;
             options.leftHand = [sprite.complex.leftHand, sprite.complex.leftHandLow];
             options.rightHand = [sprite.complex.rightHand, sprite.complex.rightHandLow];
-
+            options.float = sprite.complex.float != undefined ? sprite.complex.float : false;
             options.moveSet = new MoveSet(moves[sprite.complex.moveSet].moveSet);
             //overrides the default moveSet
             if (ent.moveSet != undefined) {
