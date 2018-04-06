@@ -511,6 +511,12 @@ class Editor {
     //    }
     //}
 
+    clearCanvas() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
     checkPosition(x, y) {
         this.showMoveSets(false);
         this.showMeta(false);
@@ -595,14 +601,12 @@ class Editor {
                 this.map.interacts.splice(k, 1);
                 this.clearCanvas();
                 this.draw(this.map);
+                this.drawBoard();
                 break;
 
             case "action":
                 var j = data[2];
-                console.log(this.map.interacts[k].action[j]);
-                console.log(this.map.interacts[k].action);
                 this.map.interacts[k].action.splice(j, 1);
-                console.log(this.map.interacts[k].action);
         }
 
         this.drawBoard();
