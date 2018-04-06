@@ -414,13 +414,15 @@ class SoundManager {
         var v = 100;
         switch (type) {
             case "music":
+                var val = document.getElementById("MVolume").value;
                 //get this value from the music volume settings
-                this.sound.volume = v / 100;
+                this.sound.volume = val / 100;
                 this.setLoop(true);
                 break;
             case "game":
+                var val = document.getElementById("GSVolume").value;
                 //get this value from the game volume settings
-                this.sound.volume = v / 100;
+                this.sound.volume = val / 100;
                 break;
         }
         sounds.push(this);
