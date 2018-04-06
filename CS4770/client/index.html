@@ -135,11 +135,11 @@
             <table id='soundScrollers'>
                 <tr>
                     <td><p>Music Volume: </p></td>    
-                    <td><input id="MVolume" type="range" name="points" min="0" max="100" value="MusicVolume"></td>
+                    <td><input id="MVolume" type="range" name="points" min="0" max="100" value="MusicVolume" onchange="SoundManager.changeAllVolumes(this.value, 'music')"></td>
                 </tr>
                 <tr>
                     <td><p>Game Sound Volume</p></td>
-                    <td><input id="GSVolume" type="range" name="points" min="0" max="100" value="GameSoundVolume"></td>
+                    <td><input id="GSVolume" type="range" name="points" min="0" max="100" value="GameSoundVolume" onchange="SoundManager.changeAllVolumes(this.value, 'game')"></td>
                 </tr>
             </table>
 
@@ -190,6 +190,15 @@
                             </td>
                             <td>
                                 <input id="damAmount" type="number" name="width" min="0" max="100"> <!–– Set Max ––>
+                            </td>
+                        </tr>
+                        <tr id="LootDrop" style="display:none">
+                            <td>
+                                <p>Loot</p>
+                            </td>
+                            <td>
+                                <select id="Lut">
+                                </select>
                             </td>
                         </tr>
                     </table>
@@ -346,7 +355,7 @@
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
                 <input type="button" id="TestLevel" value="Test">
-                <input type="button" id="LocalStorage" value="StoreLocal">
+                <input type="button" id="LocalStorage" value="StoreLocal" onclick="elemt.storeMap()">
             </div>
 
 
@@ -527,7 +536,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json", "moveSets.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json", "moveSets.json","drops.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -645,6 +654,12 @@
                             moves[any.id] = any;
                         }
                     }, resource + x);
+                } else if (x == "drops.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            drops[any.id] = any;
+                        }
+                    }, resource + x)
                 }
 
                 else {
@@ -706,22 +721,21 @@
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
             if (isChanging) {
                 changeKey(charCode);
-            } else
-                if (charCode && loaded) {
-                    if (overWorld.inExitMenu) {
-                        overWorld.exit.navigate(conf[charCode]);
-                        return true;
+            } else if (charCode && loaded) {
+                if (overWorld.inExitMenu) {
+                    overWorld.exit.navigate(conf[charCode]);
+                    return true;
+                }
+                if (overWorld.doingDialog) {
+                    if (conf[charCode] == "action") {
+                        overWorld.diag[overWorld.dialog].nextText();
                     }
-                    if (overWorld.doingDialog) {
-                        if (conf[charCode] == "action") {
-                            overWorld.diag[overWorld.dialog].nextText();
-                        }
-                    } else if (!overWorld.handleKeys(conf[charCode], true)) {
-                        if (!overWorld.doingDialog) {
-                            map.getPlayer().doMove(conf[charCode], true);
-                        }
+                } else if (!overWorld.handleKeys(conf[charCode], true)) {
+                    if (!overWorld.doingDialog) {
+                        map.getPlayer().doMove(conf[charCode], true);
                     }
                 }
+            }
         };
 
         document.onkeyup = function (e) {
@@ -764,7 +778,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-                                //window.onload = newLevel();
+                                    //window.onload = newLevel();
     </script>
 
 

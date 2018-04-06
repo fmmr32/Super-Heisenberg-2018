@@ -165,4 +165,12 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on('storeLocally', function (map) {
+        var name = map.levelName;
+        var path = __dirname + "/client/resources/" + name + ".json";
+        fs.writeFile(path, JSON.stringify(map), 'utf-8', function (err) {
+            if (err) throw err;
+            console.log("HOORAY");
+        });
+    })
 }); 
