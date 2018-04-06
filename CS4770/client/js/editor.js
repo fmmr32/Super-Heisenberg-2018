@@ -561,8 +561,8 @@ class Editor {
         var context = this.canvas.getContext("2d");
        
         var scrollPos = document.getElementById("editor").children[0];
-        var scrollX = scrollPos.scrollLeft;
-        var scrollY = scrollPos.scrollTop;
+        var scrollX = scrollPos.childNodes[1].scrollLeft;
+        var scrollY = scrollPos.childNodes[1].scrollTop;
         var gameDiv = document.getElementById("canvas");
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
@@ -619,8 +619,8 @@ class Editor {
 
     placeTile() {
         var scrollPos = document.getElementById("editor").children[0];
-        var scrollX = scrollPos.scrollLeft;
-        var scrollY = scrollPos.scrollTop;
+        var scrollX = scrollPos.childNodes[1].scrollLeft;
+        var scrollY = scrollPos.childNodes[1].scrollTop;
         var gameDiv = document.getElementById("canvas");
         var divOffsetX = gameDiv.offsetLeft;
         var divOffsetY = gameDiv.offsetTop;
