@@ -141,6 +141,7 @@ class Level {
     loadBlock(tile, background) {
         var block = new Block(tile.blockId, tile.blockX, tile.blockY);
 
+
         if (getSprite(tile.blockId).meta != undefined) {
             for (var key in getSprite(tile.blockId).meta) {
                 block.addMeta(key, getSprite(tile.blockId).meta[key]);
@@ -153,11 +154,14 @@ class Level {
             if (this.tiles[x] === undefined) {
                 this.tiles[x] = [];
             }
+           
             for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
                 this.tiles[x][y] = block;
             }
         }
-        this.setSprite(block, background);
+        if (block.Id != 1005) {
+            this.setSprite(block, background);
+        }
     }
 
     //takes in an arracy of basic interact values
@@ -286,7 +290,6 @@ class Level {
             } else {
                 creature = new EntityCreature(options);
             }
-            console.log(creature);
                 
             this.entities.push(creature);
         }
@@ -425,7 +428,7 @@ class Level {
             this.offSetX = Math.max(this.offSetX, space);
             var context = canvas.getContext("2d");
 
-            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, this.offSetX, 0, this.background.width, this.background.height);
+            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, 0, 0, this.background.width, this.background.height);
             context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, this.offSetY, this.width, this.height);
         }
     }

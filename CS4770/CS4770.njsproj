@@ -75,6 +75,7 @@
     <Content Include="client\resources\jsons\overworld.json" />
     <Content Include="client\resources\jsons\overWorldCharacters.json" />
     <Content Include="client\resources\jsons\player.json" />
+    <Content Include="client\resources\jsons\SpaceBattle.json" />
     <Content Include="client\resources\jsons\tiles.json" />
     <Content Include="client\resources\jsons\values.json" />
     <Content Include="client\resources\jsons\weapons.json" />

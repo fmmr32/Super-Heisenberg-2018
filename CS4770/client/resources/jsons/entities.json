@@ -1186,7 +1186,7 @@
     "offSetPX": 100,
     "name": "Elon Musk",
     "complex": {
-      "hp": 2000,
+      "hp": 200,
       "moveSet": 0,
       "speed": 4,
       "jump": 0.5,
@@ -1196,7 +1196,6 @@
       "rightHandLow": [ 28, 55 ],
       "weapon": [ 7 ],
       "healthBar": false,
-      "float": true,
       "damage": 5
     },
     "source": "../resources/spriteSheets/Bosses.png",

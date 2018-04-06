@@ -290,7 +290,8 @@ class MoveSet {
                         this.ent.lastOffSet = -this.ent.getSprite().getOffSet();
                         angle = 180 - angle;
                     } else {
-                        angle = 180 - angle;
+                        //still needs fixing
+                     //   angle = 180 - angle;
                     }
 
                     this.ent.currentWeapon.setAngle(angle);
@@ -749,7 +750,7 @@ class EntityInteractable extends Entity {
                 case "meta":
                     //adding or removing a meta tag
                     if (this.state) {
-                        this.level.getBlock(action.x, action.y+getSprite(action.id).offSet).addMeta(Object.keys(action.meta), Object.values(action.meta))
+                        this.level.getBlock(action.x, action.y+getSprite(action.id).offSet).addMeta(Object.keys(action.meta)[0], Object.values(action.meta)[0])
                     } else {
                         this.level.getBlock(action.x, action.y + getSprite(action.id).offSet).deleteMeta(Object.keys(action.meta))
                     }
