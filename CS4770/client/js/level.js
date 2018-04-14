@@ -9,7 +9,7 @@ class Block {
     //checks if a block has that meta
     hasMeta(m) {
         if (this.meta != null && this.meta[m] != undefined) {
-            return true;
+            return this.meta[m];
         }
         return false;
     }

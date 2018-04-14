@@ -117,7 +117,7 @@ function loadSprites(json, container, tile) {
         if (tile.meta != undefined) {
             options.meta = [];
             for (var m of tile.meta) {
-                options.meta[Object.keys(m)] = Object.values(m);
+                options.meta[Object.keys(m)] = m[Object.keys(m)];
             }
         }
         if (tile.sound != undefined) {
