@@ -714,6 +714,12 @@ class EntityInteractable extends Entity {
 
     doAction(state, actor) {
         //looping through all the actions
+        for (var ac of this.action) {
+            if (ac.type == "spawn" && !ac.hasSpawned && ac.entType == "Tile") {
+                this.level.blockLoading += ac.amount;
+            }
+        }
+
         for (var action of this.action) {
             //filter by type
             switch (action.type) {

@@ -278,6 +278,7 @@ class OverWorld {
         var x = reload ? this.getPlayer().getX() : this.startX;
         var y = reload ? this.getPlayer().getY() : this.startY;
         this.player = new OverWorldPlayer(options);
+        
         loaded = true;
         this.getPlayer().spawn(x, y);
         this.diag = loadDialog(player);

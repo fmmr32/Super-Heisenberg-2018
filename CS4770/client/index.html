@@ -684,6 +684,7 @@
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                             m.music.stop();
+                            loaded = false;
                         }, "/client/resources/jsons/values.json");
 
                     }, "/client/resources/jsons/characters.json");
