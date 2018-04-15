@@ -94,7 +94,7 @@ table#gameSettings tr:hover {
 
 table#holder {
     width: 800px;
-    margin: 0 auto;
+    margin: 100px auto 0px;
 }
 
 table#holder th, table#holder td {
@@ -494,4 +494,12 @@ input#GSVolume {
     text-align: center;
     width: 150px;
     margin: 0 auto;
+}
+
+#changeStorageBtn {
+    float:right;
+}
+
+#searchLevelsForm {
+    margin-top: 16px;
 }

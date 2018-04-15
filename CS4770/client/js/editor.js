@@ -1154,6 +1154,14 @@ class Editor {
     loadLevelsForEditor(query, collection) {
         refreshLevelsTable();
         var levelsTable = document.getElementById('levelTable');
+
+        document.getElementById('changeStorageBtn').value = "Show Local Levels";
+        document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 0px";
+
+        document.getElementById('searchLevelsForm').style.display = 'inline-block';
+
+        document.getElementById('changeStorageBtn').setAttribute("onClick", "newLevel(false)");
+
         loadDBFromQuery(query, collection, function (data) {
             console.log(data);
             var levels;
@@ -1233,4 +1241,83 @@ class Editor {
             }
         });
     }
+
+    listLocalLevelsForEditor() {
+        var levelsTable = document.getElementById('levelTable');
+
+        document.getElementById('changeStorageBtn').value = "Show Remote Levels";
+        document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 425px";
+        
+        document.getElementById('searchLevelsForm').style.display = 'none';
+
+        refreshLevelsTable();
+        getFiles(function (data) {
+            for (var any of data) {
+                loadJSONFile(function (response) {
+                    var level = JSON.parse(response);
+                    console.log(level);
+
+                    var levelName = level.levelName;
+                    var author = level.user;
+                    var dateCreated = level.dateCreated;
+
+                    var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                    levelRow.setAttribute("id", levelName);
+
+                    var levelNameCell = levelRow.insertCell(0);
+                    levelNameCell.innerHTML = levelName;
+
+                    var authorCell = levelRow.insertCell(1);
+                    authorCell.innerHTML = author;
+
+                    var dateCreatedCell = levelRow.insertCell(2);
+                    dateCreatedCell.innerHTML = dateCreated;
+
+                    levelRow.onclick = function () {
+                        document.getElementById("Overwrite").style.display = "inline-block";
+                        document.getElementById("Save").value = "Save As New";
+                        console.log(this.getAttribute("id"))
+
+                        loadJSONFile(function (response) {
+                            var temp = JSON.parse(response);
+                            elemt.map = temp;
+                            elemt.oldName = elemt.map.levelName;
+                            console.log(response);
+                            console.log(elemt.map);
+                            var user = getUsername();
+
+                            if (temp.user == user) {
+                                console.log("loading...");
+                                // console.log(this.map);
+                                // overWorld.toMapFromDB(editor.map);
+                                //  toLevel();
+                                document.getElementById("levelBrowser").style.display = "none";
+                                document.getElementById("editor").style.display = "table-cell";
+                                var canvas = document.getElementById('canvas');
+                                var context = canvas.getContext('2d');
+                                context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
+                                elemt.drawBoard();
+
+
+                                elemt.draw(elemt.map);
+
+                                //loadMap();
+                            }
+                            else {
+                                alert("Cannot Edit Other Players Maps");
+                            }
+
+                            document.getElementById("levelBrowser").style.display = "none";
+
+
+
+
+                            //toLevel();
+                            // overWorld.toMapFromDB(response);
+                        }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");       
+                    }
+                }, "/client/resources/localLevels/" + any);
+            }
+        }, "localLevels");
+    } 
 }
