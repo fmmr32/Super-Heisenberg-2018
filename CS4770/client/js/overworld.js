@@ -486,7 +486,7 @@ directions:
     //going back to the overworld
     toOverWorld(type) {
         console.log(this.isTestLevel);
-        if (this.isTestLevel) {
+        if (this.isTestLevel||this.isTestAndSave) {
             back();
             return;
         }

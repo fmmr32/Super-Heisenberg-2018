@@ -441,6 +441,16 @@
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
             }
+            if (overWorld.isTestAndSave) {
+                overWorld.isTestAndSave = false;
+                console.log(this.map.file);
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+                var temp = JSON.parse(this.map.file);
+                writeDB("level", temp);
+                alert("Level Saved");
+                
+            }
             firstTime = true;
             document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
         }

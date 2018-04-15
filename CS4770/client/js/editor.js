@@ -183,8 +183,11 @@ class Editor {
             if (editor.oldName != editor.levelName) {
                 editor.levelName = editor.oldName;
             }
-            writeDB("level", editor.map);
-            //overWorld.toMapFromDB(editor.map);
+            document.getElementById("editor").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+            overWorld.isTestAndSave = true;
+            overWorld.toMapFromDB(elemt.map);
+
         }
 
         document.getElementById("Save").onclick = function () {
@@ -192,10 +195,14 @@ class Editor {
                 if (reponse.length == 0) {
                     editor.map._id = JSON.stringify(window.performance.now());
                     editor.map.id = JSON.stringify(window.performance.now());
-                    writeDB("level", editor.map);
 
-                    //back();
-                    //alert("Your level has been saved!");
+
+
+                    document.getElementById("editor").style.display = "none";
+                    document.getElementById("gameDiv").style.display = "table-cell";
+                    overWorld.isTestAndSave = true;
+                    overWorld.toMapFromDB(elemt.map);
+
                 }
                 else {
                     alert("New level must have a different name than any levels you've published previously.")
@@ -204,15 +211,13 @@ class Editor {
         }
 
 
-        document.getElementById("LoadLevel").onclick = function () {
+            document.getElementById("LoadLevel").onclick = function () {
             document.getElementById("levelBrowser").style.display = "table-cell";
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
 
             editor.loadLevelsForEditor({ user: getUsername }, "level");
-            //  console.log(newMap);
-            // this.draw(this.map);
 
         }
 
@@ -445,18 +450,6 @@ class Editor {
 
 
     }
-    //StartEditor() {
-    //    editor = new Editor(720, 480);
-    //}
-
-
-
-    //Editor(areaW, areaH) {
-    //    this.areaH = areaH;
-    //    this.areaW = areaW;
-
-
-    //}
 
     setBackground(value) {
         this.map.background = "../resources/Backgrounds/" + value + ".png";
@@ -1086,6 +1079,7 @@ class Editor {
         }
     }
 
+    //draws map object to canvas
     draw(map) {
 
         var k;
@@ -1205,19 +1199,13 @@ class Editor {
                         var user = getUsername();
 
                         if (temp.user == user) {
-                            // overWorld.toMapFromDB(editor.map);
-                            //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
                             document.getElementById("editor").style.display = "table-cell";
                             var canvas = document.getElementById('canvas');
                             var context = canvas.getContext('2d');
                             context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
                             elemt.drawBoard();
-
-
                             elemt.draw(elemt.map);
-
-                            //loadMap();
                         }
                         else {
                             alert("Cannot Edit Other Players Maps");
@@ -1225,11 +1213,6 @@ class Editor {
 
                         document.getElementById("levelBrowser").style.display = "none";
 
-
-
-
-                        //toLevel();
-                        // overWorld.toMapFromDB(response);
                     });
                 }
             }
