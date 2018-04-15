@@ -39,6 +39,9 @@ class Level {
         this.gravity = 0;
         this.popUps = [];
 
+        this.offSetX = 0;
+        this.offSetY = 0;
+
         if (file != undefined) {
             this.loadLevel(file);
         }
@@ -95,7 +98,7 @@ class Level {
         this.player = chars;
         this.time = performance.now();
 
-        this.resizeImage(this.background, canvas, 0, "background");
+        
         if (!(this instanceof Museum)) {
             loaded = true;
         }
@@ -119,6 +122,11 @@ class Level {
 
         this.background = new Image();
         this.background.src = any.background;
+        var obj = this;
+        this.background.onload = function () {
+            obj.resizeImage(this, canvas, 0, "background");
+        }
+
         this.sound = new SoundManager(any.music, "music");
 
         this.container = canvas;
@@ -431,8 +439,11 @@ class Level {
             this.offSetX = width - this.getPlayer().getX() - 32;
             this.offSetX = Math.min(0, this.offSetX);
 
-            this.offSetY = height - this.getPlayer().getY() - 36;
-            this.offSetY = Math.min(0, this.offSetY);
+
+            if (!(this instanceof Museum)) {
+                this.offSetY = height - this.getPlayer().getY() - 36;
+                this.offSetY = Math.min(0, this.offSetY);
+            }
 
             //case for when the map is smaller than the viewport
             var space = container.clientWidth - this.width
@@ -441,7 +452,7 @@ class Level {
             this.offSetX = Math.max(this.offSetX, space);
             var context = canvas.getContext("2d");
 
-            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, 0, 0, this.background.width, this.background.height);
+            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, this.offSetX, 0, this.background.width, this.background.height);
 
             if (this.image != undefined) {
                 context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, this.offSetY, this.width, this.height);

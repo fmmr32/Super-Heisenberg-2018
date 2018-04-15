@@ -291,7 +291,7 @@ class MoveSet {
                         angle = 180 - angle;
                     } else {
                         //still needs fixing
-                     //   angle = 180 - angle;
+                        //   angle = 180 - angle;
                     }
 
                     this.ent.currentWeapon.setAngle(angle);
@@ -502,7 +502,7 @@ class EntityMovable extends Entity {
         var toX = Math.max(creaX, creaX + this.getHSpeed());
         var toY = Math.max(creaY, creaY + this.getVSpeed() + this.getHeight() - 1);
 
-        
+
 
         //checking to see if the from x to the new x collides
         for (var x = fromX; x <= toX; x++) {
@@ -510,31 +510,29 @@ class EntityMovable extends Entity {
             for (var y = fromY; y <= toY; y++) {
 
                 //somewhere it collides
-                if (!this.level.isOOB(x, y)) {
-                    if (this.level.getBlock(x, y).Id == 1005) {
-                        console.log(this.level.getBlock(x, y));
-                    }
-
+                if (this.level.isOOB(x, y) == 0) {
                     if (this.level.getBlock(x, y).Id != 0 && !this.level.getBlock(x, y).hasMeta("passThrough")) {
-                        //setting back to the correct spawn x
-                        if (this.getVSpeed() == 0) {
-                            y = toY + 1;
-                        } else if (this.getVSpeed() > 0) {
-                            // console.log(this.level.getBlock(toX, y - this.getHeight()).Id);
-                            if (this.getHSpeed() == 0) {
-                                this.setY(y - this.getHeight());
-                            } else {
-                                this.setY(creaY);
+                        //thing goes right
+                        if (this.getHSpeed() > 0) {
+                            this.setHSpeed(0);
+                            //thing goes left
+                        } else if (this.getHSpeed() < 0) {
+                            this.setHSpeed(0);
+                        }
+                        //thing goes down
+                        if (this.getVSpeed() > 0) {
+                            var dy = Math.abs(fromY + this.getHeight() - y);
+                            if (dy > this.getVSpeed()) {
+                                dy = this.getVSpeed();
                             }
-                        } else {
-                            this.setY(fromY);
+
+                            this.setVSpeed(dy);
+                            //thing goes up
+                        } else if (this.getVSpeed() < 0) {
+                             this.setVSpeed(0);
                         }
 
-                        
-                       
 
-                        this.setHSpeed(0);
-                        this.setVSpeed(0);
                         //below is needed for bullets, ignored for creatures
                         var temp = {};
                         temp.modDX = Math.abs(fromX - x);
@@ -741,15 +739,15 @@ class EntityInteractable extends Entity {
                             switch (entType) {
                                 //spawning a creature
                                 case "EntityCreature":
-                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet:action.moveSet }]);
+                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet: action.moveSet }]);
                                     break;
                                 //spawning a basic entity
                                 case "Tile":
-                                    var tile = {blockId: id, blockX: x, blockY: y, meta: [{ "ricochet": true }] };
+                                    var tile = { blockId: id, blockX: x, blockY: y, meta: [{ "ricochet": true }] };
                                     this.level.loadBlock(tile, this.level.Tbackground);
                                     break;
                                 default:
-                                    this.level.loadEntity([{ X: x, Y: y, Id: id}]);
+                                    this.level.loadEntity([{ X: x, Y: y, Id: id }]);
                                     break;
                             }
                         }
@@ -760,11 +758,11 @@ class EntityInteractable extends Entity {
                 case "meta":
                     //adding or removing a meta tag
                     if (this.state) {
-                        this.level.getBlock(action.x, action.y+getSprite(action.id).offSet).addMeta(Object.keys(action.meta)[0], Object.values(action.meta)[0])
+                        this.level.getBlock(action.x, action.y + getSprite(action.id).offSet).addMeta(Object.keys(action.meta)[0], Object.values(action.meta)[0])
                     } else {
                         this.level.getBlock(action.x, action.y + getSprite(action.id).offSet).addMeta(Object.keys(action.meta)[0], !Object.values(action.meta)[0])
                     }
-                    
+
                     break;
                 case "damage":
                     actor.doDamage(action.damage, this);
@@ -838,7 +836,7 @@ class EntityCreature extends EntityMovable {
         if (this.loot != undefined) {
             var prop = this.loot;
             prop.x = this.getX();
-            prop.y = this.getY() - this.getHeight()/2;
+            prop.y = this.getY() - this.getHeight() / 2;
             this.level.loadArtifact(prop);
         }
 
@@ -1059,7 +1057,7 @@ class Boss extends EntityCreature {
     constructor(options) {
         super(options);
 
-       
+
     }
 
 
