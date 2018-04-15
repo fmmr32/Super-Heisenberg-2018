@@ -9,7 +9,7 @@ class Block {
     //checks if a block has that meta
     hasMeta(m) {
         if (this.meta != null && this.meta[m] != undefined) {
-            return true;
+            return this.meta[m];
         }
         return false;
     }
@@ -96,16 +96,19 @@ class Level {
         this.time = performance.now();
 
         this.resizeImage(this.background, canvas, 0, "background");
-        loaded = true;
+        if (!(this instanceof Museum)) {
+            loaded = true;
+        }
     }
 
     loadLevel(file) {
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
+        console.log(any);
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
-     
+
 
         while (container.children.length != 0) {
             container.children[0].remove();
@@ -125,6 +128,7 @@ class Level {
         this.spawnY = any.spawnY;
 
         //loading in the tiles of a level
+        this.blockLoading = any.content.length;
         for (var tile of any.content) {
             this.loadBlock(tile, this.Tbackground);
         }
@@ -141,6 +145,7 @@ class Level {
     loadBlock(tile, background) {
         var block = new Block(tile.blockId, tile.blockX, tile.blockY);
 
+
         if (getSprite(tile.blockId).meta != undefined) {
             for (var key in getSprite(tile.blockId).meta) {
                 block.addMeta(key, getSprite(tile.blockId).meta[key]);
@@ -153,11 +158,16 @@ class Level {
             if (this.tiles[x] === undefined) {
                 this.tiles[x] = [];
             }
+
             for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
                 this.tiles[x][y] = block;
             }
         }
-        this.setSprite(block, background);
+        if (block.Id != 1005) {
+            this.setSprite(block, background);
+        } else {
+            this.blockLoading--;
+        }
     }
 
     //takes in an arracy of basic interact values
@@ -223,7 +233,7 @@ class Level {
         for (var fromY = y; fromY < (y + sprite.height); fromY++) {
             if (this.getBlock(x, fromY).Id != 0 && fromY < (y + sprite.height)) {
                 y -= 1;
-                return this.checkSpawnY(x, y,sprite);
+                return this.checkSpawnY(x, y, sprite);
             }
         }
         return y;
@@ -238,7 +248,7 @@ class Level {
             var x = ent.X;
             var y = this.checkSpawnY(x, ent.Y, sprite);
 
-            
+
 
             var options = {};
             options.jump = sprite.complex.jump;
@@ -246,12 +256,12 @@ class Level {
             if (ent.hp != undefined) {
                 options.hp = ent.hp;
             }
-            
+
 
             options.speed = sprite.complex.speed;
             options.moves = sprite.complex.moves;
             options.level = this;
-            
+
 
             options.x = x;
             options.y = y;
@@ -286,22 +296,28 @@ class Level {
             } else {
                 creature = new EntityCreature(options);
             }
-            console.log(creature);
-                
+
             this.entities.push(creature);
         }
     }
 
     setImage(ctx) {
-        this.image = new Image();
-        this.image.src = ctx.canvas.toDataURL("image/png");
+        this.blockLoading--;
+        if (this.blockLoading == 0) {
+            var tempimg = new Image();
+            tempimg.src = ctx.canvas.toDataURL("image/png");
+            var t = this;
+            tempimg.onload = function () {
+                t.image = this;
+            }
+        }
     }
 
 
     setSprite(block, background) {
         getSprite(block.Id).drawBackground(block.X, block.Y, background);
     }
-    
+
 
 
 
@@ -393,7 +409,7 @@ class Level {
     }
 
     isOOB(x, y) {
-        
+
         if (x > this.width) {
             return 1;
         } else if (x < 2) {
@@ -407,7 +423,7 @@ class Level {
 
     //redraws the canvas with the player centered
     drawMap() {
-        if (this.getPlayer() != undefined && this.image != undefined) {
+        if (this.getPlayer() != undefined) {
             var width = container.clientWidth / 2;
             var height = container.clientHeight / 2;
 
@@ -425,8 +441,11 @@ class Level {
             this.offSetX = Math.max(this.offSetX, space);
             var context = canvas.getContext("2d");
 
-            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, this.offSetX, 0, this.background.width, this.background.height);
-            context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, this.offSetY, this.width, this.height);
+            context.drawImage(this.background, 0, 0, this.background.width, this.background.height, 0, 0, this.background.width, this.background.height);
+
+            if (this.image != undefined) {
+                context.drawImage(this.image, 0, 0, this.width, this.height, this.offSetX, this.offSetY, this.width, this.height);
+            }
         }
     }
 
@@ -451,7 +470,7 @@ class Level {
         this.user.artifacts = this.getPlayer().artifacts;
 
         if (completed) {
-                this.toOverWorld();
+            this.toOverWorld();
         }
 
     }
@@ -517,8 +536,6 @@ class Museum extends Level {
         super.spawnX = 50;
         super.spawnY = 550;
 
-
-        console.log(this);
 
         var temp = new Image();
         temp.src = "../resources/Backgrounds/museum.png";

@@ -142,9 +142,7 @@ class Weapon {
 
                 //sets the correct angle according to the way the entity is facing
                 if (character.getLastOffSet() > 0) {
-                    console.log("OFFSET FACING LEFT ", angle)
                     angle = 180 - angle;
-                    console.log(angle);
                     offsetHand = character.leftHand[character.slideDown ? 1 : 0];
                     offsetGun = this.barrel.Flipped;
                 }

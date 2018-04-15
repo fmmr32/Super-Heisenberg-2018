@@ -290,7 +290,8 @@ class MoveSet {
                         this.ent.lastOffSet = -this.ent.getSprite().getOffSet();
                         angle = 180 - angle;
                     } else {
-                        angle = 180 - angle;
+                        //still needs fixing
+                     //   angle = 180 - angle;
                     }
 
                     this.ent.currentWeapon.setAngle(angle);
@@ -510,6 +511,10 @@ class EntityMovable extends Entity {
 
                 //somewhere it collides
                 if (!this.level.isOOB(x, y)) {
+                    if (this.level.getBlock(x, y).Id == 1005) {
+                        console.log(this.level.getBlock(x, y));
+                    }
+
                     if (this.level.getBlock(x, y).Id != 0 && !this.level.getBlock(x, y).hasMeta("passThrough")) {
                         //setting back to the correct spawn x
                         if (this.getVSpeed() == 0) {
@@ -623,7 +628,7 @@ class EntityMovable extends Entity {
 
             var x = this.getX() + this.getSprite().getCenter();
             //checks if a enitty is in the air then setting the last offset, this allows the player to stand on the edge
-            if (this.level.getBlock(x, this.getY()).Id == 0) {
+            if (this.level.getBlock(x, this.getY()).Id == 0 || this.level.getBlock(x, this.getY()).hasMeta("passThrough")) {
                 if (this.level.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
                     x += this.getLastOffSet();
                 } else if (this.level.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
@@ -632,7 +637,7 @@ class EntityMovable extends Entity {
             }
 
             //see if the entity is in the air then let the entity fall
-            if (this.level.getBlock(x, this.getY()).Id == 0) {
+            if (this.level.getBlock(x, this.getY()).Id == 0 || this.level.getBlock(x, this.getY()).hasMeta("passThrough")) {
                 this.onFloor = false;
 
                 if (this.getVSpeed() + Math.floor(this.elapsedTime / this.level.gravity) < 100) {
@@ -713,6 +718,12 @@ class EntityInteractable extends Entity {
 
     doAction(state, actor) {
         //looping through all the actions
+        for (var ac of this.action) {
+            if (ac.type == "spawn" && !ac.hasSpawned && ac.entType == "Tile") {
+                this.level.blockLoading += ac.amount;
+            }
+        }
+
         for (var action of this.action) {
             //filter by type
             switch (action.type) {
@@ -749,10 +760,11 @@ class EntityInteractable extends Entity {
                 case "meta":
                     //adding or removing a meta tag
                     if (this.state) {
-                        this.level.getBlock(action.x, action.y+getSprite(action.id).offSet).addMeta(Object.keys(action.meta), Object.values(action.meta))
+                        this.level.getBlock(action.x, action.y+getSprite(action.id).offSet).addMeta(Object.keys(action.meta)[0], Object.values(action.meta)[0])
                     } else {
-                        this.level.getBlock(action.x, action.y + getSprite(action.id).offSet).deleteMeta(Object.keys(action.meta))
+                        this.level.getBlock(action.x, action.y + getSprite(action.id).offSet).addMeta(Object.keys(action.meta)[0], !Object.values(action.meta)[0])
                     }
+                    
                     break;
                 case "damage":
                     actor.doDamage(action.damage, this);

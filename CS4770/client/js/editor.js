@@ -64,7 +64,6 @@ class Editor {
         }, false);
 
         this.setup();
-        console.log(this);
     }
 
     resizeImage(image, canvas, t) {
@@ -112,7 +111,6 @@ class Editor {
 
         document.getElementById("selectTiles").onclick = function () {
             editor.elem = "Content";
-            console.log("content");
             document.getElementById("creature").style.display = "none";
             document.getElementById("entity").style.display = "none";
             document.getElementById("tiles").style.display = "inline-block";
@@ -139,7 +137,6 @@ class Editor {
             var name = document.getElementById("levelName").value;
             editor.levelName = name;
             editor.map.levelName = name;
-            console.log(name);
         }
 
         document.getElementById("mapW").onchange = function () {
@@ -147,7 +144,6 @@ class Editor {
             if (w < 30000) {
                 editor.bw = w;
                 editor.canvas.width = w;
-                console.log("Changing Width...");
                 editor.drawBoard();
                 editor.map.width = w;
                 editor.draw(this.map);
@@ -162,7 +158,6 @@ class Editor {
             if (h < 5000) {
                 editor.bh = h;
                 editor.canvas.height = h;
-                console.log("Changing Height...");
                 editor.drawBoard();
                 editor.map.height = h;
                 editor.draw(this.map);
@@ -176,18 +171,15 @@ class Editor {
             var ycoord = document.getElementById("Y").value;
             var y = parseInt(ycoord);
             editor.map.spawnY = y;
-            console.log(editor.map.spawnY);
         }
 
         document.getElementById("X").onchange = function () {
             var xcoord = document.getElementById("X").value;
             var x = parseInt(xcoord);
             editor.map.spawnX = x;
-            console.log(editor.map.spawnX);
         }
 
         document.getElementById("Overwrite").onclick = function () {
-            console.log(editor.map);
             if (editor.oldName != editor.levelName) {
                 editor.levelName = editor.oldName;
             }
@@ -198,7 +190,6 @@ class Editor {
         document.getElementById("Save").onclick = function () {
             loadDBFromQuery({ levelName: editor.levelName, user: getUsername() }, "level", function (reponse) {
                 if (reponse.length == 0) {
-                    console.log(editor.map);
                     editor.map._id = JSON.stringify(window.performance.now());
                     editor.map.id = JSON.stringify(window.performance.now());
                     writeDB("level", editor.map);
@@ -353,7 +344,7 @@ class Editor {
                 options.x = block.blockX;
                 options.y = block.blockY;
                 options.type = "meta";
-                options.meta = { "passThrough": elemt.this.checked };
+                options.meta = { "passThrough": this.checked };
                 options.id = block.blockId;
                 getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
                 elemt.map.interacts[elemt.select[1]].action.push(options);
@@ -450,7 +441,6 @@ class Editor {
         }
 
         today = month + '/' + day + '/' + year;
-        console.log(today);
         return today;
 
 
@@ -469,7 +459,6 @@ class Editor {
     //}
 
     setBackground(value) {
-        console.log(value);
         this.map.background = "../resources/Backgrounds/" + value + ".png";
         this.drawBackground();
         this.drawBoard();
@@ -697,17 +686,14 @@ class Editor {
 
             case "content":
 
-                console.log("Deleting Content...");
                 this.map.content.splice(k, 1)
                 break;
             case "entities":
 
-                console.log("Deleting Entity...");
                 this.map.entities.splice(k, 1)
                 break;
             case "creatures":
 
-                console.log("Deleting Creature...");
                 this.map.creatures.splice(k, 1)
                 break;
             case "interacts":
@@ -739,7 +725,6 @@ class Editor {
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
-            console.log(data);
             switch (data[0]) {
                 case "content":
                     if (this.select[0] == "interacts" && this.select[2] == "meta") {
@@ -847,13 +832,11 @@ class Editor {
             }
         }
         if (taken) {
-            console.log("Overwriting position...");
             this.map.creatures.splice(i, 1)
             this.map.creatures.push(creat);
         }
         else {
             this.map.creatures.push(creat);
-            console.log("pushing");
         }
 
 
@@ -921,7 +904,6 @@ class Editor {
             }
         }
         if (taken) {
-            console.log("Overwriting position...");
             this.map.content.splice(i, 1)
             this.map.content.push(cont);
 
@@ -930,7 +912,6 @@ class Editor {
         }
         else {
             this.map.content.push(cont);
-            console.log("pushing");
 
         }
 
@@ -1005,7 +986,6 @@ class Editor {
     }
     //so this is going to dynamically add the tiles to the table
     loadCreatures(editor) {
-        console.log(sprites);
         //this is the table we are using
         var table = document.getElementById("creature").children[0];
         table.removeChild(table.children[0]);
@@ -1163,7 +1143,6 @@ class Editor {
         document.getElementById('changeStorageBtn').setAttribute("onClick", "newLevel(false)");
 
         loadDBFromQuery(query, collection, function (data) {
-            console.log(data);
             var levels;
 
             if (data == null) {
@@ -1199,18 +1178,13 @@ class Editor {
                 levelRow.onclick = function () {
                     document.getElementById("Overwrite").style.display = "inline-block";
                     document.getElementById("Save").value = "Save As New";
-                    console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
                         elemt.map = temp;
                         elemt.oldName = elemt.map.levelName;
-                        console.log(response);
-                        console.log(elemt.map);
                         var user = getUsername();
 
                         if (temp.user == user) {
-                            console.log("loading...");
-                            // console.log(this.map);
                             // overWorld.toMapFromDB(editor.map);
                             //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
