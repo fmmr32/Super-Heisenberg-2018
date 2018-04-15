@@ -1123,7 +1123,26 @@ class Editor {
                 drawId = this.map.interacts[k].action[j].id;
                 x = this.map.interacts[k].action[j].x;
                 y = this.map.interacts[k].action[j].y;
-                getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+
+                if (this.map.interacts[k].action[j].type == "spawn") {
+                    switch (this.map.interacts[k].action[j].entType) {
+                        case "Tile":
+                            drawId = 1002;
+                            break;
+                        case "Entity":
+                            drawId = 1001;
+                            break;
+
+                        case "EntityCreature":
+                            drawId = 1004;
+                            break;
+                    }
+                } else if (this.map.interacts[k].action[j].type == "meta"){
+                    drawId = 1003;
+                }
+
+
+                getSprite(drawId).drawBackground(x, y, this.canvas, this.cw, this.ch);
 
             }
         }
@@ -1180,6 +1199,7 @@ class Editor {
                     document.getElementById("Save").value = "Save As New";
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
+                        console.log(temp);
                         elemt.map = temp;
                         elemt.oldName = elemt.map.levelName;
                         var user = getUsername();
@@ -1254,13 +1274,14 @@ class Editor {
 
                         loadJSONFile(function (response) {
                             var temp = JSON.parse(response);
-                            elemt.map = temp;
-                            elemt.oldName = elemt.map.levelName;
-                            console.log(response);
-                            console.log(elemt.map);
+                          //  elemt.map = temp;
+                         //   elemt.oldName = elemt.map.levelName;
+                          //  console.log(response);
+                           // console.log(elemt.map);
                             var user = getUsername();
 
                             if (temp.user == user) {
+                                console.log(temp)
                                 console.log("loading...");
                                 // console.log(this.map);
                                 // overWorld.toMapFromDB(editor.map);
@@ -1270,8 +1291,16 @@ class Editor {
                                 var canvas = document.getElementById('canvas');
                                 var context = canvas.getContext('2d');
                                 context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
-                                elemt.drawBoard();
+                                
 
+                                elemt.bh = temp.height;
+                                elemt.canvas.height = temp.height;
+
+                                elemt.bw = parseInt(temp.width);
+                                elemt.canvas.width = parseInt(temp.width);
+
+                                elemt.drawBoard();
+                                elemt.map = temp;
 
                                 elemt.draw(elemt.map);
 

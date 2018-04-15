@@ -167,7 +167,7 @@ class Level {
                 this.tiles[x] = [];
             }
 
-            for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height + getSprite(block.Id).offSet; y++) {
+            for (var y = tile.blockY + getSprite(block.Id).offSet; y < tile.blockY + getSprite(block.Id).height; y++) {
                 this.tiles[x][y] = block;
             }
         }
@@ -400,7 +400,8 @@ class Level {
         if (this.tiles[X][Y] === undefined) {
             var block = new Block(0, X, Y);
             this.tiles[X][Y] = block;
-        }
+        } 
+
         return this.tiles[X][Y];
     }
 
@@ -532,7 +533,7 @@ function loadMap(name, player, callback, world) {
             clearInterval(interval)
             //   loadGame(false);
         }
-    }, "/client/resources/jsons/" + name + ".json");
+    }, "/client/resources/localLevels/" + name + ".json");
 
 }
 

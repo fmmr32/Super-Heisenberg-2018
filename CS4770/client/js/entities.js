@@ -363,8 +363,16 @@ class Entity {
         this.maxY = Math.min(y, this.maxY);
         this.posY = y;
     }
-    getY() {
-        return this.posY + this.getHeight();
+    getY(spawn) {
+        if (spawn == undefined) {
+            spawn = false;
+        }
+        var off = 0;
+        if (this instanceof EntityCreature && this.slideDown && this.getSprite().height instanceof Array && !spawn) {
+            off = this.getSprite().height[0] - this.getSprite().height[1];
+        }
+
+        return this.posY+off + this.getHeight(spawn);
     }
 
     spawn(X, Y, flipCode) {
@@ -405,8 +413,16 @@ class Entity {
 
     }
 
-    getHeight() {
-        return this.getSprite().height;
+    getHeight(spawn) {
+        if (this.getSprite().height instanceof Array) {
+            if (spawn) {
+                return this.getSprite().height[0];
+            }
+            var index = this.slideDown ? 1 : 0;
+            return this.getSprite().height[index];
+        } else {
+            return this.getSprite().height;
+        }
     }
 
 
@@ -486,7 +502,7 @@ class EntityMovable extends Entity {
     getLastOffSet() {
         return this.lastOffSet;
     }
-    doCollision() {
+    doCollision(ov) {
         //getting the from and to values of the entity
         var creaX = this.getX() + this.getSprite().getCenter();
         if (this.getHSpeed() > 0) {
@@ -512,6 +528,9 @@ class EntityMovable extends Entity {
                 //somewhere it collides
                 if (this.level.isOOB(x, y) == 0) {
                     if (this.level.getBlock(x, y).Id != 0 && !this.level.getBlock(x, y).hasMeta("passThrough")) {
+                        if (ov) {
+                            return { code: -1, modX: 0 };
+                        }
                         //thing goes right
                         if (this.getHSpeed() > 0) {
                             this.setHSpeed(0);
@@ -882,6 +901,14 @@ class EntityCreature extends EntityMovable {
             //see what type of movement the player did
             switch (type) {
                 case "down":
+                    if (this.slideDown && !isDown) {
+                        this.slideDown = isDown;
+                        var c = this.doCollision(true).code;
+                        if (c == -1) {
+                            this.slideDown = true;
+                            break;
+                        }
+                    }
                     this.slideDown = isDown;
                     break;
                 case "right":
@@ -896,6 +923,15 @@ class EntityCreature extends EntityMovable {
                     if (isDown && this.jumpDown) {
                         break;
                     }
+                    if (this.slideDown) {
+                        this.slideDown = false;
+                        var c = this.doCollision(true).code;
+                        if (c == -1) {
+                            this.slideDown = true;
+                            break;
+                        }
+                    }
+
                     this.jumpDown = isDown;
                     this.slideDown = false;
                     break;
@@ -953,6 +989,16 @@ class EntityCreature extends EntityMovable {
             //handling to what the player did
             if (this.slideDown) {
                 slide = true;
+                if (!isDown) {
+                    this.slideDown = false;
+                    var c = this.doCollision(true).code;
+
+                    if (c == -1) {
+                        this.slideDown = true;
+                    } else {
+                        slide = false;
+                    }
+                }
             }
             if (this.rightDown) {
                 this.setHSpeed(this.getSpeed());
@@ -995,12 +1041,12 @@ class EntityCreature extends EntityMovable {
                     }
                 }
                 //setting the height correctly
-                this.setY(this.getY() - this.getHeight() + this.getVSpeed());
+                this.setY(this.getY(true) - this.getHeight(true) + this.getVSpeed());
                 if (this.currentWeapon != undefined) {
                     this.currentWeapon.lowerCD();
                 }
                 //check for Out of bounds
-                switch (this.level.isOOB(this.getX(), this.getY())) {
+                switch (this.level.isOOB(this.getX(), this.getY(true))) {
                     case 1:
                         this.setX(this.getX() - this.getHSpeed());
                         this.setHSpeed(0);
@@ -1015,7 +1061,7 @@ class EntityCreature extends EntityMovable {
                         break;
                 }
                 //spawning at the new place
-                this.spawn(this.getX(), this.getY() - this.getHeight(), this.getFlipCode(overRide, slide));
+                this.spawn(this.getX(), this.getY(true) - this.getHeight(true), this.getFlipCode(overRide, slide));
             }
         }
     }
