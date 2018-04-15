@@ -408,7 +408,12 @@ class Level {
     getEntity(X, Y) {
         for (var entity of this.entities) {
             try {
-                if (entity.getX() < X && X < entity.getX() + entity.getSprite().width && entity.getY() - entity.getHeight() < Y && Y < entity.getY()) {
+                if (entity.getSprite().width instanceof Array) {
+                    var index = entity.slideDown ? 1 : 0;
+                    if (entity.getX() < X && X < entity.getX() + entity.getSprite().width[index] && entity.getY() - entity.getHeight() < Y && Y < entity.getY()) {
+                        return entity;
+                    }
+                } else if (entity.getX() < X && X < entity.getX() + entity.getSprite().width && entity.getY() - entity.getHeight() < Y && Y < entity.getY()) {
                     return entity;
                 }
             } catch (err) {

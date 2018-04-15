@@ -289,9 +289,8 @@ class MoveSet {
                     } else if (this.ent.getLastOffSet() > 0 && (angle <= 90 || angle > 270)) {
                         this.ent.lastOffSet = -this.ent.getSprite().getOffSet();
                         angle = 180 - angle;
-                    } else {
-                        //still needs fixing
-                        //   angle = 180 - angle;
+                    } else if (this.ent.getLastOffSet() > 0){
+                           angle = 180 - angle;
                     }
 
                     this.ent.currentWeapon.setAngle(angle);
@@ -956,7 +955,9 @@ class EntityCreature extends EntityMovable {
                 case "action":
                     //insert for interacting with stuff like levers..
                     if (isDown) {
-                        for (var x = this.getX(); x < this.getX() + this.getSprite().width; x++) {
+                        var index = this.slideDown ? 1 : 0;
+
+                        for (var x = this.getX(); x < this.getX() + this.getSprite().width[index]; x++) {
                             var br = false;
                             for (var y = this.getY() - this.getHeight(); y < this.getY(); y++) {
                                 if (this.level.getEntity(x, y) != null) {
