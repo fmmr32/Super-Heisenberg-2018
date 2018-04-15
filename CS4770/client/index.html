@@ -11,7 +11,7 @@
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
-            <input id="signDiv-password" type ="password"><br>
+            <input id="signDiv-password" type="password"><br>
             <button id="signDiv-signIn">Sign in</button>
             <button id="signDiv-signUp">Sign up</button>
             <button id="skipSign">Play Offline</button>
@@ -78,7 +78,7 @@
 
         <div id='levelBrowser'>
 
-            <table id='holder' >
+            <table id='holder'>
                 <tr>
                     <td>
                         <table id='title'>
@@ -133,10 +133,10 @@
 
 
         <div id=settings>
-            
+
             <table id='soundScrollers'>
                 <tr>
-                    <td><p>Music Volume: </p></td>    
+                    <td><p>Music Volume: </p></td>
                     <td><input id="MVolume" type="range" name="points" min="0" max="100" value="MusicVolume" onchange="SoundManager.changeAllVolumes(this.value, 'music')"></td>
                 </tr>
                 <tr>
@@ -199,8 +199,7 @@
                                 <p>Loot</p>
                             </td>
                             <td>
-                                <select id="Lut">
-                                </select>
+                                <select id="Lut"></select>
                             </td>
                         </tr>
                     </table>
@@ -408,7 +407,7 @@
             document.getElementById("mainMenu").style.display = "none";
             document.getElementById("selectionBoxDiv").style.display = "inline-block";
 
-            
+
             loadLevelsList(null, 'level');
         }
 
@@ -427,7 +426,7 @@
             signDiv.style.display = 'table-cell';
         }
 
-        function back() {
+        function back(type) {
             document.getElementById("playOptions").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
             document.getElementById("levelBrowser").style.display = "none";
@@ -440,7 +439,14 @@
                 overWorld.isTestLevel = false;
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
+            } else if (overWorld.isLevelBrowser) {
+                overWorld.isLevelBrowser = false;
+                document.getElementById("levelBrowser").style.display = "table-cell";
+                document.getElementById("selectionBox").selectedIndex = 0;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("selectionBoxDiv").style.display = "inline-block";
             }
+
             firstTime = true;
             document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
         }
@@ -469,21 +475,21 @@
             document.getElementById("levelEditorOptions").style.display = "none";
             var canvas = document.getElementById("canvas")
             elemt = new Editor(canvas);
-            
+
             if (fromMenu) {
                 document.getElementById("Save").value = "Save";
-                document.getElementById("editor").style.display = "table-cell"; 
+                document.getElementById("editor").style.display = "table-cell";
             }
-            else {    
+            else {
                 if (document.getElementById("changeStorageBtn").value == "Show Remote Levels" || firstTime == true) {
                     elemt.loadLevelsForEditor({ user: getUsername }, "level");
                     console.log("inside if newlevel");
-                    firstTime = false;    
+                    firstTime = false;
                 }
-                else {  
-                    elemt.listLocalLevelsForEditor();  
+                else {
+                    elemt.listLocalLevelsForEditor();
                 }
-                document.getElementById("editor").style.display = "none"; 
+                document.getElementById("editor").style.display = "none";
                 document.getElementById("selectionBoxDiv").style.display = "none";
                 document.getElementById("selectionBox").selectedIndex = 0;
                 document.getElementById("levelBrowser").style.display = "table-cell";
@@ -550,7 +556,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json", "moveSets.json","drops.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json", "moveSets.json", "drops.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -624,8 +630,8 @@
                 }
             });
 
-            
-            
+
+
         }
 
         var searchLevels = function () {
@@ -642,7 +648,7 @@
 
         var listLocalLevels = function () {
             var levelsTable = document.getElementById('levelTable');
-           
+
             document.getElementById('changeStorageBtn').value = "Show Remote Levels";
             document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 425px";
             document.getElementById('changeStorageBtn').onclick = levelBrowser;
@@ -682,7 +688,7 @@
                                 overWorld.toMapFromDB(level2);
                             }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");
                         }
-                    }, "/client/resources/localLevels/" + any); 
+                    }, "/client/resources/localLevels/" + any);
                 }
             }, "localLevels");
         }
@@ -850,7 +856,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-                                    //window.onload = newLevel();
+                                        //window.onload = newLevel();
     </script>
 
 
