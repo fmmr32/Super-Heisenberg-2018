@@ -28,6 +28,13 @@ var writeDB = function (name, object) {
     });
 }
 
+var writePlayerDB = function (name, object) {
+    socket.emit('writePlayerDB', {
+        collection: name,
+        data: object
+    });
+}
+
 
 /*_________________________________________________________________________________*/
 
@@ -73,10 +80,14 @@ socket.on('signUpResponse', function (data) {
         loadJSONFile(function (response) {
             var playerObject = JSON.parse(response);
             playerObject.id = getUsername();
-            writeDB('player', playerObject);
+            writePlayerDB('player', playerObject);
         }, "/client/resources/jsons/player.json");
     } else
         alert("Sign up unsuccessul.");
+});
+
+socket.on('writePlayerFinished', function () {
+    loadUserDatabase();
 });
 
 
