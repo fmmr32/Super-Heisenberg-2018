@@ -234,13 +234,12 @@ class OverWorld {
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
 
-        this.music = new SoundManager("../resources/sounds/music/005_1.wav", "music");
+        this.music = new SoundManager("../resources/sounds/music/005_1.wav", "music").id;
 
         this.img = [];
         this.bg = 0;
         this.loadOverWorld(file);
 
-        this.music.play();
     }
 
     makeCanvas() {
@@ -270,6 +269,14 @@ class OverWorld {
             this.startX = any.startX;
             this.startY = any.startY;
         }
+    }
+
+    playMusic() {
+        sounds[this.music].play();
+    }
+
+    stopMusic() {
+        sounds[this.music].stop();
     }
 
     //loads the player
@@ -463,27 +470,29 @@ directions:
     toMap(name) {
         //loading the map the player chose
         this.onOverWorld = false;
-        this.music.stop();
+        this.stopMusic();
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
         loadMap(name, this.user, function (m) {
             m.loadCharacter(overWorld.characters.getCharacter());
+            m.playMusic();
         }, this);
     }
 
     //goes to a map from a database object
     toMapFromDB(mapObject) {
-        console.log(mapObject)
         //loading the map the player chose
         this.onOverWorld = false;
-        this.music.stop();
+        this.stopMusic();
         this.isLevelBrowser = true;
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
         map = new Level(this.user, JSON.stringify(mapObject), this);
         map.loadCharacter(overWorld.characters.getCharacter());
+        map.playMusic();
+
     }
 
     //going back to the overworld
@@ -499,7 +508,7 @@ directions:
         this.inCharacterSelect = false;
         this.inMuseum = false;
         this.onOverWorld = true;
-        this.music.play();
+        this.playMusic();
 
         var p = this.onPortal(this.getPlayer().getX(), this.getPlayer().getY());
         if (p != null && p.endDialog != -1) {
@@ -514,6 +523,7 @@ directions:
 
     //remade of the canvas used, used for when switching from a map object to the overworld
     toOverWorldNewCanvas(type) {
+        map.stopMusic();
         this.makeCanvas();
         this.toOverWorld(type);
     }
@@ -547,13 +557,13 @@ directions:
     }
     //handles the going to shop
     toShop() {
-        this.music.stop();
+        this.stopMusic();
         this.onOverWorld = false;
         this.inShop = true;
     }
     //going to the character select
     toCharacterSelect() {
-        this.music.stop();
+        this.stopMusic();
         this.inCharacterSelect = true;
         this.onOverWorld = false;
     }
@@ -570,7 +580,7 @@ directions:
         this.museum.loadArtifacts();
         this.onOverWorld = false;
         this.inMuseum = true;
-        this.music.stop();
+        this.stopMusic();
     }
 
 }

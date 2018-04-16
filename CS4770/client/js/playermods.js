@@ -58,12 +58,19 @@
 
     //gets the impact message
     getImpactMessage(impact) {
-        return this.texts.impacts[impact];
+        try {
+            return this.texts.impacts[impact];
+        } catch (err) {
+            return this.texts.allUpgrades;
+        }
     }
     //gets the costs of a impact
     getImpactValue(impact, name) {
-
-        return this.texts.weapons[impact][name];
+        try {
+            return this.texts.weapons[impact][name];
+        } catch (err) {
+            return this.texts.allUpgrades;
+        }
     }
     //returns the weapon needed
     getWeapon(id, player) {

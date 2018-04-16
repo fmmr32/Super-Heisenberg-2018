@@ -412,7 +412,7 @@
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("gameDiv").style.display = "table-cell";
                 loaded = true;
-                overWorld.music.play();
+                overWorld.playMusic();
             }
         }
 
@@ -511,7 +511,6 @@
             else {
                 if (document.getElementById("changeStorageBtn").value == "Show Remote Levels" || firstTime == true) {
                     elemt.loadLevelsForEditor({ user: getUsername }, "level");
-                    console.log("inside if newlevel");
                     firstTime = false;
                 }
                 else {
@@ -594,7 +593,6 @@
 
 
         var refreshLevelsTable = function () {
-            console.log("Inside refresh");
             var levelsTable = document.getElementById('levelTable');
 
             while (levelsTable.firstChild) {
@@ -647,7 +645,6 @@
 
 
                     levelRow.onclick = function () {
-                        console.log(this.getAttribute("id"))
                         loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                             isInsideLevel = true;
                             console.log(response);
@@ -669,7 +666,6 @@
             var searchBox = document.getElementById("searchBox");
             var searchquery = { [selectedValue]: searchBox.value };
 
-            console.log(searchquery.userName);
 
             loadLevelsList({ [selectedValue]: searchBox.value }, "level");
         }
@@ -689,7 +685,6 @@
                 for (var any of data) {
                     loadJSONFile(function (response) {
                         var level = JSON.parse(response);
-                        console.log(level);
 
                         var levelName = level.levelName;
                         var author = level.user;
@@ -708,11 +703,9 @@
                         dateCreatedCell.innerHTML = dateCreated;
 
                         levelRow.onclick = function () {
-                            console.log(this.getAttribute("id"))
                             loadJSONFile(function (response) {
                                 isInsideLevel = true;
                                 var level2 = JSON.parse(response);
-                                console.log(level2);
                                 toLevel();
                                 overWorld.toMapFromDB(level2);
                             }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");
@@ -791,7 +784,6 @@
                         loadJSONFile(function (t) {
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
-                            m.music.stop();
                             loaded = false;
                             if (isOffline) {
                                 console.log("inside isoffline");
@@ -868,7 +860,6 @@
             e = e || window.event;
             if (loaded) {
                 var poss = getMousePos(canvas, e);
-                console.log(poss.x + " " + poss.y);
             }
         }
 

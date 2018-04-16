@@ -22,7 +22,7 @@
     }
   ],
   "equipped": [ 1, 2 ],
-  "artifacts": [],
+  "artifacts": [994, 995],
   "storyProgress": [],
   "levelsMade": [],
   "killcount": 0,

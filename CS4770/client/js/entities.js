@@ -283,7 +283,6 @@ class MoveSet {
                         t += Math.PI * 2;
                     }
                     var angle = Math.floor(t * 180 / Math.PI);
-                    console.log(t, angle)
                     if (this.ent.getLastOffSet() < 0 && (angle > 90 && angle < 270)) {
                         this.ent.lastOffSet = this.ent.getSprite().getOffSet();
                         angle = 180 - angle;

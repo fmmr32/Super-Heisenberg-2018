@@ -107,7 +107,6 @@ class Level {
     loadLevel(file) {
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
-        console.log(any);
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
@@ -127,7 +126,7 @@ class Level {
             obj.resizeImage(this, canvas, 0, "background");
         }
 
-        this.sound = new SoundManager(any.music, "music");
+        this.music = new SoundManager(any.music, "music").id;
 
         this.container = canvas;
         changeCanvas(canvas, this);
@@ -366,6 +365,13 @@ class Level {
             }
         }
     }
+    playMusic() {
+        sounds[this.music].play();
+    }
+
+    stopMusic() {
+        sounds[this.music].stop();
+    }
 
     outSideFrame(X) {
         var x = this.getPlayer().getX();
@@ -486,7 +492,19 @@ class Level {
         this.user.achievements = this.getPlayer().achievements;
         this.user.artifacts = this.getPlayer().artifacts;
 
-        if (completed) {
+        if (completed && overWorld.isTestAndSave) {
+            
+                overWorld.isTestAndSave = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+                var temp = elemt.map;
+                writeDB("level", temp);
+                alert("Level Saved");
+
+            
+
+        }
+        else if (completed) {
             this.toOverWorld();
         }
 
@@ -586,7 +604,8 @@ class Museum extends Level {
             var options = {};
             options.x = x;
             options.y = y - getSprite(id).height;
-            options.id = id;
+            options.dropId = id;
+            options.type = "artifact";
             this.loadArtifact(options);
             x += 300;
         }
