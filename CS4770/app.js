@@ -93,6 +93,16 @@ var writeDB = function (data) {
     db.collection(data.collection).update({ id: object.id }, object, { upsert: true });
 }
 
+var writePlayerDB = function (data, callback) {
+    var object = data.data;
+    console.log(object._id);
+    console.log(object.id);
+    console.log("inside upsert");
+    db.collection(data.collection).update({ id: object.id }, object, { upsert: true }, function (err, res) {
+        callback();
+    });
+}
+
 /*_______________________________________________________________________________*/
 
 var io = require('socket.io')(serv, {});
@@ -112,6 +122,13 @@ io.sockets.on('connection', function (socket) {
     socket.on('writeDB', function (data) {
         console.log("inside writeDB");
         writeDB(data);
+    });
+
+    socket.on('writePlayerDB', function (data) {
+        console.log("inside writePlayerDB");
+        writePlayerDB(data, function () {
+            socket.emit('writePlayerFinished');
+        });
     });
 
     socket.on('loadJSON', function (data) {
