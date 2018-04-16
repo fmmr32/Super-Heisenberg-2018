@@ -64,7 +64,6 @@ class Editor {
         }, false);
 
         this.setup();
-        console.log(this);
     }
 
     resizeImage(image, canvas, t) {
@@ -112,7 +111,6 @@ class Editor {
 
         document.getElementById("selectTiles").onclick = function () {
             editor.elem = "Content";
-            console.log("content");
             document.getElementById("creature").style.display = "none";
             document.getElementById("entity").style.display = "none";
             document.getElementById("tiles").style.display = "inline-block";
@@ -139,7 +137,6 @@ class Editor {
             var name = document.getElementById("levelName").value;
             editor.levelName = name;
             editor.map.levelName = name;
-            console.log(name);
         }
 
         document.getElementById("mapW").onchange = function () {
@@ -147,7 +144,6 @@ class Editor {
             if (w < 30000) {
                 editor.bw = w;
                 editor.canvas.width = w;
-                console.log("Changing Width...");
                 editor.drawBoard();
                 editor.map.width = w;
                 editor.draw(this.map);
@@ -162,7 +158,6 @@ class Editor {
             if (h < 5000) {
                 editor.bh = h;
                 editor.canvas.height = h;
-                console.log("Changing Height...");
                 editor.drawBoard();
                 editor.map.height = h;
                 editor.draw(this.map);
@@ -176,35 +171,38 @@ class Editor {
             var ycoord = document.getElementById("Y").value;
             var y = parseInt(ycoord);
             editor.map.spawnY = y;
-            console.log(editor.map.spawnY);
         }
 
         document.getElementById("X").onchange = function () {
             var xcoord = document.getElementById("X").value;
             var x = parseInt(xcoord);
             editor.map.spawnX = x;
-            console.log(editor.map.spawnX);
         }
 
         document.getElementById("Overwrite").onclick = function () {
-            console.log(editor.map);
             if (editor.oldName != editor.levelName) {
                 editor.levelName = editor.oldName;
             }
-            writeDB("level", editor.map);
-            //overWorld.toMapFromDB(editor.map);
+            document.getElementById("editor").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+            overWorld.isTestAndSave = true;
+            overWorld.toMapFromDB(elemt.map);
+
         }
 
         document.getElementById("Save").onclick = function () {
             loadDBFromQuery({ levelName: editor.levelName, user: getUsername() }, "level", function (reponse) {
                 if (reponse.length == 0) {
-                    console.log(editor.map);
                     editor.map._id = JSON.stringify(window.performance.now());
                     editor.map.id = JSON.stringify(window.performance.now());
-                    writeDB("level", editor.map);
 
-                    //back();
-                    //alert("Your level has been saved!");
+
+
+                    document.getElementById("editor").style.display = "none";
+                    document.getElementById("gameDiv").style.display = "table-cell";
+                    overWorld.isTestAndSave = true;
+                    overWorld.toMapFromDB(elemt.map);
+
                 }
                 else {
                     alert("New level must have a different name than any levels you've published previously.")
@@ -213,15 +211,13 @@ class Editor {
         }
 
 
-        document.getElementById("LoadLevel").onclick = function () {
+            document.getElementById("LoadLevel").onclick = function () {
             document.getElementById("levelBrowser").style.display = "table-cell";
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("selectionBoxDiv").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
 
             editor.loadLevelsForEditor({ user: getUsername }, "level");
-            //  console.log(newMap);
-            // this.draw(this.map);
 
         }
 
@@ -234,6 +230,14 @@ class Editor {
             }
         }
 
+        document.getElementById("Lut").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map.creatures[elemt.select[1]].loot = parseInt(this.value);
+            } else {
+                elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].loot = parseInt(this.value);
+            }
+        }
+
         document.getElementById("entAmount").onchange = function () {
             if (elemt.select[0] != "interacts") {
                 elemt.map[elemt.select[0]][elemt.select[1]].amount = parseInt(this.value);
@@ -241,68 +245,135 @@ class Editor {
                 elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].amount = parseInt(this.value);
             }
         }
-        ////for the damage
-        //document.getElementById("damAmount").onchange = function () {
-        //    if (elemt.select[0] != "interacts") {
-        //        elemt.map[elemt.select[0]][elemt.select[1]].damage = parseInt(this.value);
-        //    } else {
-        //        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].damage = parseInt(this.value);
-        //    }
-        //}
+        //for the damage
+        document.getElementById("damAmount").onchange = function () {
+            if (elemt.select[0] != "interacts") {
+                elemt.map[elemt.select[0]][elemt.select[1]].damage = parseInt(this.value);
+            } else {
+                elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].damage = parseInt(this.value);
+            }
+        }
 
         document.getElementById("Ricochet").onchange = function () {
-            elemt.handleMetaChange("ricochet", this.checked);
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ricochet", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ricochet": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ricochet": this.checked });
+                }
+                //sets the ineract action for elemt block
+            } else {
+                var block;
+                if (elemt.select[3] instanceof Array) {
+                    block = elemt.map.content[elemt.select[3][1]];
+                } else {
+                    var thing = elemt.hasMeta(type, elemt.map.interacts[elemt.select[1]].action[elemt.select[3]])
+                    if (thing != -1) {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta[thing]["ricochet"] = this.checked;
+                    } else {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta.push({ "ricochet": this.checked });
+                    }
+                    return;
+                }
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "ricochet": elemt.this.checked };
+                options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
         }
 
         document.getElementById("Ice").onchange = function () {
-            elemt.handleMetaChange("ice", this.checked);
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("ice", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "ice": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "ice": this.checked });
+                }
+                //sets the ineract action for elemt block
+            } else {
+                var block;
+                if (elemt.select[3] instanceof Array) {
+                    block = elemt.map.content[elemt.select[3][1]];
+                } else {
+                    var thing = elemt.hasMeta(type, elemt.map.interacts[elemt.select[1]].action[elemt.select[3]])
+                    if (thing != -1) {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta[thing]["ice"] = this.checked;
+                    } else {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta.push({ "ice": this.checked });
+                    }
+                    return;
+                }
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "ice": elemt.this.checked };
+                options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
         }
 
         document.getElementById("PassThrough").onchange = function () {
-            elemt.handleMetaChange("passThrough", this.checked);
+            //checks if we are doing something with the interacts
+            if (elemt.select[0] != "interacts") {
+                var m = elemt.hasMeta("passThrough", elemt.map[elemt.select[0]][elemt.select[1]]);
+                if (m != -1) {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta[m] = { "passThrough": this.checked };
+                } else {
+                    elemt.map[elemt.select[0]][elemt.select[1]].meta.push({ "passThrough": this.checked });
+                }
+                //sets the ineract action for elemt block
+            } else {
+                var block;
+                if (elemt.select[3] instanceof Array) {
+                    block = elemt.map.content[elemt.select[3][1]];
+                } else {
+                    var thing = elemt.hasMeta(type, elemt.map.interacts[elemt.select[1]].action[elemt.select[3]])
+                    if (thing != -1) {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta[thing]["passThrough"] = this.checked;
+                    } else {
+                        elemt.map.interacts[elemt.select[1]].action[elemt.select[3]].meta.push({ "passThrough": this.checked });
+                    }
+                    return;
+                }
+                var options = {};
+                options.x = block.blockX;
+                options.y = block.blockY;
+                options.type = "meta";
+                options.meta = { "passThrough": this.checked };
+                options.id = block.blockId;
+                getSprite(1003).drawBackground(block.blockX, block.blockY, elemt.canvas, elemt.cw, elemt.hw);
+                elemt.map.interacts[elemt.select[1]].action.push(options);
+            }
         }
 
 
 
         document.getElementById("InteractType").onchange = function () {
             elemt.select[2] = this.value;
+            if (this.value == "damage") {
+                elemt.map.interacts[elemt.select[1]].action.push({ "type": "damage", "damage": 1 });
+                elemt.select[3] = elemt.map.interacts[elemt.select[1]].action.length - 1;
+                elemt.showDamage(true);
+            }
         }
         document.getElementById("InteractRepeat").onchange = function () {
             elemt.map[elemt.select[0]][elemt.select[1]].repeatable = this.checked;
         }
-    }
-
-    handleMetaChange(type, checked) {
-        //checks if we are doing something with the interacts
-        if (this.select[0] != "interacts") {
-            var m = this.hasMeta(type, this.map[this.select[0]][this.select[1]]);
-            if (m != -1) {
-                this.map[this.select[0]][this.select[1]].meta[m] = { type: checked };
-            } else {
-                this.map[this.select[0]][this.select[1]].meta.push({ type: checked });
-            }
-            //sets the ineract action for this block
-        } else {
-            var block;
-            if (this.select[3] instanceof Array) {
-                block = this.map.content[this.select[3][1]];
-            } else {
-                var thing = this.hasMeta(type, this.map.interacts[this.select[1]].action[this.select[3]])
-                if (thing != -1) {
-                    this.map.interacts[this.select[1]].action[this.select[3]].meta[thing][type] = checked;
-                } else {
-                    this.map.interacts[this.select[1]].action[this.select[3]].meta.push({ type: checked });
-                }
-                return;
-            }
-            var options = {};
-            options.x = block.blockX;
-            options.y = block.blockY;
-            options.type = "meta";
-            options.meta = { type: this.checked };
-            options.id = block.blockId;
-            getSprite(1003).drawBackground(block.blockX, block.blockY, this.canvas, this.cw, this.hw);
-            this.map.interacts[this.select[1]].action.push(options);
+        document.getElementById("TestLevel").onclick = function () {
+            document.getElementById("editor").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+            overWorld.isTestLevel = true;
+            overWorld.toMapFromDB(elemt.map);
         }
     }
 
@@ -375,26 +446,12 @@ class Editor {
         }
 
         today = month + '/' + day + '/' + year;
-        console.log(today);
         return today;
 
 
     }
-    //StartEditor() {
-    //    editor = new Editor(720, 480);
-    //}
-
-
-
-    //Editor(areaW, areaH) {
-    //    this.areaH = areaH;
-    //    this.areaW = areaW;
-
-
-    //}
 
     setBackground(value) {
-        console.log(value);
         this.map.background = "../resources/Backgrounds/" + value + ".png";
         this.drawBackground();
         this.drawBoard();
@@ -428,7 +485,7 @@ class Editor {
         var row = document.getElementById("MoveSets");
         row.style.display = show ? "" : "none";
         if (show) {
-            var dropdown = row.children[1].children[0];
+            var dropdown = document.getElementById("MoveSetsDropdown");
             if (dropdown.children.length == 0) {
                 for (var mov of moves) {
                     var opt = document.createElement('option');
@@ -480,9 +537,17 @@ class Editor {
         }
     }
 
+    storeMap() {
+        if (this.map.levelName == undefined) {
+            this.map.levelName = "default";
+        }
+        storeLocally(this.map);
+    }
+
     showInteracts(show) {
         var ent = document.getElementById("Interacts");
         ent.style.display = show ? "" : "none";
+        document.getElementById("InteractType").selectedIndex = 0;
     }
 
     showEntities(show) {
@@ -502,12 +567,38 @@ class Editor {
         var dam = document.getElementById("DamageAmount");
         dam.style.display = show ? "" : "none";
         if (show) {
-            var a = document.getElementById();
+            var a = document.getElementById("damAmount");
             if (this.select[0] != "interacts") {
                 a.value = this.map.entities[this.select[1]].damage;
             } else {
                 a.value = this.map.interacts[this.select[1]].action[this.select[3]].damage;
             }
+        }
+    }
+
+    showLoot(show) {
+        var row = document.getElementById("LootDrop");
+        row.style.display = show ? "" : "none";
+        if (show) {
+            var dropdown = document.getElementById("Lut");
+            if (dropdown.children.length == 0) {
+                for (var mov of drops) {
+                    var opt = document.createElement('option');
+                    opt.value = mov.id;
+                    opt.innerHTML = mov.name;
+                    dropdown.appendChild(opt);
+                }
+            }
+            var data = this.select;
+            var set;
+            if (this.select[0] == "interacts") {
+                data = this.select[2];
+                set = this.map.creatures[this.select[1]].action[this.select[3]].drop;
+            } else {
+                set = this.map[data[0]][data[1]].drop
+            }
+
+            dropdown.selectedIndex = set == undefined ? 0 : set;
         }
     }
 
@@ -588,17 +679,14 @@ class Editor {
 
             case "content":
 
-                console.log("Deleting Content...");
                 this.map.content.splice(k, 1)
                 break;
             case "entities":
 
-                console.log("Deleting Entity...");
                 this.map.entities.splice(k, 1)
                 break;
             case "creatures":
 
-                console.log("Deleting Creature...");
                 this.map.creatures.splice(k, 1)
                 break;
             case "interacts":
@@ -630,7 +718,6 @@ class Editor {
         if (this.selection == 1000) {
             //do stuff with selecting anything
             var data = this.checkPosition(x, y);
-            console.log(data);
             switch (data[0]) {
                 case "content":
                     if (this.select[0] == "interacts" && this.select[2] == "meta") {
@@ -648,6 +735,7 @@ class Editor {
                 case "creatures":
                     this.select = data;
                     this.showMoveSets(true);
+                    this.showLoot(true);
                     break;
                 case "interacts":
                     this.select = data;
@@ -661,7 +749,7 @@ class Editor {
                             options.x = x;
                             options.y = y;
                             options.type = this.select[2];
-                            if (this.select[3] >= 800 && this.select[3] <= 802) {
+                            if (this.select[3] >= 800 && this.select[3] <= 803) {
                                 options.entType = "Entity";
                                 getSprite(1001).drawBackground(x, y, this.canvas, this.cw, this.hw);
                             } else if (this.select[3] < 400 || this.select[3] == 1005) {
@@ -671,6 +759,7 @@ class Editor {
                             } else if (this.select[3] < 800) {
                                 options.entType = "EntityCreature";
                                 options.moveSet = 0;
+                                options.loot = -1;
                                 getSprite(1004).drawBackground(x, y, this.canvas, this.cw, this.hw);
                             }
                             options.id = this.select[3];
@@ -686,6 +775,7 @@ class Editor {
                                     break;
                                 case "EntityCreature":
                                     this.showMoveSets(true);
+                                     this.showLoot(true);
                                     break;
                                 case "interacts":
                                     this.showInteracts(true);
@@ -723,6 +813,7 @@ class Editor {
             Id: this.selection,
             X: x,
             Y: y,
+            loot: -1
         }
         //check to see if tile position is already in existance
         for (i = 0; i < this.map.creatures.length; i++) {
@@ -734,16 +825,11 @@ class Editor {
             }
         }
         if (taken) {
-            console.log("Overwriting position...");
             this.map.creatures.splice(i, 1)
             this.map.creatures.push(creat);
-
-
-
         }
         else {
             this.map.creatures.push(creat);
-            console.log("pushing");
         }
 
 
@@ -779,7 +865,7 @@ class Editor {
             this.map.entities.push(ent);
         }
         else {
-            if (ent.Id == 800 || ent.Id == 802) {
+            if (ent.Id == 800) {
                 this.map.entities.push(ent);
             } else {
                 ent.repeatable = false;
@@ -811,7 +897,6 @@ class Editor {
             }
         }
         if (taken) {
-            console.log("Overwriting position...");
             this.map.content.splice(i, 1)
             this.map.content.push(cont);
 
@@ -820,7 +905,6 @@ class Editor {
         }
         else {
             this.map.content.push(cont);
-            console.log("pushing");
 
         }
 
@@ -895,7 +979,6 @@ class Editor {
     }
     //so this is going to dynamically add the tiles to the table
     loadCreatures(editor) {
-        console.log(sprites);
         //this is the table we are using
         var table = document.getElementById("creature").children[0];
         table.removeChild(table.children[0]);
@@ -996,6 +1079,7 @@ class Editor {
         }
     }
 
+    //draws map object to canvas
     draw(map) {
 
         var k;
@@ -1033,7 +1117,26 @@ class Editor {
                 drawId = this.map.interacts[k].action[j].id;
                 x = this.map.interacts[k].action[j].x;
                 y = this.map.interacts[k].action[j].y;
-                getSprite(parseInt(drawId)).drawBackground(x, y, this.canvas, this.cw, this.ch);
+
+                if (this.map.interacts[k].action[j].type == "spawn") {
+                    switch (this.map.interacts[k].action[j].entType) {
+                        case "Tile":
+                            drawId = 1002;
+                            break;
+                        case "Entity":
+                            drawId = 1001;
+                            break;
+
+                        case "EntityCreature":
+                            drawId = 1004;
+                            break;
+                    }
+                } else if (this.map.interacts[k].action[j].type == "meta"){
+                    drawId = 1003;
+                }
+
+
+                getSprite(drawId).drawBackground(x, y, this.canvas, this.cw, this.ch);
 
             }
         }
@@ -1044,8 +1147,15 @@ class Editor {
     loadLevelsForEditor(query, collection) {
         refreshLevelsTable();
         var levelsTable = document.getElementById('levelTable');
+
+        document.getElementById('changeStorageBtn').value = "Show Local Levels";
+        document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 0px";
+
+        document.getElementById('searchLevelsForm').style.display = 'inline-block';
+
+        document.getElementById('changeStorageBtn').setAttribute("onClick", "newLevel(false)");
+
         loadDBFromQuery(query, collection, function (data) {
-            console.log(data);
             var levels;
 
             if (data == null) {
@@ -1081,31 +1191,21 @@ class Editor {
                 levelRow.onclick = function () {
                     document.getElementById("Overwrite").style.display = "inline-block";
                     document.getElementById("Save").value = "Save As New";
-                    console.log(this.getAttribute("id"))
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                         var temp = response[0];
+                        console.log(temp);
                         elemt.map = temp;
                         elemt.oldName = elemt.map.levelName;
-                        console.log(response);
-                        console.log(elemt.map);
                         var user = getUsername();
 
                         if (temp.user == user) {
-                            console.log("loading...");
-                            // console.log(this.map);
-                            // overWorld.toMapFromDB(editor.map);
-                            //  toLevel();
                             document.getElementById("levelBrowser").style.display = "none";
                             document.getElementById("editor").style.display = "table-cell";
                             var canvas = document.getElementById('canvas');
                             var context = canvas.getContext('2d');
                             context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
                             elemt.drawBoard();
-
-
                             elemt.draw(elemt.map);
-
-                            //loadMap();
                         }
                         else {
                             alert("Cannot Edit Other Players Maps");
@@ -1113,14 +1213,97 @@ class Editor {
 
                         document.getElementById("levelBrowser").style.display = "none";
 
-
-
-
-                        //toLevel();
-                        // overWorld.toMapFromDB(response);
                     });
                 }
             }
         });
     }
+
+    listLocalLevelsForEditor() {
+        var levelsTable = document.getElementById('levelTable');
+
+        document.getElementById('changeStorageBtn').value = "Show Remote Levels";
+        document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 425px";
+        
+        document.getElementById('searchLevelsForm').style.display = 'none';
+
+        refreshLevelsTable();
+        getFiles(function (data) {
+            for (var any of data) {
+                loadJSONFile(function (response) {
+                    var level = JSON.parse(response);
+                    console.log(level);
+
+                    var levelName = level.levelName;
+                    var author = level.user;
+                    var dateCreated = level.dateCreated;
+
+                    var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                    levelRow.setAttribute("id", levelName);
+
+                    var levelNameCell = levelRow.insertCell(0);
+                    levelNameCell.innerHTML = levelName;
+
+                    var authorCell = levelRow.insertCell(1);
+                    authorCell.innerHTML = author;
+
+                    var dateCreatedCell = levelRow.insertCell(2);
+                    dateCreatedCell.innerHTML = dateCreated;
+
+                    levelRow.onclick = function () {
+                        document.getElementById("Overwrite").style.display = "inline-block";
+                        document.getElementById("Save").value = "Save As New";
+                        console.log(this.getAttribute("id"))
+
+                        loadJSONFile(function (response) {
+                            var temp = JSON.parse(response);
+                          //  elemt.map = temp;
+                         //   elemt.oldName = elemt.map.levelName;
+                          //  console.log(response);
+                           // console.log(elemt.map);
+                            var user = getUsername();
+
+                            if (temp.user == user) {
+                                console.log(temp)
+                                console.log("loading...");
+                                // console.log(this.map);
+                                // overWorld.toMapFromDB(editor.map);
+                                //  toLevel();
+                                document.getElementById("levelBrowser").style.display = "none";
+                                document.getElementById("editor").style.display = "table-cell";
+                                var canvas = document.getElementById('canvas');
+                                var context = canvas.getContext('2d');
+                                context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
+                                
+
+                                elemt.bh = temp.height;
+                                elemt.canvas.height = temp.height;
+
+                                elemt.bw = parseInt(temp.width);
+                                elemt.canvas.width = parseInt(temp.width);
+
+                                elemt.drawBoard();
+                                elemt.map = temp;
+
+                                elemt.draw(elemt.map);
+
+                                //loadMap();
+                            }
+                            else {
+                                alert("Cannot Edit Other Players Maps");
+                            }
+
+                            document.getElementById("levelBrowser").style.display = "none";
+
+
+
+
+                            //toLevel();
+                            // overWorld.toMapFromDB(response);
+                        }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");       
+                    }
+                }, "/client/resources/localLevels/" + any);
+            }
+        }, "localLevels");
+    } 
 }

@@ -64,8 +64,10 @@
     <Content Include="client\resources\jsons\achievements.json" />
     <Content Include="client\resources\jsons\characters.json" />
     <Content Include="client\resources\jsons\dialogs.json" />
+    <Content Include="client\resources\jsons\drops.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="client\resources\jsons\entities.json" />
-    <Content Include="client\resources\jsons\map1.json" />
     <Content Include="client\resources\jsons\moveSets.json">
       <SubType>Code</SubType>
     </Content>
@@ -75,6 +77,9 @@
     <Content Include="client\resources\jsons\tiles.json" />
     <Content Include="client\resources\jsons\values.json" />
     <Content Include="client\resources\jsons\weapons.json" />
+    <Content Include="client\resources\localLevels\map1.json" />
+    <Content Include="client\resources\localLevels\SpaceBattle.json" />
+    <Content Include="client\resources\localLevels\test.json" />
     <Content Include="client\resources\menus\achievementBar.png" />
     <Content Include="client\resources\menus\Author.png" />
     <Content Include="client\resources\menus\Back.png" />
@@ -115,6 +120,7 @@
     <Folder Include="client\resources\" />
     <Folder Include="client\resources\Backgrounds\" />
     <Folder Include="client\resources\jsons\" />
+    <Folder Include="client\resources\localLevels\" />
     <Folder Include="client\resources\menus\" />
     <Folder Include="client\resources\sounds\" />
     <Folder Include="client\resources\spriteSheets\" />

@@ -55,7 +55,8 @@
         "map.getPlayer().awardAchievement(this.id);",
         "this.constructPopUp();}",
         "overWorld.user.unlockedOverworlds.splice(1,1);",
-        "overWorld.user.unlockedOverWorlds.push(2);"
+        "overWorld.user.unlockedOverworlds.push(2);",
+        "overWorld.bg = 2;"
       ]
     },
     "text": "You have killed Elon Musk"

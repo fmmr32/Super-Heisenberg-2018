@@ -241,7 +241,54 @@
     "width": 31,
     "height": 32,
     "centerPX": 16,
-    "offSetPX": 0
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 129,
+        "startY": 49,
+        "offSetY": 5
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 129,
+        "startY": 49,
+        "offSetY": 5
+      }
+    ]
+  },
+  {
+    "id": 803,
+    "name": "pressurePlate",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 624,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 0,
+        "startY": 624,
+        "offSetY": 5
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 0,
+        "startY": 656,
+        "offSetY": 5
+      }
+    ]
   },
   {
     "id": 500,
@@ -1044,10 +1091,6 @@
     "complex": {
       "hp": 1000,
       "moveSet": 0,
-      "drop": {
-        "type": "artifact",
-        "id": 992
-      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],
@@ -1140,15 +1183,11 @@
     "width": 339,
     "height": 175,
     "centerPX": 169,
-    "offSetPX": 40,
+    "offSetPX": 100,
     "name": "Elon Musk",
     "complex": {
-      "hp": 2000,
+      "hp": 200,
       "moveSet": 0,
-      "drop": {
-        "type": "weapon",
-        "id": 5
-      },
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -40, 95 ],

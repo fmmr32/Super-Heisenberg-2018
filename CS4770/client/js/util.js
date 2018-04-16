@@ -403,6 +403,8 @@ class ExitMenu {
 
 }
 
+var sounds = [];
+
 class SoundManager {
     constructor(sound, type) {
         this.sound = new Audio(sound);
@@ -412,16 +414,18 @@ class SoundManager {
         var v = 100;
         switch (type) {
             case "music":
+                var val = document.getElementById("MVolume").value;
                 //get this value from the music volume settings
-                this.sound.volume = v / 100;
+                this.sound.volume = val / 100;
                 this.setLoop(true);
                 break;
             case "game":
+                var val = document.getElementById("GSVolume").value;
                 //get this value from the game volume settings
-                this.sound.volume = v / 100;
+                this.sound.volume = val / 100;
                 break;
         }
-
+        sounds.push(this);
     }
 
     setVolume(volume) {
@@ -442,6 +446,7 @@ class SoundManager {
         if (!this.sound.loop) {
             temp.addEventListener("ended", function () {
                 obj.players.splice(obj.players.indexOf(temp), 1);
+                sounds.splice(sounds.indexOf(this), 1);
             })
         }
 
@@ -452,6 +457,14 @@ class SoundManager {
         for (var t of this.players) {
             t.pause();
             t.currentTime = 0;
+        }
+    }
+
+    static changeAllVolumes(volume, type) {
+        for (var sound of sounds) {
+            if (sound.type = type) {
+                sound.setVolume(volume);
+            }
         }
     }
 }

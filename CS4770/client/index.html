@@ -11,7 +11,7 @@
             <p>Username:</p>
             <input id="signDiv-username" type="text"><br>
             <p>Password:</p>
-            <input id="signDiv-password" type+"password"><br>
+            <input id="signDiv-password" type="password"><br>
             <button id="signDiv-signIn">Sign in</button>
             <button id="signDiv-signUp">Sign up</button>
             <button id="skipSign">Play Offline</button>
@@ -116,10 +116,12 @@
                                 <option value="user">Author</option>
                             </select>
                         </div>
-                        <form style="display:inline-block" onsubmit="return false">
+                        <form id="searchLevelsForm" style="display:inline-block" onsubmit="return false">
                             <input type="text" id="searchBox" name="levelSearch" style="width:50%" placeholder="Search Levels">
                             <input type="submit" id="submitSearch" value="Search" onclick="searchLevels()">
                         </form>
+                        <input type="button" id="changeStorageBtn" value="Show Local Levels" onclick="listLocalLevels()">
+
                     </td>
                 </tr>
             </table>
@@ -131,6 +133,18 @@
 
 
         <div id=settings>
+
+            <table id='soundScrollers'>
+                <tr>
+                    <td><p>Music Volume: </p></td>
+                    <td><input id="MVolume" type="range" name="points" min="0" max="100" value="MusicVolume" onchange="SoundManager.changeAllVolumes(this.value, 'music')"></td>
+                </tr>
+                <tr>
+                    <td><p>Game Sound Volume</p></td>
+                    <td><input id="GSVolume" type="range" name="points" min="0" max="100" value="GameSoundVolume" onchange="SoundManager.changeAllVolumes(this.value, 'game')"></td>
+                </tr>
+            </table>
+
             <table id="holder">
                 <tbody>
                     <tr>
@@ -180,6 +194,14 @@
                                 <input id="damAmount" type="number" name="width" min="0" max="100"> <!–– Set Max ––>
                             </td>
                         </tr>
+                        <tr id="LootDrop" style="display:none">
+                            <td>
+                                <p>Loot</p>
+                            </td>
+                            <td>
+                                <select id="Lut"></select>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div style="display:inline-block; float:right; margin-top:10px;">
@@ -206,9 +228,7 @@
                 <div style="display:inline-block; float:right; margin-top:10px;">
                     <table id="BlockMeta" style="display:none">
                         <tr>
-                            <td>
-
-                            </td>
+                            <td></td>
                             <td>
                                 <input type="checkbox" id="Ricochet" value="ricochet" />
                             </td>
@@ -216,7 +236,7 @@
                                 <p>Ricochet</p>
                             </td>
                         </tr>
-                        <tr >
+                        <tr>
                             <td>
                                 <p>Tile Properties</p>
                             </td>
@@ -228,9 +248,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-
-                            </td>
+                            <td></td>
                             <td>
                                 <input type="checkbox" id="PassThrough" value="passThrough" />
                             </td>
@@ -337,6 +355,8 @@
                 <input type="button" id="Overwrite" value="Overwrite" style="display:none">
                 <input type="button" id="Save" value="Save">
                 <input type="button" value="Back" onclick="back()">
+                <input type="button" id="TestLevel" value="Test">
+                <input type="button" id="LocalStorage" value="StoreLocal" onclick="elemt.storeMap()">
             </div>
 
 
@@ -386,6 +406,8 @@
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("mainMenu").style.display = "none";
             document.getElementById("selectionBoxDiv").style.display = "inline-block";
+
+
             loadLevelsList(null, 'level');
         }
 
@@ -404,7 +426,7 @@
             signDiv.style.display = 'table-cell';
         }
 
-        function back() {
+        function back(type) {
             document.getElementById("playOptions").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
             document.getElementById("levelBrowser").style.display = "none";
@@ -413,6 +435,28 @@
             document.getElementById("editor").style.display = "none";
             document.getElementById("signDiv").style.display = "none";
             document.getElementById("mainMenu").style.display = "table-cell";
+            if (overWorld.isTestLevel) {
+                overWorld.isTestLevel = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+            } else if (overWorld.isLevelBrowser) {
+                overWorld.isLevelBrowser = false;
+                document.getElementById("levelBrowser").style.display = "table-cell";
+                document.getElementById("selectionBox").selectedIndex = 0;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("selectionBoxDiv").style.display = "inline-block";
+            }else if (overWorld.isTestAndSave) {
+                overWorld.isTestAndSave = false;
+                console.log(this.map.file);
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+                var temp = JSON.parse(this.map.file);
+                writeDB("level", temp);
+                alert("Level Saved");
+                
+            }
+            firstTime = true;
+            document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
         }
 
         function tilesOptions() {
@@ -433,19 +477,27 @@
             document.getElementById("entity").style.display = "inline-block";
         }
 
+        var firstTime = true;
+
         function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
+            var canvas = document.getElementById("canvas")
+            elemt = new Editor(canvas);
+
             if (fromMenu) {
                 document.getElementById("Save").value = "Save";
                 document.getElementById("editor").style.display = "table-cell";
-                var canvas = document.getElementById("canvas")
-                elemt = new Editor(canvas);
             }
             else {
+                if (document.getElementById("changeStorageBtn").value == "Show Remote Levels" || firstTime == true) {
+                    elemt.loadLevelsForEditor({ user: getUsername }, "level");
+                    console.log("inside if newlevel");
+                    firstTime = false;
+                }
+                else {
+                    elemt.listLocalLevelsForEditor();
+                }
                 document.getElementById("editor").style.display = "none";
-                var canvas = document.getElementById("canvas")
-                elemt = new Editor(canvas);
-                elemt.loadLevelsForEditor({ user: getUsername }, "level");
                 document.getElementById("selectionBoxDiv").style.display = "none";
                 document.getElementById("selectionBox").selectedIndex = 0;
                 document.getElementById("levelBrowser").style.display = "table-cell";
@@ -512,7 +564,7 @@
             return elem;
         }
 
-        var neededFiles = ["tiles.json", "moveSets.json", "entities.json", "weapons.json"];
+        var neededFiles = ["tiles.json", "moveSets.json", "drops.json", "entities.json", "weapons.json"];
         var loaded = false;
 
         var conf;
@@ -532,6 +584,13 @@
 
         var loadLevelsList = function (query, collection) {
             var levelsTable = document.getElementById('levelTable');
+
+            document.getElementById('changeStorageBtn').value = "Show Local Levels";
+            document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 0px";
+            document.getElementById('changeStorageBtn').onclick = listLocalLevels;
+
+            document.getElementById('selectionBoxDiv').style.display = 'inline-block';
+            document.getElementById('searchLevelsForm').style.display = 'inline-block';
 
             loadDBFromQuery(query, collection, function (data) {
                 refreshLevelsTable();
@@ -578,6 +637,9 @@
                     }
                 }
             });
+
+
+
         }
 
         var searchLevels = function () {
@@ -590,6 +652,53 @@
             console.log(searchquery.userName);
 
             loadLevelsList({ [selectedValue]: searchBox.value }, "level");
+        }
+
+        var listLocalLevels = function () {
+            var levelsTable = document.getElementById('levelTable');
+
+            document.getElementById('changeStorageBtn').value = "Show Remote Levels";
+            document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 425px";
+            document.getElementById('changeStorageBtn').onclick = levelBrowser;
+
+            document.getElementById('selectionBoxDiv').style.display = 'none';
+            document.getElementById('searchLevelsForm').style.display = 'none';
+
+            refreshLevelsTable();
+            getFiles(function (data) {
+                for (var any of data) {
+                    loadJSONFile(function (response) {
+                        var level = JSON.parse(response);
+                        console.log(level);
+
+                        var levelName = level.levelName;
+                        var author = level.user;
+                        var dateCreated = level.dateCreated;
+
+                        var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                        levelRow.setAttribute("id", levelName);
+
+                        var levelNameCell = levelRow.insertCell(0);
+                        levelNameCell.innerHTML = levelName;
+
+                        var authorCell = levelRow.insertCell(1);
+                        authorCell.innerHTML = author;
+
+                        var dateCreatedCell = levelRow.insertCell(2);
+                        dateCreatedCell.innerHTML = dateCreated;
+
+                        levelRow.onclick = function () {
+                            console.log(this.getAttribute("id"))
+                            loadJSONFile(function (response) {
+                                var level2 = JSON.parse(response);
+                                console.log(level2);
+                                toLevel();
+                                overWorld.toMapFromDB(level2);
+                            }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");
+                        }
+                    }, "/client/resources/localLevels/" + any);
+                }
+            }, "localLevels");
         }
 
 
@@ -630,6 +739,12 @@
                             moves[any.id] = any;
                         }
                     }, resource + x);
+                } else if (x == "drops.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            drops[any.id] = any;
+                        }
+                    }, resource + x)
                 }
 
                 else {
@@ -654,6 +769,7 @@
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                             m.music.stop();
+                            loaded = false;
                         }, "/client/resources/jsons/values.json");
 
                     }, "/client/resources/jsons/characters.json");
@@ -689,7 +805,9 @@
         document.onkeydown = function (e) {
             e = e || window.event;
             var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-            if (charCode && loaded) {
+            if (isChanging) {
+                changeKey(charCode);
+            } else if (charCode && loaded) {
                 if (overWorld.inExitMenu) {
                     overWorld.exit.navigate(conf[charCode]);
                     return true;
@@ -703,8 +821,6 @@
                         map.getPlayer().doMove(conf[charCode], true);
                     }
                 }
-            } else if (isChanging) {
-                changeKey(charCode);
             }
         };
 
@@ -748,7 +864,7 @@
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
         window.onload = loadCurretUser();
-                            //window.onload = newLevel();
+                                        //window.onload = newLevel();
     </script>
 
 

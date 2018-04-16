@@ -1,0 +1,38 @@
+﻿[
+  {
+    "id": 0,
+    "dropId": -1,
+    "type": "artifact",
+    "name": "No Drop"
+  },
+  {
+    "id": 1,
+    "dropId": 5,
+    "type": "weapon",
+    "name": "Drops the flamethrower"
+  },
+  {
+    "id": 2,
+    "dropId": 995,
+    "type": "artifact",
+    "name": "Drops the Jackal Mask"
+  },
+  {
+    "id": 3,
+    "dropId": 994,
+    "type": "artifact",
+    "name": "Drops the Puzzel"
+  },
+  {
+    "id":4,
+    "dropId": 993,
+    "type": "artifact",
+    "name": "Drops the Helmet"
+  },
+  {
+    "id": 5,
+    "dropId": 992,
+    "type": "artifact",
+    "name": "Drops the Millenium Rod"
+  }
+]

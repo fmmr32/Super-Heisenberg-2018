@@ -209,6 +209,86 @@
     "startY": 503,
     "offSetY": 4,
     "meta": [ { "ice": true } ]
+  },
+
+  {
+    "id": 19,
+    "name": "SpaceL",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 553,
+    "offSetY": 4
+  },
+
+  {
+    "id": 20,
+    "name": "SpaceM",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 32,
+    "startY": 553,
+    "offSetY": 4
+  },
+
+  {
+    "id": 21,
+    "name": "SpaceR",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 64,
+    "startY": 553,
+    "offSetY": 4
+  },
+
+  {
+    "id": 22,
+    "name": "MarsL",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 601,
+    "offSetY": 4
+  },
+
+  {
+    "id": 23,
+    "name": "MarsM",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 32,
+    "startY": 601,
+    "offSetY": 4
+  },
+
+  {
+    "id": 24,
+    "name": "MarsR",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 64,
+    "startY": 601,
+    "offSetY": 4
+  },
+
+  {
+    "id": 25,
+    "name": "Black",
+    "source": "../resources/spriteSheets/gameTile.png",
+    "width": 32,
+    "height": 36,
+    "startX": 0,
+    "startY": 647,
+    "offSetY": 0
   }
+
+
+
 
 ]

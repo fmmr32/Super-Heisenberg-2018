@@ -3,8 +3,8 @@
     "Id": 667,
     "startX": 401,
     "startY": 0,
-    "width": 70,
-    "height": 96,
+    "width": [ 42,69 ],
+    "height": [ 96, 55 ],
     "centerPX": 32,
     "offSetPX": 3,
     "name": "Heisenberg",
@@ -25,7 +25,9 @@
         "offSetY": 0,
         "frames": 5,
         "frameRate": 5,
-        "columns": 4
+        "columns": 4,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 0,
@@ -34,7 +36,9 @@
         "offSetY": 0,
         "frames": 5,
         "frameRate": 5,
-        "columns": 4
+        "columns": 4,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 0,
@@ -43,7 +47,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 5,
-        "columns": 1
+        "columns": 1,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 0,
@@ -52,7 +58,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 5,
-        "columns": 1
+        "columns": 1,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 70,
@@ -61,7 +69,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 140,
@@ -70,7 +80,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 70,
@@ -79,7 +91,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 70,
+        "height": 96
       },
       {
         "startX": 140,
@@ -88,7 +102,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 70,
+        "height": 96
       }
     ]
   },
@@ -96,8 +112,8 @@
     "Id": 668,
     "startX": 0,
     "startY": 0,
-    "width": 80,
-    "height": 94,
+    "width": [ 42, 80],
+    "height": [94,44],
     "centerPX": 32,
     "offSetPX": 3,
     "name": "Hank",
@@ -118,7 +134,9 @@
         "offSetY": 0,
         "frames": 5,
         "frameRate": 5,
-        "columns": 4
+        "columns": 4,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 0,
@@ -127,7 +145,9 @@
         "offSetY": 0,
         "frames": 4,
         "frameRate": 5,
-        "columns": 4
+        "columns": 4,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 0,
@@ -136,7 +156,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 5,
-        "columns": 1
+        "columns": 1,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 0,
@@ -145,7 +167,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 5,
-        "columns": 1
+        "columns": 1,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 80,
@@ -154,7 +178,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 160,
@@ -163,7 +189,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 80,
@@ -172,7 +200,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 80,
+        "height": 94
       },
       {
         "startX": 160,
@@ -181,7 +211,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 80,
+        "height": 94
       }
     ]
   },
@@ -189,8 +221,8 @@
     "Id": 669,
     "startX": 0,
     "startY": 11,
-    "width": 63,
-    "height": 86,
+    "width": [ 46, 86],
+    "height": [ 86, 47],
     "centerPX": 32,
     "offSetPX": 3,
     "name": "Jesse",
@@ -211,7 +243,9 @@
         "offSetY": 0,
         "frames": 5,
         "frameRate": 5,
-        "columns": 4
+        "columns": 4,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 281,
@@ -220,7 +254,9 @@
         "offSetY": 0,
         "frames": 5,
         "frameRate": 5,
-        "columns": 4
+        "columns": 4,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 281,
@@ -229,7 +265,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 5,
-        "columns": 1
+        "columns": 1,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 281,
@@ -238,7 +276,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 5,
-        "columns": 1
+        "columns": 1,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 344,
@@ -247,7 +287,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 407,
@@ -256,7 +298,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 344,
@@ -265,7 +309,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 63,
+        "height": 86
       },
       {
         "startX": 407,
@@ -274,7 +320,9 @@
         "offSetY": 0,
         "frames": 1,
         "frameRate": 1,
-        "columns": 1
+        "columns": 1,
+        "width": 63,
+        "height": 86
       }
     ]
   }

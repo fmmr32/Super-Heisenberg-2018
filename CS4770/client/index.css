@@ -73,6 +73,17 @@ table#gameSettings {
     border: 1px solid black;
 }
 
+table#soundScrollers {
+    width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid black;
+}
+table#soundScrollers td {
+    margin: 0 auto;
+    text-align: center;
+}
+
 table#gameSettings td {
     text-align: center;
 }
@@ -83,7 +94,7 @@ table#gameSettings tr:hover {
 
 table#holder {
     width: 800px;
-    margin: 0 auto;
+    margin: 100px auto 0px;
 }
 
 table#holder th, table#holder td {
@@ -473,4 +484,22 @@ input#Save {
     margin-bottom:8px;
 }
 
+input#MVolume {
+    text-align:center;
+    width:150px;
+    margin: 0 auto;
+}
 
+input#GSVolume {
+    text-align: center;
+    width: 150px;
+    margin: 0 auto;
+}
+
+#changeStorageBtn {
+    float:right;
+}
+
+#searchLevelsForm {
+    margin-top: 16px;
+}
