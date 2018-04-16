@@ -1268,7 +1268,7 @@ class Editor {
                            // console.log(elemt.map);
                             var user = getUsername();
 
-                            if (temp.user == user) {
+                            
                                 console.log(temp)
                                 console.log("loading...");
                                 // console.log(this.map);
@@ -1296,10 +1296,8 @@ class Editor {
                                 elemt.draw(elemt.map);
 
                                 //loadMap();
-                            }
-                            else {
-                                alert("Cannot Edit Other Players Maps");
-                            }
+                            
+                            
 
                             document.getElementById("levelBrowser").style.display = "none";
 

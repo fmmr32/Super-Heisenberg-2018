@@ -316,7 +316,9 @@ class ExitMenu {
         this.image.src = "../resources/menus/TextBox.png";
 
         this.select = 0;
-        this.options = ["Resume", "Exit"];
+        
+        this.options = ["Resume", "Exit", "Save"];
+        
         this.width = 100;
         this.height = 30;
 
@@ -330,6 +332,13 @@ class ExitMenu {
     }
 
     menu() {
+        if (isOffline || isInsideLevel) {
+            this.options = ['Resume', 'Exit'];
+        }
+        else {
+            this.options = ['Resume', 'Exit', 'Save'];
+        }
+
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = "black";
         ctx.font = "15px sans-serif";
@@ -371,7 +380,28 @@ class ExitMenu {
                         this.select = 0;
                         break;
                     case "Exit":
-                        //go back to the main menu
+                        console.log(isOffline);
+                        if (isOffline) {
+                            location.reload();
+                        }
+                        else {
+                            //go back to the main menu
+                            isInsideLevel = false;
+                            loaded = false;
+                            this.world.onOverWorld = true;
+                            this.world.inShop = false;
+                            this.world.inCharacterSelect = false;
+                            this.world.inMuseum = false;
+                            this.world.inExitMenu = false;
+                            this.world.getPlayer().setX(overWorld.startX)
+                            this.world.getPlayer().setY(overWorld.startY);
+                            this.world.bg = 0;
+                            this.world.music.stop();
+                            this.select = 0;
+                            back();
+                        }
+                        break;
+                    case "Save":
                         loaded = false;
                         this.world.onOverWorld = true;
                         this.world.inShop = false;
@@ -383,9 +413,13 @@ class ExitMenu {
                         this.world.bg = 0;
                         this.world.music.stop();
                         this.select = 0;
+                        if (this.world.getPlayer().world.user != undefined) {
+                            console.log(this.world.getPlayer().world.user)
+                            writeDB('player', this.world.getPlayer().world.user);
+                        } 
                         back();
-                        break;
-
+                        alert("Your campaign progress has been saved!");
+                        break;  
                 }
                 break;
             case "quit":
@@ -395,7 +429,12 @@ class ExitMenu {
     }
 
     setSelect(d) {
-        if (this.select + d > 1 || this.select + d < 0) {
+        if (isOffline || isInsideLevel) {
+            if (this.select + d > 1 || this.select + d < 0) {
+                return
+            }
+        }
+        else if (this.select + d > 2 || this.select + d < 0) {
             return
         }
         this.select += d;

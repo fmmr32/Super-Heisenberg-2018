@@ -47,11 +47,11 @@
         <div id='playOptions'>
 
             <div id='top'>
-                <img src='resources/menus/NewGame.png' id='NewGame' onclick='playNewGame()'></img>
+                <img src='resources/menus/NewGame.png' id='NewGame' onclick='playCampaign(true)'></img>
             </div>
 
             <div id='other'>
-                <img src='resources/menus/LoadGame.png' id='LoadGame'></img>
+                <img src='resources/menus/LoadGame.png' id='LoadGame' onclick="playCampaign(false)"></img>
             </div>
 
             <div id='bottom'>
@@ -380,9 +380,12 @@
     <script type="text/javascript">
         var sizeSettings = [1280, 720];
 
+        var isOffline;
+        var isInsideLevel;
 
         document.getElementById("skipSign").onclick = function () {
-            playNewGame();
+            isOffline = true;
+            playCampaign(false);
         }
 
         function playOptions() {
@@ -390,15 +393,36 @@
             document.getElementById("playOptions").style.display = "table-cell";
         }
 
-        function playNewGame() {
-            if (overWorld == undefined) {
-                loadCurretUser();
-            } else {
+        function playCampaign(resetCampaign) {
+            if (resetCampaign) {
+                resetCampaignProfile(); 
+
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("gameDiv").style.display = "table-cell";
                 loaded = true;
                 overWorld.music.play();
             }
+            else if (overWorld == undefined && !isOffline) {
+                loadUserDatabase();
+            }
+            else if (overWorld == undefined && isOffline) {
+                loadCurretUser();
+            }  
+            else {
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("gameDiv").style.display = "table-cell";
+                loaded = true;
+                overWorld.music.play();
+            }
+        }
+
+        function resetCampaignProfile() {
+            loadJSONFile(function (response) {
+                var playerObject = JSON.parse(response);
+                playerObject.id = getUsername();
+                overWorld.getPlayer().world.user = playerObject;
+                writeDB('player', playerObject);
+            }, "/client/resources/jsons/player.json");
         }
 
         function levelBrowser() {
@@ -422,11 +446,10 @@
         }
 
         var logout = function () {
-            document.getElementById("mainMenu").style.display = "none";
-            signDiv.style.display = 'table-cell';
+            location.reload();
         }
 
-        function back(type) {
+        function back() {
             document.getElementById("playOptions").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
             document.getElementById("levelBrowser").style.display = "none";
@@ -439,21 +462,16 @@
                 overWorld.isTestLevel = false;
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
-            } else if (overWorld.isLevelBrowser) {
-                overWorld.isLevelBrowser = false;
-                document.getElementById("levelBrowser").style.display = "table-cell";
-                document.getElementById("selectionBox").selectedIndex = 0;
-                document.getElementById("mainMenu").style.display = "none";
-                document.getElementById("selectionBoxDiv").style.display = "inline-block";
-            }else if (overWorld.isTestAndSave) {
+                
+            }
+            else if (overWorld.isTestAndSave) {
                 overWorld.isTestAndSave = false;
                 console.log(this.map.file);
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
                 var temp = JSON.parse(this.map.file);
                 writeDB("level", temp);
-                alert("Level Saved");
-                
+                alert("Level Saved");  
             }
             firstTime = true;
             document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
@@ -631,7 +649,7 @@
                     levelRow.onclick = function () {
                         console.log(this.getAttribute("id"))
                         loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
-                            console.log("rfhdyjbfhyujfrjn");
+                            isInsideLevel = true;
                             console.log(response);
                             toLevel();
                             overWorld.toMapFromDB(response[0]);
@@ -692,6 +710,7 @@
                         levelRow.onclick = function () {
                             console.log(this.getAttribute("id"))
                             loadJSONFile(function (response) {
+                                isInsideLevel = true;
                                 var level2 = JSON.parse(response);
                                 console.log(level2);
                                 toLevel();
@@ -705,10 +724,11 @@
 
 
         var map;
-        //achievement array
+        
         function loadUserDatabase() {
-            console.log("Inside loadUserDatabase " + playerUsername);
-            loadDBFromQuery({ id: playerUsername }, 'player', function (response) {
+            console.log("Inside loadUserDatabase " + getUsername());
+
+            loadDBFromQuery({ id: getUsername() }, 'player', function (response) {
                 console.log("Inside loaduserdatabase " + JSON.stringify(response[0]));
                 loadGame(false, response[0]);
             });
@@ -717,8 +737,9 @@
         //needs to be fetched from the db and put into a json like file
         function loadCurretUser() {
             loadJSONFile(function (response) {
-                loadGame(false, JSON.parse(response));
+                loadGame(false, JSON.parse(response), isOffline);
             }, "/client/resources/jsons/player.json");
+            console.log("after settimeout");
         }
 
 
@@ -772,6 +793,10 @@
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
                             m.music.stop();
                             loaded = false;
+                            if (isOffline) {
+                                console.log("inside isoffline");
+                                playCampaign(false);
+                            }
                         }, "/client/resources/jsons/values.json");
 
                     }, "/client/resources/jsons/characters.json");
@@ -865,7 +890,7 @@
             seconds = (seconds < 10) ? "0" + seconds : seconds;
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
-        window.onload = loadCurretUser();
+        //window.onload = loadCurretUser();
                                         //window.onload = newLevel();
     </script>
 

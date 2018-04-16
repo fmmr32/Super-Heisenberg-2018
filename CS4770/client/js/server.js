@@ -52,8 +52,9 @@ socket.on('signInResponse', function (data) {
 
         document.getElementById("signDiv").style.display = "none";
         document.getElementById("mainMenu").style.display = "table-cell";
-
+        loadUserDatabase();
         loadMenu();
+        
     } else
         alert("Sign in unsuccessul.");
 });
@@ -68,6 +69,12 @@ socket.on('signUpResponse', function (data) {
 
         document.getElementById("signDiv").style.display = "none";
         document.getElementById("mainMenu").style.display = "table-cell";
+
+        loadJSONFile(function (response) {
+            var playerObject = JSON.parse(response);
+            playerObject.id = getUsername();
+            writeDB('player', playerObject);
+        }, "/client/resources/jsons/player.json");
     } else
         alert("Sign up unsuccessul.");
 });
@@ -80,7 +87,12 @@ signDivSignIn.onclick = function () {
 
 
 signDivSignUp.onclick = function () {
-    socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value });
+    if (signDivPassword.value.length > 0) {
+        socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value });
+    }
+    else {
+        alert("Password must not be empty");
+    }
 }
 
 
