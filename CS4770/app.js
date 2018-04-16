@@ -88,6 +88,7 @@ var loadDBFromQuery = function (query, collection, callback) {
 var writeDB = function (data) {
     var object = data.data;
     console.log(object._id);
+    console.log(object.id);
     console.log("inside upsert");
     db.collection(data.collection).update({ id: object.id }, object, { upsert: true });
 }
