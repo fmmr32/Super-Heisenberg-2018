@@ -445,15 +445,6 @@
                 document.getElementById("selectionBox").selectedIndex = 0;
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("selectionBoxDiv").style.display = "inline-block";
-            }else if (overWorld.isTestAndSave) {
-                overWorld.isTestAndSave = false;
-                document.getElementById("mainMenu").style.display = "none";
-                document.getElementById("editor").style.display = "table-cell";
-                var temp = JSON.parse(this.map.file);
-                writeDB("level", temp);
-                alert("Level Saved");
-                
-            }
             firstTime = true;
             document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
         }
