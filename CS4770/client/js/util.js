@@ -381,7 +381,7 @@ class ExitMenu {
                         this.world.getPlayer().setX(overWorld.startX)
                         this.world.getPlayer().setY(overWorld.startY);
                         this.world.bg = 0;
-                        this.world.music.stop();
+                        this.world.stopMusic();
                         this.select = 0;
                         back();
                         break;
@@ -407,11 +407,11 @@ var sounds = [];
 
 class SoundManager {
     constructor(sound, type) {
+        this.id = Math.floor(performance.now());
         this.sound = new Audio(sound);
         this.sound.preload = 'auto';
         this.players = [];
         this.type = type;
-        var v = 100;
         switch (type) {
             case "music":
                 var val = document.getElementById("MVolume").value;
@@ -425,11 +425,14 @@ class SoundManager {
                 this.sound.volume = val / 100;
                 break;
         }
-        sounds.push(this);
+        sounds[this.id] = this;
     }
 
     setVolume(volume) {
         this.sound.volume = volume / 100;
+        for (var t of this.players) {
+            t.volume = this.sound.volume;
+        }
     }
 
     setLoop(loop) {
@@ -462,7 +465,10 @@ class SoundManager {
 
     static changeAllVolumes(volume, type) {
         for (var sound of sounds) {
-            if (sound.type = type) {
+            if (sound == undefined) {
+                continue;
+            }
+            if (sound.type == type) {
                 sound.setVolume(volume);
             }
         }

@@ -397,7 +397,7 @@
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("gameDiv").style.display = "table-cell";
                 loaded = true;
-                overWorld.music.play();
+                overWorld.playMusic();
             }
         }
 
@@ -426,7 +426,7 @@
             signDiv.style.display = 'table-cell';
         }
 
-        function back(type) {
+        function back() {
             document.getElementById("playOptions").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
             document.getElementById("levelBrowser").style.display = "none";
@@ -758,7 +758,6 @@
                         loadJSONFile(function (t) {
                             m.shop = loadShop(player, JSON.parse(t));
                             m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
-                            m.music.stop();
                             loaded = false;
                         }, "/client/resources/jsons/values.json");
 
