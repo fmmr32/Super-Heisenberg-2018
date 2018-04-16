@@ -217,6 +217,8 @@ class OverWorld {
         this.onOverWorld = true;
 
         this.isTestLevel = false;
+        this.isLevelBrowser = false;
+        this.isTestAndSave = false;
         this.inShop = false;
         this.inCharacterSelect = false;
         this.inMuseum = false;
@@ -476,6 +478,7 @@ directions:
         //loading the map the player chose
         this.onOverWorld = false;
         this.music.stop();
+        this.isLevelBrowser = true;
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
@@ -485,11 +488,12 @@ directions:
 
     //going back to the overworld
     toOverWorld(type) {
-        console.log(this.isTestLevel);
-        if (this.isTestLevel) {
+        if (this.isTestLevel || this.isLevelBrowser || this.isTestAndSave) {
             back();
             return;
         }
+        
+
 
         overWorld.inShop = false;
         this.inCharacterSelect = false;

@@ -278,19 +278,25 @@ class MoveSet {
                     var px = map.getPlayer().getX();
                     var py = map.getPlayer().getY() - map.getPlayer().getHeight() / 2;
 
-                    var t = Math.atan2(px - cx, py - cy);
+                    var t = Math.atan2(py - cy, px - cx);
                     if (t < 0) {
                         t += Math.PI * 2;
                     }
-                    var angle = Math.floor(180 / Math.PI * t) - 90;
+                    var angle = Math.floor(t * 180 / Math.PI);
+                    console.log(t, angle)
                     if (this.ent.getLastOffSet() < 0 && (angle > 90 && angle < 270)) {
                         this.ent.lastOffSet = this.ent.getSprite().getOffSet();
-                        angle = angle - 180;
+                        angle = 180 - angle;
                     } else if (this.ent.getLastOffSet() > 0 && (angle <= 90 || angle > 270)) {
                         this.ent.lastOffSet = -this.ent.getSprite().getOffSet();
-                        angle = 180 - angle;
-                    } else if (this.ent.getLastOffSet() > 0){
-                           angle = 180 - angle;
+                        angle = 360 - angle;
+                    } else {
+                        if (this.ent.getLastOffSet() < 0) {
+                            angle = 360 - angle;
+                        } else if (this.ent.getLastOffSet() > 0) {
+                            angle += 180;
+                        }
+
                     }
 
                     this.ent.currentWeapon.setAngle(angle);
