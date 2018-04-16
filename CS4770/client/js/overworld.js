@@ -474,7 +474,6 @@ directions:
 
     //goes to a map from a database object
     toMapFromDB(mapObject) {
-        console.log(mapObject)
         //loading the map the player chose
         this.onOverWorld = false;
         this.music.stop();

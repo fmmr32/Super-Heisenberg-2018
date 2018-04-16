@@ -1,4 +1,5 @@
 ﻿{
+  "allUpgrades": "You currently have all the available upgrades for this weapons.",
   "impacts": {
     "die": "your bullet will go away and do nothing upon hitting a block.",
     "ricochet": "your bullet will try to ricochet when hitting a block.",

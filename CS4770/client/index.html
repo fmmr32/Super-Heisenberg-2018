@@ -447,7 +447,6 @@
                 document.getElementById("selectionBoxDiv").style.display = "inline-block";
             }else if (overWorld.isTestAndSave) {
                 overWorld.isTestAndSave = false;
-                console.log(this.map.file);
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
                 var temp = JSON.parse(this.map.file);
@@ -493,7 +492,6 @@
             else {
                 if (document.getElementById("changeStorageBtn").value == "Show Remote Levels" || firstTime == true) {
                     elemt.loadLevelsForEditor({ user: getUsername }, "level");
-                    console.log("inside if newlevel");
                     firstTime = false;
                 }
                 else {
@@ -576,7 +574,6 @@
 
 
         var refreshLevelsTable = function () {
-            console.log("Inside refresh");
             var levelsTable = document.getElementById('levelTable');
 
             while (levelsTable.firstChild) {
@@ -629,10 +626,7 @@
 
 
                     levelRow.onclick = function () {
-                        console.log(this.getAttribute("id"))
                         loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
-                            console.log("rfhdyjbfhyujfrjn");
-                            console.log(response);
                             toLevel();
                             overWorld.toMapFromDB(response[0]);
                         });
@@ -651,7 +645,6 @@
             var searchBox = document.getElementById("searchBox");
             var searchquery = { [selectedValue]: searchBox.value };
 
-            console.log(searchquery.userName);
 
             loadLevelsList({ [selectedValue]: searchBox.value }, "level");
         }
@@ -671,7 +664,6 @@
                 for (var any of data) {
                     loadJSONFile(function (response) {
                         var level = JSON.parse(response);
-                        console.log(level);
 
                         var levelName = level.levelName;
                         var author = level.user;
@@ -690,10 +682,8 @@
                         dateCreatedCell.innerHTML = dateCreated;
 
                         levelRow.onclick = function () {
-                            console.log(this.getAttribute("id"))
                             loadJSONFile(function (response) {
                                 var level2 = JSON.parse(response);
-                                console.log(level2);
                                 toLevel();
                                 overWorld.toMapFromDB(level2);
                             }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");
@@ -707,9 +697,7 @@
         var map;
         //achievement array
         function loadUserDatabase() {
-            console.log("Inside loadUserDatabase " + playerUsername);
             loadDBFromQuery({ id: playerUsername }, 'player', function (response) {
-                console.log("Inside loaduserdatabase " + JSON.stringify(response[0]));
                 loadGame(false, response[0]);
             });
         }
@@ -843,7 +831,6 @@
             e = e || window.event;
             if (loaded) {
                 var poss = getMousePos(canvas, e);
-                console.log(poss.x + " " + poss.y);
             }
         }
 

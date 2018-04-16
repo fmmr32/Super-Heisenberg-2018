@@ -1198,7 +1198,6 @@ class Editor {
                         elemt = new Editor(clone);
 
                         var temp = response[0];
-                        console.log(temp);
                         elemt.map = temp;
                         elemt.oldName = elemt.map.levelName;
                         var user = getUsername();
@@ -1237,7 +1236,6 @@ class Editor {
             for (var any of data) {
                 loadJSONFile(function (response) {
                     var level = JSON.parse(response);
-                    console.log(level);
 
                     var levelName = level.levelName;
                     var author = level.user;
@@ -1258,20 +1256,14 @@ class Editor {
                     levelRow.onclick = function () {
                         document.getElementById("Overwrite").style.display = "inline-block";
                         document.getElementById("Save").value = "Save As New";
-                        console.log(this.getAttribute("id"))
 
                         loadJSONFile(function (response) {
                             var temp = JSON.parse(response);
                           //  elemt.map = temp;
                          //   elemt.oldName = elemt.map.levelName;
-                          //  console.log(response);
-                           // console.log(elemt.map);
                             var user = getUsername();
 
                             if (temp.user == user) {
-                                console.log(temp)
-                                console.log("loading...");
-                                // console.log(this.map);
                                 // overWorld.toMapFromDB(editor.map);
                                 //  toLevel();
                                 document.getElementById("levelBrowser").style.display = "none";

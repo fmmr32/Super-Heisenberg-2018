@@ -107,7 +107,6 @@ class Level {
     loadLevel(file) {
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
-        console.log(any);
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
