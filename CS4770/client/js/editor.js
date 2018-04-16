@@ -42,6 +42,7 @@ class Editor {
                 editor.mouseLeft = true
                 editor.placeTile();
             }
+
             else if (e.which == 3) {
                 editor.mouseRight = true;
                 editor.removeTile();
@@ -54,6 +55,11 @@ class Editor {
                     case 1:
                         editor.mouseLeft = false;
                         break;
+
+                    case 2:
+                        editor.updateSpawn();
+                        break;
+
                     case 3:
                         editor.mouseRight = false;
                         break;
@@ -448,6 +454,27 @@ class Editor {
         today = month + '/' + day + '/' + year;
         return today;
 
+
+    }
+
+    updateSpawn() {
+        var scrollPos = document.getElementById("editor").children[0];
+        var scrollX = scrollPos.childNodes[1].scrollLeft;
+        var scrollY = scrollPos.childNodes[1].scrollTop;
+        var gameDiv = document.getElementById("canvas");
+        var divOffsetX = gameDiv.offsetLeft;
+        var divOffsetY = gameDiv.offsetTop;
+        this.select = [];
+        var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
+
+        console.log(this.map);
+        this.map.spawnX = x;
+        this.map.spawnY = y;
+        console.log(this.map);
+        //this.canvas.fillRect(x, y, this.cw, this.ch);
+        alert("spawn set to: " + this.map.spawnX + " " + this.map.spawnY);
+        
 
     }
 
@@ -1264,7 +1291,10 @@ class Editor {
                          //   elemt.oldName = elemt.map.levelName;
                             var user = getUsername();
 
-                            if (temp.user == user) {
+                            
+                                console.log(temp)
+                                console.log("loading...");
+                                // console.log(this.map);
                                 // overWorld.toMapFromDB(editor.map);
                                 //  toLevel();
                                 document.getElementById("levelBrowser").style.display = "none";
@@ -1289,11 +1319,8 @@ class Editor {
                                 elemt.draw(elemt.map);
 
                                 //loadMap();
-                                document.getElementById("levelBrowser").style.display = "none";
-                            }
-                            else {
-                                alert("Cannot Edit Other Players Maps");
-                            }
+                            
+                            
 
                             //document.getElementById("levelBrowser").style.display = "none";
 

@@ -34,9 +34,8 @@ var SOCKET_LIST = {};
 
 /*________________________________________Login____________________________________________________________*/
 
-var isValidPassword = function (data, callback) {
-    db.account.find({ username: data.username, password: data.password }, function (err, res) {
-
+var isValidLogin = function (data, callback) {
+    db.account.find({ username: data.username, password: data.password }, function (err, res) { 
         if (res.length > 0) {
             callback(true);
 
@@ -46,9 +45,9 @@ var isValidPassword = function (data, callback) {
     });
 
 };
+
 var isUsernameTaken = function (data, callback) {
     db.account.find({ username: data.username }, function (err, res) {
-
         if (res.length > 0) {
             callback(true);
 
@@ -57,6 +56,7 @@ var isUsernameTaken = function (data, callback) {
         }
     });
 };
+
 var addUser = function (data, callback) {
     db.account.insert({ username: data.username, password: data.password }, function (err) {
         callback();
@@ -143,9 +143,8 @@ io.sockets.on('connection', function (socket) {
 
 
     socket.on('signIn', function (data) {
-        isValidPassword(data, function (res) {
+        isValidLogin(data, function (res) {
             if (res) {
-
                 socket.emit('signInResponse', { success: true });
             } else {
                 socket.emit('signInResponse', { success: false });
