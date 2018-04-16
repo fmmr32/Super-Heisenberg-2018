@@ -1210,12 +1210,13 @@ class Editor {
                             context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
                             elemt.drawBoard();
                             elemt.draw(elemt.map);
+                            document.getElementById("levelBrowser").style.display = "none";
                         }
                         else {
                             alert("Cannot Edit Other Players Maps");
                         }
 
-                        document.getElementById("levelBrowser").style.display = "none";
+                       // document.getElementById("levelBrowser").style.display = "none";
 
                     });
                 }
@@ -1288,12 +1289,13 @@ class Editor {
                                 elemt.draw(elemt.map);
 
                                 //loadMap();
+                                document.getElementById("levelBrowser").style.display = "none";
                             }
                             else {
                                 alert("Cannot Edit Other Players Maps");
                             }
 
-                            document.getElementById("levelBrowser").style.display = "none";
+                            //document.getElementById("levelBrowser").style.display = "none";
 
 
 
