@@ -492,7 +492,19 @@ class Level {
         this.user.achievements = this.getPlayer().achievements;
         this.user.artifacts = this.getPlayer().artifacts;
 
-        if (completed) {
+        if (completed && overWorld.isTestAndSave) {
+            
+                overWorld.isTestAndSave = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+                var temp = elemt.map;
+                writeDB("level", temp);
+                alert("Level Saved");
+
+            
+
+        }
+        else if (completed) {
             this.toOverWorld();
         }
 
