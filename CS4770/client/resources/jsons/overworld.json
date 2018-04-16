@@ -18,20 +18,11 @@
     "startY": 278,
     "portals": [
       {
-        "type": "level",
-        "mapName": "map1",
-        "worldId": [0],
-        "X": 278,
-        "Y": 595,
-        "startDialog": 0,
-        "endDialog": -1
-      },
-      {
         "type": "store",
         "worldId": [ 0 ],
         "X": 950,
         "Y": 162,
-        "startDialog": -1,
+        "startDialog": 5,
         "endDialog": -1
       },
       {
@@ -47,7 +38,7 @@
         "worldId": [ 0 ],
         "X": 278,
         "Y": 178,
-        "startDialog": -1,
+        "startDialog": 0,
         "endDialog": 4
       },
       {
@@ -55,8 +46,62 @@
         "mapName": "SpaceBattle",
         "worldId": [ 1, 2 ],
         "X": 270,
+        "Y": 482,
+        "startDialog": 2,
+        "endDialog": 10
+      },
+      {
+        "type": "level",
+        "mapName": "",
+        "worldId": [ 1, 2 ],
+        "X": 270,
         "Y": 150,
-        "startDialog": -1,
+        "startDialog": 8,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "",
+        "worldId": [ 1, 2 ],
+        "X": 636,
+        "Y": 482,
+        "startDialog": 6,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "",
+        "worldId": [ 1, 2 ],
+        "X": 897,
+        "Y": 482,
+        "startDialog": 7,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "",
+        "worldId": [ 1, 2 ],
+        "X": 1159,
+        "Y": 482,
+        "startDialog": 6,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "",
+        "worldId": [ 1, 2 ],
+        "X": 1159,
+        "Y": 150,
+        "startDialog": 9,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "",
+        "worldId": [ 1, 2 ],
+        "X": 882,
+        "Y": 150,
+        "startDialog": 7,
         "endDialog": -1
       }
     ],
@@ -167,6 +212,83 @@
         "startY": 150,
         "endX": 270,
         "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 10,
+        "worldId": [ 1, 2 ],
+        "startX": 270,
+        "startY": 482,
+        "endX": 636,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 11,
+        "worldId": [ 1, 2 ],
+        "startX": 636,
+        "startY": 482,
+        "endX": 897,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 12,
+        "worldId": [ 1, 2 ],
+        "startX": 897,
+        "startY": 482,
+        "endX": 1159,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 13,
+        "worldId": [ 1, 2 ],
+        "startX": 1159,
+        "startY": 150,
+        "endX": 1159,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 14,
+        "worldId": [ 1, 2 ],
+        "startX": 882,
+        "startY": 150,
+        "endX": 1159,
+        "endY": 150,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 15,
+        "worldId": [ 1, 2 ],
+        "startX": 270,
+        "startY": 150,
+        "endX": 882,
+        "endY": 150,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 16,
+        "worldId": [ 2 ],
+        "startX": 270,
+        "startY": 278,
+        "endX": 270,
+        "endY": 482,
         "startPointer": -1,
         "endPointer": -1,
         "toOverworlds": [ 0 ]

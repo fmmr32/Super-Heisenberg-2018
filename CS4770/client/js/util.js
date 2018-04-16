@@ -54,19 +54,19 @@ class PopUp {
         this.image = image;
 
         this.position = position;
-        this.maxWidth = canvas.width / (position == "top" ? 4 : 2);
+        this.maxWidth = sizeSettings[0] / (position == "top" ? 4 : 2);
         this.maxHeight = maxHeight;
         this.text = text;
         this.duration = duration;
 
-        this.x = (canvas.width - this.maxWidth) / 2;
+        this.x = (sizeSettings[0] - this.maxWidth) / 2;
         this.y;
         if (position == "top") {
             this.y = 0;
         } else if (position == "bottom") {
-            this.y = canvas.height - maxHeight;
+            this.y = sizeSettings[1] - maxHeight;
         } else {
-            this.y = canvas.height;
+            this.y = sizeSettings[1];
         }
 
 
@@ -183,7 +183,7 @@ class Dialog {
         this.text = text;
 
         this.r = 1;
-        this.maxWidth = container.clientWidth / 2;
+        this.maxWidth = sizeSettings[0] / 2;
         this.size = size;
         this.player = player;
         this.id = id;
@@ -204,7 +204,7 @@ class Dialog {
         main = main == -1 ? overWorld.characters.getCharacter().Id : main;
         second = second == -1 ? overWorld.characters.getCharacter().Id : second;
 
-        var maxWidth = canvas.width / 2;
+        var maxWidth = sizeSettings[0] / 2;
         var maxHeight = Math.max(info[main].height + 10, info[second].height + 10);
         var index = 0;
         //loads the different images per text line

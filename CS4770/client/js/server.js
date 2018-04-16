@@ -75,6 +75,9 @@ socket.on('signUpResponse', function (data) {
             playerObject.id = getUsername();
             writeDB('player', playerObject);
         }, "/client/resources/jsons/player.json");
+        loadUserDatabase();
+        loadMenu();
+
     } else
         alert("Sign up unsuccessul.");
 });
