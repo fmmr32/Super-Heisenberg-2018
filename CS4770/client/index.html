@@ -482,7 +482,9 @@
         function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
             var canvas = document.getElementById("canvas")
-            elemt = new Editor(canvas);
+            var clone = canvas.cloneNode();
+            canvas.parentNode.replaceChild(clone, canvas);
+            elemt = new Editor(clone);
 
             if (fromMenu) {
                 document.getElementById("Save").value = "Save";

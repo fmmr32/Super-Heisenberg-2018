@@ -1192,6 +1192,11 @@ class Editor {
                     document.getElementById("Overwrite").style.display = "inline-block";
                     document.getElementById("Save").value = "Save As New";
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
+                        var canvas = document.getElementById("canvas")
+                        var clone = canvas.cloneNode();
+                        canvas.parentNode.replaceChild(clone, canvas);
+                        elemt = new Editor(clone);
+
                         var temp = response[0];
                         console.log(temp);
                         elemt.map = temp;
@@ -1271,10 +1276,13 @@ class Editor {
                                 //  toLevel();
                                 document.getElementById("levelBrowser").style.display = "none";
                                 document.getElementById("editor").style.display = "table-cell";
-                                var canvas = document.getElementById('canvas');
+
+                                var canvas = document.getElementById("canvas")
+                                var clone = canvas.cloneNode();
                                 var context = canvas.getContext('2d');
                                 context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
-                                
+                                canvas.parentNode.replaceChild(clone, canvas);
+                                elemt = new Editor(clone);
 
                                 elemt.bh = temp.height;
                                 elemt.canvas.height = temp.height;
