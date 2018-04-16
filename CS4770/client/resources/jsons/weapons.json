@@ -10,6 +10,7 @@
     "speed": 5,
     "impact": "die",
     "sound": "../resources/sounds/pistol.wav",
+    "volume": 0.2,
     "frames": 8,
     "frameRate": 24,
     "cooldown": 15,

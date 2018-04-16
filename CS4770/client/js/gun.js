@@ -95,6 +95,7 @@ function loadWeapons(file) {
         options.impact = w.impact;
         options.price = w.price;
         options.sound = new SoundManager(w.sound, "game");
+        options.sound.volume = 0.1;
         options.impactUpgrades = w.impactUpgrades;
         options.hidden = w.hidden;
         weapons.set(w.id, new Weapon(options));
