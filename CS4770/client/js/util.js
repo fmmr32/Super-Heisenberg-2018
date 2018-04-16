@@ -396,7 +396,10 @@ class ExitMenu {
                             this.world.getPlayer().setX(overWorld.startX)
                             this.world.getPlayer().setY(overWorld.startY);
                             this.world.bg = 0;
-                            this.world.music.stop();
+                            this.world.stopMusic();
+                            if (map != undefined) {
+                                map.stopMusic();
+                            }
                             this.select = 0;
                             back();
                         }
@@ -412,6 +415,9 @@ class ExitMenu {
                         this.world.getPlayer().setY(overWorld.startY);
                         this.world.bg = 0;
                         this.world.stopMusic();
+                        if (map != undefined) {
+                            map.stopMusic();
+                        }
                         this.select = 0;
                         if (this.world.getPlayer().world.user != undefined) {
                             console.log(this.world.getPlayer().world.user)
