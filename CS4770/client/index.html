@@ -437,6 +437,7 @@
             document.getElementById("mainMenu").style.display = "table-cell";
             if (overWorld.isTestLevel) {
                 overWorld.isTestLevel = false;
+                map.stopMusic();
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
             } else if (overWorld.isLevelBrowser) {
@@ -445,6 +446,11 @@
                 document.getElementById("selectionBox").selectedIndex = 0;
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("selectionBoxDiv").style.display = "inline-block";
+                map.stopMusic();
+            } else if (overWorld.isTestAndSave) {
+                map.stopMusic();
+                overWorld.isTestAndSave = false;
+            }
             firstTime = true;
             document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
         }
@@ -620,6 +626,7 @@
                         loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
                             toLevel();
                             overWorld.toMapFromDB(response[0]);
+                            overWorld.isLevelBrowser = true;
                         });
                     }
                 }
@@ -703,7 +710,6 @@
 
         var loadMenu = function () {
             signDiv.style.display = 'none';
-            gameDiv.style.display = 'none';
             menuDiv.style.display = 'table-cell';
         }
 

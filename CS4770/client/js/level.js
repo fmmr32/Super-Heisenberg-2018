@@ -98,7 +98,7 @@ class Level {
         this.player = chars;
         this.time = performance.now();
 
-        
+
         if (!(this instanceof Museum)) {
             loaded = true;
         }
@@ -127,6 +127,7 @@ class Level {
         }
 
         this.music = new SoundManager(any.music, "music").id;
+        this.playMusic();
 
         this.container = canvas;
         changeCanvas(canvas, this);
@@ -406,7 +407,7 @@ class Level {
         if (this.tiles[X][Y] === undefined) {
             var block = new Block(0, X, Y);
             this.tiles[X][Y] = block;
-        } 
+        }
 
         return this.tiles[X][Y];
     }
@@ -492,21 +493,17 @@ class Level {
         var timeplayed = this.getPlayer().timeplayed;
         this.user.achievements = this.getPlayer().achievements;
         this.user.artifacts = this.getPlayer().artifacts;
-
         if (completed && overWorld.isTestAndSave) {
-            
-                overWorld.isTestAndSave = false;
-                document.getElementById("mainMenu").style.display = "none";
-                document.getElementById("editor").style.display = "table-cell";
-                var temp = elemt.map;
-                writeDB("level", temp);
-                alert("Level Saved");
-
-            
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("editor").style.display = "table-cell";
+            var temp = elemt.map;
+            writeDB("level", temp);
+            alert("Level Saved");
+            this.toOverWorld();
 
         }
         else if (completed) {
-            this.toOverWorld(this);
+            this.toOverWorld();
         }
 
     }

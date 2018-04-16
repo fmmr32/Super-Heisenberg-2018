@@ -272,7 +272,7 @@ class OverWorld {
     }
 
     playMusic() {
-        sounds.get(this.music).play();
+            sounds.get(this.music).play();
     }
 
     stopMusic() {
@@ -485,23 +485,21 @@ directions:
         //loading the map the player chose
         this.onOverWorld = false;
         this.stopMusic();
-        this.isLevelBrowser = true;
         loaded = false;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         canvas.remove();
         map = new Level(this.user, JSON.stringify(mapObject), this);
         map.loadCharacter(overWorld.characters.getCharacter());
-        map.playMusic();
 
     }
 
     //going back to the overworld
     toOverWorld(type) {
         if (this.isTestLevel || this.isLevelBrowser || this.isTestAndSave) {
+            loaded = false;
             back();
             return;
         }
-        
 
 
         overWorld.inShop = false;

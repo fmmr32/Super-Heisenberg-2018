@@ -622,6 +622,7 @@ class EntityMovable extends Entity {
                             } else if (collidingEntity instanceof Artifact) {
                                 collidingEntity.handlePickUp(this);
                                 this.level.exitMap(true);
+                                return;
                             } else {
                                 //picking up a coin?
                                 if (collidingEntity.amount != undefined) {
