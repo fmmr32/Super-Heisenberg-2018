@@ -272,11 +272,11 @@ class OverWorld {
     }
 
     playMusic() {
-        sounds[this.music].play();
+        sounds.get(this.music).play();
     }
 
     stopMusic() {
-        sounds[this.music].stop();
+        sounds.get(this.music).stop();
     }
 
     //loads the player

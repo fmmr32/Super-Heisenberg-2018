@@ -366,11 +366,11 @@ class Level {
         }
     }
     playMusic() {
-        sounds[this.music].play();
+        sounds.get(this.music).play();
     }
 
     stopMusic() {
-        sounds[this.music].stop();
+        sounds.get(this.music).stop();
     }
 
     outSideFrame(X) {
@@ -484,6 +484,7 @@ class Level {
     }
 
     exitMap(completed) {
+        this.stopMusic();
         var money = this.getPlayer().getMoney();
         this.user.money += money;
         var kills = this.getPlayer().killcount;
@@ -493,7 +494,7 @@ class Level {
         this.user.artifacts = this.getPlayer().artifacts;
 
         if (completed) {
-            this.toOverWorld();
+            this.toOverWorld(this);
         }
 
     }

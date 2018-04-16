@@ -403,7 +403,7 @@ class ExitMenu {
 
 }
 
-var sounds = [];
+var sounds = new Map();
 
 class SoundManager {
     constructor(sound, type) {
@@ -425,7 +425,7 @@ class SoundManager {
                 this.sound.volume = val / 100;
                 break;
         }
-        sounds[this.id] = this;
+        sounds.set(this.id, this);
     }
 
     setVolume(volume) {
@@ -449,7 +449,7 @@ class SoundManager {
         if (!this.sound.loop) {
             temp.addEventListener("ended", function () {
                 obj.players.splice(obj.players.indexOf(temp), 1);
-                sounds.splice(sounds.indexOf(this), 1);
+                sounds.delete(this.id);
             })
         }
 
@@ -464,13 +464,12 @@ class SoundManager {
     }
 
     static changeAllVolumes(volume, type) {
-        for (var sound of sounds) {
-            if (sound == undefined) {
-                continue;
+        sounds.forEach(function (sound) {
+            if (sound != undefined) {
+                if (sound.type == type) {
+                    sound.setVolume(volume);
+                }
             }
-            if (sound.type == type) {
-                sound.setVolume(volume);
-            }
-        }
+        });
     }
 }
