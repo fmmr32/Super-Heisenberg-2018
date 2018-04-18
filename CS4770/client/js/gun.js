@@ -174,7 +174,7 @@ class Weapon {
 
     setAngle(angle) {
         for (var bullet of this.bullets) {
-            bullet.angle = angle;
+            bullet.angle = angle + bullet.origAngle;
         }
     }
 
@@ -194,6 +194,7 @@ class Bullet extends EntityMovable {
     constructor(angle, alive, options, owner) {
         super(options);
         this.angle = angle;
+        this.origAngle = angle;
         this.alive = alive;
         this.owner = owner;
         this.damage = options.damage;

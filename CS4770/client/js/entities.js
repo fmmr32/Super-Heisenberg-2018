@@ -508,14 +508,14 @@ class EntityMovable extends Entity {
     }
     doCollision(ov) {
         //getting the from and to values of the entity
-        var creaX = this.getX() + this.getSprite().getCenter();
+        var creaX = this.getX() + this.getSprite().getCenter() ;
  
         var creaY = this.getY() - this.getHeight();
 
-        var fromX = Math.min(creaX, creaX + this.getHSpeed());
+        var fromX = Math.min(creaX, creaX + this.getHSpeed()) - this.getSprite().getOffSet();
         var fromY = Math.min(creaY, creaY + this.getVSpeed());
 
-        var toX = Math.max(creaX, creaX + this.getHSpeed());
+        var toX = Math.max(creaX, creaX + this.getHSpeed()) + this.getSprite().getOffSet();
         var toY = Math.max(creaY, creaY + this.getVSpeed() + this.getHeight() - 1);
 
 
@@ -542,7 +542,7 @@ class EntityMovable extends Entity {
                         if (this.getVSpeed() > 0) {
                             var dy = Math.abs(fromY + this.getHeight() - y);
                             if (dy > this.getVSpeed()) {
-                                dy = this.getVSpeed();
+                                dy = 0;
                             }
 
                             this.setVSpeed(dy);
@@ -646,13 +646,6 @@ class EntityMovable extends Entity {
 
             var x = this.getX() + this.getSprite().getCenter();
             //checks if a enitty is in the air then setting the last offset, this allows the player to stand on the edge
-            if (this.level.getBlock(x, this.getY()).Id == 0 || this.level.getBlock(x, this.getY()).hasMeta("passThrough")) {
-                if (this.level.getBlock(x + this.getLastOffSet(), this.getY()).Id != 0) {
-                    x += this.getLastOffSet();
-                } else if (this.level.getBlock(x - this.getLastOffSet(), this.getY()).Id != 0) {
-                    x -= this.getLastOffSet();
-                }
-            }
 
             //see if the entity is in the air then let the entity fall
             if (this.level.getBlock(x, this.getY()).Id == 0 || this.level.getBlock(x, this.getY()).hasMeta("passThrough")) {

@@ -476,7 +476,7 @@ directions:
         canvas.remove();
         loadMap(name, this.user, function (m) {
             m.loadCharacter(overWorld.characters.getCharacter());
-            m.playMusic();
+          //  m.playMusic();
         }, this);
     }
 
@@ -507,7 +507,7 @@ directions:
         this.inMuseum = false;
         this.onOverWorld = true;
         this.playMusic();
-
+        loaded = true;
         var p = this.onPortal(this.getPlayer().getX(), this.getPlayer().getY());
         if (p != null && p.endDialog != -1) {
             this.doingDialog = true;
@@ -522,6 +522,7 @@ directions:
     //remade of the canvas used, used for when switching from a map object to the overworld
     toOverWorldNewCanvas(type) {
         map.stopMusic();
+        map = undefined;
         this.makeCanvas();
         this.toOverWorld(type);
     }

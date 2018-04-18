@@ -536,7 +536,11 @@ class Level {
         while (container.children.length != 0) {
             container.children[0].remove();
         }
-        overWorld.toOverWorldNewCanvas(this);
+        
+        if (loaded) {
+            loaded = false;
+            overWorld.toOverWorldNewCanvas(this);
+        } 
     }
 }
 
