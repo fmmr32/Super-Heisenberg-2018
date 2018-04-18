@@ -54,19 +54,19 @@ class PopUp {
         this.image = image;
 
         this.position = position;
-        this.maxWidth = canvas.width / (position == "top" ? 4 : 2);
+        this.maxWidth = sizeSettings[0] / (position == "top" ? 4 : 2);
         this.maxHeight = maxHeight;
         this.text = text;
         this.duration = duration;
 
-        this.x = (canvas.width - this.maxWidth) / 2;
+        this.x = (sizeSettings[0] - this.maxWidth) / 2;
         this.y;
         if (position == "top") {
             this.y = 0;
         } else if (position == "bottom") {
-            this.y = canvas.height - maxHeight;
+            this.y = sizeSettings[1] - maxHeight;
         } else {
-            this.y = canvas.height;
+            this.y = sizeSettings[1];
         }
 
 
@@ -183,7 +183,7 @@ class Dialog {
         this.text = text;
 
         this.r = 1;
-        this.maxWidth = container.clientWidth / 2;
+        this.maxWidth = sizeSettings[0] / 2;
         this.size = size;
         this.player = player;
         this.id = id;
@@ -204,7 +204,7 @@ class Dialog {
         main = main == -1 ? overWorld.characters.getCharacter().Id : main;
         second = second == -1 ? overWorld.characters.getCharacter().Id : second;
 
-        var maxWidth = canvas.width / 2;
+        var maxWidth = sizeSettings[0] / 2;
         var maxHeight = Math.max(info[main].height + 10, info[second].height + 10);
         var index = 0;
         //loads the different images per text line
@@ -316,7 +316,9 @@ class ExitMenu {
         this.image.src = "../resources/menus/TextBox.png";
 
         this.select = 0;
-        this.options = ["Resume", "Exit"];
+        
+        this.options = ["Resume", "Exit", "Save"];
+        
         this.width = 100;
         this.height = 30;
 
@@ -330,6 +332,13 @@ class ExitMenu {
     }
 
     menu() {
+        if (isOffline || isInsideLevel) {
+            this.options = ['Resume', 'Exit'];
+        }
+        else {
+            this.options = ['Resume', 'Exit', 'Save'];
+        }
+
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = "black";
         ctx.font = "15px sans-serif";
@@ -371,7 +380,31 @@ class ExitMenu {
                         this.select = 0;
                         break;
                     case "Exit":
-                        //go back to the main menu
+                        console.log(isOffline);
+                        if (isOffline) {
+                            location.reload();
+                        }
+                        else {
+                            //go back to the main menu
+                            isInsideLevel = false;
+                            loaded = false;
+                            this.world.onOverWorld = true;
+                            this.world.inShop = false;
+                            this.world.inCharacterSelect = false;
+                            this.world.inMuseum = false;
+                            this.world.inExitMenu = false;
+                            this.world.getPlayer().setX(overWorld.startX)
+                            this.world.getPlayer().setY(overWorld.startY);
+                            this.world.bg = 0;
+                            this.world.stopMusic();
+                            if (map != undefined) {
+                                map.stopMusic();
+                            }
+                            this.select = 0;
+                            back();
+                        }
+                        break;
+                    case "Save":
                         loaded = false;
                         this.world.onOverWorld = true;
                         this.world.inShop = false;
@@ -381,11 +414,18 @@ class ExitMenu {
                         this.world.getPlayer().setX(overWorld.startX)
                         this.world.getPlayer().setY(overWorld.startY);
                         this.world.bg = 0;
-                        this.world.music.stop();
+                        this.world.stopMusic();
+                        if (map != undefined) {
+                            map.stopMusic();
+                        }
                         this.select = 0;
+                        if (this.world.getPlayer().world.user != undefined) {
+                            console.log(this.world.getPlayer().world.user)
+                            writeDB('player', this.world.getPlayer().world.user);
+                        } 
                         back();
-                        break;
-
+                        alert("Your campaign progress has been saved!");
+                        break;  
                 }
                 break;
             case "quit":
@@ -395,7 +435,12 @@ class ExitMenu {
     }
 
     setSelect(d) {
-        if (this.select + d > 1 || this.select + d < 0) {
+        if (isOffline || isInsideLevel) {
+            if (this.select + d > 1 || this.select + d < 0) {
+                return
+            }
+        }
+        else if (this.select + d > 2 || this.select + d < 0) {
             return
         }
         this.select += d;
@@ -403,15 +448,15 @@ class ExitMenu {
 
 }
 
-var sounds = [];
+var sounds = new Map();
 
 class SoundManager {
     constructor(sound, type) {
+        this.id = Math.floor(performance.now());
         this.sound = new Audio(sound);
         this.sound.preload = 'auto';
         this.players = [];
         this.type = type;
-        var v = 100;
         switch (type) {
             case "music":
                 var val = document.getElementById("MVolume").value;
@@ -425,11 +470,14 @@ class SoundManager {
                 this.sound.volume = val / 100;
                 break;
         }
-        sounds.push(this);
+        sounds.set(this.id, this);
     }
 
     setVolume(volume) {
         this.sound.volume = volume / 100;
+        for (var t of this.players) {
+            t.volume = this.sound.volume;
+        }
     }
 
     setLoop(loop) {
@@ -446,7 +494,7 @@ class SoundManager {
         if (!this.sound.loop) {
             temp.addEventListener("ended", function () {
                 obj.players.splice(obj.players.indexOf(temp), 1);
-                sounds.splice(sounds.indexOf(this), 1);
+                sounds.delete(this.id);
             })
         }
 
@@ -461,10 +509,12 @@ class SoundManager {
     }
 
     static changeAllVolumes(volume, type) {
-        for (var sound of sounds) {
-            if (sound.type = type) {
-                sound.setVolume(volume);
+        sounds.forEach(function (sound) {
+            if (sound != undefined) {
+                if (sound.type == type) {
+                    sound.setVolume(volume);
+                }
             }
-        }
+        });
     }
 }

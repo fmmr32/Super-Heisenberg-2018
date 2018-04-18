@@ -26,7 +26,6 @@ function deepCopy(c) {
     } else if (c instanceof Animation) {
         return new Animation(c.image, c.frames, c.frameRate, c.columns, c.forcedAnimate);
     } else {
-        console.log(c, "SOMETHING BAD HAPPEND");
         return null;
     }
 }
@@ -357,17 +356,3 @@ class Grenade extends Bullet {
 
 }
 
-function testCircle() {
-    var ctx = canvas.getContext("2d");
-    var r = 100;
-
-    var x = canvas.width / 2;
-    var y = canvas.height / 2;
-
-    for (var i = 0; i < 360; i += 20) {
-        var dx = Math.sin(i * 2 * Math.PI / 360);
-        var dy = Math.cos(i * 2 * Math.PI / 360); 
-        console.log(i, x + dx*r, y + dy*r);
-        ctx.fillText(i, x + dx*r, y + dy*r);
-    }
-}

@@ -43,9 +43,9 @@
       "main": -1,
       "second": 670,
       "text": [
-        "%second%HEY HEISENBERG, THIS FKING BITCOIN CRASH IS BANKRUPTING US, GO AND FIND SOME ARTIFACTS SO WE CAN HAVE MORE VISITORS",
-        "%main%BUT I DON'T HAVE ANY BITCOIN TO BUY THEM",
-        "%second%DOESN'T MATTER, HERE HAVE SOME GUNS NOW GO AND FIND SOME ARTIFACTS"
+        "%second%Hey %player% the bitcoin crisis is hurting the museum, we need to get more artifacts.",
+        "%main%But sir, I don't have any bitcoin to buy them.",
+        "%second%Doesn't matter, use the guns you have!!"
       ]
     },
     {
@@ -53,9 +53,9 @@
       "main": -1,
       "second": 670,
       "text": [
-        "%main%HERE YOU GO SIR, I FOUND SOMETHING USEFUL",
-        "%second%HMM, LOOKS WELL ENOUGH, GOODJOB NOW GO AND FIND SOME MORE",
-        "%main%YES SIR"
+        "%main%Here you go sir, I have found something useful",
+        "%second%Hmm, looks well enough. But we need more, continue the search.",
+        "%main%Will do."
       ]
     },
     {
@@ -63,11 +63,10 @@
       "main": -1,
       "second": 670,
       "text": [
-        "%second%I AM THE RULER OF THE WORLD, YOU CANNOT STOP ME, I WILL COLLECT ALL THE ARTIFACTS AND I WON'T BE STOPPED!!",
-        "%main%DID YOU FORGET TO TAKE YOU MEDICATION? IT SEEMS TO ME YOU HAVE A FEW PROBLEMS",
-        "%second%WHAT DID YOU JUST SAY TO ME??!!! YOU STUPID LITTLE MAGGOT",
-        "%main%JUST HAND OVER THE STUFF AND I WON'T HAVE TO HURT YOU",
-        "%second%GRRRRR...."
+        "%second%I am the most powerful and wealthy person you will ever meet. I CANNOT BE STOPPED!!",
+        "%main%Have you not seen? I am %player% and I have stopped all your goons before. Now hand over the weapon you have!",
+        "%second%Hahaha, you think you can win from me?? BRING IT!",
+        "%main%Oh it's on!"
       ]
     },
     {
@@ -76,7 +75,7 @@
       "second": 671,
       "text": [
         "%second%HEY %player% HAS COME TO VISIT US!",
-        "%main%JESUS CHRIST BE PRAISED.."
+        "%main%JESUS CHRIST BE PRAISED!"
       ]
     },
     {
@@ -87,6 +86,58 @@
         "%second%Now go and find me some artifacts",
         "%main%Yes Sir!",
         "%second%Be careful of all this fake news and don't let these illegals take your bitcoins!!"
+      ]
+    },
+    {
+      "id": 5,
+      "main": -1,
+      "second": 671,
+      "text": [
+        "%second%Welcome to my humble shop good sir. I hope I have everything you want.",
+        "%main%Show me what you got"
+      ]
+    },
+    {
+      "id": 6,
+      "main": -1,
+      "second": 671,
+      "text": [
+        "%main%Man those were some weird looking mushrooms... Did some lunatic scientist create something?"
+      ]
+    },
+    {
+      "id": 7,
+      "main": -1,
+      "second": 671,
+      "text": [
+        "%main%Really???!! Drones... They are sending drones to kill me!!"
+      ]
+    },
+    {
+      "id": 8,
+      "main": -1,
+      "second": 670,
+      "text": [
+        "%main%That cave looks really dark I don't know if I should go in there",
+        "%second%%player% GET IN THERE NOW WE NEED THOSE ARTIFACTS!!",
+        "%main% ugh..."
+      ]
+    },
+    {
+      "id": 9,
+      "main": -1,
+      "second": 671,
+      "text": [
+        "%main%Now into a well... hmmm..."
+      ]
+    },
+    {
+      "id": 10,
+      "main": -1,
+      "second": 670,
+      "text": [
+        "%main%I... I can't believe I did it... I defeated Elon Musk.. ",
+        "%second%Hey %player% I don't know what you did but the bitcoin price is rising again!! The museum is saved!!"
       ]
     }
   ]

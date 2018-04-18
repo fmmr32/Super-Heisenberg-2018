@@ -42,6 +42,7 @@ class Editor {
                 editor.mouseLeft = true
                 editor.placeTile();
             }
+
             else if (e.which == 3) {
                 editor.mouseRight = true;
                 editor.removeTile();
@@ -54,6 +55,11 @@ class Editor {
                     case 1:
                         editor.mouseLeft = false;
                         break;
+
+                    case 2:
+                        editor.updateSpawn();
+                        break;
+
                     case 3:
                         editor.mouseRight = false;
                         break;
@@ -451,6 +457,27 @@ class Editor {
 
     }
 
+    updateSpawn() {
+        var scrollPos = document.getElementById("editor").children[0];
+        var scrollX = scrollPos.childNodes[1].scrollLeft;
+        var scrollY = scrollPos.childNodes[1].scrollTop;
+        var gameDiv = document.getElementById("canvas");
+        var divOffsetX = gameDiv.offsetLeft;
+        var divOffsetY = gameDiv.offsetTop;
+        this.select = [];
+        var x = Math.floor((event.clientX + scrollX - divOffsetX) / this.cw) * this.cw;
+        var y = Math.floor((event.clientY + scrollY - divOffsetY) / this.ch) * this.ch;
+
+        console.log(this.map);
+        this.map.spawnX = x;
+        this.map.spawnY = y;
+        console.log(this.map);
+        //this.canvas.fillRect(x, y, this.cw, this.ch);
+        alert("spawn set to: " + this.map.spawnX + " " + this.map.spawnY);
+        
+
+    }
+
     setBackground(value) {
         this.map.background = "../resources/Backgrounds/" + value + ".png";
         this.drawBackground();
@@ -593,9 +620,9 @@ class Editor {
             var set;
             if (this.select[0] == "interacts") {
                 data = this.select[2];
-                set = this.map.creatures[this.select[1]].action[this.select[3]].drop;
+                set = this.map.creatures[this.select[1]].action[this.select[3]].loot;
             } else {
-                set = this.map[data[0]][data[1]].drop
+                set = this.map[data[0]][data[1]].loot
             }
 
             dropdown.selectedIndex = set == undefined ? 0 : set;
@@ -620,6 +647,8 @@ class Editor {
         var type = null;
         var k = 0;
         var j = 0;
+
+        var t1 = performance.now();
         for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length, this.map.interacts.length); k++) {
             //check for the tiles
             if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
@@ -645,6 +674,7 @@ class Editor {
                 }
             }
         }
+        console.log("check this in ", Math.abs(t1 - performance.now()), "ms");
         return [type, k];
     }
 
@@ -1192,8 +1222,12 @@ class Editor {
                     document.getElementById("Overwrite").style.display = "inline-block";
                     document.getElementById("Save").value = "Save As New";
                     loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
+                        var canvas = document.getElementById("canvas")
+                        var clone = canvas.cloneNode();
+                        canvas.parentNode.replaceChild(clone, canvas);
+                        elemt = new Editor(clone);
+
                         var temp = response[0];
-                        console.log(temp);
                         elemt.map = temp;
                         elemt.oldName = elemt.map.levelName;
                         var user = getUsername();
@@ -1206,12 +1240,13 @@ class Editor {
                             context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
                             elemt.drawBoard();
                             elemt.draw(elemt.map);
+                            document.getElementById("levelBrowser").style.display = "none";
                         }
                         else {
                             alert("Cannot Edit Other Players Maps");
                         }
 
-                        document.getElementById("levelBrowser").style.display = "none";
+                       // document.getElementById("levelBrowser").style.display = "none";
 
                     });
                 }
@@ -1232,7 +1267,6 @@ class Editor {
             for (var any of data) {
                 loadJSONFile(function (response) {
                     var level = JSON.parse(response);
-                    console.log(level);
 
                     var levelName = level.levelName;
                     var author = level.user;
@@ -1253,17 +1287,14 @@ class Editor {
                     levelRow.onclick = function () {
                         document.getElementById("Overwrite").style.display = "inline-block";
                         document.getElementById("Save").value = "Save As New";
-                        console.log(this.getAttribute("id"))
 
                         loadJSONFile(function (response) {
                             var temp = JSON.parse(response);
                           //  elemt.map = temp;
                          //   elemt.oldName = elemt.map.levelName;
-                          //  console.log(response);
-                           // console.log(elemt.map);
                             var user = getUsername();
 
-                            if (temp.user == user) {
+                            
                                 console.log(temp)
                                 console.log("loading...");
                                 // console.log(this.map);
@@ -1271,10 +1302,13 @@ class Editor {
                                 //  toLevel();
                                 document.getElementById("levelBrowser").style.display = "none";
                                 document.getElementById("editor").style.display = "table-cell";
-                                var canvas = document.getElementById('canvas');
+
+                                var canvas = document.getElementById("canvas")
+                                var clone = canvas.cloneNode();
                                 var context = canvas.getContext('2d');
                                 context.clearRect(0, 0, elemt.canvas.width, elemt.canvas.height);
-                                
+                                canvas.parentNode.replaceChild(clone, canvas);
+                                elemt = new Editor(clone);
 
                                 elemt.bh = temp.height;
                                 elemt.canvas.height = temp.height;
@@ -1288,12 +1322,10 @@ class Editor {
                                 elemt.draw(elemt.map);
 
                                 //loadMap();
-                            }
-                            else {
-                                alert("Cannot Edit Other Players Maps");
-                            }
+                            
+                            
 
-                            document.getElementById("levelBrowser").style.display = "none";
+                            //document.getElementById("levelBrowser").style.display = "none";
 
 
 

@@ -283,7 +283,6 @@ class MoveSet {
                         t += Math.PI * 2;
                     }
                     var angle = Math.floor(t * 180 / Math.PI);
-                    console.log(t, angle)
                     if (this.ent.getLastOffSet() < 0 && (angle > 90 && angle < 270)) {
                         this.ent.lastOffSet = this.ent.getSprite().getOffSet();
                         angle = 180 - angle;
@@ -306,7 +305,7 @@ class MoveSet {
                 m = move.moves[move.index];
                 var s = this.ent.getSpeed();
                 if (m == "left") { s = -s };
-                var nextX = this.ent.getX() + s;
+                var nextX = this.ent.getX() +this.ent.getSprite().getCenter();
                 this.ent.setHSpeed(s);
                 var col = this.ent.doCollision();
                 if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.isOOB(nextX, this.ent.getY()) != 0 || col.code == 2) {
@@ -510,11 +509,7 @@ class EntityMovable extends Entity {
     doCollision(ov) {
         //getting the from and to values of the entity
         var creaX = this.getX() + this.getSprite().getCenter();
-        if (this.getHSpeed() > 0) {
-            creaX += this.getSprite().getCenter();
-        } else if (this.getHSpeed() < 0) {
-            creaX -= this.getSprite().getCenter();
-        }
+ 
         var creaY = this.getY() - this.getHeight();
 
         var fromX = Math.min(creaX, creaX + this.getHSpeed());
@@ -623,6 +618,7 @@ class EntityMovable extends Entity {
                             } else if (collidingEntity instanceof Artifact) {
                                 collidingEntity.handlePickUp(this);
                                 this.level.exitMap(true);
+                                return;
                             } else {
                                 //picking up a coin?
                                 if (collidingEntity.amount != undefined) {
@@ -763,7 +759,7 @@ class EntityInteractable extends Entity {
                             switch (entType) {
                                 //spawning a creature
                                 case "EntityCreature":
-                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet: action.moveSet }]);
+                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet: action.moveSet, loot : action.loot !=undefined ? action.loot : -1 }]);
                                     break;
                                 //spawning a basic entity
                                 case "Tile":

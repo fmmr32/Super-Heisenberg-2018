@@ -98,7 +98,7 @@ class Level {
         this.player = chars;
         this.time = performance.now();
 
-        
+
         if (!(this instanceof Museum)) {
             loaded = true;
         }
@@ -107,7 +107,6 @@ class Level {
     loadLevel(file) {
         //make function that loads a resource from somewhere containing info of below
         var any = JSON.parse(file);
-        console.log(any);
         this.gravity = any.gravity;
         this.width = any.width;
         this.height = any.height;
@@ -127,7 +126,8 @@ class Level {
             obj.resizeImage(this, canvas, 0, "background");
         }
 
-        this.sound = new SoundManager(any.music, "music");
+        this.music = new SoundManager(any.music, "music").id;
+        this.playMusic();
 
         this.container = canvas;
         changeCanvas(canvas, this);
@@ -366,6 +366,13 @@ class Level {
             }
         }
     }
+    playMusic() {
+        sounds.get(this.music).play();
+    }
+
+    stopMusic() {
+        sounds.get(this.music).stop();
+    }
 
     outSideFrame(X) {
         var x = this.getPlayer().getX();
@@ -400,7 +407,7 @@ class Level {
         if (this.tiles[X][Y] === undefined) {
             var block = new Block(0, X, Y);
             this.tiles[X][Y] = block;
-        } 
+        }
 
         return this.tiles[X][Y];
     }
@@ -478,6 +485,7 @@ class Level {
     }
 
     exitMap(completed) {
+        this.stopMusic();
         var money = this.getPlayer().getMoney();
         this.user.money += money;
         var kills = this.getPlayer().killcount;
@@ -485,8 +493,16 @@ class Level {
         var timeplayed = this.getPlayer().timeplayed;
         this.user.achievements = this.getPlayer().achievements;
         this.user.artifacts = this.getPlayer().artifacts;
+        if (completed && overWorld.isTestAndSave) {
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("editor").style.display = "table-cell";
+            var temp = elemt.map;
+            writeDB("level", temp);
+            alert("Level Saved");
+            this.toOverWorld();
 
-        if (completed) {
+        }
+        else if (completed) {
             this.toOverWorld();
         }
 
@@ -586,7 +602,8 @@ class Museum extends Level {
             var options = {};
             options.x = x;
             options.y = y - getSprite(id).height;
-            options.id = id;
+            options.dropId = id;
+            options.type = "artifact";
             this.loadArtifact(options);
             x += 300;
         }

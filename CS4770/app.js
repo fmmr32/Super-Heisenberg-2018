@@ -34,9 +34,8 @@ var SOCKET_LIST = {};
 
 /*________________________________________Login____________________________________________________________*/
 
-var isValidPassword = function (data, callback) {
-    db.account.find({ username: data.username, password: data.password }, function (err, res) {
-
+var isValidLogin = function (data, callback) {
+    db.account.find({ username: data.username, password: data.password }, function (err, res) { 
         if (res.length > 0) {
             callback(true);
 
@@ -46,9 +45,9 @@ var isValidPassword = function (data, callback) {
     });
 
 };
+
 var isUsernameTaken = function (data, callback) {
     db.account.find({ username: data.username }, function (err, res) {
-
         if (res.length > 0) {
             callback(true);
 
@@ -57,6 +56,7 @@ var isUsernameTaken = function (data, callback) {
         }
     });
 };
+
 var addUser = function (data, callback) {
     db.account.insert({ username: data.username, password: data.password }, function (err) {
         callback();
@@ -88,8 +88,19 @@ var loadDBFromQuery = function (query, collection, callback) {
 var writeDB = function (data) {
     var object = data.data;
     console.log(object._id);
+    console.log(object.id);
     console.log("inside upsert");
     db.collection(data.collection).update({ id: object.id }, object, { upsert: true });
+}
+
+var writePlayerDB = function (data, callback) {
+    var object = data.data;
+    console.log(object._id);
+    console.log(object.id);
+    console.log("inside upsert");
+    db.collection(data.collection).update({ id: object.id }, object, { upsert: true }, function (err, res) {
+        callback();
+    });
 }
 
 /*_______________________________________________________________________________*/
@@ -111,6 +122,13 @@ io.sockets.on('connection', function (socket) {
     socket.on('writeDB', function (data) {
         console.log("inside writeDB");
         writeDB(data);
+    });
+
+    socket.on('writePlayerDB', function (data) {
+        console.log("inside writePlayerDB");
+        writePlayerDB(data, function () {
+            socket.emit('writePlayerFinished');
+        });
     });
 
     socket.on('loadJSON', function (data) {
@@ -143,9 +161,8 @@ io.sockets.on('connection', function (socket) {
 
 
     socket.on('signIn', function (data) {
-        isValidPassword(data, function (res) {
+        isValidLogin(data, function (res) {
             if (res) {
-
                 socket.emit('signInResponse', { success: true });
             } else {
                 socket.emit('signInResponse', { success: false });
@@ -167,7 +184,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('storeLocally', function (map) {
         var name = map.levelName;
-        var path = __dirname + "/client/resources/localLevels" + name + ".json";
+        var path = __dirname + "/client/resources/localLevels/" + name + ".json";
         fs.writeFile(path, JSON.stringify(map), 'utf-8', function (err) {
             if (err) throw err;
             console.log("HOORAY");
