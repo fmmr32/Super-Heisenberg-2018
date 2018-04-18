@@ -97,7 +97,7 @@
       },
       {
         "type": "level",
-        "mapName": "",
+        "mapName": "shortCut",
         "worldId": [ 1, 2 ],
         "X": 882,
         "Y": 150,
