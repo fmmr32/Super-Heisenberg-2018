@@ -52,7 +52,7 @@
       },
       {
         "type": "level",
-        "mapName": "DesertFights",
+        "mapName": "",
         "worldId": [ 1, 2 ],
         "X": 270,
         "Y": 150,
@@ -61,7 +61,7 @@
       },
       {
         "type": "level",
-        "mapName": "",
+        "mapName": "Desert",
         "worldId": [ 1, 2 ],
         "X": 636,
         "Y": 482,
@@ -79,7 +79,7 @@
       },
       {
         "type": "level",
-        "mapName": "",
+        "mapName": "DesertFights",
         "worldId": [ 1, 2 ],
         "X": 1159,
         "Y": 482,
@@ -88,7 +88,7 @@
       },
       {
         "type": "level",
-        "mapName": "Desert",
+        "mapName": "shortCut",
         "worldId": [ 1, 2 ],
         "X": 1159,
         "Y": 150,
@@ -97,7 +97,7 @@
       },
       {
         "type": "level",
-        "mapName": "shortCut",
+        "mapName": "Memes",
         "worldId": [ 1, 2 ],
         "X": 882,
         "Y": 150,

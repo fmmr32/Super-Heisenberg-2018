@@ -24,7 +24,7 @@
     "name": "Drops the Puzzel"
   },
   {
-    "id":4,
+    "id": 4,
     "dropId": 993,
     "type": "artifact",
     "name": "Drops the Helmet"
@@ -34,5 +34,17 @@
     "dropId": 992,
     "type": "artifact",
     "name": "Drops the Millenium Rod"
+  },
+  {
+    "id": 6,
+    "dropId": 991,
+    "type": "artifact",
+    "name": "Drops the Dragon Balls"
+  },
+  {
+    "id": 7,
+    "dropId": 990,
+    "type": "artifact",
+    "name": "Drops the Master Ball"
   }
 ]

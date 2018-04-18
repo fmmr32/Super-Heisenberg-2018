@@ -457,6 +457,7 @@ class SoundManager {
         this.sound.preload = 'auto';
         this.players = [];
         this.type = type;
+
         switch (type) {
             case "music":
                 var val = document.getElementById("MVolume").value;

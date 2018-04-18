@@ -77,9 +77,11 @@
     <Content Include="client\resources\jsons\tiles.json" />
     <Content Include="client\resources\jsons\values.json" />
     <Content Include="client\resources\jsons\weapons.json" />
-    <Content Include="client\resources\localLevels\map1.json" />
+    <Content Include="client\resources\localLevels\Desert.json" />
+    <Content Include="client\resources\localLevels\DesertFights.json" />
+    <Content Include="client\resources\localLevels\Memes.json" />
+    <Content Include="client\resources\localLevels\shortCut.json" />
     <Content Include="client\resources\localLevels\SpaceBattle.json" />
-    <Content Include="client\resources\localLevels\test.json" />
     <Content Include="client\resources\menus\achievementBar.png" />
     <Content Include="client\resources\menus\Author.png" />
     <Content Include="client\resources\menus\Back.png" />

@@ -187,6 +187,44 @@
 
   },
   {
+    "id": 991,
+    "name": "DragonBalls",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 689,
+    "width": 37,
+    "height": 37,
+    "centerPX": 18,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 4,
+        "columns": 2
+      }
+    ]
+
+  },
+  {
+    "id": 990,
+    "name": "MasterBall",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 75,
+    "startY": 689,
+    "width": 26,
+    "height": 25,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 1
+      }
+    ]
+
+  },
+  {
     "id": 800,
     "name": "coin",
     "source": "../resources/spriteSheets/entities.png",

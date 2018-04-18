@@ -234,7 +234,7 @@ class OverWorld {
         this.width = container.clientWidth;
         this.height = container.clientHeight - 100;
 
-        this.music = new SoundManager("../resources/sounds/music/005_1.wav", "music").id;
+        this.music = new SoundManager("../resources/sounds/music/overWorld.wav", "music").id;
 
         this.img = [];
         this.bg = 0;
