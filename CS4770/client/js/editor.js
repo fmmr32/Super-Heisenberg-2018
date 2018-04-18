@@ -1007,6 +1007,7 @@ class Editor {
             if (column == 3) { column = 0; }
         }
     }
+
     //so this is going to dynamically add the tiles to the table
     loadCreatures(editor) {
         //this is the table we are using
@@ -1174,7 +1175,13 @@ class Editor {
 
     }
 
+    /**
+     * Used for filling the level-browser with levels stored on the database that can be loaded into the level editor.
+     * @param {any} query - the query for searching the database.
+     * @param {any} collection - the collection in which to search.
+     */
     loadLevelsForEditor(query, collection) {
+        //Empty levels browser of all rows
         refreshLevelsTable();
         var levelsTable = document.getElementById('levelTable');
 
@@ -1245,15 +1252,15 @@ class Editor {
                         else {
                             alert("Cannot Edit Other Players Maps");
                         }
-
-                       // document.getElementById("levelBrowser").style.display = "none";
-
                     });
                 }
             }
         });
     }
 
+    /**
+     * Used for filling the level-browser with levels stored locally that can be loaded into the level editor.
+     */
     listLocalLevelsForEditor() {
         var levelsTable = document.getElementById('levelTable');
 
@@ -1290,16 +1297,10 @@ class Editor {
 
                         loadJSONFile(function (response) {
                             var temp = JSON.parse(response);
-                          //  elemt.map = temp;
-                         //   elemt.oldName = elemt.map.levelName;
-                            var user = getUsername();
-
-                            
+                            var user = getUsername();                 
                                 console.log(temp)
                                 console.log("loading...");
-                                // console.log(this.map);
-                                // overWorld.toMapFromDB(editor.map);
-                                //  toLevel();
+
                                 document.getElementById("levelBrowser").style.display = "none";
                                 document.getElementById("editor").style.display = "table-cell";
 
@@ -1320,18 +1321,6 @@ class Editor {
                                 elemt.map = temp;
 
                                 elemt.draw(elemt.map);
-
-                                //loadMap();
-                            
-                            
-
-                            //document.getElementById("levelBrowser").style.display = "none";
-
-
-
-
-                            //toLevel();
-                            // overWorld.toMapFromDB(response);
                         }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");       
                     }
                 }, "/client/resources/localLevels/" + any);
