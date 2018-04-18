@@ -1091,6 +1091,7 @@
     "complex": {
       "hp": 1000,
       "moveSet": 0,
+      "damage": 10,
       "speed": 4,
       "jump": 0.5,
       "leftHand": [ -6, 36 ],

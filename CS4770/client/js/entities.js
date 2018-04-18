@@ -305,7 +305,7 @@ class MoveSet {
                 m = move.moves[move.index];
                 var s = this.ent.getSpeed();
                 if (m == "left") { s = -s };
-                var nextX = this.ent.getX() + s;
+                var nextX = this.ent.getX() +this.ent.getSprite().getCenter();
                 this.ent.setHSpeed(s);
                 var col = this.ent.doCollision();
                 if (map.getBlock(nextX, this.ent.getY()).Id == 0 || map.isOOB(nextX, this.ent.getY()) != 0 || col.code == 2) {
@@ -509,11 +509,7 @@ class EntityMovable extends Entity {
     doCollision(ov) {
         //getting the from and to values of the entity
         var creaX = this.getX() + this.getSprite().getCenter();
-        if (this.getHSpeed() > 0) {
-            creaX += this.getSprite().getCenter();
-        } else if (this.getHSpeed() < 0) {
-            creaX -= this.getSprite().getCenter();
-        }
+ 
         var creaY = this.getY() - this.getHeight();
 
         var fromX = Math.min(creaX, creaX + this.getHSpeed());

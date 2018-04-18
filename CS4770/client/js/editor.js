@@ -647,6 +647,8 @@ class Editor {
         var type = null;
         var k = 0;
         var j = 0;
+
+        var t1 = performance.now();
         for (k = 0; k < Math.max(this.map.content.length, this.map.entities.length, this.map.creatures.length, this.map.interacts.length); k++) {
             //check for the tiles
             if (k < this.map.content.length && this.map.content[k].blockX == x && this.map.content[k].blockY == y) { type = "content"; break; }
@@ -672,6 +674,7 @@ class Editor {
                 }
             }
         }
+        console.log("check this in ", Math.abs(t1 - performance.now()), "ms");
         return [type, k];
     }
 
