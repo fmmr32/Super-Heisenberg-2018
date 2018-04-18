@@ -620,9 +620,9 @@ class Editor {
             var set;
             if (this.select[0] == "interacts") {
                 data = this.select[2];
-                set = this.map.creatures[this.select[1]].action[this.select[3]].drop;
+                set = this.map.creatures[this.select[1]].action[this.select[3]].loot;
             } else {
-                set = this.map[data[0]][data[1]].drop
+                set = this.map[data[0]][data[1]].loot
             }
 
             dropdown.selectedIndex = set == undefined ? 0 : set;

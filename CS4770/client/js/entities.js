@@ -759,7 +759,7 @@ class EntityInteractable extends Entity {
                             switch (entType) {
                                 //spawning a creature
                                 case "EntityCreature":
-                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet: action.moveSet }]);
+                                    this.level.loadCreature([{ X: x, Y: y, Id: id, moveSet: action.moveSet, loot : action.loot !=undefined ? action.loot : -1 }]);
                                     break;
                                 //spawning a basic entity
                                 case "Tile":
