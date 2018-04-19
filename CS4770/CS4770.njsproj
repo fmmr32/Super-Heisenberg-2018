@@ -79,6 +79,8 @@
     <Content Include="client\resources\jsons\weapons.json" />
     <Content Include="client\resources\localLevels\Desert.json" />
     <Content Include="client\resources\localLevels\DesertFights.json" />
+    <Content Include="client\resources\localLevels\Dry Dry Desert.json" />
+    <Content Include="client\resources\localLevels\DungeonRuins.json" />
     <Content Include="client\resources\localLevels\Memes.json" />
     <Content Include="client\resources\localLevels\shortCut.json" />
     <Content Include="client\resources\localLevels\SpaceBattle.json" />

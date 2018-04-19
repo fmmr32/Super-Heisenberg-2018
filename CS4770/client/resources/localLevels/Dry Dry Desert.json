@@ -1,6 +1,6 @@
 {
   "id": "41745.40000001434",
-  "user": "Brandon",
+  "user": "dev_2",
   "dateCreated": "04/18/2018",
   "levelName": "Dry Dry Desert",
   "gravity": "15",
@@ -9,7 +9,7 @@
   "spawnX": 0,
   "spawnY": 0,
   "background": "../resources/Backgrounds/Desert Ruins.png",
-  "music": "../resources/sounds/music/zone_1.wav.wav",
+  "music": "../resources/sounds/music/zone_1.wav",
   "creatures": [
     {
       "Id": 503,
