@@ -466,10 +466,9 @@
             document.getElementById("mainMenu").style.display = "table-cell";
             if (overWorld.isTestLevel) {
                 overWorld.isTestLevel = false;
-                map.stopMusic();
                 document.getElementById("mainMenu").style.display = "none";
                 document.getElementById("editor").style.display = "table-cell";
-                
+
             }
             else if (overWorld.isTestAndSave) {
                 overWorld.isTestAndSave = false;
@@ -480,7 +479,11 @@
                 document.getElementById("editor").style.display = "table-cell";
                 var temp = JSON.parse(this.map.file);
                 writeDB("level", temp);
-                alert("Level Saved");  
+                alert("Level Saved");
+            } else if (overWorld.isLevelBrowser) {
+                overWorld.isLevelBrowser = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("levelBrowser").style.display = "table-cell";
             }
             firstTime = true;
             document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
@@ -731,6 +734,7 @@
                                 var level2 = JSON.parse(response);
                                 toLevel();
                                 overWorld.toMapFromDB(level2);
+                                overWorld.isLevelBrowser = true;
                             }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");
                         }
                     }, "/client/resources/localLevels/" + any);
