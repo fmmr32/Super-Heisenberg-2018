@@ -52,7 +52,7 @@
       },
       {
         "type": "level",
-        "mapName": "",
+        "mapName": "DungeonRuins",
         "worldId": [ 1, 2 ],
         "X": 270,
         "Y": 150,
