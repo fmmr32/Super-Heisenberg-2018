@@ -380,6 +380,7 @@
     <script type="text/javascript">
         var sizeSettings = [1280, 720];
 
+        //boolean varibles for determining whether the game is in offline mode and is inside a level.
         var isOffline;
         var isInsideLevel;
 
@@ -418,6 +419,9 @@
             }
         }
 
+        /**
+         * Resets the campaign progress for the logged in user to the very beginning.
+         */
         function resetCampaignProfile() {
             loadJSONFile(function (response) {
                 var playerObject = JSON.parse(response);
@@ -432,7 +436,6 @@
             document.getElementById("selectionBox").selectedIndex = 0;
             document.getElementById("mainMenu").style.display = "none";
             document.getElementById("selectionBoxDiv").style.display = "inline-block";
-
 
             loadLevelsList(null, 'level');
         }
@@ -451,6 +454,7 @@
             location.reload();
         }
 
+        //Takes the player back to the main menu
         function back() {
             document.getElementById("playOptions").style.display = "none";
             document.getElementById("levelEditorOptions").style.display = "none";
@@ -502,6 +506,7 @@
 
         var firstTime = true;
 
+        //Determines whether you want to create a new level, or edit an existing one.
         function newLevel(fromMenu) {
             document.getElementById("levelEditorOptions").style.display = "none";
             var canvas = document.getElementById("canvas")
@@ -596,7 +601,7 @@
             conf = CONFIG(response);
         }, "/client/js/config.json");
 
-
+        //Removes all rows in the level browser so it can be populated again with an updated list.
         var refreshLevelsTable = function () {
             var levelsTable = document.getElementById('levelTable');
 
@@ -605,6 +610,11 @@
             }
         }
 
+        /**
+         * Fills the level browser with all the levels stored on the database.
+         * @param query - the query to be used for searching the database
+         * @param collection - the collection to be searched
+         */
         var loadLevelsList = function (query, collection) {
             var levelsTable = document.getElementById('levelTable');
 
@@ -665,6 +675,10 @@
 
         }
 
+        /**
+         * Corresponding to the feature in the game that allows you to search for levels stored on the database
+         * by either level name or author.
+         */
         var searchLevels = function () {
             var selectionBox = document.getElementById("selectionBox");
             var selectedValue = selectionBox.options[selectionBox.selectedIndex].value;
@@ -676,6 +690,9 @@
             loadLevelsList({ [selectedValue]: searchBox.value }, "level");
         }
 
+        /**
+         * Populates level browser with only levels that are locally stored.
+         */
         var listLocalLevels = function () {
             var levelsTable = document.getElementById('levelTable');
 
@@ -723,7 +740,10 @@
 
 
         var map;
-        
+
+        /**
+         * Loads the player profile from the database for the user logged in.
+         */
         function loadUserDatabase() {
             console.log("Inside loadUserDatabase " + getUsername());
 
@@ -733,7 +753,7 @@
             });
         }
 
-        //needs to be fetched from the db and put into a json like file
+        //Loads player for offline mode.
         function loadCurretUser() {
             loadJSONFile(function (response) {
                 loadGame(false, JSON.parse(response), isOffline);

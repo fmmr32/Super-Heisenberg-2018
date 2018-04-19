@@ -6,6 +6,8 @@ var fs = require('fs');
 var app = express();
 var serv = require('http').Server(app);
 
+
+//Shuts down the database properly
 process.on('SIGHUP', function () {
     db.close();
     console.log('About to exit');
@@ -13,6 +15,7 @@ process.on('SIGHUP', function () {
 });
 
 
+//Specifies which directories are to be used
 app.use(express.static(__dirname + '/client'));
 app.use(express.static(__dirname + '/client/js'));
 app.get('/', function (req, res) {
@@ -34,6 +37,11 @@ var SOCKET_LIST = {};
 
 /*________________________________________Login____________________________________________________________*/
 
+/**
+ * Checks if entered login info is okay
+ * @param {any} data - the object containing the entered username and password
+ * @param {any} callback - the function to be called when query has finished
+ */
 var isValidLogin = function (data, callback) {
     db.account.find({ username: data.username, password: data.password }, function (err, res) { 
         if (res.length > 0) {
@@ -46,6 +54,11 @@ var isValidLogin = function (data, callback) {
 
 };
 
+/**
+ * Checks if username has already been registered
+ * @param {any} data - the object containing the entered username
+ * @param {any} callback - the function to be called when query has finished
+ */
 var isUsernameTaken = function (data, callback) {
     db.account.find({ username: data.username }, function (err, res) {
         if (res.length > 0) {
@@ -57,6 +70,11 @@ var isUsernameTaken = function (data, callback) {
     });
 };
 
+/**
+ * Registers user 
+ * @param {any} data - The login info to be stored on the database
+ * @param {any} callback - What to be done after database insertion is finished
+ */
 var addUser = function (data, callback) {
     db.account.insert({ username: data.username, password: data.password }, function (err) {
         callback();
@@ -66,8 +84,14 @@ var addUser = function (data, callback) {
 
 /*__________________________________________Load game thingies_________________________________*/
 
+
+/**
+ * Loads anything from the database.
+ * @param {any} query - info to match
+ * @param {any} collection - the collection to be queried
+ * @param {any} callback - what to do when done
+ */
 var loadDBFromQuery = function (query, collection, callback) {
-    console.log("inside loaddbfromquery");
     if (query == null) {
         console.log("inside if");
         db.collection(collection).find({}, function (err, result) {
@@ -84,7 +108,10 @@ var loadDBFromQuery = function (query, collection, callback) {
 
 /*_____________________________ Write Game Thingies _____________________________*/
 
-
+/**
+ * Writes an object to the database
+ * @param {any} data - contains the object and collection the object will be written to
+ */
 var writeDB = function (data) {
     var object = data.data;
     console.log(object._id);
@@ -93,6 +120,11 @@ var writeDB = function (data) {
     db.collection(data.collection).update({ id: object.id }, object, { upsert: true });
 }
 
+/**
+ * Writes player object to database, containing their progress
+ * @param {any} data - contains the object and collection the object will be written to
+ * @param {any} callback - what to do when it has finished
+ */
 var writePlayerDB = function (data, callback) {
     var object = data.data;
     console.log(object._id);
@@ -144,6 +176,7 @@ io.sockets.on('connection', function (socket) {
             socket.emit(fileName, substring);
         });
     });
+
     var DEBUG = true;
 
     socket.on('getFiles', function (data) {
