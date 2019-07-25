@@ -1,0 +1,29 @@
+﻿{
+  "id": "player1",
+  "currentCharacter": 667,
+  "achievements": [],
+  "unlockedOverworlds": [0,1],
+  "money": 0,
+  "weapons": [
+    {
+      "id": 1,
+      "damageMult": 1,
+      "speedMult": 1,
+      "equippedImpact": "explode",
+      "availableImpact": [ "explode", "die" ]
+    },
+    {
+      "id": 2,
+      "damageMult": 1,
+      "speedMult": 1,
+      "equippedImpact": "ricochet",
+      "availableImpact": [ "ricochet" ]
+    }
+  ],
+  "equipped": [ 1, 2 ],
+  "artifacts": [994, 995],
+  "storyProgress": [],
+  "levelsMade": [],
+  "killcount": 0,
+  "timeplayed": 0
+}

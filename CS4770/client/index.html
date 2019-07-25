@@ -1,0 +1,920 @@
+<HTML>
+<HEAD>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</HEAD>
+
+<BODY>
+
+    <div class=menuContainer>
+
+        <div id="signDiv" style="display: table-cell">
+            <p>Username:</p>
+            <input id="signDiv-username" type="text"><br>
+            <p>Password:</p>
+            <input id="signDiv-password" type="password"><br>
+            <button id="signDiv-signIn">Sign in</button>
+            <button id="signDiv-signUp">Sign up</button>
+            <button id="skipSign">Play Offline</button>
+        </div>
+
+
+
+        <div id='mainMenu'>
+
+            <div id='top'>
+                <img src='resources/menus/Play.png' id='Play' onclick='playOptions()'>
+            </div>
+
+            <div id='other'>
+                <img src='resources/menus/BrowseLevels.png' id='BrowseLevels' onclick='levelBrowser()'>
+            </div>
+
+            <div id='other'>
+                <img src='resources/menus/LevelEditor.png' id='LevelEditor' onclick='levelEditorOptions()'>
+            </div>
+
+            <div id='bottom'>
+                <img src='resources/menus/Options.png' id='Options' onclick='options()'>
+            </div>
+
+            <div id='logoutDiv'>
+                <img src='resources/menus/logout.png' id='Logout' onclick='logout()'>
+            </div>
+
+        </div>
+
+
+        <div id='playOptions'>
+
+            <div id='top'>
+                <img src='resources/menus/NewGame.png' id='NewGame' onclick='playCampaign(true)'></img>
+            </div>
+
+            <div id='other'>
+                <img src='resources/menus/LoadGame.png' id='LoadGame' onclick="playCampaign(false)"></img>
+            </div>
+
+            <div id='bottom'>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
+            </div>
+
+        </div>
+
+        <div id='levelEditorOptions'>
+
+            <div id='top'>
+                <img src='resources/menus/NewLevel.png' id='NewLevel' onclick="newLevel(true)">
+            </div>
+
+            <div id='other'>
+                <img src='resources/menus/LoadLevel.png' id="LoadLevel" onclick="newLevel(false)">
+            </div>
+
+            <div id='bottom'>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'>
+            </div>
+
+        </div>
+
+        <div id='levelBrowser'>
+
+            <table id='holder'>
+                <tr>
+                    <td>
+                        <table id='title'>
+                            <col width="395">
+                            <col width="200">
+                            <col width="200">
+                            <tr>
+                                <th><img src='resources/menus/Title.png' id='left'></img></th>
+                                <th><img src='resources/menus/Author.png' id='left'></img></th>
+                                <th><img src='resources/menus/Created-On.png' id='left'></img></th>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id='scroll'>
+                            <table id='level'>
+                                <col width="400">
+                                <col width="200">
+                                <col width="200">
+                                <tbody id="levelTable">
+                                    <tr>
+                                        <td>Level 1</td>
+                                        <td>The Wizard</td>
+                                        <td>March 5th</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="selectionBoxDiv" style="display:inline-block">
+                            <p style="display:inline-block; margin-right: 5px; margin-bottom:0px">Search Level by:</p>
+                            <select id="selectionBox" style="display:inline-block; margin-top:16px">
+                                <option value="levelName">Level</option>
+                                <option value="user">Author</option>
+                            </select>
+                        </div>
+                        <form id="searchLevelsForm" style="display:inline-block" onsubmit="return false">
+                            <input type="text" id="searchBox" name="levelSearch" style="width:50%" placeholder="Search Levels">
+                            <input type="submit" id="submitSearch" value="Search" onclick="searchLevels()">
+                        </form>
+                        <input type="button" id="changeStorageBtn" value="Show Local Levels" onclick="listLocalLevels()">
+
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <div id='bottom'>
+                <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
+            </div>
+        </div>
+
+
+        <div id=settings>
+
+            <table id='soundScrollers'>
+                <tr>
+                    <td><p>Music Volume: </p></td>
+                    <td><input id="MVolume" type="range" name="points" min="0" max="100" value="MusicVolume" onchange="SoundManager.changeAllVolumes(this.value, 'music')"></td>
+                </tr>
+                <tr>
+                    <td><p>Game Sound Volume</p></td>
+                    <td><input id="GSVolume" type="range" name="points" min="0" max="100" value="GameSoundVolume" onchange="SoundManager.changeAllVolumes(this.value, 'game')"></td>
+                </tr>
+            </table>
+
+            <table id="holder">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div id="scroll">
+                                <table id='gameSettings'>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <img src='resources/menus/Back.png' id='Back' onclick='back()'></img>
+        </div>
+
+        <div id="gameDiv" style="display:none; height:720px; width:1280px;  position: absolute; margin: auto; top: -16px;right: 0; left: -16px; bottom: 0;overflow:hidden; "></div>
+        <div id="editor">
+            <div style=" display: inline-block; width: 720px; height: 480px;  text-align: center; vertical-align:top; margin-top: 15px;">
+                <div id="gameDiv" style="overflow:scroll; overflow-y: scroll; max-height:480px;">
+                    <canvas id="canvas" style="background: #fff" width=720px height=480px oncontextmenu="return false;"></canvas>
+                </div>
+                <div style="display:inline-block; float:right; margin-top:10px;">
+                    <table id="EntityEdit">
+                        <tr id="MoveSets" style="display:none">
+                            <td>
+                                <p>MoveSet</p>
+                            </td>
+                            <td>
+                                <select id="MoveSetsDropdown"></select>
+                            </td>
+                        </tr>
+                        <tr id="EntityAmount" style="display:none">
+                            <td>
+                                <p>Amount</p>
+                            </td>
+                            <td>
+                                <input id="entAmount" type="number" name="width" min="0" max=""> <!–– Set Max ––>
+                            </td>
+                        </tr>
+                        <tr id="DamageAmount" style="display:none">
+                            <td>
+                                <p>Damage</p>
+                            </td>
+                            <td>
+                                <input id="damAmount" type="number" name="width" min="0" max="100"> <!–– Set Max ––>
+                            </td>
+                        </tr>
+                        <tr id="LootDrop" style="display:none">
+                            <td>
+                                <p>Loot</p>
+                            </td>
+                            <td>
+                                <select id="Lut"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="display:inline-block; float:right; margin-top:10px;">
+                    <table id="InteractEdit">
+                        <tr id="Interacts" style="display:none">
+                            <td>
+                                <p>Interacts</p>
+                            </td>
+                            <td>
+                                <select id="InteractType">
+                                    <option value="spawn">spawn</option>
+                                    <option value="meta">meta</option>
+                                    <option value="damage">damage</option>
+                                    <option value="exit">exit</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="InteractRepeat" value="InteractRepeat" />
+                                <p>Repeats</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="display:inline-block; float:right; margin-top:10px;">
+                    <table id="BlockMeta" style="display:none">
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" id="Ricochet" value="ricochet" />
+                            </td>
+                            <td>
+                                <p>Ricochet</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Tile Properties</p>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="Ice" value="ice" />
+                            </td>
+                            <td>
+                                <p>Ice</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" id="PassThrough" value="passThrough" />
+                            </td>
+                            <td>
+                                <p>Pass Through</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div id="side">
+                <div id='buttons' style="margin:5px">
+                    <img src='resources/menus/Tiles.png' id='selectTiles' onclick='tilesOptions()'></img>
+                    <img src='resources/menus/Creature.png' id='selectCreature' onclick='creatureOptions()'></img>
+                    <img src='resources/menus/Entity.png' id='selectEntity' onclick='entityOptions()'></img>
+                </div>
+
+                <hr noshade>
+
+                <div id='tiles'>
+                    <table id='select'>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id='creature'>
+                    <table id='select'>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id='entity'>
+                    <table id='select'>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <hr noshade>
+
+                <table id='inputs'>
+                    <tr>
+                        <td>
+                            <h5>Background:</h5>
+                            <select id="background" onchange="elemt.setBackground(this.value)"></select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Gravity:</h5>
+                            <input id="gravity" type="range" name="points" min="5" max="15" oninput="elemt.setGravity(this.value)">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Map Width:</h5>
+                            <input id="mapW" type="number" name="width" min="0" max=""> <!–– Set Max ––>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Map Height:</h5>
+                            <input id="mapH" type="number" name="height" min="0" max=""> <!–– Set Max ––>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Spawn Point (X-Coordinate):</h5>
+                            <input type="number" id="X" min="0" max=""> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Spawn Point (Y-Coordinate):</h5>
+                            <input type="number" id="Y" min="0" max=""> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Music:</h5>
+                            <select id="music" onchange="elemt.setMusic(this.value)"></select>
+                            <br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h5>Level Name:</h5>
+                            <input id="levelName" type="text"> <!–– Set Max ––>
+                            <br>
+                        </td>
+                    </tr>
+
+
+                </table>
+                <input type="button" id="Overwrite" value="Overwrite" style="display:none">
+                <input type="button" id="Save" value="Save">
+                <input type="button" value="Back" onclick="back()">
+                <input type="button" id="TestLevel" value="Test">
+                <input type="button" id="LocalStorage" value="Store Local" onclick="elemt.storeMap()">
+            </div>
+
+
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/entities.js"></script>
+    <script type="text/javascript" src="js/gun.js"></script>
+    <script type="text/javascript" src="js/level.js"></script>
+    <script type="text/javascript" src="js/sprite.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/overworld.js"></script>
+    <script type="text/javascript" src="js/playermods.js"></script>
+    <script type="text/javascript" src="js/server.js"></script>
+    <script type="text/javascript" src="js/editor.js"></script>
+
+
+
+    <script type="text/javascript">
+        var sizeSettings = [1280, 720];
+
+        //boolean varibles for determining whether the game is in offline mode and is inside a level.
+        var isOffline;
+        var isInsideLevel;
+
+        document.getElementById("skipSign").onclick = function () {
+            isOffline = true;
+            playCampaign(false);
+        }
+
+        function playOptions() {
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("playOptions").style.display = "table-cell";
+        }
+
+        function playCampaign(resetCampaign) {
+            if (resetCampaign) {
+                resetCampaignProfile(); 
+
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("playOptions").style.display = "none";
+                document.getElementById("gameDiv").style.display = "table-cell";
+                loaded = true;
+                overWorld.playMusic();
+            }
+            else if (overWorld == undefined && !isOffline) {
+                loadUserDatabase();
+            }
+            else if (overWorld == undefined && isOffline) {
+                loadCurretUser();
+            }  
+            else {
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("playOptions").style.display = "none";
+                document.getElementById("gameDiv").style.display = "table-cell";
+                loaded = true;
+                overWorld.playMusic();
+            }
+        }
+
+        /**
+         * Resets the campaign progress for the logged in user to the very beginning.
+         */
+        function resetCampaignProfile() {
+            loadJSONFile(function (response) {
+                var playerObject = JSON.parse(response);
+                playerObject.id = getUsername();
+                overWorld.getPlayer().world.user = playerObject;
+                writeDB('player', playerObject);
+            }, "/client/resources/jsons/player.json");
+        }
+
+        function levelBrowser() {
+            document.getElementById("levelBrowser").style.display = "table-cell";
+            document.getElementById("selectionBox").selectedIndex = 0;
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("selectionBoxDiv").style.display = "inline-block";
+
+            loadLevelsList(null, 'level');
+        }
+
+        function levelEditorOptions() {
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("levelEditorOptions").style.display = "table-cell";
+        }
+
+        function options() {
+            document.getElementById("mainMenu").style.display = "none";
+            document.getElementById("settings").style.display = "table-cell";
+        }
+
+        var logout = function () {
+            location.reload();
+        }
+
+        //Takes the player back to the main menu
+        function back() {
+            document.getElementById("playOptions").style.display = "none";
+            document.getElementById("levelEditorOptions").style.display = "none";
+            document.getElementById("levelBrowser").style.display = "none";
+            document.getElementById("settings").style.display = "none";
+            document.getElementById("gameDiv").style.display = "none";
+            document.getElementById("editor").style.display = "none";
+            document.getElementById("signDiv").style.display = "none";
+            document.getElementById("mainMenu").style.display = "table-cell";
+            if (overWorld.isTestLevel) {
+                overWorld.isTestLevel = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("editor").style.display = "table-cell";
+
+            }
+            else if (overWorld.isTestAndSave) {
+                overWorld.isTestAndSave = false;
+                console.log(this.map.file);
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("selectionBoxDiv").style.display = "inline-block";
+                map.stopMusic();
+                document.getElementById("editor").style.display = "table-cell";
+                var temp = JSON.parse(this.map.file);
+                writeDB("level", temp);
+                alert("Level Saved");
+            } else if (overWorld.isLevelBrowser) {
+                overWorld.isLevelBrowser = false;
+                document.getElementById("mainMenu").style.display = "none";
+                document.getElementById("levelBrowser").style.display = "table-cell";
+            }
+            firstTime = true;
+            document.getElementById("LoadLevel").setAttribute("onClick", "newLevel(false)");
+        }
+
+        function tilesOptions() {
+            document.getElementById("creature").style.display = "none";
+            document.getElementById("entity").style.display = "none";
+            document.getElementById("tiles").style.display = "inline-block";
+        }
+
+        function creatureOptions() {
+            document.getElementById("entity").style.display = "none";
+            document.getElementById("tiles").style.display = "none";
+            document.getElementById("creature").style.display = "inline-block";
+        }
+
+        function entityOptions() {
+            document.getElementById("creature").style.display = "none";
+            document.getElementById("tiles").style.display = "none";
+            document.getElementById("entity").style.display = "inline-block";
+        }
+
+        var firstTime = true;
+
+        //Determines whether you want to create a new level, or edit an existing one.
+        function newLevel(fromMenu) {
+            document.getElementById("levelEditorOptions").style.display = "none";
+            var canvas = document.getElementById("canvas")
+            var clone = canvas.cloneNode();
+            canvas.parentNode.replaceChild(clone, canvas);
+            elemt = new Editor(clone);
+
+            if (fromMenu) {
+                document.getElementById("Save").value = "Save";
+                document.getElementById("editor").style.display = "table-cell";
+            }
+            else {
+                if (document.getElementById("changeStorageBtn").value == "Show Remote Levels" || firstTime == true) {
+                    elemt.loadLevelsForEditor({ user: getUsername }, "level");
+                    firstTime = false;
+                }
+                else {
+                    elemt.listLocalLevelsForEditor();
+                }
+                document.getElementById("editor").style.display = "none";
+                document.getElementById("selectionBoxDiv").style.display = "none";
+                document.getElementById("selectionBox").selectedIndex = 0;
+                document.getElementById("levelBrowser").style.display = "table-cell";
+            }
+        }
+
+        function toLevel() {
+            document.getElementById("levelBrowser").style.display = "none";
+            document.getElementById("gameDiv").style.display = "table-cell";
+        }
+
+        function selectCharacter() {
+            var char = document.getElementById("character");
+        }
+
+
+        function populateBackground() {
+            var selection = document.getElementById("background");
+            getFiles(function (data) {
+                for (var any of data) {
+                    any = any.replace(".png", "");
+                    var opt = document.createElement('option');
+                    opt.value = any;
+                    opt.innerHTML = any;
+                    selection.appendChild(opt);
+                }
+            }, "Backgrounds");
+        }
+
+
+        function populateMusic() {
+            var selection = document.getElementById("music");
+            getFiles(function (data) {
+                for (var any of data) {
+                    any = any.replace(".WAV", "");
+                    var opt = document.createElement('option');
+                    opt.value = any;
+                    opt.innerHTML = any;
+                    selection.appendChild(opt);
+                }
+            }, "sounds/music");
+        }
+        populateBackground();
+        populateMusic();
+
+
+        var canvas;
+        var container = document.getElementById("gameDiv");
+
+        function create(type, id, left, top, width, height) {
+            var elem = document.createElement(type);
+            elem.id = id;
+            if (left != 0) { elem.style.left = left; }
+            if (top != 0) { elem.style.top = top; }
+            if (height != 0) {
+                elem.height = height;
+            }
+            if (width != 0) {
+                elem.width = width;
+            }
+            if (id != "bg") {
+                container.appendChild(elem);
+            }
+            return elem;
+        }
+
+        var neededFiles = ["tiles.json", "moveSets.json", "drops.json", "entities.json", "weapons.json"];
+        var loaded = false;
+
+        var conf;
+        loadJSONFile(function (response) {
+            conf = CONFIG(response);
+        }, "/client/js/config.json");
+
+        //Removes all rows in the level browser so it can be populated again with an updated list.
+        var refreshLevelsTable = function () {
+            var levelsTable = document.getElementById('levelTable');
+
+            while (levelsTable.firstChild) {
+                levelsTable.removeChild(levelsTable.firstChild);
+            }
+        }
+
+        /**
+         * Fills the level browser with all the levels stored on the database.
+         * @param query - the query to be used for searching the database
+         * @param collection - the collection to be searched
+         */
+        var loadLevelsList = function (query, collection) {
+            var levelsTable = document.getElementById('levelTable');
+
+            document.getElementById('changeStorageBtn').value = "Show Local Levels";
+            document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 0px";
+            document.getElementById('changeStorageBtn').onclick = listLocalLevels;
+
+            document.getElementById('selectionBoxDiv').style.display = 'inline-block';
+            document.getElementById('searchLevelsForm').style.display = 'inline-block';
+
+            loadDBFromQuery(query, collection, function (data) {
+                refreshLevelsTable();
+                var levels;
+
+                if (data == null) {
+                    return;
+                }
+
+                if (data.constructor === Array) {
+                    levels = data;
+                }
+                else {
+                    levels = [data];
+                }
+
+                for (var level of levels) {
+                    var levelName = level.levelName;
+                    var author = level.user;
+                    var dateCreated = level.dateCreated;
+
+                    var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                    levelRow.setAttribute("id", level.id);
+
+
+                    var levelNameCell = levelRow.insertCell(0);
+                    levelNameCell.innerHTML = levelName;
+
+                    var authorCell = levelRow.insertCell(1);
+                    authorCell.innerHTML = author;
+
+                    var dateCreatedCell = levelRow.insertCell(2);
+                    dateCreatedCell.innerHTML = dateCreated;
+
+
+                    levelRow.onclick = function () {
+                        loadDBFromQuery({ id: this.getAttribute("id") }, "level", function (response) {
+                            isInsideLevel = true;
+                            console.log(response);
+                            toLevel();
+                            overWorld.toMapFromDB(response[0]);
+                            overWorld.isLevelBrowser = true;
+                        });
+                    }
+                }
+            });
+
+
+
+        }
+
+        /**
+         * Corresponding to the feature in the game that allows you to search for levels stored on the database
+         * by either level name or author.
+         */
+        var searchLevels = function () {
+            var selectionBox = document.getElementById("selectionBox");
+            var selectedValue = selectionBox.options[selectionBox.selectedIndex].value;
+
+            var searchBox = document.getElementById("searchBox");
+            var searchquery = { [selectedValue]: searchBox.value };
+
+
+            loadLevelsList({ [selectedValue]: searchBox.value }, "level");
+        }
+
+        /**
+         * Populates level browser with only levels that are locally stored.
+         */
+        var listLocalLevels = function () {
+            var levelsTable = document.getElementById('levelTable');
+
+            document.getElementById('changeStorageBtn').value = "Show Remote Levels";
+            document.getElementById('changeStorageBtn').style.margin = "16px 0px 16px 425px";
+            document.getElementById('changeStorageBtn').onclick = levelBrowser;
+
+            document.getElementById('selectionBoxDiv').style.display = 'none';
+            document.getElementById('searchLevelsForm').style.display = 'none';
+
+            refreshLevelsTable();
+            getFiles(function (data) {
+                for (var any of data) {
+                    loadJSONFile(function (response) {
+                        var level = JSON.parse(response);
+
+                        var levelName = level.levelName;
+                        var author = level.user;
+                        var dateCreated = level.dateCreated;
+
+                        var levelRow = levelsTable.insertRow(levelsTable.rows.length);
+                        levelRow.setAttribute("id", levelName);
+
+                        var levelNameCell = levelRow.insertCell(0);
+                        levelNameCell.innerHTML = levelName;
+
+                        var authorCell = levelRow.insertCell(1);
+                        authorCell.innerHTML = author;
+
+                        var dateCreatedCell = levelRow.insertCell(2);
+                        dateCreatedCell.innerHTML = dateCreated;
+
+                        levelRow.onclick = function () {
+                            loadJSONFile(function (response) {
+                                isInsideLevel = true;
+                                var level2 = JSON.parse(response);
+                                toLevel();
+                                overWorld.toMapFromDB(level2);
+                                overWorld.isLevelBrowser = true;
+                            }, "/client/resources/localLevels/" + this.getAttribute("id") + ".json");
+                        }
+                    }, "/client/resources/localLevels/" + any);
+                }
+            }, "localLevels");
+        }
+
+
+        var map;
+
+        /**
+         * Loads the player profile from the database for the user logged in.
+         */
+        function loadUserDatabase() {
+            console.log("Inside loadUserDatabase " + getUsername());
+
+            loadDBFromQuery({ id: getUsername() }, 'player', function (response) {
+                console.log("Inside loaduserdatabase " + JSON.stringify(response[0]));
+                loadGame(false, response[0]);
+            });
+        }
+
+        //Loads player for offline mode.
+        function loadCurretUser() {
+            loadJSONFile(function (response) {
+                loadGame(false, JSON.parse(response), isOffline);
+            }, "/client/resources/jsons/player.json");
+            console.log("after settimeout");
+        }
+
+
+        var loadMenu = function () {
+            signDiv.style.display = 'none';
+            menuDiv.style.display = 'table-cell';
+        }
+
+        function loadNeeded() {
+            for (var x of neededFiles) {
+                var resource = "/client/resources/jsons/";
+                if (x == "weapons.json") {
+                    loadJSONFile(function (response) {
+                        loadWeapons(response);
+                    }, resource + x);
+                } else if (x == "moveSets.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            moves[any.id] = any;
+                        }
+                    }, resource + x);
+                } else if (x == "drops.json") {
+                    loadJSONFile(function (response) {
+                        for (var any of JSON.parse(response)) {
+                            drops[any.id] = any;
+                        }
+                    }, resource + x)
+                }
+
+                else {
+                    loadJSONFile(function (response) {
+                        loadSprites(response, canvas);
+                    }, resource + x);
+                }
+            }
+        }
+
+
+        function loadGame(reload, player) {
+            //setting the divs correctly
+            if (!reload) {
+                loadNeeded();
+            }
+            //loading into the overworld
+            loadOverworld(player, function (m) {
+                loadJSONFile(function (response) {
+                    loadJSONFile(function (r) {
+                        loadJSONFile(function (t) {
+                            m.shop = loadShop(player, JSON.parse(t));
+                            m.loadCharacterSelect(JSON.parse(response), JSON.parse(r), player, JSON.parse(t));
+                            loaded = false;
+                            if (isOffline) {
+                                console.log("inside isoffline");
+                                playCampaign(false);
+                            }
+                        }, "/client/resources/jsons/values.json");
+
+                    }, "/client/resources/jsons/characters.json");
+                }
+                    , "/client/resources/jsons/overWorldCharacters.json");
+            });
+        }
+
+        var overWorld;
+        var interval = setInterval(update, 1000 / 60);
+
+        function update() {
+            if (loaded) {
+                canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+                if (overWorld.doingDialog) {
+                    //this needs fixing
+                    if (overWorld.diag[overWorld.dialog].popUp.y != canvas.height) {
+                        overWorld.diag[overWorld.dialog].popUp.y = canvas.height - 300;
+                    }
+                    overWorld.diag[overWorld.dialog].doDialog();
+                } else if (!overWorld.handleBuildings()) {
+                    if (!overWorld.doingDialog) {
+                        map.doTick();
+                    }
+                }
+                if (overWorld.inExitMenu) {
+                    overWorld.exit.menu();
+                }
+            }
+        }
+
+        //keyboard handling
+        document.onkeydown = function (e) {
+            e = e || window.event;
+            var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+            if (isChanging) {
+                changeKey(charCode);
+            } else if (charCode && loaded) {
+                if (overWorld.inExitMenu) {
+                    overWorld.exit.navigate(conf[charCode]);
+                    return true;
+                }
+                if (overWorld.doingDialog) {
+                    if (conf[charCode] == "action") {
+                        overWorld.diag[overWorld.dialog].nextText();
+                    }
+                } else if (!overWorld.handleKeys(conf[charCode], true)) {
+                    if (!overWorld.doingDialog) {
+                        map.getPlayer().doMove(conf[charCode], true);
+                    }
+                }
+            }
+        };
+
+        document.onkeyup = function (e) {
+            e = e || window.event
+            var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+            if (charCode && loaded) {
+                if (map != undefined) {
+                    map.getPlayer().doMove(conf[charCode], false);
+                } else if (overWorld.inMuseum) {
+                    overWorld.handleKeys(conf[charCode], false);
+                }
+            }
+        };
+
+        //only needed for some debugging ..
+        document.onmousedown = function (e) {
+            e = e || window.event;
+            if (loaded) {
+                var poss = getMousePos(canvas, e);
+            }
+        }
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+
+        function msToTime(duration) {
+            var milliseconds = parseInt((duration % 1000) / 100)
+                , seconds = parseInt((duration / 1000) % 60)
+                , minutes = parseInt((duration / (1000 * 60)) % 60)
+                , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+            return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+        }
+        //window.onload = loadCurretUser();
+                                        //window.onload = newLevel();
+    </script>
+
+
+</BODY>
+</HTML>
+

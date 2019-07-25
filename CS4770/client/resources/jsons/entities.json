@@ -1,0 +1,1418 @@
+[
+
+  {
+    "id": 1004,
+    "name": "C",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 32,
+    "startY": 32,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 1003,
+    "name": "M",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 0,
+    "startY": 32,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 1002,
+    "name": "T",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 32,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 1001,
+    "name": "E",
+    "source": "../resources/menus/ETMC.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+
+  {
+    "id": 1000,
+    "name": "selection",
+    "source": "../resources/menus/select.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 225,
+    "height": 225,
+    "centerPX": 0,
+    "offSetPX": 0
+  },
+  {
+    "id": 999,
+    "name": "bullet",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 65,
+    "startY": 0,
+    "width": 12,
+    "height": 14,
+    "centerPX": 6,
+    "offSetPX": 6
+  },
+  {
+    "id": 998,
+    "name": "bullet",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 77,
+    "startY": 0,
+    "width": 12,
+    "height": 14,
+    "centerPX": 6,
+    "offSetPX": 6
+  },
+
+
+  {
+    "id": 997,
+    "name": "grenade",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 65,
+    "startY": 15,
+    "width": 18,
+    "height": 17,
+    "centerPX": 12,
+    "offSetPX": 6
+  },
+  {
+    "id": 996,
+    "name": "explosion",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 129,
+    "startY": 0,
+    "width": 18,
+    "height": 16,
+    "sound": "../resources/sounds/gun_sound.wav",
+    "centerPX": 9,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 10,
+        "columns": 2
+      }
+    ]
+  },
+  {
+    "id": 995,
+    "name": "JackalMask",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 8,
+        "columns": 2
+      }
+    ]
+
+  },
+  {
+    "id": 994,
+    "name": "Puzzle",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 166,
+    "startY": 129,
+    "width": 30,
+    "height": 28,
+    "centerPX": 15,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 9,
+        "frameRate": 8,
+        "columns": 3
+      }
+    ]
+
+  },
+  {
+    "id": 993,
+    "name": "Helmet",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 166,
+    "startY": 0,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 12,
+        "frameRate": 5,
+        "columns": 3
+      }
+    ]
+
+  },
+  {
+    "id": 992,
+    "name": "MilleniumRod",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 170,
+    "width": 32,
+    "height": 60,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 10,
+        "frameRate": 5,
+        "columns": 4
+      }
+    ]
+
+  },
+  {
+    "id": 991,
+    "name": "DragonBalls",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 689,
+    "width": 37,
+    "height": 37,
+    "centerPX": 18,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 6,
+        "frameRate": 4,
+        "columns": 2
+      }
+    ]
+
+  },
+  {
+    "id": 990,
+    "name": "MasterBall",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 75,
+    "startY": 689,
+    "width": 26,
+    "height": 25,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 1
+      }
+    ]
+
+  },
+  {
+    "id": 800,
+    "name": "coin",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 166,
+    "startY": 214,
+    "width": 22,
+    "height": 21,
+    "centerPX": 12,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 18,
+        "frameRate": 10,
+        "columns": 4
+      }
+    ]
+
+  },
+  {
+    "id": 801,
+    "name": "lever",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 392,
+    "startY": 273,
+    "width": 60,
+    "height": 35,
+    "centerPX": 7,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 392,
+        "startY": 273
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 392,
+        "startY": 308
+      }
+    ]
+  },
+  {
+    "id": 802,
+    "name": "spike",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 129,
+    "startY": 49,
+    "width": 31,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 129,
+        "startY": 49,
+        "offSetY": 5
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 129,
+        "startY": 49,
+        "offSetY": 5
+      }
+    ]
+  },
+  {
+    "id": 803,
+    "name": "pressurePlate",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 624,
+    "width": 32,
+    "height": 32,
+    "centerPX": 16,
+    "offSetPX": 0,
+    "animation": [
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 0,
+        "startY": 624,
+        "offSetY": 5
+      },
+      {
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1,
+        "startX": 0,
+        "startY": 656,
+        "offSetY": 5
+      }
+    ]
+  },
+  {
+    "id": 500,
+    "name": "Doomba",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 520,
+    "startY": 0,
+    "width": 64,
+    "height": 68,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "moveSet": 0,
+      "hp": 20,
+      "weapon": [],
+      "leftHand": [ -10, 35 ],
+      "rightHand": [ 45, 35 ],
+      "jump": 0.5,
+      "damage": 4
+
+    },
+    "animation": [
+      {
+        "startX": 520,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 520,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 520,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 501,
+    "name": "DoombaOrange",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 257,
+    "startY": 351,
+    "width": 64,
+    "height": 68,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "moveSet": 0,
+      "hp": 30,
+      "weapon": [ 2 ],
+      "leftHand": [ -10, 35 ],
+      "rightHand": [ 45, 35 ],
+      "jump": 0.5,
+      "damage": 4
+
+    },
+    "animation": [
+      {
+        "startX": 257,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 257,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 257,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 257,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 257,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 257,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 257,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 257,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 502,
+    "name": "DoombaBlue",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 520,
+    "startY": 273,
+    "width": 64,
+    "height": 68,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "moveSet": 0,
+      "hp": 30,
+      "weapon": [ 4 ],
+      "leftHand": [ -10, 35 ],
+      "rightHand": [ 45, 35 ],
+      "jump": 0.5,
+      "damage": 4
+
+    },
+    "animation": [
+      {
+        "startX": 520,
+        "startY": 409,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 520,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 520,
+        "startY": 409,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 409,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 409,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 520,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 503,
+    "name": "DoombaRed",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 351,
+    "width": 64,
+    "height": 68,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "moveSet": 0,
+      "hp": 60,
+      "weapon": [ 2 ],
+      "leftHand": [ -10, 35 ],
+      "rightHand": [ 45, 35 ],
+      "jump": 0.5,
+      "damage": 10
+
+    },
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 0,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 0,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 487,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 351,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 504,
+    "name": "DoombaPurple",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 263,
+    "startY": 0,
+    "width": 64,
+    "height": 68,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "moveSet": 0,
+      "hp": 60,
+      "weapon": [ 4 ],
+      "leftHand": [ -10, 35 ],
+      "rightHand": [ 45, 35 ],
+      "jump": 0.5,
+      "damage": 10
+
+    },
+    "animation": [
+      {
+        "startX": 263,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 263,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 8,
+        "frameRate": 10,
+        "columns": 4
+      },
+      {
+        "startX": 263,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 263,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 263,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 263,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 263,
+        "startY": 136,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 263,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 505,
+    "name": "Drone",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 263,
+    "startY": 273,
+    "width": 64,
+    "height": 36,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "float": true,
+      "moveSet": 0,
+      "hp": 10,
+      "weapon": [ 9 ],
+      "leftHand": [ 20, 25 ],
+      "rightHand": [ 30, 25 ],
+      "jump": 0.5,
+      "damage": 4
+
+    },
+    "animation": [
+      {
+        "startX": 263,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 309,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 309,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 309,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 273,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 263,
+        "startY": 309,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      }
+    ]
+  },
+  {
+    "id": 506,
+    "name": "DroneRed",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 520,
+    "startY": 546,
+    "width": 64,
+    "height": 36,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "float": true,
+      "moveSet": 0,
+      "hp": 10,
+      "weapon": [ 10 ],
+      "leftHand": [ 20, 25 ],
+      "rightHand": [ 30, 25 ],
+      "jump": 0.5,
+      "damage": 4
+
+    },
+    "animation": [
+      {
+        "startX": 520,
+        "startY": 546,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 582,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 546,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 582,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 546,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 582,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 546,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 520,
+        "startY": 582,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      }
+    ]
+  },
+  {
+    "id": 507,
+    "name": "DroneOrange",
+    "source": "../resources/spriteSheets/entities.png",
+    "startX": 0,
+    "startY": 97,
+    "width": 64,
+    "height": 36,
+    "centerPX": 12,
+    "offSetPX": 3,
+    "complex": {
+      "speed": 3,
+      "float": true,
+      "moveSet": 0,
+      "hp": 10,
+      "weapon": [ 8 ],
+      "leftHand": [ 20, 25 ],
+      "rightHand": [ 30, 25 ],
+      "jump": 0.5,
+      "damage": 4
+
+    },
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 97,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 133,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 97,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 133,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 97,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 133,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 97,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 133,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 10,
+        "columns": 2
+      }
+    ]
+  },
+  {
+    "id": 401,
+    "startX": 0,
+    "startY": 701,
+    "width": 200,
+    "height": 160,
+    "centerPX": 100,
+    "offSetPX": 20,
+    "name": "Shotgun Knight",
+    "complex": {
+      "hp": 1000,
+      "moveSet": 0,
+      "damage": 10,
+      "speed": 4,
+      "jump": 0.5,
+      "leftHand": [ 30, 110 ],
+      "rightHand": [ 150, 110 ],
+      "leftHandLow": [ 13, 115 ],
+      "rightHandLow": [ 160, 115 ],
+      "weapon": [ 8 ],
+      "healthBar": false
+    },
+    "source": "../resources/spriteSheets/Bosses.png",
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 701,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 861,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 701,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 861,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 600,
+        "startY": 1181,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 1021,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 1341,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 200,
+        "startY": 1021,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 402,
+    "startX": 0,
+    "startY": 350,
+    "width": 339,
+    "height": 175,
+    "centerPX": 169,
+    "offSetPX": 100,
+    "name": "Elon Musk",
+    "complex": {
+      "hp": 200,
+      "moveSet": 0,
+      "speed": 4,
+      "jump": 0.5,
+      "leftHand": [ -40, 95 ],
+      "rightHand": [ 360, 95 ],
+      "leftHandLow": [ 13, 55 ],
+      "rightHandLow": [ 28, 55 ],
+      "weapon": [ 7 ],
+      "healthBar": false,
+      "damage": 5
+    },
+    "source": "../resources/spriteSheets/Bosses.png",
+    "animation": [
+      {
+        "startX": 0,
+        "startY": 350,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 5
+      },
+      {
+        "startX": 0,
+        "startY": 350,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 525,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 350,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 0,
+        "startY": 175,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 2,
+        "frameRate": 5,
+        "columns": 2
+      },
+      {
+        "startX": 0,
+        "startY": 0,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  },
+  {
+    "id": 420,
+    "startX": 1001,
+    "startY": 701,
+    "width": 70,
+    "height": 96,
+    "centerPX": 32,
+    "offSetPX": 3,
+    "name": "Evil Heisenberg",
+    "complex": {
+      "hp": 100,
+      "moveSet": 0,
+      "drop": {
+        "type": "artifact",
+        "id": 989
+      },
+      "speed": 4,
+      "jump": 0.5,
+      "leftHand": [ -6, 36 ],
+      "rightHand": [ 45, 36 ],
+      "leftHandLow": [ 13, 60 ],
+      "rightHandLow": [ 28, 60 ],
+      "weapon": [ 1 ],
+      "healthBar": false
+    },
+    "source": "../resources/spriteSheets/Bosses.png",
+    "animation": [
+      {
+        "startX": 1001,
+        "startY": 701,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 4
+      },
+      {
+        "startX": 1001,
+        "startY": 893,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 5,
+        "frameRate": 5,
+        "columns": 4
+      },
+      {
+        "startX": 1001,
+        "startY": 701,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 1001,
+        "startY": 893,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 5,
+        "columns": 1
+      },
+      {
+        "startX": 1071,
+        "startY": 797,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 1141,
+        "startY": 797,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 1071,
+        "startY": 989,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      },
+      {
+        "startX": 1141,
+        "startY": 989,
+        "offSetX": 0,
+        "offSetY": 0,
+        "frames": 1,
+        "frameRate": 1,
+        "columns": 1
+      }
+    ]
+  }
+
+]

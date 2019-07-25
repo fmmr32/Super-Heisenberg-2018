@@ -1,0 +1,24 @@
+{
+  "name": "cs4770_node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "description": "CS4770_Node",
+  "author": {
+    "name": "bbfif"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.0",
+    "debug": "^2.2.0",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.2",
+    "mongojs": "^2.5.0",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^2.0.4"
+  }
+}

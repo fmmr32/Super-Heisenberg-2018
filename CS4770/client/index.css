@@ -1,0 +1,505 @@
+﻿
+body {
+    background-image: url(resources/menus/loginScreen.png);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+}
+
+div {
+}
+
+p {
+    display: inline;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+    z-index: 5;
+}
+
+
+#left {
+    margin: 0;
+}
+
+img:hover {
+    overflow: hidden;
+    transform: scale(1.1,1.1);
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    transition-duration: 1s;
+    z-index: 5;
+}
+
+    table, td, th{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+    color: rgb(245,202,70);
+    font: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #484848;
+}
+
+tr:nth-child(odd) {
+    background-color: #383838;
+}
+
+th {
+    background-color: rgb(245,202,70);
+    font: bolder;
+    font-size: 24;
+    color: rgb(219,50,100);
+}
+
+table#title {
+    width: 775px;
+    margin: 0 auto;
+}
+
+table#gameSettings {
+    width: 750px;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+
+table#soundScrollers {
+    width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid black;
+}
+table#soundScrollers td {
+    margin: 0 auto;
+    text-align: center;
+}
+
+table#gameSettings td {
+    text-align: center;
+}
+
+table#gameSettings tr:hover {
+    background: black;
+}
+
+table#holder {
+    width: 800px;
+    margin: 100px auto 0px;
+}
+
+table#holder th, table#holder td {
+    border: 0px;
+}
+
+table#level {
+    width: 775px;
+    margin: 0 auto;
+}
+
+table#level th, table#level td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tbody#levelTable tr:hover{
+    background: black;
+}
+
+
+
+
+
+
+.menuContainer {
+    display: table;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+}
+
+#editor {
+    display: none;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#side {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 15px;
+    height: auto;
+    width: 410px;
+    border: 3px solid black;
+    border-collapse: collapse;
+    background-color: #484848;
+}
+
+#mainMenu {
+    display: none;
+    vertical-align: middle;
+    padding-top: 100px;
+}
+
+#playOptions {
+    display: none;
+    vertical-align: middle;
+}
+
+#levelEditorOptions {
+    display: none;
+    vertical-align: middle;
+}
+
+#levelBrowser {
+    display: none;
+    vertical-align: middle;
+}
+
+#settings {
+    display: none;
+    vertical-align: middle;
+}
+
+#top {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+#other {
+    padding-bottom: 50px;
+}
+
+#scroll {
+    overflow-y: scroll;
+    height: 200px;
+}
+
+#bottom {
+    padding-bottom: 50px;
+}
+
+#Play {
+}
+
+#BrowseLevels {
+}
+
+#LevelEditor {
+}
+
+#Options {
+}
+
+#NewGame {
+}
+
+#LoadGame {
+}
+
+#NewLevel {
+}
+
+#LoadLevel {
+}
+
+table#select, table#inputs {
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+table#select th, table#select td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    color: white;
+    width: 50px;
+    height: 50px;
+}
+
+table#select tr:nth-child(even) {
+    background-color: #585858;
+}
+
+table#select tr:nth-child(odd) {
+    background-color: #484848;
+}
+
+table#select tbody td:hover {
+    background: black;
+}
+
+
+table#inputs {
+    margin-left: 25px;
+    width: 350px;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+table#inputs td {
+    padding-left: 5px;
+    height:50px;
+}
+
+table#inputs tr {
+    background-color: #484848;
+    border: hidden;
+    height: 50px;
+}
+
+h5 {
+    float: left;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+#inputs input, select {
+    margin-top: 20px;
+    margin-right: 5px;
+    float: right;
+}
+
+input, textarea {
+    width: 25%;
+    display: inline
+}
+
+
+#selectCreature {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#selectTiles {
+    padding-left: 6px;
+}
+
+#buttons {
+    padding-top: 10px;
+    display: inline-flex;
+}
+
+#selectEntity:hover, #selectTiles:hover, #selectCreature:hover {
+    overflow: hidden;
+    transform: scale(1.1,1.1);
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    transition-duration: 1s;
+    z-index: 5;
+}
+
+#tiles {
+    display: inline-block;
+    overflow-y: scroll;
+    height: 152px;
+    margin-top: 10px;
+}
+
+#creature {
+    display: none;
+    overflow-y: scroll;
+    height: 152px;
+    margin-top: 10px;
+}
+
+#entity {
+    display: none;
+    overflow-y: scroll;
+    height: 152px;
+    margin-top: 10px;
+}
+
+#signDiv {
+    font-size: 20;
+    width: 300px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100;
+    margin-left: -175;
+    border: 2px solid black;
+    border-collapse: collapse;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    background-color: #484848;
+    color: rgb(245,202,70);
+}
+
+#signDiv input {
+    float: right;
+    width: 150px;
+}
+
+#signDiv button {
+    margin-top: 20px;
+    margin-left: 22px;
+}
+
+input#Overwrite {
+    width: 25%
+}
+
+input#Save {
+    width: 25%
+}
+
+input#SaveAsNew {
+    width: 25%
+}
+
+input#Back {
+    width: 25%
+}
+
+table#EntityEdit {
+    width: 250px;
+    height: 100px;
+}
+
+table#EntityEdit tr, table#EntityEdit td {
+    max-height: 75px;
+    background-color: #484848;
+    border: hidden;
+    padding-left: 5px;
+    text-align: center;
+}
+
+select#MoveSetsDropdown {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: middle;
+    float: right;
+    width: 120px;
+}
+
+input#entAmount {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: middle;
+    float: right;
+    width: 120px;
+}
+
+table#InteractEdit {
+    width: 300px;
+    height: 100px;
+}
+
+table#InteractEdit tr, table#InteractEdit td {
+    max-height: 75px;
+    background-color: #484848;
+    border: hidden;
+}
+
+select#InteractType {
+    margin-right: 0px;
+    margin-left:0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right:0px;
+    vertical-align: middle;
+    text-align: left;
+    float: left;
+    width:72px;
+}
+
+input#InteractRepeat {
+    float: left;
+}
+
+table#BlockMeta {
+    width: 300px;
+    height: 100px;
+}
+
+table#BlockMeta tr, table#BlockMeta td {
+    max-height: 75px;
+    background-color: #484848;
+    border: hidden;
+}
+
+input#Ricochet{
+    float:right;
+    width:15px;
+    height:15px;
+}
+
+input#Ice {
+    float: right;
+    width: 15px;
+    height: 15px;
+}
+
+input#PassThrough {
+    float: right;
+    width: 15px;
+    height: 15px;
+}
+
+
+select#background, input#gravity, input#mapW, input#mapH, input#X, input#Y, select#music, input#levelName{
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    vertical-align: top;
+}
+
+input#Save {
+    margin-bottom:8px;
+}
+
+input#MVolume {
+    text-align:center;
+    width:150px;
+    margin: 0 auto;
+}
+
+input#GSVolume {
+    text-align: center;
+    width: 150px;
+    margin: 0 auto;
+}
+
+#changeStorageBtn {
+    float:right;
+}
+
+#searchLevelsForm {
+    margin-top: 16px;
+}

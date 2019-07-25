@@ -1,0 +1,298 @@
+﻿[
+  {
+    "backgrounds": [
+      {
+        "id": 0,
+        "src": "../resources/Backgrounds/OverWorld.png"
+      },
+      {
+        "id": 1,
+        "src": "../resources/Backgrounds/OverWorld2.png"
+      },
+      {
+        "id": 2,
+        "src": "../resources/Backgrounds/OverWorld3.png"
+      }
+    ],
+    "startX": 630,
+    "startY": 278,
+    "portals": [
+      {
+        "type": "store",
+        "worldId": [ 0 ],
+        "X": 950,
+        "Y": 162,
+        "startDialog": 5,
+        "endDialog": -1
+      },
+      {
+        "type": "house",
+        "worldId": [ 0 ],
+        "X": 630,
+        "Y": 162,
+        "startDialog": 3,
+        "endDialog": -1
+      },
+      {
+        "type": "museum",
+        "worldId": [ 0 ],
+        "X": 278,
+        "Y": 178,
+        "startDialog": 0,
+        "endDialog": 4
+      },
+      {
+        "type": "level",
+        "mapName": "SpaceBattle",
+        "worldId": [ 1, 2 ],
+        "X": 270,
+        "Y": 482,
+        "startDialog": 2,
+        "endDialog": 10
+      },
+      {
+        "type": "level",
+        "mapName": "DungeonRuins",
+        "worldId": [ 1, 2 ],
+        "X": 270,
+        "Y": 150,
+        "startDialog": 8,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "Desert",
+        "worldId": [ 1, 2 ],
+        "X": 636,
+        "Y": 482,
+        "startDialog": 6,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "Dry Dry Desert",
+        "worldId": [ 1, 2 ],
+        "X": 897,
+        "Y": 482,
+        "startDialog": 7,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "DesertFights",
+        "worldId": [ 1, 2 ],
+        "X": 1159,
+        "Y": 482,
+        "startDialog": 6,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "shortCut",
+        "worldId": [ 1, 2 ],
+        "X": 1159,
+        "Y": 150,
+        "startDialog": 9,
+        "endDialog": -1
+      },
+      {
+        "type": "level",
+        "mapName": "Memes",
+        "worldId": [ 1, 2 ],
+        "X": 882,
+        "Y": 150,
+        "startDialog": 7,
+        "endDialog": -1
+      }
+    ],
+    "paths": [
+      {
+        "id": 0,
+        "worldId": [ 0 ],
+        "startX": 278,
+        "startY": 278,
+        "endX": 630,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 1,
+        "worldId": [ 0 ],
+        "startX": 630,
+        "startY": 278,
+        "endX": 950,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 2,
+        "worldId": [ 0 ],
+        "startX": 278,
+        "startY": 278,
+        "endX": 278,
+        "endY": 595,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 3,
+        "worldId": [ 0 ],
+        "startX": 950,
+        "startY": 162,
+        "endX": 950,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 4,
+        "worldId": [ 0 ],
+        "startX": 630,
+        "startY": 162,
+        "endX": 630,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 5,
+        "worldId": [ 0 ],
+        "startX": 278,
+        "startY": 178,
+        "endX": 278,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 6,
+        "worldId": [ 0 ],
+        "startX": 950,
+        "startY": 278,
+        "endX": 1206,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 7,
+        "worldId": [ 0 ],
+        "startX": 1206,
+        "startY": 278,
+        "endX": 1550,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 1, 2 ]
+      },
+      {
+        "id": 8,
+        "worldId": [ 1, 2 ],
+        "startX": -74,
+        "startY": 278,
+        "endX": 270,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 9,
+        "worldId": [ 1, 2 ],
+        "startX": 270,
+        "startY": 150,
+        "endX": 270,
+        "endY": 278,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 10,
+        "worldId": [ 1, 2 ],
+        "startX": 270,
+        "startY": 482,
+        "endX": 636,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 11,
+        "worldId": [ 1, 2 ],
+        "startX": 636,
+        "startY": 482,
+        "endX": 897,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 12,
+        "worldId": [ 1, 2 ],
+        "startX": 897,
+        "startY": 482,
+        "endX": 1159,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 13,
+        "worldId": [ 1, 2 ],
+        "startX": 1159,
+        "startY": 150,
+        "endX": 1159,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 14,
+        "worldId": [ 1, 2 ],
+        "startX": 882,
+        "startY": 150,
+        "endX": 1159,
+        "endY": 150,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 15,
+        "worldId": [ 1, 2 ],
+        "startX": 270,
+        "startY": 150,
+        "endX": 882,
+        "endY": 150,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      },
+      {
+        "id": 16,
+        "worldId": [ 2 ],
+        "startX": 270,
+        "startY": 278,
+        "endX": 270,
+        "endY": 482,
+        "startPointer": -1,
+        "endPointer": -1,
+        "toOverworlds": [ 0 ]
+      }
+    ]
+  }
+]
